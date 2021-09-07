@@ -25,3 +25,4 @@ Building a web app for [AccessH2O](https://www.accessh2o.org/) to assist the vol
 - Singer Cheng - Product Designer - singerc79@gmail.com 
 - Ren Zheng - Product Designer - rzheng11@gatech.edu
 - Khusbu Patel - Developer - kpatel607@gatech.edu
+- Nidhisha Dasari - Developer - ndasari6@gatech.edu
