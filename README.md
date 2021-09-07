@@ -26,3 +26,4 @@ Building a web app for [AccessH2O](https://www.accessh2o.org/) to assist the vol
 - Ren Zheng - Product Designer - rzheng11@gatech.edu
 - Khusbu Patel - Developer - kpatel607@gatech.edu
 - Nidhisha Dasari - Developer - ndasari6@gatech.edu
+- Nicholas Boshart - Developer - nichabosh@gmail.com
