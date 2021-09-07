@@ -24,3 +24,4 @@ Building a web app for [AccessH2O](https://www.accessh2o.org/) to assist the vol
 - Charlie Luo - Engineering Manager - cvxluo@gatech.edu
 - Singer Cheng - Product Designer - singerc79@gmail.com 
 - Ren Zheng - Product Designer - rzheng11@gatech.edu
+- Jason Li - Developer - jasonli@gatech.edu
