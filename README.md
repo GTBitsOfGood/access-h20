@@ -22,7 +22,7 @@ Building a web app for [AccessH2O](https://www.accessh2o.org/) to assist the vol
 
 - Claudia Tiller - Product Manager - ctiller7@gatech.edu
 - Charlie Luo - Engineering Manager - cvxluo@gatech.edu
-- Singer Cheng - Product Designer - singerc79@gmail.com 
+- Singer Cheng - Product Designer - scheng96@gatech.edu 
 - Ren Zheng - Product Designer - rzheng11@gatech.edu
 - Khusbu Patel - Developer - kpatel607@gatech.edu
 - Nidhisha Dasari - Developer - ndasari6@gatech.edu
