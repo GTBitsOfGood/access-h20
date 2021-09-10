@@ -28,3 +28,4 @@ Building a web app for [AccessH2O](https://www.accessh2o.org/) to assist the vol
 - Nidhisha Dasari - Developer - ndasari6@gatech.edu
 - Nicholas Boshart - Developer - nichabosh@gmail.com
 - Sukhmai Kapur - Developer - skapur33@gatech.edu
+- Jason Li - Developer - jasonli@gatech.edu
