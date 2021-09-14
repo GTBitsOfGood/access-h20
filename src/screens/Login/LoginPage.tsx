@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Router from "next/router";
 import { login, signUp } from "../../actions/User";
 import urls from "../../../utils/urls";
 import classes from "./LoginPage.module.css";
 
 const LoginPage = () => {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [isRegistering, setIsReg] = React.useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isRegistering, setIsReg] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();

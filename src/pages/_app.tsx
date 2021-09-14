@@ -5,19 +5,15 @@ import Head from "next/head";
 import Router from "next/router";
 import { getCurrentUser } from "../actions/User";
 import urls from "../../utils/urls";
-import Header from "../components/Header";
-import "focus-visible/dist/focus-visible.min.js";
-import "normalize.css";
-import "../../public/static/styles/App.css";
 
-const MyApp = ({ Component, pageProps, router, currentUser }) => (
+const MyApp = ({ Component, pageProps, currentUser }) => (
   <>
     <Head>
-      <title>Next.js-Starter</title>
+      <title>AccessH2O</title>
     </Head>
-    <div className="App">
-      <Header loggedIn={currentUser != null} currentRoute={router.asPath} />
-      <div className="Content">
+    <div>
+      {/* <Header loggedIn={currentUser != null} currentRoute={router.asPath} /> */}
+      <div>
         <Component {...pageProps} currentUser={currentUser} />
       </div>
     </div>
@@ -50,7 +46,7 @@ MyApp.getInitialProps = async (appContext) => {
       };
     })
     .catch(() => {
-      if (route.startsWith("/app")) {
+      if (route.startsWith("/test")) {
         if (res) {
           res.writeHead(301, { Location: urls.pages.index });
           res.end();

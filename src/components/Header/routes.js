@@ -8,8 +8,14 @@ const routes = [
     atEnd: false,
   },
   {
-    name: "SSR",
-    link: urls.pages.ssr,
+    name: "Applicant View",
+    link: urls.pages.applicants,
+    auth: false,
+    atEnd: false,
+  },
+  {
+    name: "Info Submission",
+    link: urls.pages.infosubmit,
     auth: false,
     atEnd: false,
   },
