@@ -2,87 +2,57 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoDB from "../index";
 import User from "../models/User";
+import errors from "../../../utils/consts";
+import validator from "email-validator";
 
-export async function login({ username, password }) {
-  if (username == null || password == null) {
-    throw new Error("All parameters must be provided!");
-  }
+const SALT_ROUNDS = 10;
+const TOKEN_DURATION = "7d";
+const JWT_SECRET = process.env.JWT_SECRET;
+
+export async function login({ email, password }) {
+  if (!email || !password) throw new Error(errors.auth.MISSING_INFO);
 
   await mongoDB();
+  const user = await User.findOne({ email });
+  if (!user) throw new Error(errors.auth.INCORRECT_LOGIN);
 
-  const user = await User.findOne({ username });
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) throw new Error(errors.auth.INCORRECT_LOGIN);
 
-  if (user != null) {
-    const didMatch = await bcrypt.compare(password, user.password);
-
-    if (!didMatch) {
-      throw new Error("The password you entered is incorrect!");
-    }
-  } else {
-    throw new Error("User does not exist!");
-  }
-
-  return jwt.sign(
-    {
-      id: user._id,
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "7d",
-    }
-  );
+  const jwtPayload = { id: user._id };
+  const jwtOptions = { expiresIn: TOKEN_DURATION };
+  return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions);
 }
 
-export async function signUp({ username, password }) {
-  if (username == null || password == null) {
-    throw new Error("All parameters must be provided!");
-  }
+export async function signUp({ email, password }) {
+  if (!email || !password) throw new Error(errors.auth.MISSING_INFO);
+
+  const validEmail = validator.validate(email);
+  if (!validEmail) throw new Error(errors.auth.INVALID_EMAIL);
+  if (password.length < 8) throw new Error(errors.auth.INVALID_PASSWORD);
 
   await mongoDB();
+  let user = await User.findOne({ email });
+  if (user) throw new Error(errors.auth.UNAVAILABLE_EMAIL);
 
-  return bcrypt
-    .hash(password, 10)
-    .then((hashedPassword) =>
-      User.create({
-        username,
-        password: hashedPassword,
-      })
-    )
-    .then((user) =>
-      jwt.sign(
-        {
-          id: user._id,
-          username: user.username,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "7d",
-        }
-      )
-    );
+  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+  user = await User.create({ email, password: hashedPassword });
+
+  const jwtPayload = { id: user._id, email: user.email };
+  const jwtOptions = { expiresIn: TOKEN_DURATION };
+  return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions);
 }
 
 export const getUserFromToken = async (token) => {
-  if (token == null) {
-    throw new Error("User is not signed in!");
-  }
+  if (!token) throw new Error(errors.token.DOESNT_EXIST);
 
-  await mongoDB();
+  return jwt.verify(token, JWT_SECRET, async (error, { id }) => {
+    if (error) throw new Error(errors.token.IS_INVALID);
 
-  try {
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
-
+    await mongoDB();
     const user = await User.findOne({ _id: id });
+    if (!user) throw new Error(errors.token.DELETED_USER);
 
-    if (user == null) {
-      throw new Error();
-    }
-
-    return {
-      id,
-      username: user.username,
-    };
-  } catch (e) {
-    throw new Error("Invalid token!");
-  }
+    return { id, email: user.email };
+  });
 };

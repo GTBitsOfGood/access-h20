@@ -5,7 +5,7 @@ import urls from "../../../utils/urls";
 import classes from "./LoginPage.module.css";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsReg] = useState(false);
 
@@ -13,12 +13,12 @@ const LoginPage = () => {
     event.preventDefault();
 
     if (isRegistering) {
-      return signUp(username, password)
+      return signUp(email, password)
         .then(() => Router.replace(urls.pages.app.home))
         .catch((error) => window.alert(error.message));
     }
 
-    return login(username, password)
+    return login(email, password)
       .then(() => Router.replace(urls.pages.app.home))
       .catch((error) => window.alert(error.message));
   };
@@ -33,15 +33,15 @@ const LoginPage = () => {
             : "Login to an existing account."}
         </h3>
         <div className={classes.inputContainer}>
-          <label htmlFor="username" className={classes.inputLabel}>
-            Username
+          <label htmlFor="email" className={classes.inputLabel}>
+            Email
           </label>
           <input
             className={classes.input}
             required
-            id="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
           />
         </div>
         <div className={classes.inputContainer}>

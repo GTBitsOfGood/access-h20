@@ -11,7 +11,7 @@ const handleLogout = () =>
 
 const HomePage = ({ currentUser }) => (
   <div>
-    <h2>Welcome to our app, {currentUser.username}!</h2>
+    <h2>Welcome to our app, {currentUser.email}!</h2>
     <h3>
       This page can only be accessed by logged-in users, because _app.js
       reroutes users who are not logged-in away from this page.
@@ -25,7 +25,7 @@ const HomePage = ({ currentUser }) => (
 HomePage.propTypes = {
   currentUser: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
   }).isRequired,
 };
 
