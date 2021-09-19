@@ -1,33 +1,19 @@
 import * as React from "react";
-import Table from "@material-ui/core/Table";
-import { TablePagination } from "@mui/material";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import { Button } from "@material-ui/core";
-import CreateIcon from "@mui/icons-material/Create";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import { Create } from "@mui/icons-material";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-
-enum ApplicantStatus {
-  AwaitingUtilityAction = "Awaiting Utility Action",
-  AwaitingAccessH2OAction = "Awaiting AccessH2O Action",
-  Approved = "Approved",
-  Completed = "Completed",
-  Denied = "Denied",
-  Terminated = "Terminated",
-}
-
-type Applicant = {
-  name: string;
-  utilityCompany: string;
-  accountId: string;
-  propertyAddress: string;
-  applied: Date;
-  status: ApplicantStatus;
-};
+import { Applicant, ApplicantStatus } from "../../types/Applicant";
 
 const applicants: Applicant[] = [
   {
@@ -182,9 +168,11 @@ const ApplicantTable = () => {
               </TableCell>
               <TableCell align="right">{applicant.status}</TableCell>
               <TableCell align={"right"}>
-                <Button variant={"outlined"}>
-                  <CreateIcon />
-                </Button>
+                <Tooltip title={"View Info Submission"}>
+                  <IconButton>
+                    <Create />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}
