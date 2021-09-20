@@ -5,7 +5,7 @@ function ApplicantViewPage() {
   return (
     <>
       <h1>Applicant View Page</h1>
-      <ApplicantTable />
+      <ApplicantTable view={true}/>
     </>
   );
 }

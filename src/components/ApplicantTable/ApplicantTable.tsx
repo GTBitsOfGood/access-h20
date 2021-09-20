@@ -10,14 +10,20 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import { Create } from "@mui/icons-material";
+import { Announcement, Create } from "@mui/icons-material";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Applicant, ApplicantStatus } from "../../types/Applicant";
+import classes from "./ApplicantTable.module.css"
+
+// true = utility view & false = AccessH2O view
+type Props = {
+  view: boolean
+}
 
 const applicants: Applicant[] = [
   {
-    name: "Khusbu Patel",
+    name: "applicant 1",
     utilityCompany: "City of Atlanta",
     accountId: uuidv4().toString(),
     propertyAddress: "123 George Burdell Blvd",
@@ -25,7 +31,7 @@ const applicants: Applicant[] = [
     status: ApplicantStatus.AwaitingAccessH2OAction,
   },
   {
-    name: "Jason Li",
+    name: "applicant 2",
     utilityCompany: "City of San Francisco",
     accountId: uuidv4().toString(),
     propertyAddress: "1234 San Francisco Blvd",
@@ -33,7 +39,7 @@ const applicants: Applicant[] = [
     status: ApplicantStatus.Completed,
   },
   {
-    name: "Claudia Tiller",
+    name: "applicant 3",
     utilityCompany: "City of Atlanta",
     accountId: uuidv4().toString(),
     propertyAddress: "523 George Burdell Blvd",
@@ -41,7 +47,7 @@ const applicants: Applicant[] = [
     status: ApplicantStatus.Approved,
   },
   {
-    name: "Charlie Luo",
+    name: "applicant 4",
     utilityCompany: "City of Atlanta",
     accountId: uuidv4().toString(),
     propertyAddress: "125 George Burdell Blvd",
@@ -137,56 +143,71 @@ const paginate = (
   return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 };
 
-const ApplicantTable = () => {
+const ApplicantTable = ({ view }: Props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Utility Company</TableCell>
-            <TableCell align="right">Account ID</TableCell>
-            <TableCell align="right">Property Address</TableCell>
-            <TableCell align="right">Applied</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {paginate(applicants, page, rowsPerPage).map((applicant) => (
-            <TableRow key={applicant.accountId}>
-              <TableCell align="left">{applicant.name}</TableCell>
-              <TableCell align="right">{applicant.utilityCompany}</TableCell>
-              <TableCell align="right">{applicant.accountId}</TableCell>
-              <TableCell align="right">{applicant.propertyAddress}</TableCell>
-              <TableCell align="right">
-                {applicant.applied.toDateString()}
-              </TableCell>
-              <TableCell align="right">{applicant.status}</TableCell>
-              <TableCell align={"right"}>
-                <Tooltip title={"View Info Submission"}>
-                  <IconButton>
-                    <Create />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
+    <>
+      <div className={classes.header}>
+        { !view && <div  className={classes.addCustomerContainer}>
+          <button className={classes.addCustomerButton}>Add Customer</button>
+        </div>}
+      </div>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Utility Company</TableCell>
+              <TableCell align="right">Account ID</TableCell>
+              <TableCell align="right">Property Address</TableCell>
+              <TableCell align="right">Applied</TableCell>
+              <TableCell align="right">Status</TableCell>
+              {view && <TableCell align="right">Announcements</TableCell>}
+              <TableCell />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
 
-      <TablePagination
-        count={applicants.length}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
-        page={page}
-        onPageChange={(_, page) => setPage(page)}
-      />
-    </TableContainer>
+          <TableBody>
+            {paginate(applicants, page, rowsPerPage).map((applicant) => (
+              <TableRow key={applicant.accountId}>
+                <TableCell align="left">{applicant.name}</TableCell>
+                <TableCell align="right">{applicant.utilityCompany}</TableCell>
+                <TableCell align="right">{applicant.accountId}</TableCell>
+                <TableCell align="right">{applicant.propertyAddress}</TableCell>
+                <TableCell align="right">
+                  {applicant.applied.toDateString()}
+                </TableCell>
+                <TableCell align="right">{applicant.status}</TableCell>
+                { view && <TableCell align="right">
+                  <Tooltip title={"View announcements"}>
+                    <IconButton>
+                      <Announcement />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>}
+                <TableCell align="right">
+                  <Tooltip title={"View Info Submission"}>
+                    <IconButton>
+                      <Create />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        <TablePagination
+          count={applicants.length}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
+          page={page}
+          onPageChange={(_, page) => setPage(page)}
+        />
+      </TableContainer>
+    </>
   );
 };
 
