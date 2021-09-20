@@ -13,7 +13,7 @@ function InfoSubmissionPage() {
       <FormControlLabel control={<Checkbox />} label="Does the client have another account in their name, thefts of service, anything to be aware of?" labelPlacement="start" style={{justifyContent:'left'}}/>
       <FormControlLabel control={<TextField />} label="If so, then please elaborate." labelPlacement="start" style={{justifyContent:'left'}}/>
       <FormControlLabel control={<Checkbox />} label="Are there signs of a leak that is not abated? " labelPlacement="start" style={{justifyContent:'left'}}/>
-      <FormControlLabel control={<TextField />} label="Has the client contacted you in the past few months?" labelPlacement="start" style={{justifyContent:'left'}}/>
+      <FormControlLabel control={<TextField />} label="Additional comments/documentation?" labelPlacement="start" style={{justifyContent:'left'}}/>
     </FormGroup>
   );
 }
