@@ -1,0 +1,18 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+.searchBar {
+    width: 296px;
+    height: 30px;
+    border: 2px solid #9A9A9A;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.addCustomerButton {
+    background: #C4C4C4;
+    border-color: transparent;
+    border-radius: 8px;
+    height: 30px;
+}
