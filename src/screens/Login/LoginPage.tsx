@@ -3,13 +3,15 @@ import Router from "next/router";
 import { login, signUp } from "../../actions/User";
 import urls from "../../../utils/urls";
 import classes from "./LoginPage.module.css";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsReg] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
     if (isRegistering) {
@@ -36,7 +38,7 @@ const LoginPage = () => {
           <label htmlFor="email" className={classes.inputLabel}>
             Email
           </label>
-          <input
+          <TextField
             className={classes.input}
             required
             id="email"
@@ -48,7 +50,7 @@ const LoginPage = () => {
           <label htmlFor="password" className={classes.inputLabel}>
             Password
           </label>
-          <input
+          <TextField
             className={classes.input}
             required
             id="password"
@@ -57,9 +59,9 @@ const LoginPage = () => {
             onChange={(event) => setPassword(event.target.value)}
           />
         </div>
-        <button className={classes.bttn} type="submit">
+        <Button className={classes.bttn} type="submit">
           {isRegistering ? "Register" : "Login"}
-        </button>
+        </Button>
         {isRegistering ? (
           <p className={classes.switchText}>
             Already have an account?
