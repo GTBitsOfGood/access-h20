@@ -112,17 +112,19 @@ function InfoSubmissionPage() {
         </TextField>
       </div>
       <h3>Document Submission</h3>
-      <div>
-        <Button type="button">
+      <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
+        <Button variant="contained" component="label" style = {{flex: "50px"}}>
           Upload
+          <input type="file" hidden/>
         </Button>
-        <p>Payment Histoy</p>
+        <p style = {{flex: "50px"}}>Payment History</p>
       </div>
-      <div>
-        <Button type="button">
+      <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
+        <Button variant="contained" component="label" style = {{flex: "50px"}}>
           Upload
+          <input type="file" hidden/>
         </Button>
-        <p>Usage History</p>
+        <p style = {{flex: "50px"}}>Usage History</p>
       </div>
 
       <h3>Other</h3>
