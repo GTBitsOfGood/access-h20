@@ -120,18 +120,18 @@ function InfoSubmissionPage() {
       </div>
       <h3>Document Submission</h3>
       <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
-        <Button variant="contained" component="label" style = {{flex: "50px"}}>
+        <Button variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
           Upload
           <input type="file" hidden/>
         </Button>
-        <p style = {{flex: "50px"}}>Payment History</p>
+        <p style = {{flex: "50px", padding: "10px"}}>Payment History</p>
       </div>
       <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
-        <Button variant="contained" component="label" style = {{flex: "50px"}}>
+        <Button variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
           Upload
           <input type="file" hidden/>
         </Button>
-        <p style = {{flex: "50px"}}>Usage History</p>
+        <p style = {{flex: "50px", padding: "10px"}}>Usage History</p>
       </div>
 
       <h3>Other</h3>
