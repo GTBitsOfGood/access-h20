@@ -149,7 +149,7 @@ function InfoSubmissionPage() {
       </div>
       <Button type="button">
           Save
-        </Button>
+      </Button>
     </div>
 
   );
