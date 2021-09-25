@@ -28,10 +28,6 @@ type Applicant = {
   status: ApplicantStatus;
 };
 
-function changeColor(id: string) {
-  document.getElementById(id).style.backgroundColor = "GRAY"
-}
-
 let dummyData: Applicant
   dummyData = {
   name: 'Ashley Miller', 
@@ -53,11 +49,15 @@ function toggleButton(answer: string, id1: string, id2: string, set: boolean) {
   if (set) {
     answer = 'Yes';
     document.getElementById(id1).style.backgroundColor = "GRAY"
+    document.getElementById(id2).style.backgroundColor = "WHITE"
     document.getElementById(id2).selected = false;
+    document.getElementById(id1).selected = true;
   } else {
     answer = 'No'
     document.getElementById(id2).style.backgroundColor = "GRAY"
+    document.getElementById(id1).style.backgroundColor = "WHITE"
     document.getElementById(id1).selected = false;
+    document.getElementById(id2).selected = true;
   }
   console.log(answer)
 }
@@ -118,8 +118,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button" id = "yes2" onClick = {() => changeColor('yes2')}>Yes</Button>
-            <Button type="button" id = "no2" onClick = {() => changeColor('no2')}>No</Button>
+            <Button type="button" id = "yes2" onClick = {() => toggleButton(contactAns, "yes2", "no2", true)}>Yes</Button>
+            <Button type="button" id = "no2" onClick = {() => toggleButton(contactAns, "yes2", "no2", false)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Minimum Services</p>
@@ -128,8 +128,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button" id = "yes3" onClick = {() => changeColor('yes3')}>Yes</Button>
-            <Button type="button" id = "no3"  onClick = {() => changeColor('no3')}>No</Button>
+            <Button type="button" id = "yes3" onClick = {() => toggleButton(accountAns, "yes3", "no3", true)}>Yes</Button>
+            <Button type="button" id = "no3"  onClick = {() => toggleButton(accountAns, "yes3", "no3", false)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Customer Contact</p>
@@ -138,8 +138,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button" id = "yes4" onClick = {() => changeColor('yes4')}>Yes</Button>
-            <Button type="button" id = "no4" onClick = {() => changeColor('no4')}>No</Button>
+            <Button type="button" id = "yes4" onClick = {() => toggleButton(accountAnsMore, "yes4", "no4", true)}>Yes</Button>
+            <Button type="button" id = "no4" onClick = {() => toggleButton(accountAnsMore, "yes4", "no4", false)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Water Meter</p>
