@@ -6,6 +6,7 @@ import ButtonGroup from  "@material-ui/core/ButtonGroup";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {withStyles, createStyles} from "@material-ui/core/styles";
+import { fontWeight } from "@mui/system";
 
 
 enum ApplicantStatus {  
@@ -27,6 +28,10 @@ type Applicant = {
   status: ApplicantStatus;
 };
 
+function changeColor(id: string) {
+  document.getElementById(id).style.backgroundColor = "GRAY"
+}
+
 let dummyData: Applicant
   dummyData = {
   name: 'Ashley Miller', 
@@ -44,13 +49,17 @@ let accountAnsMore: string;
 let leakAns: string;
 let comments: string;
 
-function toggleButton(answer: string, set: boolean) {
+function toggleButton(answer: string, id1: string, id2: string, set: boolean) {
   if (set) {
     answer = 'Yes';
+    document.getElementById(id1).style.backgroundColor = "GRAY"
+    document.getElementById(id2).selected = false;
   } else {
     answer = 'No'
+    document.getElementById(id2).style.backgroundColor = "GRAY"
+    document.getElementById(id1).selected = false;
   }
-  console.log(answer);
+  console.log(answer)
 }
 
 function InfoSubmissionPage() {
@@ -97,73 +106,79 @@ function InfoSubmissionPage() {
       <TextField style = {{width: "75%"}}></TextField>
       <h3>Eligibility</h3>
       <div>
-        <p>Has the client made a minimum of 3 payments over the last 12 months?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>Has the client contacted you in the past few months?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>Does the client have another account in their name, thefts of service, anything to be aware of?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>If so, then please elaborate: </p>
-        <TextField>
-        </TextField>
-        <p>Are there signs of a leak that is not abated?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>Additional comments?</p>
-        <TextField>
-        </TextField>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button" id = "yes1" onClick = {() => toggleButton(paymentAns, "yes1", "no1", true)}>Yes</Button>
+            <Button type="button" id = "no1" onClick = {() => toggleButton(paymentAns, "yes1", "no1", false)}>No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Payments</p>
+            <p style = {{fontWeight: "lighter"}}>Has the client made a minimum of 3 payments over the last 12 months?</p>
+          </div>
+        </div>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button" id = "yes2" onClick = {() => changeColor('yes2')}>Yes</Button>
+            <Button type="button" id = "no2" onClick = {() => changeColor('no2')}>No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Minimum Services</p>
+            <p style = {{fontWeight: "lighter"}}>Does the customer have a minimum of 12 months of service?</p>
+          </div>
+        </div>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button" id = "yes3" onClick = {() => changeColor('yes3')}>Yes</Button>
+            <Button type="button" id = "no3"  onClick = {() => changeColor('no3')}>No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Customer Contact</p>
+            <p style = {{fontWeight: "lighter"}}>Has the customer been in contact with your utility company?</p>
+          </div>
+        </div>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button" id = "yes4" onClick = {() => changeColor('yes4')}>Yes</Button>
+            <Button type="button" id = "no4" onClick = {() => changeColor('no4')}>No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Water Meter</p>
+            <p style = {{fontWeight: "lighter"}}>Does the property with dedicated water meter?</p>
+          </div>
+        </div>
       </div>
       <h3>Document Submission</h3>
       <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
-        <Button variant="contained" component="label" style = {{flex: "50px"}}>
+        <Button variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
           Upload
           <input type="file" hidden/>
         </Button>
-        <p style = {{flex: "50px"}}>Payment History</p>
+        <p style = {{flex: "50px", padding: "10px"}}>Payment History</p>
       </div>
       <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
-        <Button variant="contained" component="label" style = {{flex: "50px"}}>
+        <Button variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
           Upload
           <input type="file" hidden/>
         </Button>
-        <p style = {{flex: "50px"}}>Usage History</p>
+        <p style = {{flex: "50px", padding: "10px"}}>Usage History</p>
       </div>
 
       <h3>Other</h3>
       <div>
         <p>Are there any pending adjustments?</p>
-        <TextField></TextField>
+        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
       </div>
       <div>
-        <p>What (if any) other individuals are involved (spouse,landlord, dependent)?</p>
+        <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
         <TextField></TextField>
       </div>
       <div>
         <p>Is there any additional information we should know about the account?</p>
-        <TextField></TextField>
+        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
       </div>
       <Button type="button">
-          Submit
-        </Button>
+          Save
+      </Button>
     </div>
 
   );
