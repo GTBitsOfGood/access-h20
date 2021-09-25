@@ -28,6 +28,10 @@ type Applicant = {
   status: ApplicantStatus;
 };
 
+function changeColor(id: string) {
+  document.getElementById(id).style.backgroundColor = "GRAY"
+}
+
 let dummyData: Applicant
 dummyData = {name: 'Ashley Miller', utilityCompany: 'Durham', accountId: '50000123', 
 propertyAddress: '2886 Lime St Durham, NC 27704', applied: new Date("2019-01-16"),
@@ -79,8 +83,8 @@ function InfoSubmissionPage() {
       <div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button">Yes</Button>
-            <Button type="button">No</Button>
+            <Button type="button" id = "yes1" onClick = {() => changeColor('yes1')}>Yes</Button>
+            <Button type="button" id = "no1" onClick = {() => changeColor('no1')}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Payments</p>
@@ -89,8 +93,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button">Yes</Button>
-            <Button type="button">No</Button>
+            <Button type="button" id = "yes2" onClick = {() => changeColor('yes2')}>Yes</Button>
+            <Button type="button" id = "no2" onClick = {() => changeColor('no2')}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Minimum Services</p>
@@ -99,8 +103,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button">Yes</Button>
-            <Button type="button">No</Button>
+            <Button type="button" id = "yes3"  onClick = {() => changeColor('yes3')}>Yes</Button>
+            <Button type="button" id = "no3"  onClick = {() => changeColor('no3')}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Customer Contact</p>
@@ -109,8 +113,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button">Yes</Button>
-            <Button type="button">No</Button>
+            <Button type="button" id = "yes4" onClick = {() => changeColor('yes4')}>Yes</Button>
+            <Button type="button" id = "no4" onClick = {() => changeColor('no4')}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Water Meter</p>
