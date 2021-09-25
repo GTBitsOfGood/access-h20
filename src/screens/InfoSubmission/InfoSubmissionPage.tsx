@@ -28,9 +28,30 @@ type Applicant = {
 };
 
 let dummyData: Applicant
-dummyData = {name: 'Ashley Miller', utilityCompany: 'Durham', accountId: '50000123', 
-propertyAddress: '2886 Lime St Durham, NC 27704', applied: new Date("2019-01-16"),
-status: ApplicantStatus.AwaitingUtilityAction}
+  dummyData = {
+  name: 'Ashley Miller', 
+  utilityCompany: 'Durham', 
+  accountId: '50000123', 
+  propertyAddress: '2886 Lime St Durham, NC 27704', 
+  applied: new Date("2019-01-16"),
+  status: ApplicantStatus.AwaitingUtilityAction
+}
+
+let paymentAns: string;
+let contactAns: string;
+let accountAns: string;
+let accountAnsMore: string;
+let leakAns: string;
+let comments: string;
+
+function toggleButton(answer: string, set: boolean) {
+  if (set) {
+    answer = 'Yes';
+  } else {
+    answer = 'No'
+  }
+  console.log(answer);
+}
 
 function InfoSubmissionPage() {
   return (
@@ -133,7 +154,7 @@ function InfoSubmissionPage() {
         <TextField></TextField>
       </div>
       <div>
-        <p>What (if any) other idividuals are involved (spouse,landlord, dependent)?</p>
+        <p>What (if any) other individuals are involved (spouse,landlord, dependent)?</p>
         <TextField></TextField>
       </div>
       <div>
