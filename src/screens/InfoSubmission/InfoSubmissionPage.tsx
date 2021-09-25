@@ -6,6 +6,7 @@ import ButtonGroup from  "@material-ui/core/ButtonGroup";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {withStyles, createStyles} from "@material-ui/core/styles";
+import { fontWeight } from "@mui/system";
 
 
 enum ApplicantStatus {  
@@ -76,40 +77,46 @@ function InfoSubmissionPage() {
       <TextField style = {{width: "75%"}}></TextField>
       <h3>Eligibility</h3>
       <div>
-        <p>Has the client made a minimum of 3 payments over the last 12 months?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>Has the client contacted you in the past few months?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>Does the client have another account in their name, thefts of service, anything to be aware of?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>If so, then please elaborate: </p>
-        <TextField>
-        </TextField>
-        <p>Are there signs of a leak that is not abated?</p>
-        <Button type="button">
-          Yes
-        </Button>
-        <Button type="button">
-          No
-        </Button>
-        <p>Additional comments?</p>
-        <TextField>
-        </TextField>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button">Yes</Button>
+            <Button type="button">No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Payments</p>
+            <p style = {{fontWeight: "lighter"}}>Has the client made a minimum of 3 payments over the last 12 months?</p>
+          </div>
+        </div>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button">Yes</Button>
+            <Button type="button">No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Minimum Services</p>
+            <p style = {{fontWeight: "lighter"}}>Does the customer have a minimum of 12 months of service?</p>
+          </div>
+        </div>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button">Yes</Button>
+            <Button type="button">No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Customer Contact</p>
+            <p style = {{fontWeight: "lighter"}}>Has the customer been in contact with your utility company?</p>
+          </div>
+        </div>
+        <div style = {{display: "flex", width: "1000px"}}>
+          <div style = {{flex: "50px"}}>
+            <Button type="button">Yes</Button>
+            <Button type="button">No</Button>
+          </div>
+          <div style = {{flex: "700px"}}>
+            <p style = {{fontWeight: "bold"}}>Water Meter</p>
+            <p style = {{fontWeight: "lighter"}}>Does the property with dedicated water meter?</p>
+          </div>
+        </div>
       </div>
       <h3>Document Submission</h3>
       <div>
@@ -128,18 +135,18 @@ function InfoSubmissionPage() {
       <h3>Other</h3>
       <div>
         <p>Are there any pending adjustments?</p>
-        <TextField></TextField>
+        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
       </div>
       <div>
         <p>What (if any) other idividuals are involved (spouse,landlord, dependent)?</p>
-        <TextField></TextField>
+        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
       </div>
       <div>
         <p>Is there any additional information we should know about the account?</p>
-        <TextField></TextField>
+        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
       </div>
       <Button type="button">
-          Submit
+          Save
         </Button>
     </div>
 
