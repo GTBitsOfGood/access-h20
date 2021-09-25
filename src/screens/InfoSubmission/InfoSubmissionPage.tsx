@@ -176,7 +176,7 @@ function InfoSubmissionPage() {
         <p>Is there any additional information we should know about the account?</p>
         <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
       </div>
-      <Button type="button">
+      <Button type="button" onClick = {(() => console.log())}>
           Save
       </Button>
     </div>
