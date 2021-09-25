@@ -170,7 +170,7 @@ function InfoSubmissionPage() {
       </div>
       <div>
         <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
-        <TextField></TextField>
+        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
       </div>
       <div>
         <p>Is there any additional information we should know about the account?</p>
