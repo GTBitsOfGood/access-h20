@@ -7,6 +7,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {withStyles, createStyles} from "@material-ui/core/styles";
 import { fontWeight } from "@mui/system";
+import { Input, InputLabel } from "@material-ui/core";
 
 
 enum ApplicantStatus {  
@@ -28,10 +29,6 @@ type Applicant = {
   status: ApplicantStatus;
 };
 
-function changeColor(id: string) {
-  document.getElementById(id).style.backgroundColor = "GRAY"
-}
-
 let dummyData: Applicant
   dummyData = {
   name: 'Ashley Miller', 
@@ -42,25 +39,45 @@ let dummyData: Applicant
   status: ApplicantStatus.AwaitingUtilityAction
 }
 
-let paymentAns: string;
-let contactAns: string;
-let accountAns: string;
-let accountAnsMore: string;
-let leakAns: string;
-let comments: string;
+let paymentAns: string = '';
+let servicesAns: string = '';
+let contactAns: string = '';
+let waterAns: string = '';
+
+let adjustAns: string = '';
+let infoAns: string = '';
+let indivAns: string = '';
+
+let file1: File;
+let file2: File;
 
 function toggleButton(answer: string, id1: string, id2: string, set: boolean) {
   if (set) {
     answer = 'Yes';
     document.getElementById(id1).style.backgroundColor = "GRAY"
-    document.getElementById(id2).selected = false;
   } else {
     answer = 'No'
     document.getElementById(id2).style.backgroundColor = "GRAY"
-    document.getElementById(id1).selected = false;
   }
-  console.log(answer)
 }
+
+function setVar(id: string, ans) {
+  ans = document.getElementById(id)?.value
+  console.log(ans)
+}
+
+function saveFile(id: string, file: File) {
+  file = document.getElementById.value
+}
+
+const styles = {
+  hidden: {
+    display: "none",
+  },
+  importLabel: {
+    color: "black",
+  },
+};
 
 function InfoSubmissionPage() {
   return (
@@ -118,8 +135,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button" id = "yes2" onClick = {() => changeColor('yes2')}>Yes</Button>
-            <Button type="button" id = "no2" onClick = {() => changeColor('no2')}>No</Button>
+            <Button type="button" id = "yes2" onClick = {() => toggleButton(servicesAns, "yes2", "no2", true)}>Yes</Button>
+            <Button type="button" id = "no2" onClick = {() => toggleButton(servicesAns, "yes2", "no2", true)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Minimum Services</p>
@@ -128,8 +145,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button" id = "yes3" onClick = {() => changeColor('yes3')}>Yes</Button>
-            <Button type="button" id = "no3"  onClick = {() => changeColor('no3')}>No</Button>
+            <Button type="button" id = "yes3" onClick = {() => toggleButton(contactAns, "yes3", "no3", true)}>Yes</Button>
+            <Button type="button" id = "no3"  onClick = {() => toggleButton(contactAns, "yes3", "no3", true)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Customer Contact</p>
@@ -138,8 +155,8 @@ function InfoSubmissionPage() {
         </div>
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
-            <Button type="button" id = "yes4" onClick = {() => changeColor('yes4')}>Yes</Button>
-            <Button type="button" id = "no4" onClick = {() => changeColor('no4')}>No</Button>
+            <Button type="button" id = "yes4" onClick = {() => toggleButton(waterAns, "yes4", "no4", true)}>Yes</Button>
+            <Button type="button" id = "no4" onClick = {() => toggleButton(waterAns, "yes4", "no4", true)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Water Meter</p>
@@ -149,16 +166,16 @@ function InfoSubmissionPage() {
       </div>
       <h3>Document Submission</h3>
       <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
-        <Button variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
+        <Button  variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
           Upload
-          <input type="file" hidden/>
+          <input id="paymentFile" type="file" hidden onChange = {() => saveFile("paymentFile",file1)}/>
         </Button>
         <p style = {{flex: "50px", padding: "10px"}}>Payment History</p>
       </div>
       <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
-        <Button variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
+        <Button id="usageFile" variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
           Upload
-          <input type="file" hidden/>
+          <input type="file" hidden onChange = {() => saveFile("usageFile",file2)}/>
         </Button>
         <p style = {{flex: "50px", padding: "10px"}}>Usage History</p>
       </div>
@@ -166,15 +183,15 @@ function InfoSubmissionPage() {
       <h3>Other</h3>
       <div>
         <p>Are there any pending adjustments?</p>
-        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
+        <textarea id="adjustAns" type= "text" style= {{width: "75%", height: "150px"}} onChange = {() => setVar("adjustAns", adjustAns)}></textarea>
       </div>
       <div>
         <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
-        <TextField></TextField>
+        <TextField id="indivAns" onChange = {() => setVar("indivAns", indivAns)}></TextField>
       </div>
       <div>
         <p>Is there any additional information we should know about the account?</p>
-        <textarea type= "text" style= {{width: "75%", height: "150px"}}></textarea>
+        <textarea id="infoAns" type= "text" style= {{width: "75%", height: "150px"}} onChange = {() => setVar("infoAns", infoAns)}></textarea>
       </div>
       <Button type="button">
           Save
@@ -182,6 +199,25 @@ function InfoSubmissionPage() {
     </div>
 
   );
+}
+
+
+const information: Object = {
+  YesNoAns: {
+    payment: paymentAns,
+    service: servicesAns,
+    contact: contactAns,
+    water: waterAns
+  },
+  /*Files: {
+    file1: File = ;
+    file2: File = ;
+  },*/
+  ShortAns: {
+    adjustments: adjustAns,
+    involvements: indivAns,
+    additionalInfo: infoAns
+  }
 }
 
 export default InfoSubmissionPage;
