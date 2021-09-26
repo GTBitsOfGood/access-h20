@@ -55,15 +55,20 @@ function toggleButton(answer: string, id1: string, id2: string, set: boolean) {
   if (set) {
     answer = 'Yes';
     document.getElementById(id1).style.backgroundColor = "GRAY"
+    document.getElementById(id2).style.backgroundColor = "WHITE"
+    document.getElementById(id2).selected = false;
+    document.getElementById(id1).selected = true;
   } else {
     answer = 'No'
     document.getElementById(id2).style.backgroundColor = "GRAY"
+    document.getElementById(id1).style.backgroundColor = "WHITE"
+    document.getElementById(id1).selected = false;
+    document.getElementById(id2).selected = true;
   }
 }
 
 function setVar(id: string, ans) {
   ans = document.getElementById(id)?.value
-  console.log(ans)
 }
 
 function saveFile(id: string, file: File) {
@@ -136,7 +141,7 @@ function InfoSubmissionPage() {
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
             <Button type="button" id = "yes2" onClick = {() => toggleButton(servicesAns, "yes2", "no2", true)}>Yes</Button>
-            <Button type="button" id = "no2" onClick = {() => toggleButton(servicesAns, "yes2", "no2", true)}>No</Button>
+            <Button type="button" id = "no2" onClick = {() => toggleButton(servicesAns, "yes2", "no2", false)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Minimum Services</p>
@@ -146,7 +151,7 @@ function InfoSubmissionPage() {
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
             <Button type="button" id = "yes3" onClick = {() => toggleButton(contactAns, "yes3", "no3", true)}>Yes</Button>
-            <Button type="button" id = "no3"  onClick = {() => toggleButton(contactAns, "yes3", "no3", true)}>No</Button>
+            <Button type="button" id = "no3"  onClick = {() => toggleButton(contactAns, "yes3", "no3", false)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Customer Contact</p>
@@ -156,7 +161,7 @@ function InfoSubmissionPage() {
         <div style = {{display: "flex", width: "1000px"}}>
           <div style = {{flex: "50px"}}>
             <Button type="button" id = "yes4" onClick = {() => toggleButton(waterAns, "yes4", "no4", true)}>Yes</Button>
-            <Button type="button" id = "no4" onClick = {() => toggleButton(waterAns, "yes4", "no4", true)}>No</Button>
+            <Button type="button" id = "no4" onClick = {() => toggleButton(waterAns, "yes4", "no4", false)}>No</Button>
           </div>
           <div style = {{flex: "700px"}}>
             <p style = {{fontWeight: "bold"}}>Water Meter</p>
@@ -193,12 +198,12 @@ function InfoSubmissionPage() {
         <p>Is there any additional information we should know about the account?</p>
         <textarea id="infoAns" type= "text" style= {{width: "75%", height: "150px"}} onChange = {() => setVar("infoAns", infoAns)}></textarea>
       </div>
-      <Button type="button">
+      <Button type="button" onClick = {(() => console.log())}>
           Save
       </Button>
     </div>
 
-  );
+  )
 }
 
 
