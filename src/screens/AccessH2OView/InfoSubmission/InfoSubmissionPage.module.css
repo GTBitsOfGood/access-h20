@@ -17,6 +17,10 @@
     text-align: right;
 }
 
+.applicantStatus > h4 {
+    display: inline;
+}
+
 .statusButton {
     width: 126px;
 }

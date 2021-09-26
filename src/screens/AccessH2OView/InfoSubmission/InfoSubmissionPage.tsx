@@ -39,11 +39,16 @@ const InfoSubmissionPage = () => {
 
   const [applicant, setApplicant] = useState(dummyApplicant)
   const [infoSub, setInfoSub] = useState(dummyInfoSub)
+  const [applicantStatus, setApplicantStatus] = useState(dummyApplicant.status)
   const [comments, setComments] = useState("")
 
   // TODO fetch applicant data based on applicantId
   // TODO fetch information submission based on applicantId?
   // TODO save comments somewhere
+
+  const updateStatus = (event) => {
+    setApplicantStatus(event.target.value)
+  }
 
   return (
     <div className={classes.root}>
@@ -61,10 +66,15 @@ const InfoSubmissionPage = () => {
           <h4>Property Address</h4>
           <p>{applicant.propertyAddress}</p>
         </div>
-        <div className={classes.applicantInfo}>
-          <h4>Status</h4>
-          <p>{applicant.status}</p>
-          <button>Change Status</button>
+        <div className={classes.applicantStatus}>
+          <h4>Applicant Status</h4>
+          <input type="radio" value={ApplicantStatus.Incomplete} checked={applicantStatus == ApplicantStatus.Incomplete} onChange={updateStatus} /> Incomplete
+          <input type="radio" value={ApplicantStatus.AwaitingUtilityAction} checked={applicantStatus == ApplicantStatus.AwaitingUtilityAction} onChange={updateStatus} /> AwaitingUtilityAction
+          <input type="radio" value={ApplicantStatus.AwaitingAccessH2OAction} checked={applicantStatus == ApplicantStatus.AwaitingAccessH2OAction} onChange={updateStatus} /> AwaitingAccessH2OAction
+          <input type="radio" value={ApplicantStatus.Approved} checked={applicantStatus == ApplicantStatus.Approved} onChange={updateStatus} /> Approved
+          <input type="radio" value={ApplicantStatus.Completed} checked={applicantStatus == ApplicantStatus.Completed} onChange={updateStatus} /> Completed
+          <input type="radio" value={ApplicantStatus.Denied} checked={applicantStatus == ApplicantStatus.Denied } onChange={updateStatus} /> Denied
+          <input type="radio" value={ApplicantStatus.Terminated} checked={applicantStatus == ApplicantStatus.Terminated} onChange={updateStatus}/> Terminated
         </div>
         <button className={classes.statusButton}>Update Applicant</button>
       </div>
