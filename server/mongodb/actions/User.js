@@ -53,6 +53,7 @@ export const getUserFromToken = async (token) => {
     const user = await User.findOne({ _id: id });
     if (!user) throw new Error(errors.token.DELETED_USER);
 
-    return { id, email: user.email };
+    // pass only relevant info to client
+    return { id, email: user.email, role: user.role };
   });
 };
