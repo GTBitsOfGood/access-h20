@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -9,17 +9,20 @@ import {
   TablePagination,
   IconButton,
   Tooltip,
+  TextField,
+  MenuItem,
+  InputAdornment,
 } from "@mui/material";
 import { Announcement, Create } from "@mui/icons-material";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Applicant, ApplicantStatus } from "../../types/Applicant";
-import classes from "./ApplicantTable.module.css"
+import classes from "./ApplicantTable.module.css";
 
 // true = utility view & false = AccessH2O view
 type Props = {
-  view: boolean
-}
+  view: boolean;
+};
 
 const applicants: Applicant[] = [
   {
@@ -146,14 +149,140 @@ const paginate = (
 const ApplicantTable = ({ view }: Props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("Any");
+  const [searchBy, setSearchBy] = useState("All");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [filteredApplicants, setfilteredApplicants] = useState(applicants);
+
+  useEffect(() => {
+    let statusApplicants = applicants.filter(
+      (applicant) => statusFilter == "Any" || applicant.status === statusFilter
+    );
+    let dateApplicants = statusApplicants;
+    if (fromDate && toDate) {
+      console.log("wassup");
+      dateApplicants = dateApplicants.filter((applicant) => {
+        let applicantDate = new Date(applicant.applied);
+        return (
+          applicantDate > new Date(fromDate) && applicantDate < new Date(toDate)
+        );
+      });
+    }
+    let searchedApplicants = dateApplicants;
+    let caseInsensitiveSearch = search.toLowerCase();
+    if (searchBy == "All") {
+      searchedApplicants = searchedApplicants.filter(
+        (applicant) =>
+          applicant.name.toLowerCase().indexOf(caseInsensitiveSearch) !== -1 ||
+          applicant.utilityCompany
+            .toLowerCase()
+            .indexOf(caseInsensitiveSearch) !== -1
+      );
+    } else if (searchBy == "Name") {
+      searchedApplicants = searchedApplicants.filter(
+        (applicant) =>
+          applicant.name.toLowerCase().indexOf(caseInsensitiveSearch) !== -1
+      );
+    } else if (searchBy == "Utility Company") {
+      searchedApplicants = searchedApplicants.filter(
+        (applicant) =>
+          applicant.utilityCompany
+            .toLowerCase()
+            .indexOf(caseInsensitiveSearch) !== -1
+      );
+    }
+
+    setfilteredApplicants(searchedApplicants);
+  }, [search, statusFilter, searchBy, fromDate, toDate]);
 
   return (
     <>
       <div className={classes.header}>
-        { !view && <div  className={classes.addCustomerContainer}>
-          <button className={classes.addCustomerButton}>Add Customer</button>
-        </div>}
+        {!view && (
+          <div className={classes.addCustomerContainer}>
+            <button className={classes.addCustomerButton}>Add Customer</button>
+          </div>
+        )}
       </div>
+      <div className={classes.searchBar}>
+        <TextField
+          className={classes.searchBox}
+          label="Search"
+          variant="outlined"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <TextField
+          className={classes.searchFilter}
+          label="Search By"
+          select
+          variant="standard"
+          value={searchBy}
+          onChange={(e) => setSearchBy(e.target.value)}
+        >
+          {
+            <MenuItem key={"All"} value={"All"}>
+              {"All"}
+            </MenuItem>
+          }
+          {
+            <MenuItem key={"Utility Company"} value={"Utility Company"}>
+              {"Utility Company"}
+            </MenuItem>
+          }
+          {
+            <MenuItem key={"Name"} value={"Name"}>
+              {"Name"}
+            </MenuItem>
+          }
+        </TextField>
+        <TextField
+          className={classes.searchFilter}
+          label="Status"
+          select
+          variant="standard"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          {Object.values(ApplicantStatus).map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+          {
+            <MenuItem key={"Any"} value={"Any"}>
+              {"Any"}
+            </MenuItem>
+          }
+        </TextField>
+        <TextField
+          className={classes.searchFilter}
+          variant="outlined"
+          value={fromDate}
+          onChange={(e) => setFromDate(e.target.value)}
+          type="date"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">From:</InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          className={classes.searchFilter}
+          variant="outlined"
+          value={toDate}
+          onChange={(e) => setToDate(e.target.value)}
+          type="date"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">To:</InputAdornment>
+            ),
+          }}
+        />
+      </div>
+
       <TableContainer>
         <Table>
           <TableHead>
@@ -170,32 +299,40 @@ const ApplicantTable = ({ view }: Props) => {
           </TableHead>
 
           <TableBody>
-            {paginate(applicants, page, rowsPerPage).map((applicant) => (
-              <TableRow key={applicant.accountId}>
-                <TableCell align="left">{applicant.name}</TableCell>
-                <TableCell align="right">{applicant.utilityCompany}</TableCell>
-                <TableCell align="right">{applicant.accountId}</TableCell>
-                <TableCell align="right">{applicant.propertyAddress}</TableCell>
-                <TableCell align="right">
-                  {applicant.applied.toDateString()}
-                </TableCell>
-                <TableCell align="right">{applicant.status}</TableCell>
-                { view && <TableCell align="right">
-                  <Tooltip title={"View announcements"}>
-                    <IconButton>
-                      <Announcement />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>}
-                <TableCell align="right">
-                  <Tooltip title={"View Info Submission"}>
-                    <IconButton>
-                      <Create />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
+            {paginate(filteredApplicants, page, rowsPerPage).map(
+              (applicant) => (
+                <TableRow key={applicant.accountId}>
+                  <TableCell align="left">{applicant.name}</TableCell>
+                  <TableCell align="right">
+                    {applicant.utilityCompany}
+                  </TableCell>
+                  <TableCell align="right">{applicant.accountId}</TableCell>
+                  <TableCell align="right">
+                    {applicant.propertyAddress}
+                  </TableCell>
+                  <TableCell align="right">
+                    {applicant.applied.toDateString()}
+                  </TableCell>
+                  <TableCell align="right">{applicant.status}</TableCell>
+                  {view && (
+                    <TableCell align="right">
+                      <Tooltip title={"View announcements"}>
+                        <IconButton>
+                          <Announcement />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  )}
+                  <TableCell align="right">
+                    <Tooltip title={"View Info Submission"}>
+                      <IconButton>
+                        <Create />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              )
+            )}
           </TableBody>
         </Table>
 

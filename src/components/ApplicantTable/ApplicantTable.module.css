@@ -2,14 +2,19 @@
     display: flex;
     justify-content: space-between;
 }
+
 .searchBar {
-    width: 296px;
-    height: 30px;
-    border: 2px solid #9A9A9A;
-    box-sizing: border-box;
-    border-radius: 8px;
+    text-align: center;
 }
 
+.searchBox {
+    width: 300px;
+}
+
+.searchFilter {
+    margin-left: 40px;
+    min-width: 150px;
+}
 .addCustomerButton {
     background: #C4C4C4;
     border-color: transparent;
