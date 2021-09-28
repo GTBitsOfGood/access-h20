@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Button from '@material-ui/core/Button';
 import ApplicantTable from "../../components/ApplicantTable";
 import { ApplicantModal } from "src/components/ApplicantModal/ApplicantModal";
-import classes from "./ApplicantView.module.css";
-
 
 function ApplicantViewPage() {
   const [showModal, setShowModal] = useState(false);
