@@ -48,8 +48,8 @@ let adjustAns: string = '';
 let infoAns: string = '';
 let indivAns: string = '';
 
-let file1: File;
-let file2: File;
+let file1: File = {};
+let file2: File = {};
 
 function toggleButton(answer: string, id1: string, id2: string, set: boolean) {
   if (set) {
@@ -72,7 +72,7 @@ function setVar(id: string, ans) {
 }
 
 function saveFile(id: string, file: File) {
-  file = document.getElementById.value
+  file = document.getElementById(id).value
 }
 
 const styles = {
@@ -180,7 +180,7 @@ function InfoSubmissionPage() {
       <div style = {{display: "flex", width: "300px", justifyContent: "space-between"}}>
         <Button id="usageFile" variant="contained" component="label" style = {{flex: "50px", width: "75px", height: "50px"}}>
           Upload
-          <input type="file" hidden onChange = {() => saveFile("usageFile",file2)}/>
+          <input id="usageFile" type="file" hidden onChange = {() => saveFile("usageFile",file2)}/>
         </Button>
         <p style = {{flex: "50px", padding: "10px"}}>Usage History</p>
       </div>
@@ -198,7 +198,7 @@ function InfoSubmissionPage() {
         <p>Is there any additional information we should know about the account?</p>
         <textarea id="infoAns" type= "text" style= {{width: "75%", height: "150px"}} onChange = {() => setVar("infoAns", infoAns)}></textarea>
       </div>
-      <Button type="button" onClick = {(() => console.log())}>
+      <Button type="button" onClick = {(() => console.log(information))}>
           Save
       </Button>
     </div>
@@ -214,10 +214,10 @@ const information: Object = {
     contact: contactAns,
     water: waterAns
   },
-  /*Files: {
-    file1: File = ;
-    file2: File = ;
-  },*/
+  Files: {
+    payment: file1,
+    usage: file2
+  },
   ShortAns: {
     adjustments: adjustAns,
     involvements: indivAns,
