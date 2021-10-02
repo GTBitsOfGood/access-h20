@@ -13,15 +13,16 @@ import {
   MenuItem,
   InputAdornment,
 } from "@mui/material";
+import Link from "next/link";
 import { Announcement, Create } from "@mui/icons-material";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Applicant, ApplicantStatus } from "../../types/Applicant";
 import classes from "./ApplicantTable.module.css";
 
-// true = utility view & false = AccessH2O view
-type Props = {
-  view: boolean;
+type PropTypes = {
+  isUtilityView: boolean; // true = utility view & false = AccessH2O view
+  infoSubmissionEndpoint: string;
 };
 
 const applicants: Applicant[] = [
@@ -146,7 +147,10 @@ const paginate = (
   return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 };
 
-const ApplicantTable = ({ view }: Props) => {
+const ApplicantTable = ({
+  isUtilityView,
+  infoSubmissionEndpoint,
+}: PropTypes) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState("");
@@ -200,7 +204,7 @@ const ApplicantTable = ({ view }: Props) => {
   return (
     <>
       <div className={classes.header}>
-        {!view && (
+        {!isUtilityView && (
           <div className={classes.addCustomerContainer}>
             <button className={classes.addCustomerButton}>Add Customer</button>
           </div>
@@ -293,7 +297,9 @@ const ApplicantTable = ({ view }: Props) => {
               <TableCell align="right">Property Address</TableCell>
               <TableCell align="right">Applied</TableCell>
               <TableCell align="right">Status</TableCell>
-              {view && <TableCell align="right">Announcements</TableCell>}
+              {isUtilityView && (
+                <TableCell align="right">Announcements</TableCell>
+              )}
               <TableCell />
             </TableRow>
           </TableHead>
@@ -314,7 +320,7 @@ const ApplicantTable = ({ view }: Props) => {
                     {applicant.applied.toDateString()}
                   </TableCell>
                   <TableCell align="right">{applicant.status}</TableCell>
-                  {view && (
+                  {isUtilityView && (
                     <TableCell align="right">
                       <Tooltip title={"View announcements"}>
                         <IconButton>
@@ -325,9 +331,15 @@ const ApplicantTable = ({ view }: Props) => {
                   )}
                   <TableCell align="right">
                     <Tooltip title={"View Info Submission"}>
-                      <IconButton>
-                        <Create />
-                      </IconButton>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + "/" + applicant.accountId
+                        }
+                      >
+                        <IconButton>
+                          <Create />
+                        </IconButton>
+                      </Link>
                     </Tooltip>
                   </TableCell>
                 </TableRow>
