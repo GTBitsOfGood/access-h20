@@ -5,6 +5,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {withStyles, createStyles} from "@material-ui/core/styles"
+import { Download } from "@mui/icons-material";
 
 function InfoSubmissionPage() {
   const [selectedFile, setSelectedFile] = useState();
@@ -14,8 +15,14 @@ function InfoSubmissionPage() {
       //@ts-ignore
       setSelectedFile(e.target.files[0]) 
     }
-    
+    console.log(selectedFile)
   }
+
+  /*const onChangeDownload = () => {
+    if (selectedFile) {
+      Download(selectedFile)
+    }
+  }*/
 
   return (
     <FormGroup>
@@ -37,6 +44,14 @@ function InfoSubmissionPage() {
           style={{padding:"5px"}}
           onChange={(e) => onChangeHandler(e)}
         />
+      </Button>
+      <Button
+        variant="contained"
+        component="label"
+        style={{width:"400px"}}
+        /*onClick={()=> onChangeDownload()}*/
+      >
+        <a href={selectedFile} download="Sample File">Download File</a>
       </Button>
     </FormGroup>
   );
