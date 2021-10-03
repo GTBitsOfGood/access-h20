@@ -13,10 +13,11 @@ import {
   MenuItem,
   InputAdornment,
 } from "@mui/material";
-import { Announcement, Create } from "@mui/icons-material";
+import { Announcement, MoreVert } from "@mui/icons-material";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Applicant, ApplicantStatus } from "../../types/Applicant";
+import { ApplicantModal } from "src/components/ApplicantModal/ApplicantModal";
 import classes from "./ApplicantTable.module.css";
 
 // true = utility view & false = AccessH2O view
@@ -31,7 +32,7 @@ const applicants: Applicant[] = [
     accountId: uuidv4().toString(),
     propertyAddress: "123 George Burdell Blvd",
     applied: new Date(),
-    status: ApplicantStatus.AwaitingAccessH2OAction,
+    status: ApplicantStatus.AwaitingAccessH2O,
   },
   {
     name: "applicant 2",
@@ -63,7 +64,7 @@ const applicants: Applicant[] = [
     accountId: uuidv4().toString(),
     propertyAddress: "125 George Burdell Blvd",
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.AwaitingUtility,
   },
   {
     name: "applicant 6",
@@ -71,7 +72,7 @@ const applicants: Applicant[] = [
     accountId: uuidv4().toString(),
     propertyAddress: "125 George Burdell Blvd",
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Denied,
   },
   {
     name: "applicant 7",
@@ -197,103 +198,135 @@ const ApplicantTable = ({ view }: Props) => {
     setfilteredApplicants(searchedApplicants);
   }, [search, statusFilter, searchBy, fromDate, toDate]);
 
+  const [showModal, setShowModal] = useState(false);
+  
+  const closeModalHandler = () => setShowModal(false);
+
+  const statusColor = (status: ApplicantStatus) => {
+    if (status == ApplicantStatus.Approved) {
+      return "#BEF2BD"
+    }
+    if (status == ApplicantStatus.AwaitingAccessH2O) {
+      return "#BDECF2"
+    }
+    if (status == ApplicantStatus.AwaitingUtility) {
+      return "#F2E3BD"
+    }
+    if (status == ApplicantStatus.Completed) {
+      return "#D4BDF2"
+    }
+    if (status == ApplicantStatus.Denied) {
+      return "#F2BDBD"
+    }
+    if (status == ApplicantStatus.Terminated) {
+      return "#C5C7CA"
+    }
+
+  }
+
   return (
-    <>
+    <div className={classes.root}>
       <div className={classes.header}>
-        {!view && (
-          <div className={classes.addCustomerContainer}>
-            <button className={classes.addCustomerButton}>Add Customer</button>
-          </div>
-        )}
-      </div>
-      <div className={classes.searchBar}>
-        <TextField
-          className={classes.searchBox}
-          label="Search"
-          variant="outlined"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <TextField
-          className={classes.searchFilter}
-          label="Search By"
-          select
-          variant="standard"
-          value={searchBy}
-          onChange={(e) => setSearchBy(e.target.value)}
-        >
-          {
+        <div className={classes.searchBar}>
+          <TextField
+            className={classes.searchBox}
+            InputProps={{
+              className: classes.searchBox,
+            }}
+            label="Search"
+            variant="outlined"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <TextField
+            className={classes.searchFilter}
+            InputProps={{
+              disableUnderline: true,
+              className: classes.searchFilterText,
+            }}
+            label="Search By"
+            select
+            variant="standard"
+            value={searchBy}
+            onChange={(e) => setSearchBy(e.target.value)}
+          >
             <MenuItem key={"All"} value={"All"}>
               {"All"}
             </MenuItem>
-          }
-          {
             <MenuItem key={"Utility Company"} value={"Utility Company"}>
               {"Utility Company"}
             </MenuItem>
-          }
-          {
             <MenuItem key={"Name"} value={"Name"}>
               {"Name"}
             </MenuItem>
-          }
-        </TextField>
-        <TextField
-          className={classes.searchFilter}
-          label="Status"
-          select
-          variant="standard"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          {Object.values(ApplicantStatus).map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-          {
+          </TextField>
+          <TextField
+            className={classes.searchFilter}
+            InputProps={{
+              disableUnderline: true,
+              className: classes.searchFilterText,
+            }}
+            label="Status"
+            select
+            variant="standard"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
             <MenuItem key={"Any"} value={"Any"}>
               {"Any"}
             </MenuItem>
-          }
-        </TextField>
-        <TextField
-          className={classes.searchFilter}
-          variant="outlined"
-          value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
-          type="date"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">From:</InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          className={classes.searchFilter}
-          variant="outlined"
-          value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
-          type="date"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">To:</InputAdornment>
-            ),
-          }}
-        />
+            {Object.values(ApplicantStatus).map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            className={classes.dateInput}
+            variant="outlined"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+            type="date"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">From:</InputAdornment>
+              ),
+              className: classes.dateInputText,
+            }}
+          />
+          <TextField
+            className={classes.dateInput}
+            variant="outlined"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+            type="date"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">To:</InputAdornment>
+              ),
+              className: classes.dateInputText,
+            }}
+          />
+        </div>
+        {!view && (
+          <div>
+            <button onClick={() => setShowModal(true)} className={classes.addCustomerButton}>Add Customer</button>
+            <ApplicantModal showModal={showModal} close={closeModalHandler}/>
+          </div>
+        )}
       </div>
 
       <TableContainer>
         <Table>
-          <TableHead>
+          <TableHead className={classes.tableHeader}>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="right">Utility Company</TableCell>
-              <TableCell align="right">Account ID</TableCell>
-              <TableCell align="right">Property Address</TableCell>
-              <TableCell align="right">Applied</TableCell>
-              <TableCell align="right">Status</TableCell>
-              {view && <TableCell align="right">Announcements</TableCell>}
+              <TableCell className={classes.tableHeaderText}>Name</TableCell>
+              <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
+              <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
+              <TableCell className={classes.tableHeaderText}>Property Address</TableCell>
+              <TableCell className={classes.tableHeaderText}>Applied</TableCell>
+              <TableCell className={classes.tableHeaderText}>Status</TableCell>
+              <TableCell className={classes.tableHeaderText}>Notes</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
@@ -302,31 +335,27 @@ const ApplicantTable = ({ view }: Props) => {
             {paginate(filteredApplicants, page, rowsPerPage).map(
               (applicant) => (
                 <TableRow key={applicant.accountId}>
-                  <TableCell align="left">{applicant.name}</TableCell>
-                  <TableCell align="right">
-                    {applicant.utilityCompany}
-                  </TableCell>
-                  <TableCell align="right">{applicant.accountId}</TableCell>
-                  <TableCell align="right">
+                  <TableCell className={classes.cell}>{applicant.name}</TableCell>
+                  <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                  <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+                  <TableCell className={classes.cell}>
                     {applicant.propertyAddress}
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell className={classes.cell}>
                     {applicant.applied.toDateString()}
                   </TableCell>
-                  <TableCell align="right">{applicant.status}</TableCell>
-                  {view && (
-                    <TableCell align="right">
-                      <Tooltip title={"View announcements"}>
-                        <IconButton>
-                          <Announcement />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  )}
-                  <TableCell align="right">
+                  <TableCell className={classes.cell}><span className={classes.status} style={{backgroundColor: statusColor(applicant.status)}}>{applicant.status}</span></TableCell>
+                  <TableCell align="center">
+                    <Tooltip title={"View notes"}>
+                      <IconButton>
+                        <Announcement />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>
                     <Tooltip title={"View Info Submission"}>
                       <IconButton>
-                        <Create />
+                        <MoreVert  />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -344,7 +373,7 @@ const ApplicantTable = ({ view }: Props) => {
           onPageChange={(_, page) => setPage(page)}
         />
       </TableContainer>
-    </>
+    </div>
   );
 };
 
