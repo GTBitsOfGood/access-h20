@@ -5,11 +5,20 @@ import urls from "../../../utils/urls";
 import classes from "./LoginPage.module.css";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Image from 'material-ui-image'
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import { OutlinedInput } from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
   const [isRegistering, setIsReg] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword); 
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -27,6 +36,7 @@ const LoginPage = () => {
 
   return (
     <div className={classes.root}>
+      <div className={classes.logo}/>
       <form className={classes.form} onSubmit={handleSubmit}>
         <h2 className={classes.welcomeText}>Welcome!</h2>
         <h3 className={classes.infoText}>
@@ -41,6 +51,7 @@ const LoginPage = () => {
           <TextField
             className={classes.input}
             required
+            variant="outlined"
             id="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -50,18 +61,30 @@ const LoginPage = () => {
           <label htmlFor="password" className={classes.inputLabel}>
             Password
           </label>
-          <TextField
+          <OutlinedInput
             className={classes.input}
             required
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
         </div>
-        <Button className={classes.bttn} type="submit">
+        <button className={classes.bttn} type="submit">
           {isRegistering ? "Register" : "Login"}
-        </Button>
+        </button>
         {isRegistering ? (
           <p className={classes.switchText}>
             Already have an account?
@@ -78,7 +101,6 @@ const LoginPage = () => {
           </p>
         )}
       </form>
-      <div className={classes.image} />
     </div>
   );
 };
