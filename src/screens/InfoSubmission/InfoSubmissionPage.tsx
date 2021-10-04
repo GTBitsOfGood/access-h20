@@ -9,6 +9,7 @@ import { Download } from "@mui/icons-material";
 
 function InfoSubmissionPage() {
   const [selectedFile, setSelectedFile] = useState();
+  const [downloadLink, setDownloadLink] = useState("");
 
   const onChangeHandler = (e: React.ChangeEvent) => {
     if (e && e.target) {
@@ -18,11 +19,12 @@ function InfoSubmissionPage() {
     console.log(selectedFile)
   }
 
-  /*const onChangeDownload = () => {
+  const onChangeDownload = () => {
     if (selectedFile) {
-      Download(selectedFile)
+      let objectURL = URL.createObjectURL(selectedFile);
+      setDownloadLink(objectURL);
     }
-  }*/
+  }
 
   return (
     <FormGroup>
@@ -49,9 +51,9 @@ function InfoSubmissionPage() {
         variant="contained"
         component="label"
         style={{width:"400px"}}
-        /*onClick={()=> onChangeDownload()}*/
+        onClick={()=> onChangeDownload()}
       >
-        <a href={selectedFile} download="Sample File">Download File</a>
+        <a href={downloadLink} download>Download File</a>
       </Button>
     </FormGroup>
   );
