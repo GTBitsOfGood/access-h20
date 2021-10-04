@@ -1,13 +1,6 @@
 import React from "react";
-import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import ButtonGroup from  "@material-ui/core/ButtonGroup";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import {withStyles, createStyles} from "@material-ui/core/styles";
-import { fontWeight } from "@mui/system";
-import { Input, InputLabel } from "@material-ui/core";
 
 
 enum ApplicantStatus {  
@@ -75,6 +68,27 @@ function saveFile(id: string, file: File) {
   file = document.getElementById(id).value
 }
 
+function setStatusColor() {
+    if (dummyData.status == ApplicantStatus.AwaitingUtilityAction) {
+      return "#F2E3BD";
+    }
+    else if (dummyData.status == ApplicantStatus.Approved) {
+      return "#BEF2BD";
+    }
+    else if (dummyData.status == ApplicantStatus.AwaitingAccessH2OAction) {
+      return "#BDECF2";
+    }
+    else if (dummyData.status == ApplicantStatus.Completed) {
+      return "#D4BDF2";
+    }
+    else if (dummyData.status == ApplicantStatus.Denied) {
+      return "#F2BDBD";
+    }
+    else if (dummyData.status == ApplicantStatus.Terminated) {
+      return "#C5C7CA";
+    }
+}
+
 const styles = {
   hidden: {
     display: "none",
@@ -84,48 +98,55 @@ const styles = {
   },
 };
 
+const back = "<   Back to Dashboard"
+
 function InfoSubmissionPage() {
   return (
-    <div style = {{padding: "25px"}}>
+    <div style = {{padding: "25px", border: "75px solid #CFEBFD"}}>
       <div>
+        <a href="./" style = {{fontWeight: "normal", color: "#9A9A9A", textDecoration: "none", fontFamily:  "Roboto"}}>{back}</a>
         <h1>{dummyData.name}</h1>
         <div>
-          <div style = {{display: "flex", width: "300px"}}>
-            <div style = {{flex: "50px"}}>
-              <h4>Utility</h4>
-            </div>
-            <div style = {{flex: "50px"}}>
-              <h4 style = {{fontWeight: "normal"}}>{dummyData.utilityCompany}</h4>
-            </div>
-          </div>
-          <div style = {{display: "flex", width: "300px"}}>
-            <div style = {{flex: "50px"}}>
-              <h4>Account ID</h4>
-            </div>
-            <div style = {{flex: "50px"}}>
-              <h4 style = {{fontWeight: "normal"}}>{dummyData.accountId}</h4>
-            </div>
-          </div>
-          <div style = {{display: "flex", width: "300px"}}>
-            <div style = {{flex: "50px"}}>
-              <h4>Address</h4>
-            </div>
-            <div style = {{flex: "50px"}}>
-              <h4 style = {{fontWeight: "normal"}}>{dummyData.propertyAddress}</h4>
-            </div>
-          </div>
-          <div style = {{display: "flex", width: "300px"}}>
-            <div style = {{flex: "50px"}}>
+          <div style = {{display: "flex", width: "500px", height: "35px"}}>
+            <div style = {{flex: "150px"}}>
               <h4>Status</h4>
             </div>
-            <div style = {{flex: "50px"}}>
-              <h4 style = {{fontWeight: "normal"}}>{dummyData.status}</h4>
+            <div style = {{flex: "100px"}}>
+              <h4>Account ID</h4>
+            </div>
+            <div style = {{flex: "100px"}}>
+              <h4>Address</h4>
+            </div>
+          </div>
+          <div style = {{display: "flex", width: "500px"}}>
+            <div style = {{flex: "150px"}}>
+              <h4 style = {{fontWeight: "normal", backgroundColor: setStatusColor(), width: "85%", textAlign: "center", borderRadius: "8px"}}>{dummyData.status}</h4>
+            </div>
+            <div style = {{flex: "100px"}}>
+              <h4 style = {{fontWeight: "normal"}}>{dummyData.accountId}</h4>
+            </div>
+            <div style = {{flex: "100px"}}>
+              <h4 style = {{fontWeight: "normal"}}>{dummyData.propertyAddress}</h4>
             </div>
           </div>
         </div>
       </div>
-      <h3>Notes</h3>
-      <TextField style = {{width: "75%"}}></TextField>
+
+      <hr style = {{width: "100%", border: "1px solid #DADADA"}}></hr>
+
+
+      <div style = {{display: "flex", width: "500px", height: "35px"}}>
+        <div style = {{flex: "150px"}}>
+          <h3>Notes</h3>
+        </div>
+        <div style = {{flex: "150px"}}>
+          <h3></h3>
+          <a style = {{fontWeight: "normal", color: "#4DBAEA", textDecoration: "none", fontFamily:  "Roboto", padding: "15px"}}>+ Add Note</a>
+        </div>
+      </div>
+
+      <hr style = {{width: "100%", border: "1px solid #DADADA", marginTop: "30px", marginBottom: "30px"}}></hr>
+
       <h3>Eligibility</h3>
       <div>
         <div style = {{display: "flex", width: "1000px"}}>
