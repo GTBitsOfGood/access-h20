@@ -53,7 +53,7 @@ function InfoSubmissionPage() {
         style={{width:"400px"}}
         onClick={()=> onChangeDownload()}
       >
-        <a href={downloadLink} download>Download File</a>
+        <a href={downloadLink} download={selectedFile?.name}>Download File</a>
       </Button>
     </FormGroup>
   );
