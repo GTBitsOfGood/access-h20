@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,17 +12,18 @@ import {
   TextField,
   MenuItem,
   InputAdornment,
+  Button,
 } from "@mui/material";
-import { Announcement, MoreVert } from "@mui/icons-material";
-import { useState } from "react";
+import Link from "next/link";
+import { Announcement, Create, MoreVert } from "@mui/icons-material";
 import { v4 as uuidv4 } from "uuid";
 import { Applicant, ApplicantStatus } from "../../types/Applicant";
 import { ApplicantModal } from "src/components/ApplicantModal/ApplicantModal";
 import classes from "./ApplicantTable.module.css";
 
-// true = utility view & false = AccessH2O view
-type Props = {
-  view: boolean;
+type PropTypes = {
+  isUtilityView: boolean; // true = utility view & false = AccessH2O view
+  infoSubmissionEndpoint: string;
 };
 
 const applicants: Applicant[] = [
@@ -147,7 +148,10 @@ const paginate = (
   return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 };
 
-const ApplicantTable = ({ view }: Props) => {
+const ApplicantTable = ({
+  isUtilityView,
+  infoSubmissionEndpoint,
+}: PropTypes) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState("");
@@ -308,10 +312,10 @@ const ApplicantTable = ({ view }: Props) => {
             }}
           />
         </div>
-        {!view && (
+        {!isUtilityView && (
           <div>
             <button onClick={() => setShowModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <ApplicantModal showModal={showModal} close={closeModalHandler}/>
+            <ApplicantModal shouldShowModal={showModal} onClose={closeModalHandler}/>
           </div>
         )}
       </div>
@@ -354,9 +358,15 @@ const ApplicantTable = ({ view }: Props) => {
                   </TableCell>
                   <TableCell>
                     <Tooltip title={"View Info Submission"}>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + "/" + applicant.accountId
+                        }
+                      >
                       <IconButton>
                         <MoreVert  />
                       </IconButton>
+                      </Link>
                     </Tooltip>
                   </TableCell>
                 </TableRow>

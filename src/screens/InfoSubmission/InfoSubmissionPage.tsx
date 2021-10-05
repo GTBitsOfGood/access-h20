@@ -1,5 +1,8 @@
 import React from "react";
+import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
 
 
@@ -100,7 +103,11 @@ const styles = {
 
 const back = "<   Back to Dashboard"
 
-function InfoSubmissionPage() {
+type PropTypes = {
+  applicantId: string;
+};
+
+const InfoSubmissionPage = ({ applicantId }: PropTypes) => {
   return (
     <div style = {{padding: "25px", border: "75px solid #CFEBFD"}}>
       <div>

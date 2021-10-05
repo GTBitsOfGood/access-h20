@@ -5,16 +5,16 @@ import TextField from "@material-ui/core/TextField";
 import Modal from "@mui/material/Modal";
 import PropTypes from "prop-types";
 
-export const ApplicantModal = ({ showModal, close }) => {
+export const ApplicantModal = ({ shouldShowModal, onClose }) => {
   return (
     <div>
       <div>
-        <Modal open={showModal} onClose={close}>
+        <Modal open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
               <h3>Please enter customer information.</h3>
-              <span onClick={close} className={classes.closemodalbtn}>
-                X
+              <span onClick={onClose} className={classes.closemodalbtn}>
+                &times;
               </span>
             </div>
             <TextField
@@ -40,7 +40,7 @@ export const ApplicantModal = ({ showModal, close }) => {
               variant="standard"
             />
             <div className={classes.modalfooter}>
-              <Button onClick={close} className="btn-submit">
+              <Button onClick={onClose} className="btn-submit">
                 Submit
               </Button>
             </div>
@@ -52,6 +52,6 @@ export const ApplicantModal = ({ showModal, close }) => {
 };
 
 ApplicantModal.propTypes = {
-  showModal: PropTypes.func.isRequired,
+  shouldShowModal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
 };
