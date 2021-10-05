@@ -58,6 +58,7 @@
     "isomorphic-unfetch": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "material-ui-image": "^3.3.2",
     "mongodb": "^4.0.0",
     "mongoose": "^5.13.2",
     "next": "^11.0.1",

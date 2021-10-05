@@ -1,7 +1,7 @@
 export enum ApplicantStatus {
   Incomplete = "Incomplete",
-  AwaitingUtilityAction = "Awaiting Utility Action",
-  AwaitingAccessH2OAction = "Awaiting AccessH2O Action",
+  AwaitingUtility = "Awaiting Utility",
+  AwaitingAccessH2O = "Awaiting AccessH2O",
   Approved = "Approved",
   Completed = "Completed",
   Denied = "Denied",

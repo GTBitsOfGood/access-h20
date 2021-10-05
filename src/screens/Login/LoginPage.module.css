@@ -2,7 +2,7 @@
     width: calc(100% + 32px);
     height: calc(100% + 32px);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: -16px;
 }
 
@@ -14,26 +14,31 @@
 }
 
 .infoText {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bolder;
+    align-self: center;
 }
 
 .form {
-    flex: 2 0;
+    flex: 5 0;
     display: flex;
     flex-direction: column;
     padding: 32px;
     background: #ffffff;
+    margin-top:-35px;
+
 }
 
 .inputContainer {
     display: flex;
     flex-direction: column;
     padding: 10px 10px 8px;
-    border: 1px solid #ddd;
     border-radius: 4px;
     margin-bottom: 20px;
     transition: 0.3s;
+    align-self:center;
+    width:70%;
+    max-width: 700px;
 }
 
 .inputLabel {
@@ -41,7 +46,7 @@
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0.7px;
-    color: #8c7569;
+    color: black;
     transition: 0.3s;
 }
 
@@ -53,27 +58,44 @@
 }
 
 .bttn {
-    align-self: flex-end;
     padding: 8px 16px;
     outline: none;
     color: #ffffff;
-    background-color: #4f6474;
-    cursor: pointer;
+    background-color: #4DBAEA;
     border: 0;
-    border-radius: 4px;
+    cursor: pointer;
+    border-radius: 8px;
     transition: 0.3s;
     font-size: 24px;
+    max-width: 100px;
+    align-self: center;
+    margin-bottom: 20px;
 }
 
 .bttn:hover {
-    background: #122f3d;
+    background: #239edb;
+}
+
+.logo {
+    flex: 2 0;
+    background: url("../../assets/images/access-h20-logo.jpg");
+    background-repeat: no-repeat;
+    background-position:bottom;
+    padding-top:32%;
+    max-width:100%;
+    margin-top:-35px;
+    margin-bottom:-35x;
+    height:auto;
+    
 }
 
 .image {
-    flex: 4 0;
+    flex: 2 0;
     background-image: url("https://source.unsplash.com/collection/4695781");
-    background-size: cover;
-    background-position: right;
+    background-repeat: no-repeat;
+    background-position:top;
+    padding-left: 100px;
+    width:auto;
 }
 
 .centerText {
@@ -84,6 +106,7 @@
     margin-left: 8px;
     text-decoration: underline;
     cursor: pointer;
+    
 }
 
 .switchText {
