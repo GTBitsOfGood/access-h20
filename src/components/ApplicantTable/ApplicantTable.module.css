@@ -1,23 +1,73 @@
+.root {
+    margin: 0px 50px 0px 50px;
+    background: rgba(196, 196, 196, 0.2);
+    border-radius: 8px;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
 }
 
 .searchBar {
-    text-align: center;
+    margin: 25px 0px 14px 20px;
 }
 
 .searchBox {
-    width: 300px;
+    width: 296px;
+    height: 42px;
+    color: #9A9A9A;
+    font-size: 18px;
 }
 
 .searchFilter {
-    margin-left: 40px;
-    min-width: 150px;
+    margin: -14px 0px 0px 20px;
 }
+
+.searchFilterText {
+    width: 126px;
+    height: 42px;
+    background: #C4C4C4;
+    border-radius: 8px;
+    border-bottom: none; 
+    text-align: center;
+    font-size: 18px;
+}
+
+.dateInput {
+    margin: 0px 0px 14px 20px;
+}
+
+.dateInputText {
+    width: 270px;
+    height: 42px;
+    font-size: 18px;
+}
+
 .addCustomerButton {
     background: #C4C4C4;
     border-color: transparent;
     border-radius: 8px;
-    height: 30px;
+    font-size: 18px;
+    width: 162px;
+    height: 42px;
+    margin: 21px 22px 14px 0px;
+}
+
+.tableHeader {
+    background: #C4C4C4;
+}
+
+.tableHeaderText {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.cell {
+    font-size: 16px;
+}
+
+.status {
+    padding: 6px;
+    border-radius: 8px;
 }

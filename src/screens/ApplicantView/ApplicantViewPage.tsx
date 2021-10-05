@@ -1,28 +1,16 @@
-import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
+import React from "react";
 import ApplicantTable from "../../components/ApplicantTable";
-import { ApplicantModal } from "src/components/ApplicantModal/ApplicantModal";
+import classes from "./ApplicantView.module.css";
 import urls from "../../../utils/urls";
 
 function ApplicantViewPage() {
-  const [shouldShowModal, setShouldShowModal] = useState(false);
-
   return (
     <>
-      <h1>Applicant View Page</h1>
+      <h1 className={classes.header}>Dashboard</h1>
       <ApplicantTable
-        isUtilityView={true}
+        isUtilityView={false}
         infoSubmissionEndpoint={urls.pages.infosubmit}
       />
-      <div>
-        <Button onClick={() => setShouldShowModal(true)} className="modalBtn">
-          Add Customer
-        </Button>
-        <ApplicantModal
-          shouldShowModal={shouldShowModal}
-          onClose={() => setShouldShowModal(false)}
-        />
-      </div>
     </>
   );
 }
