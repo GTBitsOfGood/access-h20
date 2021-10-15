@@ -7,6 +7,6 @@ export interface Client {
     address: string;
     notes: [string];
     eligibilityStatuses: string;
-    documents: [Document];
+    documents: [File];
     otherQuestions: [string];
 }
