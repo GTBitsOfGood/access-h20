@@ -34,7 +34,7 @@ const ClientSchema = new Schema(
         required: false,
       },
       documents: {
-        type: [Document],
+        type: [File],
         required: false,
       },
       otherQuestions: {

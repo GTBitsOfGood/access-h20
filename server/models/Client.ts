@@ -6,7 +6,10 @@ export interface Client {
     status: ClientStatus;
     address: string;
     notes: [string];
-    eligibilityStatuses: string;
+    eligibilityStatuses: {
+        question: String,
+        answer: Boolean
+    };
     documents: [File];
     otherQuestions: [string];
 }
