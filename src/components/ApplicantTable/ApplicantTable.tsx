@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Table,
   TableBody,
@@ -11,127 +11,126 @@ import {
   Tooltip,
   TextField,
   MenuItem,
-  InputAdornment,
-  Button,
-} from "@mui/material";
-import Link from "next/link";
-import { Announcement, Create, MoreVert } from "@mui/icons-material";
-import { v4 as uuidv4 } from "uuid";
-import { Applicant, ApplicantStatus } from "../../types/Applicant";
-import { ApplicantModal } from "src/components/ApplicantModal/ApplicantModal";
-import classes from "./ApplicantTable.module.css";
+  InputAdornment
+} from '@mui/material'
+import Link from 'next/link'
+import { Announcement, MoreVert } from '@mui/icons-material'
+import { v4 as uuidv4 } from 'uuid'
+import {Applicant, ApplicantStatus, ApplicantStatusColor} from '../../types/Applicant'
+import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
+import classes from './ApplicantTable.module.css'
 
-type PropTypes = {
+interface PropTypes {
   isUtilityView: boolean; // true = utility view & false = AccessH2O view
-  infoSubmissionEndpoint: string;
-};
+  infoSubmissionEndpoint: string
+}
 
 const applicants: Applicant[] = [
   {
-    name: "applicant 1",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 1',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "123 George Burdell Blvd",
+    propertyAddress: '123 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.AwaitingAccessH2O,
+    status: ApplicantStatus.AwaitingAccessH2O
   },
   {
-    name: "applicant 2",
-    utilityCompany: "City of San Francisco",
+    name: 'applicant 2',
+    utilityCompany: 'City of San Francisco',
     accountId: uuidv4().toString(),
-    propertyAddress: "1234 San Francisco Blvd",
+    propertyAddress: '1234 San Francisco Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Completed,
+    status: ApplicantStatus.Completed
   },
   {
-    name: "applicant 3",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 3',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "523 George Burdell Blvd",
+    propertyAddress: '523 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Approved,
+    status: ApplicantStatus.Approved
   },
   {
-    name: "applicant 4",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 4',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 5",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 5',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.AwaitingUtility,
+    status: ApplicantStatus.AwaitingUtility
   },
   {
-    name: "applicant 6",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 6',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Denied,
+    status: ApplicantStatus.Denied
   },
   {
-    name: "applicant 7",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 7',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 8",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 8',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 9",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 9',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 10",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 10',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 11",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 11',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 12",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 12',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 13",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 13',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
-  },
-];
+    status: ApplicantStatus.Terminated
+  }
+]
 
 /**
  * Paginates an applicant array.
@@ -141,91 +140,73 @@ const applicants: Applicant[] = [
  * @param rowsPerPage the number of rows to display per page
  */
 const paginate = (
-  array: Array<Applicant>,
+  array: Applicant[],
   page: number,
   rowsPerPage: number
-) => {
-  return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
-};
+): Applicant[] => {
+  return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+}
 
 const ApplicantTable = ({
   isUtilityView,
-  infoSubmissionEndpoint,
-}: PropTypes) => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("Any");
-  const [searchBy, setSearchBy] = useState("All");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [filteredApplicants, setfilteredApplicants] = useState(applicants);
+  infoSubmissionEndpoint
+}: PropTypes): JSX.Element => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('Any')
+  const [searchBy, setSearchBy] = useState('All')
+  const [fromDate, setFromDate] = useState('')
+  const [toDate, setToDate] = useState('')
+  const [filteredApplicants, setfilteredApplicants] = useState(applicants)
 
   useEffect(() => {
-    let statusApplicants = applicants.filter(
-      (applicant) => statusFilter == "Any" || applicant.status === statusFilter
-    );
-    let dateApplicants = statusApplicants;
-    if (fromDate && toDate) {
-      console.log("wassup");
+    const statusApplicants = applicants.filter(
+      (applicant) => statusFilter === 'Any' || applicant.status === statusFilter
+    )
+    let dateApplicants = statusApplicants
+    if ((fromDate !== '') && (toDate !== '')) {
+      console.log('wassup')
       dateApplicants = dateApplicants.filter((applicant) => {
-        let applicantDate = new Date(applicant.applied);
+        const applicantDate = new Date(applicant.applied)
         return (
           applicantDate > new Date(fromDate) && applicantDate < new Date(toDate)
-        );
-      });
+        )
+      })
     }
-    let searchedApplicants = dateApplicants;
-    let caseInsensitiveSearch = search.toLowerCase();
-    if (searchBy == "All") {
+    let searchedApplicants = dateApplicants
+    const caseInsensitiveSearch = search.toLowerCase()
+    if (searchBy === 'All') {
       searchedApplicants = searchedApplicants.filter(
         (applicant) =>
-          applicant.name.toLowerCase().indexOf(caseInsensitiveSearch) !== -1 ||
+          applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
           applicant.utilityCompany
             .toLowerCase()
-            .indexOf(caseInsensitiveSearch) !== -1
-      );
-    } else if (searchBy == "Name") {
+            .includes(caseInsensitiveSearch)
+      )
+    } else if (searchBy === 'Name') {
       searchedApplicants = searchedApplicants.filter(
         (applicant) =>
-          applicant.name.toLowerCase().indexOf(caseInsensitiveSearch) !== -1
-      );
-    } else if (searchBy == "Utility Company") {
+          applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+      )
+    } else if (searchBy === 'Utility Company') {
       searchedApplicants = searchedApplicants.filter(
         (applicant) =>
           applicant.utilityCompany
             .toLowerCase()
-            .indexOf(caseInsensitiveSearch) !== -1
-      );
+            .includes(caseInsensitiveSearch)
+      )
     }
 
-    setfilteredApplicants(searchedApplicants);
-  }, [search, statusFilter, searchBy, fromDate, toDate]);
+    setfilteredApplicants(searchedApplicants)
+  }, [search, statusFilter, searchBy, fromDate, toDate])
 
-  const [showModal, setShowModal] = useState(false);
-  
-  const closeModalHandler = () => setShowModal(false);
+  const [showModal, setShowModal] = useState(false)
 
-  const statusColor = (status: ApplicantStatus) => {
-    if (status == ApplicantStatus.Approved) {
-      return "#BEF2BD"
-    }
-    if (status == ApplicantStatus.AwaitingAccessH2O) {
-      return "#BDECF2"
-    }
-    if (status == ApplicantStatus.AwaitingUtility) {
-      return "#F2E3BD"
-    }
-    if (status == ApplicantStatus.Completed) {
-      return "#D4BDF2"
-    }
-    if (status == ApplicantStatus.Denied) {
-      return "#F2BDBD"
-    }
-    if (status == ApplicantStatus.Terminated) {
-      return "#C5C7CA"
-    }
+  const closeModalHandler = (): void => setShowModal(false)
 
+  const statusColor = (status: ApplicantStatus): string => {
+    return ApplicantStatusColor[status]
   }
 
   return (
@@ -235,7 +216,7 @@ const ApplicantTable = ({
           <TextField
             className={classes.searchBox}
             InputProps={{
-              className: classes.searchBox,
+              className: classes.searchBox
             }}
             label="Search"
             variant="outlined"
@@ -246,7 +227,7 @@ const ApplicantTable = ({
             className={classes.searchFilter}
             InputProps={{
               disableUnderline: true,
-              className: classes.searchFilterText,
+              className: classes.searchFilterText
             }}
             label="Search By"
             select
@@ -254,21 +235,21 @@ const ApplicantTable = ({
             value={searchBy}
             onChange={(e) => setSearchBy(e.target.value)}
           >
-            <MenuItem key={"All"} value={"All"}>
-              {"All"}
+            <MenuItem key={'All'} value={'All'}>
+              {'All'}
             </MenuItem>
-            <MenuItem key={"Utility Company"} value={"Utility Company"}>
-              {"Utility Company"}
+            <MenuItem key={'Utility Company'} value={'Utility Company'}>
+              {'Utility Company'}
             </MenuItem>
-            <MenuItem key={"Name"} value={"Name"}>
-              {"Name"}
+            <MenuItem key={'Name'} value={'Name'}>
+              {'Name'}
             </MenuItem>
           </TextField>
           <TextField
             className={classes.searchFilter}
             InputProps={{
               disableUnderline: true,
-              className: classes.searchFilterText,
+              className: classes.searchFilterText
             }}
             label="Status"
             select
@@ -276,8 +257,8 @@ const ApplicantTable = ({
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
-            <MenuItem key={"Any"} value={"Any"}>
-              {"Any"}
+            <MenuItem key={'Any'} value={'Any'}>
+              {'Any'}
             </MenuItem>
             {Object.values(ApplicantStatus).map((option) => (
               <MenuItem key={option} value={option}>
@@ -295,7 +276,7 @@ const ApplicantTable = ({
               startAdornment: (
                 <InputAdornment position="start">From:</InputAdornment>
               ),
-              className: classes.dateInputText,
+              className: classes.dateInputText
             }}
           />
           <TextField
@@ -308,7 +289,7 @@ const ApplicantTable = ({
               startAdornment: (
                 <InputAdornment position="start">To:</InputAdornment>
               ),
-              className: classes.dateInputText,
+              className: classes.dateInputText
             }}
           />
         </div>
@@ -348,23 +329,23 @@ const ApplicantTable = ({
                   <TableCell className={classes.cell}>
                     {applicant.applied.toDateString()}
                   </TableCell>
-                  <TableCell className={classes.cell}><span className={classes.status} style={{backgroundColor: statusColor(applicant.status)}}>{applicant.status}</span></TableCell>
+                  <TableCell className={classes.cell}><span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>{applicant.status}</span></TableCell>
                   <TableCell align="center">
-                    <Tooltip title={"View notes"}>
+                    <Tooltip title={'View notes'}>
                       <IconButton>
                         <Announcement />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
                   <TableCell>
-                    <Tooltip title={"View Info Submission"}>
+                    <Tooltip title={'View Info Submission'}>
                       <Link
                         href={
-                          infoSubmissionEndpoint + "/" + applicant.accountId
+                          infoSubmissionEndpoint + '/' + applicant.accountId
                         }
                       >
                       <IconButton>
-                        <MoreVert  />
+                        <MoreVert />
                       </IconButton>
                       </Link>
                     </Tooltip>
@@ -384,7 +365,7 @@ const ApplicantTable = ({
         />
       </TableContainer>
     </div>
-  );
-};
+  )
+}
 
-export default ApplicantTable;
+export default ApplicantTable
