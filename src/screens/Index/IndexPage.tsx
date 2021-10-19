@@ -1,9 +1,9 @@
-import React from "react";
-import Header from "../../components/Header";
-import { useRouter } from "next/router";
+import React from 'react'
+import Header from '../../components/Header'
+import { useRouter } from 'next/router'
 
-function IndexPage(props: { currentUser: any }) {
-  const router = useRouter();
+const IndexPage = (props: { currentUser: any }): JSX.Element => {
+  const router = useRouter()
 
   return (
     <div>
@@ -12,7 +12,7 @@ function IndexPage(props: { currentUser: any }) {
         currentRoute={router.asPath}
       />
     </div>
-  );
+  )
 }
 
-export default IndexPage;
+export default IndexPage

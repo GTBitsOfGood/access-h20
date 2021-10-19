@@ -1,11 +1,16 @@
-import * as React from "react";
-import Button from "@material-ui/core/Button";
-import classes from "./ApplicantModal.module.css";
-import TextField from "@material-ui/core/TextField";
-import Modal from "@mui/material/Modal";
-import PropTypes from "prop-types";
+import * as React from 'react'
+import Button from '@material-ui/core/Button'
+import classes from './ApplicantModal.module.css'
+import TextField from '@material-ui/core/TextField'
+import Modal from '@mui/material/Modal'
+import PropTypes from 'prop-types'
 
-export const ApplicantModal = ({ shouldShowModal, onClose }) => {
+interface PropTypes {
+  shouldShowModal: boolean
+  onClose: () => void
+}
+
+export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
   return (
     <div>
       <div>
@@ -48,10 +53,5 @@ export const ApplicantModal = ({ shouldShowModal, onClose }) => {
         </Modal>
       </div>
     </div>
-  );
-};
-
-ApplicantModal.propTypes = {
-  shouldShowModal: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired,
-};
+  )
+}

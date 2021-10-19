@@ -1,3 +1,3 @@
-import InfoSubmissionPage from "./InfoSubmissionPage";
+import InfoSubmissionPage from './InfoSubmissionPage'
 
-export default InfoSubmissionPage;
+export default InfoSubmissionPage
