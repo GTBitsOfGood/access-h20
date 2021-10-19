@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
+import Link from '@material-ui/core/Link'
 
 
 enum ApplicantStatus {  
@@ -216,7 +217,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes) => {
       <h3>Other</h3>
       <div>
         <p>Are there any pending adjustments?</p>
-        <textarea id="adjustAns" type= "text" style= {{width: "75%", height: "150px"}} onChange = {() => setVar("adjustAns", adjustAns)}></textarea>
+        <TextField id="adjustAns" type= "text" label="Multiline" multiline rows={10} onChange = {() => setVar("adjustAns", adjustAns)}></TextField>
       </div>
       <div>
         <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
@@ -224,7 +225,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes) => {
       </div>
       <div>
         <p>Is there any additional information we should know about the account?</p>
-        <textarea id="infoAns" type= "text" style= {{width: "75%", height: "150px"}} onChange = {() => setVar("infoAns", infoAns)}></textarea>
+        <TextField id="infoAns" type= "text" label="Multiline" multiline rows={10} onChange = {() => setVar("infoAns", infoAns)}></TextField>
       </div>
       <Button type="button" onClick = {(() => console.log(information))}>
           Save

@@ -5,9 +5,20 @@ import Head from "next/head";
 import Router from "next/router";
 import { getCurrentUser } from "../actions/User";
 import urls from "../../utils/urls";
+import { ThemeProvider } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import theme from './../theme'
+
+
 
 const MyApp = ({ Component, pageProps, currentUser }) => (
   <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div>
+        <p>A bare bones application!</p>
+      </div>
+    </ThemeProvider>
     <Head>
       <title>AccessH2O</title>
     </Head>

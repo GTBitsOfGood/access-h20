@@ -1,6 +1,44 @@
 import React, { useState } from "react";
 import { Applicant, ApplicantStatus } from "../../../types/Applicant";
-import classes from "./InfoSubmissionPage.module.css"
+import { Button, TextField, Input } from '@mui/material';
+import useStyles from './InfoSubmissionPage.module';
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    margin_left: '50px',
+  },
+  applicant: {
+    display: 'flex',
+    flex_direction: 'column',
+    margin_right: '50%',
+  },
+  applicantInfoh4: {
+    display: 'inline',
+    padding_right: '10px',
+  },
+  applicantInfop: {
+    display: 'inline',
+    text_align: 'right',
+  },
+  applicantStatush4: {
+    display: 'inline',
+  },
+  statusButton: {
+    width: '126px;',
+  },
+  comments: {
+    display: 'flex',
+    flex_direction: 'column',
+  },
+  commentBox: {
+    padding: '10px',
+    margin_bottom: '15px',
+  },
+  commentSubmit: {
+    width: '126px',
+  },
+}))
 
 type infoSubmission = {
   payments: string,
@@ -37,6 +75,8 @@ const dummyInfoSub: infoSubmission = {
 
 const InfoSubmissionPage = () => {
 
+  const classes = useStyles()
+
   const [applicant, setApplicant] = useState(dummyApplicant)
   const [infoSub, setInfoSub] = useState(dummyInfoSub)
   const [applicantStatus, setApplicantStatus] = useState(dummyApplicant.status)
@@ -55,8 +95,8 @@ const InfoSubmissionPage = () => {
       <div className={classes.applicant}>
         <h2>{applicant.name}</h2>
         <div className={classes.applicantInfo}>
-          <h4>Utility</h4>
-          <p>{applicant.utilityCompany}</p>
+          <h4 className={classes.applicantInfoh4}>Utility</h4>
+          <p className={classes.applicantInfop}>applicant.utilityCompany</p>
         </div>
         <div className={classes.applicantInfo}>
           <h4>Account Id</h4>
@@ -67,16 +107,16 @@ const InfoSubmissionPage = () => {
           <p>{applicant.propertyAddress}</p>
         </div>
         <div className={classes.applicantStatus}>
-          <h4>Applicant Status</h4>
-          <input type="radio" value={ApplicantStatus.Incomplete} checked={applicantStatus == ApplicantStatus.Incomplete} onChange={updateStatus} /> Incomplete
-          <input type="radio" value={ApplicantStatus.AwaitingUtilityAction} checked={applicantStatus == ApplicantStatus.AwaitingUtilityAction} onChange={updateStatus} /> AwaitingUtilityAction
-          <input type="radio" value={ApplicantStatus.AwaitingAccessH2OAction} checked={applicantStatus == ApplicantStatus.AwaitingAccessH2OAction} onChange={updateStatus} /> AwaitingAccessH2OAction
-          <input type="radio" value={ApplicantStatus.Approved} checked={applicantStatus == ApplicantStatus.Approved} onChange={updateStatus} /> Approved
-          <input type="radio" value={ApplicantStatus.Completed} checked={applicantStatus == ApplicantStatus.Completed} onChange={updateStatus} /> Completed
-          <input type="radio" value={ApplicantStatus.Denied} checked={applicantStatus == ApplicantStatus.Denied } onChange={updateStatus} /> Denied
-          <input type="radio" value={ApplicantStatus.Terminated} checked={applicantStatus == ApplicantStatus.Terminated} onChange={updateStatus}/> Terminated
+          <h4 className={classes.applicantStatush4}>Applicant Status</h4>
+          <Input type="radio" value={ApplicantStatus.Incomplete} checked={applicantStatus == ApplicantStatus.Incomplete} onChange={updateStatus} /> Incomplete
+          <Input type="radio" value={ApplicantStatus.AwaitingUtilityAction} checked={applicantStatus == ApplicantStatus.AwaitingUtilityAction} onChange={updateStatus} /> AwaitingUtilityAction
+          <Input type="radio" value={ApplicantStatus.AwaitingAccessH2OAction} checked={applicantStatus == ApplicantStatus.AwaitingAccessH2OAction} onChange={updateStatus} /> AwaitingAccessH2OAction
+          <Input type="radio" value={ApplicantStatus.Approved} checked={applicantStatus == ApplicantStatus.Approved} onChange={updateStatus} /> Approved
+          <Input type="radio" value={ApplicantStatus.Completed} checked={applicantStatus == ApplicantStatus.Completed} onChange={updateStatus} /> Completed
+          <Input type="radio" value={ApplicantStatus.Denied} checked={applicantStatus == ApplicantStatus.Denied } onChange={updateStatus} /> Denied
+          <Input type="radio" value={ApplicantStatus.Terminated} checked={applicantStatus == ApplicantStatus.Terminated} onChange={updateStatus}/> Terminated
         </div>
-        <button className={classes.statusButton}>Update Applicant</button>
+        <Button className={classes.statusButton}>Update Applicant</Button>
       </div>
 
       <div className={classes.eligibility}>
@@ -109,14 +149,14 @@ const InfoSubmissionPage = () => {
 
       <div className={classes.comments}>
         <h3>Request Additional Information</h3>
-        <textarea
+        <TextField
           className={classes.commentBox} 
           placeholder="Request additional information from utility companies"
           value={comments}
           onChange={(event) => setComments(event.target.value)}
           rows={10}
         />
-        <button className={classes.commentSubmit}>Submit</button>
+        <Button className={classes.commentSubmit}>Submit</Button>
       </div>
     </div>
   );
