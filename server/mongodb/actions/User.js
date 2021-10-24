@@ -9,7 +9,7 @@ const SALT_ROUNDS = 10;
 const TOKEN_DURATION = "7d";
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export async function login({ email, password }) {
+export async function login({ email, password, utilityCompany }) {
   if (!email || !password) throw new Error(errors.auth.MISSING_INFO);
 
   await mongoDB();
@@ -18,13 +18,18 @@ export async function login({ email, password }) {
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) throw new Error(errors.auth.INCORRECT_LOGIN);
+  
+  if (user.isUtilityCompany) {
+    const utilityCompanyMatch = utilityCompany === user.utilityCompany;
+    if (!utilityCompanyMatch) throw new Error(errors.auth.INCORRECT_LOGIN);
+  }
 
   const jwtPayload = { id: user._id };
   const jwtOptions = { expiresIn: TOKEN_DURATION };
   return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions);
 }
 
-export async function signUp({ email, password }) {
+export async function signUp({ email, password, utilityCompany }) {
   if (!email || !password) throw new Error(errors.auth.MISSING_INFO);
 
   const validEmail = validator.validate(email);
@@ -36,7 +41,11 @@ export async function signUp({ email, password }) {
   if (user) throw new Error(errors.auth.UNAVAILABLE_EMAIL);
 
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-  user = await User.create({ email, password: hashedPassword });
+  if (utilityCompany) {
+    user = await User.create({ email, password: hashedPassword, isUtilityCompany: false });
+  } else {
+    user = await User.create({ email, password: hashedPassword, isUtilityCompany: true, utilityCompany });
+  }
 
   const jwtPayload = { id: user._id, email: user.email };
   const jwtOptions = { expiresIn: TOKEN_DURATION };

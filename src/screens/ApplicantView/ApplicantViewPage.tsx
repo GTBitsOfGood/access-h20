@@ -8,7 +8,7 @@ const ApplicantViewPage = (): JSX.Element => {
     <>
       <h1 className={classes.header}>Dashboard</h1>
       <ApplicantTable
-        isUtilityView={false}
+        isUtilityView={true}
         infoSubmissionEndpoint={urls.pages.infosubmit}
       />
     </>
