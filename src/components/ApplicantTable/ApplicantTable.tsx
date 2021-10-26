@@ -11,17 +11,17 @@ import {
   Tooltip,
   TextField,
   MenuItem,
-  InputAdornment
+  InputAdornment, Menu
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
 import { v4 as uuidv4 } from 'uuid'
-import {Applicant, ApplicantStatus, ApplicantStatusColor} from '../../types/Applicant'
+import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 
 interface PropTypes {
-  isUtilityView: boolean; // true = utility view & false = AccessH2O view
+  isUtilityView: boolean // true = utility view & false = AccessH2O view
   infoSubmissionEndpoint: string
 }
 
@@ -317,42 +317,81 @@ const ApplicantTable = ({
           </TableHead>
 
           <TableBody>
-            {paginate(filteredApplicants, page, rowsPerPage).map(
-              (applicant) => (
-                <TableRow key={applicant.accountId}>
-                  <TableCell className={classes.cell}>{applicant.name}</TableCell>
-                  <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                  <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                  <TableCell className={classes.cell}>
-                    {applicant.propertyAddress}
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    {applicant.applied.toDateString()}
-                  </TableCell>
-                  <TableCell className={classes.cell}><span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>{applicant.status}</span></TableCell>
-                  <TableCell align="center">
-                    <Tooltip title={'View notes'}>
-                      <IconButton>
-                        <Announcement />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title={'View Info Submission'}>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                      <IconButton>
-                        <MoreVert />
-                      </IconButton>
-                      </Link>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
+            {
+              paginate(filteredApplicants, page, rowsPerPage).map(
+                (applicant) => {
+                  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
+                  const open = Boolean(anchorEl)
+                  const handleClick = (event: React.MouseEvent): void => {
+                    setAnchorEl(event.currentTarget)
+                  }
+                  const handleClose = (): void => {
+                    setAnchorEl(null)
+                  }
+
+                  return (
+                      <TableRow key={applicant.accountId}>
+                        <Link
+                          href={
+                            infoSubmissionEndpoint + '/' + applicant.accountId
+                          }
+                        >
+                          <TableCell className={classes.cell}>
+                              {applicant.name}
+                          </TableCell>
+                        </Link>
+                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+                        <TableCell className={classes.cell}>
+                          {applicant.propertyAddress}
+                        </TableCell>
+                        <TableCell className={classes.cell}>
+                          {applicant.applied.toDateString()}
+                        </TableCell>
+                        <TableCell className={classes.cell}>
+                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
+                            {applicant.status}
+                          </span>
+                        </TableCell>
+                        <TableCell align="center">
+                        <Tooltip title={'View notes'}>
+                          <IconButton>
+                            <Announcement/>
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          id="basic-button"
+                          aria-controls="basic-menu"
+                          aria-haspopup="true"
+                          aria-expanded={open ? 'true' : undefined}
+                          onClick={handleClick}
+                        >
+                          <MoreVert/>
+                        </IconButton>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          MenuListProps={{
+                            'aria-labelledby': 'basic-button'
+                          }}
+                        >
+                          <MenuItem onClick={handleClose}>View</MenuItem>
+                          <MenuItem onClick={handleClose}>Add Notes</MenuItem>
+                          <MenuItem onClick={handleClose}>Change Status</MenuItem>
+                          <div className={classes.deleteButton}>
+                            <MenuItem onClick={handleClose}>Delete</MenuItem>
+                          </div>
+                        </Menu>
+                      </TableCell>
+                    </TableRow>
+                  )
+                }
               )
-            )}
+            }
           </TableBody>
         </Table>
 
