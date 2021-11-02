@@ -7,7 +7,12 @@ import PropTypes from "prop-types";
 import Box from '@mui/material/Box';
 import { fontSize } from "@mui/system";
 
-export const ApplicantModal = ({ shouldShowModal, onClose }) => {
+interface PropTypes {
+  shouldShowModal: boolean
+  onClose: () => void
+}
+
+export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
   return (
     <div>
       <div>
@@ -103,10 +108,5 @@ export const ApplicantModal = ({ shouldShowModal, onClose }) => {
         </Modal>
       </div>
     </div>
-  );
-};
-
-ApplicantModal.propTypes = {
-  shouldShowModal: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired,
-};
+  )
+}
