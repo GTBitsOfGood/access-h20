@@ -71,3 +71,7 @@
     padding: 6px;
     border-radius: 8px;
 }
+
+.deleteButton {
+    color: #F02052;
+}
