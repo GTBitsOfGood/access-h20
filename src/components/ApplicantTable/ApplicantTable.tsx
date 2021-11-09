@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { NotesModal } from 'src/components/NotesModal/NotesModal'
 import {
   Table,
   TableBody,
@@ -202,8 +203,10 @@ const ApplicantTable = ({
   }, [search, statusFilter, searchBy, fromDate, toDate])
 
   const [showModal, setShowModal] = useState(false)
+  const [showNotes, setNotesModal] = useState(false)
 
   const closeModalHandler = (): void => setShowModal(false)
+  const closeNotesHandler = (): void => setNotesModal(false)
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
@@ -332,8 +335,9 @@ const ApplicantTable = ({
                   <TableCell className={classes.cell}><span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>{applicant.status}</span></TableCell>
                   <TableCell align="center">
                     <Tooltip title={'View notes'}>
-                      <IconButton>
+                    <IconButton onClick={() => setNotesModal(true)} className={classes.addCustomerButton}>
                         <Announcement />
+                        <NotesModal shouldNotesModal={showNotes} NotesClose={closeNotesHandler}/>
                       </IconButton>
                     </Tooltip>
                   </TableCell>
