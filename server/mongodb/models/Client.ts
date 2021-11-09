@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { ClientStatus } from "../../models/ClientStatus";
-import { EligibilityStatus } from "../../models/EligibilityStatus";
+import { Documents, EligibilityStatus, Other } from "../../models/InfoSubmissionQuestions";
 
 const ClientSchema = new Schema(
     {
@@ -17,6 +17,10 @@ const ClientSchema = new Schema(
         required: true,
         unique: true,
       },
+      date: {
+        type: Date,
+        required: true,
+      },
       status: {
         type: ClientStatus,
         required: true,
@@ -30,15 +34,15 @@ const ClientSchema = new Schema(
         required: true,
       },
       eligibilityStatuses: {
-        type: EligibilityStatus,
+        type: [EligibilityStatus],
         required: false,
       },
       documents: {
-        type: [File],
+        type: [Documents],
         required: false,
       },
       otherQuestions: {
-        type: [String],
+        type: [Other],
         required: false,
       },
  

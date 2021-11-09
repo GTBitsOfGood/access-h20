@@ -3,13 +3,22 @@ export interface Client {
     name: string;
     utilityCompany: string;
     accountId: string;
+    applied: Date;
     status: ClientStatus;
     address: string;
-    notes: [string];
-    eligibilityStatuses: {
+    notes?: string[];
+    eligibilityStatuses?: [{
+        title: String,
         question: String,
         answer: Boolean
-    };
-    documents: [File];
-    otherQuestions: [string];
+    }];
+    documents?:[{
+        title: String,
+        description: String,
+        file: String
+    }];
+    otherQuestions?:  [{
+        question: String,
+        answer: String
+    }];
 }

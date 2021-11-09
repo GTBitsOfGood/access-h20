@@ -19,10 +19,25 @@ export const ApplicantStatusColor: { [key in ApplicantStatus]: string } = {
 }
 
 export interface Applicant {
-  name: string
-  utilityCompany: string
-  accountId: string
-  propertyAddress: string
-  applied: Date
-  status: ApplicantStatus
+  name: string;
+  utilityCompany: string;
+  accountId: string;
+  applied: Date;
+  status: ApplicantStatus;
+  address: string;
+  notes?: string[];
+  eligibilityStatuses?: [{
+      title: String,
+      question: String,
+      answer: Boolean
+  }];
+  documents?:[{
+      title: String,
+      description: String,
+      file: String
+  }];
+  otherQuestions?:  [{
+      question: String,
+      answer: String
+  }];
 }
