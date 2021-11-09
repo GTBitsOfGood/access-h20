@@ -337,7 +337,7 @@ const ApplicantTable = ({
                     <Tooltip title={'View notes'}>
                     <IconButton onClick={() => setNotesModal(true)} className={classes.addCustomerButton}>
                         <Announcement />
-                        <NotesModal shouldNotesModal={showNotes} NotesClose={closeNotesHandler}/>
+                        <NotesModal shouldNotesModal={showNotes} close={closeNotesHandler}/>
                       </IconButton>
                     </Tooltip>
                   </TableCell>
