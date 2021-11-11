@@ -32,7 +32,7 @@ export default function ApplicantNavLink() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static" color="transparent">
+    <AppBar position="static" color="transparent" className={classes.root}>
       <Toolbar>
         <div className={classes.logo1}/>
         <div className={classes.logo2}/>
@@ -41,13 +41,13 @@ export default function ApplicantNavLink() {
           edge="start"
           color="inherit"
           aria-label="menu"
-          sx={{ mr: 2 }}
+          sx={{ mx: "auto" }}
         >
         </IconButton>
         {auth && (
           <div>
             
-            <IconButton className = {classes.profilebutton}
+            <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -55,7 +55,7 @@ export default function ApplicantNavLink() {
               onClick={handleMenu}
               color="inherit"
             >
-              <Circle color="disabled"/>
+              <AccountCircle color="action" className = {classes.profilebutton}/>
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -73,7 +73,7 @@ export default function ApplicantNavLink() {
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
           </div>
         )}

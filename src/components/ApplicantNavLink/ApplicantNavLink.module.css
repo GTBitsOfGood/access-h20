@@ -1,6 +1,7 @@
 .root {
-    display:flex;
+    position: relative;
 }
+
 .logo1 {
     background: url("../../assets/images/accessh2owater.png");
     background-repeat: no-repeat;
@@ -30,15 +31,8 @@
 }
 
 .profilebutton {
-    align-content: flex-end;
-    margin-left: 2000%;
-    transform: scale(1.5);
-}
-
-.root {
-    height:100px;
-}
-
-.NavBar {
-    max-height: 80px;
+    position: absolute;
+    display: inline;
+    right:0;
+    transform: scale(1.6);
 }
