@@ -3,20 +3,16 @@ import { MasterDocuments, MasterEligibilityStatus, MasterOther } from "../../mod
 
 const EligibilityQuestionSchema = new Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
     eligibilityStatuses: {
-      type: {MasterEligibilityStatus},
+      type: [MasterEligibilityStatus],
       required: true,
     },
     documents: {
-      type: {MasterDocuments},
+      type: [MasterDocuments],
       required: true,
     },
     otherQuestions: {
-      type: {MasterOther},
+      type: [MasterOther],
       required: true,
     },
 

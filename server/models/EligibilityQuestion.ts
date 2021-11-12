@@ -1,18 +1,18 @@
 export interface EligibilityQuestion {
-    eligibilityStatuses: {
+    eligibilityStatuses: [{
         id: String,
         title: String,
         question: String,
-    };
-    documents: {
+    }];
+    documents: [{
         id: String,
         title: String,
         description: String,
-    };
-    otherQuestions: {
+    }];
+    otherQuestions: [{
         id: String,
         question: String,
-    };
+    }];
 }
 
 export var EligibilityStatus = {
