@@ -62,6 +62,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
   }
 
+  const exNote = ["Example note to check CSS and other issues", "AccessH20", "9/23/21"]
+
   const booleanToYesOrNo = (input: boolean): string => {
     if (input) {
       return 'Yes'
@@ -107,6 +109,17 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <h3>Notes</h3>
         </div>
         <div style = {{ flex: '150px' }}>
+          <div style = {{backgroundColor: "#F3F3F3", borderRadius: "10px", padding: "3px"}}>
+            <div style = {{ display: 'flex', width: '500px', height: '35px' }}>
+              <div style = {{ flex: '150px' }}>
+                <h4 style = {{fontWeight: 'normal', padding: "0px"}}>{exNote[1]} </h4>
+                <h4 style = {{fontWeight: 'normal', padding: "0px"}}>{exNote[2]}</h4>
+              </div>
+              <div style = {{ flex: '150px' }}></div>
+                <h4 style = {{fontWeight: 'normal', padding: "0px"}}>{exNote[0]}</h4>
+              </div>
+            </div>
+          </div>
           <a style = {{ fontWeight: 'normal', color: '#4DBAEA', textDecoration: 'none', fontFamily: 'Roboto', padding: '15px' }}>+ Add Note</a>
         </div>
       </div>
