@@ -1,0 +1,62 @@
+.background {
+    background-color:  #E9F2F9;
+}
+
+
+.body {
+    border-radius: 6px;
+    margin: 83px 170px;
+    padding-left: 80px;
+    font-family: "Open Sans";
+    background-color: white;
+}
+
+.title {
+    font-weight: bolder;
+}
+
+.edit {
+    display: flex;
+    align-items: center;
+}
+
+.editButton {
+    margin-right: 5px;
+    color: #4DBAEA;
+}
+
+.inputRoot {
+    border: 1px solid #9A9A9A;
+    border-radius: 8px;
+    padding-left: 8px;
+    width: 250px;
+    margin-top: 10px;
+}
+
+.disabled {
+    border: transparent;
+    color: black;
+    font-family: "Times New Roman";
+}
+
+.questionType {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.section {
+    display: flex;
+    margin: 20px 650px 0px 0px;
+}
+
+.questions {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    align-items: flex-start;
+}
+
+.saveButton {
+    margin-top: 10px;
+}

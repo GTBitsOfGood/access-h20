@@ -7,18 +7,18 @@ export interface Client {
     status: ClientStatus;
     address: string;
     notes?: string[];
-    eligibilityStatuses?: [{
+    eligibilityStatuses?: {
         title: String,
         question: String,
         answer: Boolean
-    }];
-    documents?:[{
+    };
+    documents?:{
         title: String,
         description: String,
         file: String
-    }];
-    otherQuestions?:  [{
+    };
+    otherQuestions?:  {
         question: String,
         answer: String
-    }];
+    };
 }

@@ -30,7 +30,7 @@ const applicants: Applicant[] = [
     name: 'applicant 1',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '123 George Burdell Blvd',
+    address: '123 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.AwaitingAccessH2O
   },
@@ -38,7 +38,7 @@ const applicants: Applicant[] = [
     name: 'applicant 2',
     utilityCompany: 'City of San Francisco',
     accountId: uuidv4().toString(),
-    propertyAddress: '1234 San Francisco Blvd',
+    address: '1234 San Francisco Blvd',
     applied: new Date(),
     status: ApplicantStatus.Completed
   },
@@ -46,7 +46,7 @@ const applicants: Applicant[] = [
     name: 'applicant 3',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '523 George Burdell Blvd',
+    address: '523 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Approved
   },
@@ -54,7 +54,7 @@ const applicants: Applicant[] = [
     name: 'applicant 4',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   },
@@ -62,7 +62,7 @@ const applicants: Applicant[] = [
     name: 'applicant 5',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.AwaitingUtility
   },
@@ -70,7 +70,7 @@ const applicants: Applicant[] = [
     name: 'applicant 6',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Denied
   },
@@ -78,7 +78,7 @@ const applicants: Applicant[] = [
     name: 'applicant 7',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   },
@@ -86,7 +86,7 @@ const applicants: Applicant[] = [
     name: 'applicant 8',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   },
@@ -94,7 +94,7 @@ const applicants: Applicant[] = [
     name: 'applicant 9',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   },
@@ -102,7 +102,7 @@ const applicants: Applicant[] = [
     name: 'applicant 10',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   },
@@ -110,7 +110,7 @@ const applicants: Applicant[] = [
     name: 'applicant 11',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   },
@@ -118,7 +118,7 @@ const applicants: Applicant[] = [
     name: 'applicant 12',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   },
@@ -126,7 +126,7 @@ const applicants: Applicant[] = [
     name: 'applicant 13',
     utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
+    address: '125 George Burdell Blvd',
     applied: new Date(),
     status: ApplicantStatus.Terminated
   }
@@ -343,7 +343,7 @@ const ApplicantTable = ({
                         <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
                         <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
                         <TableCell className={classes.cell}>
-                          {applicant.propertyAddress}
+                          {applicant.address}
                         </TableCell>
                         <TableCell className={classes.cell}>
                           {applicant.applied.toDateString()}

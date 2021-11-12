@@ -8,6 +8,7 @@ export default {
     login: "/login",
     app: {
       home: "/app",
+      editInfoSubmission: "/app/editInfoSubmission",
     },
   },
   api: {

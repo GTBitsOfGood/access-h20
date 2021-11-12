@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { ClientStatus } from "../../models/ClientStatus";
-import { Documents, EligibilityStatus, Other } from "../../models/InfoSubmissionQuestions";
+import { Documents, EligibilityStatus, Other } from "../../models/EligibilityQuestion";
 
 const ClientSchema = new Schema(
     {
@@ -34,15 +34,15 @@ const ClientSchema = new Schema(
         required: true,
       },
       eligibilityStatuses: {
-        type: [EligibilityStatus],
+        type: {EligibilityStatus},
         required: false,
       },
       documents: {
-        type: [Documents],
+        type: {Documents},
         required: false,
       },
       otherQuestions: {
-        type: [Other],
+        type: {Other},
         required: false,
       },
  
