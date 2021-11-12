@@ -34,15 +34,15 @@ const ClientSchema = new Schema(
         required: true,
       },
       eligibilityStatuses: {
-        type: {EligibilityStatus},
+        type: [EligibilityStatus],
         required: false,
       },
       documents: {
-        type: {Documents},
+        type: [Documents],
         required: false,
       },
       otherQuestions: {
-        type: {Other},
+        type: [Other],
         required: false,
       },
  
