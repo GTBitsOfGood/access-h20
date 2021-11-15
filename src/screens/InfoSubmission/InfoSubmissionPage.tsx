@@ -3,7 +3,8 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {ApplicantStatus, ApplicantStatusColor} from '../../types/Applicant'
 import { Checkbox } from '@mui/material'
-import handler from '../../pages/api/user/get-current'
+import mongoDB from '../../../server/mongodb/index'
+import Client from '../../../server/mongodb/models/Client'
 
 interface Applicant {
   name: string
@@ -63,7 +64,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
   }
 
-  // const userJson = handler()
+  // const userJSON = async() => {
+  //   await mongoDB();
+  //   const user = Client.findOne({ _id: '61926101d224b33b0992eba7' });
+  //   return user[notes]
+  // }
   const exNote = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id imperdiet massa, luctus faucibus nulla.", "AccessH20", "9/23/21"]
 
   const booleanToYesOrNo = (input: boolean): string => {
@@ -72,7 +77,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
     return 'No'
   }
-
   return (
     <div style = {{ padding: '25px', border: '75px solid #CFEBFD' }}>
       <div>
