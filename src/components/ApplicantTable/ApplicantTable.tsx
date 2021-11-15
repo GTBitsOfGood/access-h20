@@ -212,6 +212,11 @@ const ApplicantTable = ({
     return ApplicantStatusColor[status]
   }
 
+  // const openNotesModal  = (): Object => {
+  //   setNotesModal(true)
+  //   return (<NotesModal shouldNotesModal={showNotes} close={closeNotesHandler}/>)
+  // }
+
   return (
     <div className={classes.root}>
       <div className={classes.header}>
