@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {ApplicantStatus, ApplicantStatusColor} from '../../types/Applicant'
 import { Checkbox } from '@mui/material'
+import handler from '../../pages/api/user/get-current'
 
 interface Applicant {
   name: string
@@ -62,7 +63,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
   }
 
-  const exNote = ["Example note to check CSS and other issues", "AccessH20", "9/23/21"]
+  // const userJson = handler()
+  const exNote = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id imperdiet massa, luctus faucibus nulla.", "AccessH20", "9/23/21"]
 
   const booleanToYesOrNo = (input: boolean): string => {
     if (input) {
@@ -102,29 +104,24 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         </div>
       </div>
 
-      <hr style = {{ width: '100%', border: '1px solid #DADADA' }}/>
-
-      <div style = {{ display: 'flex', width: '500px', height: '35px' }}>
-        <div style = {{ flex: '150px' }}>
-          <h3>Notes</h3>
-        </div>
-        <div style = {{ flex: '150px' }}>
-          <div style = {{backgroundColor: "#F3F3F3", borderRadius: "10px", padding: "3px"}}>
-            <div style = {{ display: 'flex', width: '500px', height: '35px' }}>
-              <div style = {{ flex: '150px' }}>
-                <h4 style = {{fontWeight: 'normal', padding: "0px"}}>{exNote[1]} </h4>
-                <h4 style = {{fontWeight: 'normal', padding: "0px"}}>{exNote[2]}</h4>
-              </div>
-              <div style = {{ flex: '150px' }}></div>
-                <h4 style = {{fontWeight: 'normal', padding: "0px"}}>{exNote[0]}</h4>
-              </div>
-            </div>
+      <div>
+        <hr style = {{ width: '100%', border: '1px solid #DADADA' }}/>
+        <div style = {{ display: 'flex', width: '1000px', height: '35px' }}>
+          <div style = {{ flex: '1500px' }}>
+            <h3>Notes</h3>
           </div>
-          <a style = {{ fontWeight: 'normal', color: '#4DBAEA', textDecoration: 'none', fontFamily: 'Roboto', padding: '15px' }}>+ Add Note</a>
+          <div style = {{ flex: '6000px' }}>
+            <div style = {{backgroundColor: "#F3F3F3", borderRadius: "10px", padding: "3px"}}>
+              <h4 style = {{fontWeight: 'bold', margin: "0px", marginLeft:"25px", marginTop: '15px'}}>{exNote[1]} </h4>
+              <h4 style = {{fontWeight: 'lighter', fontStyle: 'italic', margin: "0px", marginLeft:"25px", color: '#979797'}}>{exNote[2]}</h4>
+              <h4 style = {{fontWeight: 'normal',margin: "5px", marginLeft:"25px", marginBottom: '15px'}}>{exNote[0]}</h4>
+            </div>
+            <a style = {{ fontWeight: 'normal', color: '#4DBAEA', textDecoration: 'none', fontFamily: 'Roboto', padding: '15px' }}>+ Add Note</a>
+          </div>
         </div>
       </div>
 
-      <hr style = {{ width: '100%', border: '1px solid #DADADA', marginTop: '30px', marginBottom: '30px' }}/>
+      <hr style = {{ width: '100%', border: '1px solid #DADADA', marginTop: '100px', marginBottom: '30px' }}/>
 
       <h3>Eligibility</h3>
       <div>
