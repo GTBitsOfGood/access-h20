@@ -36,7 +36,11 @@ export async function signUp({ email, password }) {
   if (user) throw new Error(errors.user.UNAVAILABLE_EMAIL);
 
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-  user = await User.create({ email, password: hashedPassword });
+  if (utilityCompany) {
+    user = await User.create({ email, password: hashedPassword, isUtilityCompany: false });
+  } else {
+    user = await User.create({ email, password: hashedPassword, isUtilityCompany: true, utilityCompany });
+  }
 
   const jwtPayload = { id: user._id, email: user.email };
   const jwtOptions = { expiresIn: TOKEN_DURATION };

@@ -1,0 +1,38 @@
+.root {
+    position: relative;
+}
+
+.logo1 {
+    background: url("../../assets/images/accessh2owater.png");
+    background-repeat: no-repeat;
+    background-position:top;
+    padding-left: 10px;
+    width: 47px;
+    height: 66px;
+}
+
+.logo2 {
+    background: url("../../assets/images/AccessH2O.png");
+    background-repeat: no-repeat;
+    padding-left: 10px;
+    width: 131px;
+    height: 40px;
+}
+
+.profile {
+        width: 20px;
+        height: 60px;
+        border: none;
+        border-radius: 50%;
+        outline: none;
+        background: lightgray;
+        color: white; 
+        cursor: pointer;
+}
+
+.profilebutton {
+    position: absolute;
+    display: inline;
+    right:0;
+    transform: scale(1.6);
+}

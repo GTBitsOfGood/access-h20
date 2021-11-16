@@ -1,9 +1,11 @@
-import * as React from 'react'
-import Button from '@material-ui/core/Button'
-import classes from './ApplicantModal.module.css'
-import TextField from '@material-ui/core/TextField'
-import Modal from '@mui/material/Modal'
-import PropTypes from 'prop-types'
+import * as React from "react";
+import Button from "@material-ui/core/Button";
+import classes from "./ApplicantModal.module.css";
+import TextField from "@material-ui/core/TextField";
+import Modal from "@mui/material/Modal";
+import PropTypes from "prop-types";
+import Box from '@mui/material/Box';
+import { fontSize } from "@mui/system";
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -17,38 +19,91 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
         <Modal open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
-              <h3>Please enter customer information.</h3>
+              <h3 className={classes.addcustomer}>Add Customer</h3>
               <span onClick={onClose} className={classes.closemodalbtn}>
-                &times;
+                &#10799;
               </span>
             </div>
-            <TextField
-              id="customer-name"
-              label="Customer Name"
-              variant="standard"
-            />
-            <TextField
-              id="utility-company"
-              label="Utility Company"
-              variant="standard"
-            />
-            <TextField
-              id="application-date"
-              label="Application Date"
-              variant="standard"
-            />
-            <TextField
-              id="special-notes-multiline"
-              label="Special Notes"
-              multiline
-              rows={4}
-              variant="standard"
-            />
-            <div className={classes.modalfooter}>
-              <Button onClick={onClose} className="btn-submit">
-                Submit
-              </Button>
-            </div>
+
+            <Box
+              className={classes.modalcontent}
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '32ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+                <div>
+                  <TextField
+                    className="first-name"
+                    label="First Name"
+                    defaultValue="Default Value"
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="last-name"
+                    label="Last Name"
+                    variant="outlined"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="account-id"
+                    label="Account ID"
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="utility-company"
+                    label="Property Address"
+                    variant="outlined"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="property-address"
+                    label="Property Address"
+                    variant="outlined"
+                    style = {{width: 660}}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="zip-code"
+                    label="Zip/Postal Code"
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="city"
+                    label="City"
+                    variant="outlined"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="notes-multiline"
+                    label="Notes (Optional)"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    style = {{width: 660}}
+                  />
+                </div>
+                <div className={classes.modalfooter}>
+                  <Button 
+                  onClick={onClose} className="btn-submit"
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#4DBAEA", 
+                    color: '#FFFFFF'
+                  }}
+                  >
+                    Add New Customer
+                  </Button>
+                </div>
+            </Box>
+
+
           </div>
         </Modal>
       </div>
