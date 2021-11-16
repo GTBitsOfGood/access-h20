@@ -4,17 +4,17 @@ import classes from "./ApplicantView.module.css";
 import urls from "../../../utils/urls";
 import ApplicantNavLink from "../../components/ApplicantNavLink"
 
-function ApplicantViewPage() {
+const ApplicantViewPage = (): JSX.Element => {
   return (
     <>
       <ApplicantNavLink />
       <h1 className={classes.header}>Dashboard</h1>
       <ApplicantTable
-        isUtilityView={false}
+        isUtilityView={true}
         infoSubmissionEndpoint={urls.pages.infosubmit}
       />
     </>
-  );
+  )
 }
 
-export default ApplicantViewPage;
+export default ApplicantViewPage

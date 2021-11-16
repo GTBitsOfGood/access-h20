@@ -13,6 +13,14 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  isUtilityCompany: {
+    type: Boolean,
+    required: true,
+  },
+  utilityCompany: {
+    type: String,
+    required: false,
+  },
 });
 
 export default mongoose.models.User ?? mongoose.model("User", UserSchema);
