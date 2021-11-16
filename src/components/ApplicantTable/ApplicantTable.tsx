@@ -18,6 +18,7 @@ import { Announcement, MoreVert } from '@mui/icons-material'
 import { v4 as uuidv4 } from 'uuid'
 import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
+import { CompanyModal } from "src/components/CompanyModal/CompanyModal";
 import classes from './ApplicantTable.module.css'
 
 interface PropTypes {
@@ -201,9 +202,8 @@ const ApplicantTable = ({
     setfilteredApplicants(searchedApplicants)
   }, [search, statusFilter, searchBy, fromDate, toDate])
 
-  const [showModal, setShowModal] = useState(false)
-
-  const closeModalHandler = (): void => setShowModal(false)
+  const [showApplicantModal, setShowApplicantModal] = useState(false)
+  const [showCompanyModal, setShowCompanyModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
@@ -295,8 +295,11 @@ const ApplicantTable = ({
         </div>
         {!isUtilityView && (
           <div>
-            <button onClick={() => setShowModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <ApplicantModal shouldShowModal={showModal} onClose={closeModalHandler}/>
+            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
+            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
+
+            <button onClick={() => setShowCompanyModal(true)} className={classes.addCustomerButton}>Add Company</button>
+            <CompanyModal shouldShowModal={showCompanyModal} onClose={() => setShowCompanyModal(false)} />
           </div>
         )}
       </div>

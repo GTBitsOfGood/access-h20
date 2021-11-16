@@ -9,36 +9,31 @@ const SALT_ROUNDS = 10;
 const TOKEN_DURATION = "7d";
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export async function login({ email, password, utilityCompany }) {
-  if (!email || !password) throw new Error(errors.auth.MISSING_INFO);
+export async function login({ email, password }) {
+  if (!email || !password) throw new Error(errors.user.MISSING_INFO);
 
   await mongoDB();
   const user = await User.findOne({ email });
-  if (!user) throw new Error(errors.auth.INCORRECT_LOGIN);
+  if (!user) throw new Error(errors.user.INCORRECT_LOGIN);
 
   const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) throw new Error(errors.auth.INCORRECT_LOGIN);
-  
-  if (user.isUtilityCompany) {
-    const utilityCompanyMatch = utilityCompany === user.utilityCompany;
-    if (!utilityCompanyMatch) throw new Error(errors.auth.INCORRECT_LOGIN);
-  }
+  if (!passwordMatch) throw new Error(errors.user.INCORRECT_LOGIN);
 
   const jwtPayload = { id: user._id };
   const jwtOptions = { expiresIn: TOKEN_DURATION };
   return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions);
 }
 
-export async function signUp({ email, password, utilityCompany }) {
-  if (!email || !password) throw new Error(errors.auth.MISSING_INFO);
+export async function signUp({ email, password }) {
+  if (!email || !password) throw new Error(errors.user.MISSING_INFO);
 
   const validEmail = validator.validate(email);
-  if (!validEmail) throw new Error(errors.auth.INVALID_EMAIL);
-  if (password.length < 8) throw new Error(errors.auth.INVALID_PASSWORD);
+  if (!validEmail) throw new Error(errors.user.INVALID_EMAIL);
+  if (password.length < 8) throw new Error(errors.user.INVALID_PASSWORD);
 
   await mongoDB();
   let user = await User.findOne({ email });
-  if (user) throw new Error(errors.auth.UNAVAILABLE_EMAIL);
+  if (user) throw new Error(errors.user.UNAVAILABLE_EMAIL);
 
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   if (utilityCompany) {
@@ -50,6 +45,18 @@ export async function signUp({ email, password, utilityCompany }) {
   const jwtPayload = { id: user._id, email: user.email };
   const jwtOptions = { expiresIn: TOKEN_DURATION };
   return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions);
+}
+
+export async function update({ id, ...attributes }) {
+  if (!id) throw new Error(errors.user.MISSING_INFO);
+
+  await mongoDB();
+  const user = await User.findOne({ _id: id });
+  if (!user) throw new Error(errors.user.INVALID_ID);
+
+  const updatedUser = await User.findOneAndUpdate({ _id: id }, attributes, { new: true });
+  if (!updatedUser) throw new Error(errors.user.INVALID_ATTRIBUTES);
+  return updatedUser;
 }
 
 export const getUserFromToken = async (token) => {

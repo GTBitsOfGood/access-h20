@@ -14,6 +14,7 @@ export default {
     example: "/api/example",
     user: {
       signUp: "/api/user/sign-up",
+      update: "/api/user/update",
       login: "/api/user/login",
       logout: "/api/user/logout",
       getCurrent: "/api/user/get-current",
