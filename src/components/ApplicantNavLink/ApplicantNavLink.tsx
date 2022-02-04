@@ -47,7 +47,7 @@ export default function ApplicantNavLink() {
           sx={{ mx: "auto" }}
         >
         </IconButton>
-        <button onClick = {() => setShowUtilityPartnerModal(true)} className={classes.plusNote}>+ Add Note</button>
+        <button onClick = {() => setShowUtilityPartnerModal(true)} className={classes.plusNote}>Add Utility Partner</button>
         <UtilityPartnerModal shouldShowModal={showUtilityPartnerModal} onClose={() => setShowUtilityPartnerModal(false)} />
         {auth && (
           <div>

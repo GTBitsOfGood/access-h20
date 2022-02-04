@@ -66,112 +66,12 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
     }
 
     return (
-      <div>
-        <div>
-          <Modal open={shouldShowModal} onClose={onClose}>
+      <Modal open={shouldShowModal} onClose={onClose}>
+        <div className={classes.modalwrapper}>
+          <div className={classes.modalheader}>
             <h1>Add Utility Partner</h1>
-            <form onSubmit={addPartner}>
-              <div className={classes.inputContainer}>
-                <label htmlFor="companyN">Company Name</label>
-                <TextField
-                className={classes.input}
-                required
-                variant="outlined"
-                id="companyN"
-                value={companyN}
-                onChange={(event) => setCompanyN(event.target.value)}
-                />
-              </div>
-              <div>
-                <div className={classes.inputContainer}>
-                  <label htmlFor="email">Email Address</label>
-                  <TextField
-                  className={classes.input}
-                  required
-                  variant="outlined"
-                  id="email"
-                  value={newemail}
-                  onChange={(event) => setEmail(event.target.value)}
-                  />
-                </div>
-
-                <div className={classes.inputContainer}>
-                  <label htmlFor="phone">Phone Number</label>
-                  <TextField
-                  className={classes.input}
-                  required
-                  variant="outlined"
-                  id="phone"
-                  value={newphone}
-                  onChange={(event) => setPhone(event.target.value)}
-                  />
-                </div>
-                
-              </div>
-
-              <div className={classes.inputContainer}>
-                  <label htmlFor="street">Property Address</label>
-                  <TextField
-                  className={classes.input}
-                  required
-                  variant="outlined"
-                  id="street"
-                  value={newstreet}
-                  onChange={(event) => setStreet(event.target.value)}
-                  />
-              </div>
-                <div>
-                  <div className={classes.inputContainer}>
-                  <label htmlFor="city">City</label>
-                  <TextField
-                  className={classes.input}
-                  required
-                  variant="outlined"
-                  id="city"
-                  value={newcity}
-                  onChange={(event) => setCity(event.target.value)}
-                  />
-                  </div>
-
-                  <div className={classes.inputContainer}>
-                  <label htmlFor="state">State</label>
-                  <TextField
-                  className={classes.input}
-                  required
-                  variant="outlined"
-                  id="state"
-                  value={newstate}
-                  onChange={(event) => setState(event.target.value)}
-                  />
-                  </div>
-                  
-                  <div className={classes.inputContainer}>
-                  <label htmlFor="zip">Zip</label>
-                  <TextField
-                  className={classes.input}
-                  required
-                  variant="outlined"
-                  id="zip"
-                  value={newzip}
-                  onChange={(event) => setZip(event.target.value)}
-                  />
-                  </div>
-                </div>
-                <div className={classes.inputContainer}>
-                  <label htmlFor="notes">Notes(Optional)</label>
-                  <TextField
-                  className={classes.input}
-                  variant="outlined"
-                  id="notes"
-                  value={newnotes}
-                  onChange={(event) => setNotes(event.target.value)}
-                  />
-                </div>
-            </form>
-            <button onClick={() => setShowSucessModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <SucessModal shouldShowModal={showSucessModal} onClose={() => setShowSucessModal(false)} />
-          </Modal>
+          </div>
         </div>
-      </div>
+      </Modal>
     )
 }
