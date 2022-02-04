@@ -154,7 +154,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                     width: "10%",
                     backgroundColor: "#4DBAEA", 
                     color: '#FFFFFF'
-                }}>Update</Button>
+                }}>Add</Button>
                   <Button variant="text" onClick={() => onClose()}>Cancel</Button>
                 </Stack>
           </FormControl>
