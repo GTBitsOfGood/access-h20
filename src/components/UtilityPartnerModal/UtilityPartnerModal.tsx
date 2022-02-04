@@ -1,5 +1,5 @@
 import * as React from "react";
-import classes from "./NotesModal.module.css";
+import classes from "./UtilityPartnerModal.module.css";
 import TextField from "@material-ui/core/TextField";
 import { Divider } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid'
@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@mui/material";
 import urls from "utils/urls";
 // import { Partner } from "server/models/Partner"
-
+import { SucessModal } from "src/components/SucessModal/SucessModal";
 interface PropTypes {
     shouldShowModal: boolean
     onClose: () => void
@@ -39,8 +39,7 @@ const dummyPartner: Partner = {
     }
 
 export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
-    const [partner, setPartner] = useState(dummyPartner);
-    const [newPartner, setNewPartner] = useState("")
+    const [showSucessModal, setShowSucessModal] = useState(false)
 
     const [companyN, setCompanyN] = useState('')
     const [newemail, setEmail] = useState('')
@@ -63,8 +62,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
         zip: "dummy",
         notes: ""
       }
-      setPartner(dummyDate)
-      setNewPartner("")
+      onClose();
     }
 
     return (
@@ -170,6 +168,8 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                   />
                 </div>
             </form>
+            <button onClick={() => setShowSucessModal(true)} className={classes.addCustomerButton}>Add Customer</button>
+            <SucessModal shouldShowModal={showSucessModal} onClose={() => setShowSucessModal(false)} />
           </Modal>
         </div>
       </div>

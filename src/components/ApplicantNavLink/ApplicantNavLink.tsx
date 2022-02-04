@@ -13,10 +13,13 @@ import Menu from '@mui/material/Menu';
 import classes from "./ApplicantNavLink.module.css";
 import { Typography } from '@material-ui/core';
 import { Circle } from '@mui/icons-material';
+import { UtilityPartnerModal } from "src/components/UtilityPartnerModal/UtilityPartnerModal";
+import { useEffect, useState } from "react";
 
 export default function ApplicantNavLink() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [showUtilityPartnerModal, setShowUtilityPartnerModal] = useState(false)
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -44,6 +47,8 @@ export default function ApplicantNavLink() {
           sx={{ mx: "auto" }}
         >
         </IconButton>
+        <button onClick = {() => setShowUtilityPartnerModal(true)} className={classes.plusNote}>+ Add Note</button>
+        <UtilityPartnerModal shouldShowModal={showUtilityPartnerModal} onClose={() => setShowUtilityPartnerModal(false)} />
         {auth && (
           <div>
             
