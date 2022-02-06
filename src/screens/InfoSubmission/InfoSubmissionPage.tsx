@@ -2,7 +2,6 @@ import React, { useState, Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {ApplicantStatus, ApplicantStatusColor} from '../../types/Applicant'
-import classes from "./EditInfoSubmissionModal.module.css";
 import { Box, Checkbox, FormControlLabel, Switch } from '@mui/material'
 import { ConstructionRounded } from '@mui/icons-material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal';
@@ -57,6 +56,13 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setFormEditable(!formEditable);
   }
 
+  function handleBackToDash() {
+    if (formEditable)
+      setShowModal(formEditable)
+    else
+       window.location.href = "javascript:history.back()";
+  }
+
   const closeModalHandler = (): void => setShowModal(false)
 
   const generateInfoSubmission = (): Object => {
@@ -85,7 +91,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     <div style = {{ padding: '25px', border: '75px solid #CFEBFD' }}>
       <div>
         <div  className='accountModal'>
-          <button onClick={() => setShowModal(formEditable)}> Back to Dashboard </button>
+          <a onClick={handleBackToDash}>Back to Dashboard</a>
           <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
         </div>
         <h1>{dummyData.name}</h1>

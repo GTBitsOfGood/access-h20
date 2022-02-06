@@ -1,5 +1,6 @@
 import * as React from "react";
 import Button from "@material-ui/core/Button";
+import classes from "./EditInfoSubmissionModal.module.css";
 import Modal from "@mui/material/Modal";
 import PropTypes from "prop-types";
 
@@ -13,7 +14,7 @@ export const EditInfoSubmissionModal = ({ shouldShowModal, onClose }: PropTypes)
     <div>
       <div>
         <Modal open={shouldShowModal} onClose={onClose}>
-          <div className = "modalwrapper">
+          <div className={classes.modalwrapper}>
             <div>
               <h1>Unsaved Changes</h1>
             </div>  
@@ -22,8 +23,8 @@ export const EditInfoSubmissionModal = ({ shouldShowModal, onClose }: PropTypes)
             </div> 
             <div>
                 <a href="javascript:history.back()"> Discard </a>
-                <Button type="button" onClick = {onClose}>
-                    Save
+                <Button type="button" onClick = {onClose} variant="outlined">
+                    View and Save
                 </Button>
             </div> 
           </div>
