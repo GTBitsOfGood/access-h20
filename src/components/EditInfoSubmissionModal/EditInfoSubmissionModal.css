@@ -1,0 +1,12 @@
+.modalwrapper {
+    box-sizing: border-box;
+    background: white;
+    border-radius: 10px;;
+    width: 90%;
+    max-width: 780px;
+    height: auto;
+    margin: 4rem auto;
+    justify-content: center;
+    padding: 20px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
