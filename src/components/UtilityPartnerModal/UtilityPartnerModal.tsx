@@ -212,12 +212,12 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                   alignItems="flex-end"
                   spacing={2}
                 >
-                  <Button variant="contained" className="btn-submit" onClick={addPartner}
+                  <Button variant="contained" onClick={addPartner}
                   style={{
-                    width: "10%",
                     backgroundColor: "#4DBAEA", 
-                    color: '#FFFFFF'
-                }}>Add</Button>
+                    color: '#FFFFFF',
+                    borderRadius: '8px'
+                }}>Add Utility Partner</Button>
                   <Button variant="text" onClick={() => onClose()}>Cancel</Button>
                 </Stack>
           </FormControl>
@@ -228,12 +228,11 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
           <h2>Utility Partner {companyN} has been successfully added</h2>
           <Button 
               onClick={finished} 
-              className={classes.btnSubmit}
               variant="contained"
               style={{
-                  width: "10%",
                   backgroundColor: "#4DBAEA", 
-                  color: '#FFFFFF'
+                  color: '#FFFFFF',
+                  borderRadius: '8px'
               }}
               >
                   Continue
