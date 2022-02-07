@@ -70,8 +70,8 @@
 .selector {
     padding: 18.5px 14px;
     height: auto;
-    border: 0.2px solid gray;
-    border-radius: 2px;
+    border: 0.01px solid rgb(197, 195, 195);
+    border-radius: 4px;
 }
 
 .btnSubmit {

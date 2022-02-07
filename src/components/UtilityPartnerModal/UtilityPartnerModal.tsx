@@ -1,6 +1,6 @@
 import * as React from "react";
 import classes from "./UtilityPartnerModal.module.css";
-import { Button, Modal, TextField, FormControl, } from "@material-ui/core";
+import { Button, Modal, TextField, FormControl, Select } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { useState } from "react";
 // import { getPartner } from 'server/mongodb/actions/Partner'
