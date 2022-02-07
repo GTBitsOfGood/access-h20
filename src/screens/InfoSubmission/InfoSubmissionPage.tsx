@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {ApplicantStatus, ApplicantStatusColor} from '../../types/Applicant'
-import { Checkbox } from '@mui/material'
+import { Box, Checkbox, FormControlLabel, Switch } from '@mui/material'
+import { ConstructionRounded } from '@mui/icons-material'
+import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal';
 
 interface Applicant {
   name: string
@@ -34,6 +36,8 @@ interface PropTypes {
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   // Yes or No
+  const [showModal, setShowModal] = useState(false)
+  const [formEditable, setFormEditable] = useState(false)
   const [paymentAns, setPaymentAns] = useState(false)
   const [servicesAns, setServicesAns] = useState(false)
   const [contactAns, setContactAns] = useState(false)
@@ -48,7 +52,21 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [infoAns, setInfoAns] = useState('')
   const [indivAns, setIndivAns] = useState('')
 
+  function handleClick() {
+    setFormEditable(!formEditable);
+  }
+
+  function handleBackToDash() {
+    if (formEditable)
+      setShowModal(formEditable)
+    else
+       window.location.href = "javascript:history.back()";
+  }
+
+  const closeModalHandler = (): void => setShowModal(false)
+
   const generateInfoSubmission = (): Object => {
+    setFormEditable(false);
     return {
       payments: booleanToYesOrNo(paymentAns),
       minimumService: booleanToYesOrNo(servicesAns),
@@ -68,11 +86,14 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
     return 'No'
   }
-
+  
   return (
     <div style = {{ padding: '25px', border: '75px solid #CFEBFD' }}>
       <div>
-        <a href="./" style = {{ fontWeight: 'normal', color: '#9A9A9A', textDecoration: 'none', fontFamily: 'Roboto' }}>{back}</a>
+        <div  className='accountModal'>
+          <a onClick={handleBackToDash}>Back to Dashboard</a>
+          <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
+        </div>
         <h1>{dummyData.name}</h1>
         <div>
           <div style = {{ display: 'flex', width: '500px', height: '35px' }}>
@@ -113,93 +134,136 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
       <hr style = {{ width: '100%', border: '1px solid #DADADA', marginTop: '30px', marginBottom: '30px' }}/>
 
-      <h3>Eligibility</h3>
-      <div>
-        <div style = {{ display: 'flex', width: '1000px' }}>
-          <div style = {{ flex: '50px' }}>
-            <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} />
-          </div>
-          <div style = {{ flex: '700px' }}>
-            <p style = {{ fontWeight: 'bold' }}>Payments</p>
-            <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
-          </div>
-        </div>
-        <div style = {{ display: 'flex', width: '1000px' }}>
-          <div style = {{ flex: '50px' }}>
-            <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} />
-          </div>
-          <div style = {{ flex: '700px' }}>
-            <p style = {{ fontWeight: 'bold' }}>Minimum Services</p>
-            <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
-          </div>
-        </div>
-        <div style = {{ display: 'flex', width: '1000px' }}>
-          <div style = {{ flex: '50px' }}>
-            <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} />
-          </div>
-          <div style = {{ flex: '700px' }}>
-            <p style = {{ fontWeight: 'bold' }}>Customer Contact</p>
-            <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
-          </div>
-        </div>
-        <div style = {{ display: 'flex', width: '1000px' }}>
-          <div style = {{ flex: '50px' }}>
-            <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} />
-          </div>
-          <div style = {{ flex: '700px' }}>
-            <p style = {{ fontWeight: 'bold' }}>Water Meter</p>
-            <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
-          </div>
-        </div>
-      </div>
-      <h3>Document Submission</h3>
-      <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
-        <Button variant="contained" component="label" style = {{ flex: '50px', width: '75px', height: '50px' }}>
-          Upload
-          <input id="paymentFile" type="file" hidden onChange = {(e) => {
-            if (e.target.files === null || e.target.files.length < 1) {
-              alert('Please upload a valid file.')
-              return
-            }
+      <Box sx={{ '& > button': { m: 1 } }}>
+      <FormControlLabel
+        sx={{
+          display: 'block',
+        }}
+        control={
+          <Button
+            onClick={handleClick}
+            variant="outlined"
+            color = "primary"
+          >
+            Update Info
+          </Button>
+        }
+        label=""
+        />
 
-            setPaymentFile(e.target.files[0])
-          }}/>
-        </Button>
-        <p style = {{ flex: '50px', padding: '10px' }}>Payment History</p>
-      </div>
-      <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
-        <Button id="usageFile" variant="contained" component="label" style = {{ flex: '50px', width: '75px', height: '50px' }}>
-          Upload
-          <input id="paymentFile" type="file" hidden onChange = {(e) => {
-            if (e.target.files === null || e.target.files.length < 1) {
-              alert('Please upload a valid file.')
-              return
-            }
+        <h3>Eligibility</h3>
+        <div>
+          <div style = {{ display: 'flex', width: '1000px' }}>
+            <div style = {{ flex: '50px' }}>
+              <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} disabled={!formEditable}/>
+            </div>
+            <div style = {{ flex: '700px' }}>
+              <p style = {{ fontWeight: 'bold' }}>Payments</p>
+              <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
+            </div>
+          </div>
+          <div style = {{ display: 'flex', width: '1000px' }}>
+            <div style = {{ flex: '50px' }}>
+              <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} disabled={!formEditable}/>
+            </div>
+            <div style = {{ flex: '700px' }}>
+              <p style = {{ fontWeight: 'bold' }}>Minimum Services</p>
+              <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
+            </div>
+          </div>
+          <div style = {{ display: 'flex', width: '1000px' }}>
+            <div style = {{ flex: '50px' }}>
+              <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} disabled={!formEditable}/>
+            </div>
+            <div style = {{ flex: '700px' }}>
+              <p style = {{ fontWeight: 'bold' }}>Customer Contact</p>
+              <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
+            </div>
+          </div>
+          <div style = {{ display: 'flex', width: '1000px' }}>
+            <div style = {{ flex: '50px' }}>
+              <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} disabled={!formEditable}/>
+            </div>
+            <div style = {{ flex: '700px' }}>
+              <p style = {{ fontWeight: 'bold' }}>Water Meter</p>
+              <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
+            </div>
+          </div>
+        </div>
 
-            setUsageFile(e.target.files[0])
-          }}/>
-        </Button>
-        <p style = {{ flex: '50px', padding: '10px' }}>Usage History</p>
-      </div>
+        <h3>Document Submission</h3>
+        <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
+          <Button 
+            variant="outlined"
+            component="label"
+            disabled={!formEditable}
+            style = {{ flex: '50px', width: '75px', height: '50px' }}>
+            Upload
+            <input id="paymentFile" type="file" hidden onChange = {(e) => {
+              if (e.target.files === null || e.target.files.length < 1) {
+                alert('Please upload a valid file.')
+                return
+              }
 
-      <h3>Other</h3>
-      <div>
-        <p>Are there any pending adjustments?</p>
-        <TextField id="adjustAns" onChange= {(e) => setAdjustAns(e.target.value)}/>
+              setPaymentFile(e.target.files[0])
+            }}/>
+          </Button>
+          <p style = {{ flex: '50px', padding: '10px' }}>Payment History</p>
+        </div>
+        <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
+          <Button
+            id="usageFile"
+            variant="outlined"
+            disabled={!formEditable}
+            component="label"
+            style = {{ flex: '50px', width: '75px', height: '50px' }}>
+            Upload
+            <input id="paymentFile" type="file" hidden onChange = {(e) => {
+              if (e.target.files === null || e.target.files.length < 1) {
+                alert('Please upload a valid file.')
+                return
+              }
+
+              setUsageFile(e.target.files[0])
+            }}/>
+          </Button>
+          <p style = {{ flex: '50px', padding: '10px' }}>Usage History</p>
+        </div>
+
+        <h3>Other</h3>
+        <div>
+          <p>Are there any pending adjustments?</p>
+          <TextField 
+            id="adjustAns" 
+            onChange= {(e) => setAdjustAns(e.target.value)}
+            disabled={!formEditable}
+            />
 
         <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
-        <TextField id="indivAns" onChange={(e) => setIndivAns(e.target.value)}/>
-      </div>
-      <div>
-        <p>Is there any additional information we should know about the account?</p>
-        <TextField id="infoAns" onChange= {(e) => setInfoAns(e.target.value)}/>
-      </div>
-      <Button type="button" onClick = {(() => console.log(generateInfoSubmission()))}>
-          Save
-      </Button>
-    </div>
+        <TextField 
+            id="indivAns"
+            onChange={(e) => setIndivAns(e.target.value)}
+            disabled={!formEditable}/>
+        </div>
+        <div>
+            <p>Is there any additional information we should know about the account?</p>
+            <TextField
+                id="infoAns"
+                onChange= {(e) => setInfoAns(e.target.value)}
+                disabled={!formEditable}/>
+        </div>
+          <Button 
+          type="button"
+          variant = "outlined"
+          onClick = {(() => console.log(generateInfoSubmission()))}>
+          
+              Save
+          </Button>
 
+      </Box>
+     </div>
   )
 }
 
 export default InfoSubmissionPage
+
