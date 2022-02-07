@@ -14,6 +14,12 @@ export async function getClient(accountId: Client["accountId"]) {
     return client;
 }
 
+export async function getClients() {
+    await mongoDB();
+    const client = await ClientSchema.find();
+    return client;
+}
+
 export async function editNotes(notes: Client["notes"], accountId: Client["accountId"]) {
     await mongoDB();
     const client = await ClientSchema.findOne({ accountId });
