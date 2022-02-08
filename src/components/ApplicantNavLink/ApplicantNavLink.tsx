@@ -19,7 +19,7 @@ export default function ApplicantNavLink (): JSX.Element {
   //   setAuth(event.target.checked)
   // }
 
-  const handleMenu = (event): void => {
+  const handleMenu = (event: any): void => {
     setAnchorEl(event.currentTarget)
   }
 

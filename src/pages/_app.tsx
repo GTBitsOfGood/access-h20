@@ -29,6 +29,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const route = appContext.ctx.asPath
 
   return await getCurrentUser(cookies)
+  // @ts-ignore
     .then((user) => {
       if (route === '/login') {
         if (res != null) {
@@ -44,8 +45,9 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
         currentUser: user
       }
     })
+  // @ts-ignore
     .catch(() => {
-      if (route.startsWith('/test')) {
+      if (route?.startsWith('/test')) {
         if (res != null) {
           res.writeHead(301, { Location: urls.pages.index })
           res.end()

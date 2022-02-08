@@ -11,5 +11,5 @@ export async function addNote (note: Note): Promise<Note> {
 export async function getNotes (): Promise<Client> {
   await mongoDB()
   const client = await NoteSchema.find()
-  return client
+  return client as unknown as Client
 }

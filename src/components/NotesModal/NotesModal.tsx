@@ -34,7 +34,7 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
   //   setNotes(notes)
   // })
 
-  const handleTextChange = (e): void => {
+  const handleTextChange = (e: any): void => {
     setNewNote(e.target.value)
   }
 

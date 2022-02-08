@@ -19,28 +19,28 @@ export async function getClients (): Promise<Client[]> {
   return client
 }
 
-export async function editNotes (notes: Client['notes'], accountId: Client['accountId']): void {
+export async function editNotes (notes: Client['notes'], accountId: Client['accountId']): Promise<void> {
   await mongoDB()
   const client = await ClientSchema.findOne({ accountId })
   client.notes = notes
   client.save()
 }
 
-export async function changeStatus (status: Client['status'], accountId: Client['accountId']): void {
+export async function changeStatus (status: Client['status'], accountId: Client['accountId']): Promise<void> {
   await mongoDB()
   const client = await ClientSchema.findOne({ accountId })
   client.status = status
   client.save()
 }
 
-export async function addDocument (document: File, accountId: Client['accountId']): void {
+export async function addDocument (document: File, accountId: Client['accountId']): Promise<void> {
   await mongoDB()
   const client = await ClientSchema.findOne({ accountId })
   client.documents.push(document)
   client.save()
 }
 
-export async function removeDocument (document: File, accountId: Client['accountId']): void {
+export async function removeDocument (document: File, accountId: Client['accountId']): Promise<void> {
   await mongoDB()
   const client = await ClientSchema.findOne({ accountId })
   const docs = client.documents
