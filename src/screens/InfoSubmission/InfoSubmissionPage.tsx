@@ -105,7 +105,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   };
 
   return (
-    <div >
+    <div className={style.infoSubmissionBackground}>
       <div>
         <a href="./">{back}</a>
         <h1>{dummyData.name}</h1>
