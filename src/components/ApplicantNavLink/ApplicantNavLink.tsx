@@ -1,34 +1,34 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import classes from "./ApplicantNavLink.module.css";
-import { Typography } from '@material-ui/core';
-import { Circle } from '@mui/icons-material';
+import * as React from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import AccountCircle from '@mui/icons-material/AccountCircle'
+import Switch from '@mui/material/Switch'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
+import MenuItem from '@mui/material/MenuItem'
+import Menu from '@mui/material/Menu'
+import classes from './ApplicantNavLink.module.css'
+import { Typography } from '@material-ui/core'
+import { Circle } from '@mui/icons-material'
 
-export default function ApplicantNavLink() {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function ApplicantNavLink () {
+  const [auth, setAuth] = React.useState(true)
+  const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+    setAuth(event.target.checked)
+  }
 
   const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -41,12 +41,12 @@ export default function ApplicantNavLink() {
           edge="start"
           color="inherit"
           aria-label="menu"
-          sx={{ mx: "auto" }}
+          sx={{ mx: 'auto' }}
         >
         </IconButton>
         {auth && (
           <div>
-            
+
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -62,12 +62,12 @@ export default function ApplicantNavLink() {
               anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               open={Boolean(anchorEl)}
               onClose={handleClose}
@@ -80,5 +80,5 @@ export default function ApplicantNavLink() {
       </Toolbar>
     </AppBar>
     </Box>
-  );
+  )
 }

@@ -1,16 +1,16 @@
-import InfoSubmissionPage from "../../../screens/InfoSubmission";
-import { useRouter } from "next/router";
+import InfoSubmissionPage from '../../../screens/InfoSubmission'
+import { useRouter } from 'next/router'
 
 const ApplicantInfoSubmissionPage = () => {
-  const router = useRouter();
-  const { applicantId } = router.query;
+  const router = useRouter()
+  const { applicantId } = router.query
 
   if (!applicantId || Array.isArray(applicantId)) {
     throw new Error(
-      "Could not render info submission page, invalid applicant ID"
-    );
+      'Could not render info submission page, invalid applicant ID'
+    )
   }
-  return InfoSubmissionPage({ applicantId: applicantId });
-};
+  return InfoSubmissionPage({ applicantId: applicantId })
+}
 
-export default ApplicantInfoSubmissionPage;
+export default ApplicantInfoSubmissionPage

@@ -1,5 +1,5 @@
 import React from 'react'
-import App, {AppContext} from 'next/app'
+import App, { AppContext } from 'next/app'
 import Head from 'next/head'
 import Router from 'next/router'
 import { getCurrentUser } from '../actions/User'
@@ -31,7 +31,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   return await getCurrentUser(cookies)
     .then((user) => {
       if (route === '/login') {
-        if (res) {
+        if (res != null) {
           res.writeHead(301, { Location: urls.pages.app.home })
           res.end()
         } else {
@@ -46,7 +46,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     })
     .catch(() => {
       if (route.startsWith('/test')) {
-        if (res) {
+        if (res != null) {
           res.writeHead(301, { Location: urls.pages.index })
           res.end()
         } else {

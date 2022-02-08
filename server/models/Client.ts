@@ -1,15 +1,18 @@
-import { ClientStatus } from "./ClientStatus"
+import { ClientStatus } from './ClientStatus'
+// import { EligibilityStatus } from './EligibilityStatus'
+
 export interface Client {
-    name: string;
-    utilityCompany: string;
-    accountId: string;
-    status: ClientStatus;
-    address: string;
-    notes: [string];
-    eligibilityStatuses: {
-        question: String,
-        answer: Boolean
-    };
-    documents: [File];
-    otherQuestions: [string];
+  name: string
+  utilityCompany: string
+  accountId: string
+  status: ClientStatus
+  address: string
+  applied: Date
+  notes: [string]
+  eligibilityStatuses: {
+    question: string
+    answer: boolean
+  }
+  documents: [File]
+  otherQuestions: [string]
 }

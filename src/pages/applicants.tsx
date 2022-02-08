@@ -1,3 +1,3 @@
-import ApplicantViewPage from "../screens/ApplicantView";
+import ApplicantViewPage from '../screens/ApplicantView'
 
-export default ApplicantViewPage;
+export default ApplicantViewPage

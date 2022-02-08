@@ -15,123 +15,19 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
+import { addClient } from '../../actions/Client'
 import { v4 as uuidv4 } from 'uuid'
 import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
-import { CompanyModal } from "src/components/CompanyModal/CompanyModal";
+import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
 import classes from './ApplicantTable.module.css'
+import { NextPage } from 'next'
 
 interface PropTypes {
   isUtilityView: boolean // true = utility view & false = AccessH2O view
   infoSubmissionEndpoint: string
+  applicants: Applicant[]
 }
-
-const applicants: Applicant[] = [
-  {
-    name: 'applicant 1',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '123 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.AwaitingAccessH2O
-  },
-  {
-    name: 'applicant 2',
-    utilityCompany: 'City of San Francisco',
-    accountId: uuidv4().toString(),
-    propertyAddress: '1234 San Francisco Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Completed
-  },
-  {
-    name: 'applicant 3',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '523 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Approved
-  },
-  {
-    name: 'applicant 4',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  },
-  {
-    name: 'applicant 5',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.AwaitingUtility
-  },
-  {
-    name: 'applicant 6',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Denied
-  },
-  {
-    name: 'applicant 7',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  },
-  {
-    name: 'applicant 8',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  },
-  {
-    name: 'applicant 9',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  },
-  {
-    name: 'applicant 10',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  },
-  {
-    name: 'applicant 11',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  },
-  {
-    name: 'applicant 12',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  },
-  {
-    name: 'applicant 13',
-    utilityCompany: 'City of Atlanta',
-    accountId: uuidv4().toString(),
-    propertyAddress: '125 George Burdell Blvd',
-    applied: new Date(),
-    status: ApplicantStatus.Terminated
-  }
-]
 
 /**
  * Paginates an applicant array.
@@ -150,7 +46,8 @@ const paginate = (
 
 const ApplicantTable = ({
   isUtilityView,
-  infoSubmissionEndpoint
+  infoSubmissionEndpoint,
+  applicants
 }: PropTypes): JSX.Element => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -318,84 +215,80 @@ const ApplicantTable = ({
               <TableCell />
             </TableRow>
           </TableHead>
+          <TableBody>{
+  paginate(filteredApplicants, page, rowsPerPage).map(
+    (applicant) => {
+      const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
+      const open = Boolean(anchorEl)
+      const handleClick = (event: React.MouseEvent): void => {
+        setAnchorEl(event.currentTarget)
+      }
+      const handleClose = (): void => {
+        setAnchorEl(null)
+      }
 
-          <TableBody>
-            {
-              paginate(filteredApplicants, page, rowsPerPage).map(
-                (applicant) => {
-                  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
-                  const open = Boolean(anchorEl)
-                  const handleClick = (event: React.MouseEvent): void => {
-                    setAnchorEl(event.currentTarget)
-                  }
-                  const handleClose = (): void => {
-                    setAnchorEl(null)
-                  }
-
-                  return (
-                      <TableRow key={applicant.accountId}>
-                        <Link
-                          href={
-                            infoSubmissionEndpoint + '/' + applicant.accountId
-                          }
-                        >
-                          <TableCell className={classes.cell}>
-                              {applicant.name}
-                          </TableCell>
-                        </Link>
-                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                        <TableCell className={classes.cell}>
-                          {applicant.propertyAddress}
-                        </TableCell>
-                        <TableCell className={classes.cell}>
-                          {applicant.applied.toDateString()}
-                        </TableCell>
-                        <TableCell className={classes.cell}>
-                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-                            {applicant.status}
-                          </span>
-                        </TableCell>
-                        <TableCell align="center">
-                        <Tooltip title={'View notes'}>
-                          <IconButton>
-                            <Announcement/>
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          id="basic-button"
-                          aria-controls="basic-menu"
-                          aria-haspopup="true"
-                          aria-expanded={open ? 'true' : undefined}
-                          onClick={handleClick}
-                        >
-                          <MoreVert/>
-                        </IconButton>
-                        <Menu
-                          id="basic-menu"
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          MenuListProps={{
-                            'aria-labelledby': 'basic-button'
-                          }}
-                        >
-                          <MenuItem onClick={handleClose}>View</MenuItem>
-                          <MenuItem onClick={handleClose}>Add Notes</MenuItem>
-                          <MenuItem onClick={handleClose}>Change Status</MenuItem>
-                          <div className={classes.deleteButton}>
-                            <MenuItem onClick={handleClose}>Delete</MenuItem>
-                          </div>
-                        </Menu>
-                      </TableCell>
-                    </TableRow>
-                  )
-                }
-              )
+      return (
+        <TableRow key={applicant.accountId}>
+          <Link
+            href={
+              infoSubmissionEndpoint + '/' + applicant.accountId
             }
-          </TableBody>
+          >
+            <TableCell className={classes.cell}>
+                {applicant.name}
+            </TableCell>
+          </Link>
+          <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+          <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+          <TableCell className={classes.cell}>
+            {applicant.address}
+          </TableCell>
+          <TableCell className={classes.cell}>
+            {new Date(applicant.applied).toDateString()}
+          </TableCell>
+          <TableCell className={classes.cell}>
+            <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
+              {applicant.status}
+            </span>
+          </TableCell>
+          <TableCell align="center">
+          <Tooltip title={'View notes'}>
+            <IconButton>
+              <Announcement/>
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+        <TableCell>
+          <IconButton
+            id="basic-button"
+            aria-controls="basic-menu"
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+          >
+            <MoreVert/>
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button'
+            }}
+          >
+            <MenuItem onClick={handleClose}>View</MenuItem>
+            <MenuItem onClick={handleClose}>Add Notes</MenuItem>
+            <MenuItem onClick={handleClose}>Change Status</MenuItem>
+            <div className={classes.deleteButton}>
+              <MenuItem onClick={handleClose}>Delete</MenuItem>
+            </div>
+          </Menu>
+        </TableCell>
+      </TableRow>
+      )
+    }
+  )}</TableBody>
         </Table>
 
         <TablePagination
