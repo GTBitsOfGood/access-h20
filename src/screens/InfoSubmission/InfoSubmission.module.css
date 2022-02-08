@@ -58,19 +58,38 @@
     border: 75px solid #CFEBFD;
 }
 
+.infoSubmissionContent {
+    margin: 75px;
+}
+
 .customerInfo {
     display: flex;
     flex-direction: row;
 }
 
-.customerComponents {
+.customerComponentList {
     display: flex;
     flex-direction: column;
-    margin: 20px;
+    justify-content: space-around;
+}
+
+.customerComponent {
+    display: flex;
+    flex-direction: column;
 }
 
 .dropdown {
     position: absolute;
     display: flex;
     flex-direction: column;
+}
+
+.goBack {
+    color: #9A9A9A;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.goBack:hover {
+    text-decoration: underline;
 }

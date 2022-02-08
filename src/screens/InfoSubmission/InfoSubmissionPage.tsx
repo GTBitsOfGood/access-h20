@@ -16,6 +16,7 @@ interface Applicant {
   propertyAddress: string;
   applied: Date;
   status: ApplicantStatus;
+  phoneNumber: string; // Get this checked with Charlie, shoudl applicant have phone num?
 }
 
 const dummyData: Applicant = {
@@ -25,13 +26,14 @@ const dummyData: Applicant = {
   propertyAddress: "2886 Lime St Durham, NC 27704",
   applied: new Date("2019-01-16"),
   status: ApplicantStatus.AwaitingUtility,
+  phoneNumber: "(111)111-1111",
 };
 
 const setStatusColor = (status: ApplicantStatus): string => {
   return ApplicantStatusColor[status];
 };
 
-const back = "<   Back to Dashboard";
+const back = "&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard";
 
 interface PropTypes {
   applicantId: string;
@@ -87,11 +89,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     };
   };
 
-  // const handleNoteClick = () => {
-
-  //   setShowNotes(true)
-  // }
-
   const handleStatusClick = (event: any) => {
     setStatus(event.target.value);
     console.log(event.target.value);
@@ -106,16 +103,20 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   return (
     <div className={style.infoSubmissionBackground}>
-      <div>
-        <a href="./">{back}</a>
+      <div className={style.infoSubmissionContent}>
+        <a className={style.goBack} href="./">
+          &lt;&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard
+        </a>
         <h1>{dummyData.name}</h1>
         <div className={style.customerInfo}>
-          <div className={style.customerComponents}>
-            <div>
+          <div className={style.customerComponentList}>
+            <div className={style.customerComponent}>
               <h4>Status</h4>
-            </div>
-            <div>
-              <Select id="status-menu" onChange={handleStatusClick}>
+              <Select
+                id="status-menu"
+                onChange={handleStatusClick}
+                value={status}
+              >
                 <MenuItem value={"Awaiting Utility"}>Awaiting Utility</MenuItem>
                 <MenuItem value={"Terminated"}>Terminated</MenuItem>
                 <MenuItem value={"Denied"}>Denied</MenuItem>
@@ -125,227 +126,234 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   Awaiting AccessH2O
                 </MenuItem>
               </Select>
-              <h4>{status}</h4>
             </div>
-          </div>
-          <div className={style.customerComponents}>  
-            <div>
-              <h4>Account ID</h4>
-            </div>
-            <div>
+            <div className={style.customerComponent}>
+              <h5>Account ID</h5>
               <h4>{dummyData.accountId}</h4>
             </div>
-          </div>
-          <div className={style.customerComponents}>
-            <div>
-              <h4>Address</h4>
+            <div className={style.customerComponent}>
+              <h4>Phone Number</h4>
+              <h4>{dummyData.phoneNumber}</h4>
             </div>
-            <div>
+            <div className={style.customerComponent}>
+              <h4>Address</h4>
               <h4>{dummyData.propertyAddress}</h4>
             </div>
-          </div>  
-        </div>       
-      </div>
-
-      <hr />
-
-      <div className={style.sectionContainer}>
-        <div className={style.sectionTitleContainer}>
-          <h3>Notes</h3>
+          </div>
         </div>
 
-        <div className={style.sectionNotesContainer}>
-          <div className={style.noteStack}>
-            {notes.map((note) => (
-              <TextField
-                id="savedNotes"
-                variant="filled"
-                defaultValue={note}
-                className={style.stickyNote}
-                InputProps={{ readOnly: true, disableUnderline: true }}
-              ></TextField>
-            ))}
+        <hr />
+
+        <div className={style.sectionContainer}>
+          <div className={style.sectionTitleContainer}>
+            <h3>Notes</h3>
           </div>
 
-          <div>
-            {textFieldDisplayed ? (
-              <TextField
-                id="notesField"
-                label="Add your note here"
-                variant="outlined"
-                onChange={(e) => setCurrentInput(e.target.value)}
-                value={currentInput}
-              ></TextField>
-            ) : (
-              <a onClick={() => setTextFieldDisplayed(true)}> + Add Note </a>
-            )}
-          </div>
-          <div>
-            <Button
-              id="note"
-              onClick={() => {
-                if (textFieldDisplayed) {
-                  setNotes([...notes, currentInput]);
-                  setCurrentInput("");
+          <div className={style.sectionNotesContainer}>
+            <div className={style.noteStack}>
+              {notes.map((note) => (
+                <TextField
+                  id="savedNotes"
+                  variant="filled"
+                  defaultValue={note}
+                  className={style.stickyNote}
+                  InputProps={{ readOnly: true, disableUnderline: true }}
+                ></TextField>
+              ))}
+            </div>
+
+            <div>
+              {textFieldDisplayed ? (
+                <TextField
+                  id="notesField"
+                  label="Add your note here"
+                  variant="outlined"
+                  onChange={(e) => setCurrentInput(e.target.value)}
+                  value={currentInput}
+                ></TextField>
+              ) : (
+                <a onClick={() => setTextFieldDisplayed(true)}> + Add Note </a>
+              )}
+            </div>
+            <div>
+              <Button
+                id="note"
+                onClick={() => {
+                  if (textFieldDisplayed) {
+                    setNotes([...notes, currentInput]);
+                    setCurrentInput("");
+                    setTextFieldDisplayed(false);
+                  }
+                }}
+                variant="contained"
+                component="label"
+              >
+                Add Note
+              </Button>
+
+              <Button
+                id="note"
+                onClick={() => {
                   setTextFieldDisplayed(false);
-                }
-              }}
-              variant="contained"
-              component="label"
-            >
-              Add Note
-            </Button>
-
-            <Button
-              id="note"
-              onClick={() => {
-                setTextFieldDisplayed(false);
-              }}
-              variant="contained"
-              component="label"
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-        <div className={style.sectionRightFiller}></div>
-      </div>
-
-      <hr />
-      <div className={style.sectionContainer}>
-        <div className={style.sectionTitleContainer}>
-          <h3>Eligibility</h3>
-        </div>
-
-        <div className={style.sectionEligibilityContainer}>
-          <div className={style.eligibilityStack}>
-            <div>
-              <Checkbox
-                checked={paymentAns}
-                onChange={() => setPaymentAns(!paymentAns)}
-              />
-            </div>
-            <div>
-              <p>Payments</p>
-              <p>
-                Has the client made a minimum of 3 payments over the last 12
-                months?
-              </p>
-            </div>
-            <div>
-              <Checkbox
-                checked={servicesAns}
-                onChange={() => setServicesAns(!servicesAns)}
-              />
-            </div>
-            <div>
-              <p>Minimum Services</p>
-              <p>Does the customer have a minimum of 12 months of service?</p>
-            </div>
-            <div>
-              <Checkbox
-                checked={contactAns}
-                onChange={() => setContactAns(!contactAns)}
-              />
-            </div>
-            <div>
-              <p>Customer Contact</p>
-              <p>Has the customer been in contact with your utility company?</p>
-            </div>
-            <div>
-              <Checkbox
-                checked={waterAns}
-                onChange={() => setWaterAns(!waterAns)}
-              />
-            </div>
-            <div>
-              <p>Water Meter</p>
-              <p>Does the property with dedicated water meter?</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <hr />
-
-      <div className={style.sectionContainer}>
-        <div className={style.sectionTitleContainer}>
-          <h3>Documents</h3>
-        </div>
-
-        <div className={style.sectionDocumentsContainer}>
-          <div className={style.documentStack}>
-            <div>
-              <Button variant="contained" component="label">
-                Upload
-                <input
-                  id="paymentFile"
-                  type="file"
-                  hidden
-                  onChange={(e) => {
-                    if (e.target.files === null || e.target.files.length < 1) {
-                      alert("Please upload a valid file.");
-                      return;
-                    }
-
-                    setPaymentFile(e.target.files[0]);
-                  }}
-                />
+                }}
+                variant="contained"
+                component="label"
+              >
+                Cancel
               </Button>
-              <p>Payment History</p>
             </div>
+          </div>
+          <div className={style.sectionRightFiller}></div>
+        </div>
 
-            <div>
-              <Button id="usageFile" variant="contained" component="label">
-                Upload
-                <input
-                  id="paymentFile"
-                  type="file"
-                  hidden
-                  onChange={(e) => {
-                    if (e.target.files === null || e.target.files.length < 1) {
-                      alert("Please upload a valid file.");
-                      return;
-                    }
+        <hr />
+        <div className={style.sectionContainer}>
+          <div className={style.sectionTitleContainer}>
+            <h3>Eligibility</h3>
+          </div>
 
-                    setUsageFile(e.target.files[0]);
-                  }}
+          <div className={style.sectionEligibilityContainer}>
+            <div className={style.eligibilityStack}>
+              <div>
+                <Checkbox
+                  checked={paymentAns}
+                  onChange={() => setPaymentAns(!paymentAns)}
                 />
-              </Button>
-              <p>Usage History</p>
+              </div>
+              <div>
+                <p>Payments</p>
+                <p>
+                  Has the client made a minimum of 3 payments over the last 12
+                  months?
+                </p>
+              </div>
+              <div>
+                <Checkbox
+                  checked={servicesAns}
+                  onChange={() => setServicesAns(!servicesAns)}
+                />
+              </div>
+              <div>
+                <p>Minimum Services</p>
+                <p>Does the customer have a minimum of 12 months of service?</p>
+              </div>
+              <div>
+                <Checkbox
+                  checked={contactAns}
+                  onChange={() => setContactAns(!contactAns)}
+                />
+              </div>
+              <div>
+                <p>Customer Contact</p>
+                <p>
+                  Has the customer been in contact with your utility company?
+                </p>
+              </div>
+              <div>
+                <Checkbox
+                  checked={waterAns}
+                  onChange={() => setWaterAns(!waterAns)}
+                />
+              </div>
+              <div>
+                <p>Water Meter</p>
+                <p>Does the property with dedicated water meter?</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <hr />
+        <hr />
 
-      <h3>Additional</h3>
-      <div>
-        <p>Are there any pending adjustments?</p>
-        <TextField id="notesField" variant="outlined"></TextField>
+        <div className={style.sectionContainer}>
+          <div className={style.sectionTitleContainer}>
+            <h3>Documents</h3>
+          </div>
 
-        <p>
-          What (if any) other individuals are involved (spouse, landlord,
-          dependent)?
-        </p>
-        <TextField
-          id="indivAns"
-          onChange={(e) => setIndivAns(e.target.value)}
-        />
+          <div className={style.sectionDocumentsContainer}>
+            <div className={style.documentStack}>
+              <div>
+                <Button variant="contained" component="label">
+                  Upload
+                  <input
+                    id="paymentFile"
+                    type="file"
+                    hidden
+                    onChange={(e) => {
+                      if (
+                        e.target.files === null ||
+                        e.target.files.length < 1
+                      ) {
+                        alert("Please upload a valid file.");
+                        return;
+                      }
+
+                      setPaymentFile(e.target.files[0]);
+                    }}
+                  />
+                </Button>
+                <p>Payment History</p>
+              </div>
+
+              <div>
+                <Button id="usageFile" variant="contained" component="label">
+                  Upload
+                  <input
+                    id="paymentFile"
+                    type="file"
+                    hidden
+                    onChange={(e) => {
+                      if (
+                        e.target.files === null ||
+                        e.target.files.length < 1
+                      ) {
+                        alert("Please upload a valid file.");
+                        return;
+                      }
+
+                      setUsageFile(e.target.files[0]);
+                    }}
+                  />
+                </Button>
+                <p>Usage History</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <h3>Additional</h3>
+        <div>
+          <p>Are there any pending adjustments?</p>
+          <TextField id="notesField" variant="outlined"></TextField>
+
+          <p>
+            What (if any) other individuals are involved (spouse, landlord,
+            dependent)?
+          </p>
+          <TextField
+            id="indivAns"
+            onChange={(e) => setIndivAns(e.target.value)}
+          />
+        </div>
+        <div>
+          <p>
+            Is there any additional information we should know about the
+            account?
+          </p>
+          <TextField
+            id="infoAns"
+            onChange={(e) => setInfoAns(e.target.value)}
+          />
+        </div>
+        <Button
+          type="button"
+          onClick={() => console.log(generateInfoSubmission())}
+        >
+          Save
+        </Button>
       </div>
-      <div>
-        <p>
-          Is there any additional information we should know about the account?
-        </p>
-        <TextField id="infoAns" onChange={(e) => setInfoAns(e.target.value)} />
-      </div>
-      <Button
-        type="button"
-        onClick={() => console.log(generateInfoSubmission())}
-      >
-        Save
-      </Button>
     </div>
   );
 };
