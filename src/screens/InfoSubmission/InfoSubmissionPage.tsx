@@ -109,19 +109,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
       <div>
         <a href="./">{back}</a>
         <h1>{dummyData.name}</h1>
-        <div>
-          <div>
+        <div className={style.customerInfo}>
+          <div className={style.customerComponents}>
             <div>
               <h4>Status</h4>
             </div>
-            <div>
-              <h4>Account ID</h4>
-            </div>
-            <div>
-              <h4>Address</h4>
-            </div>
-          </div>
-          <div>
             <div>
               <Select id="status-menu" onChange={handleStatusClick}>
                 <MenuItem value={"Awaiting Utility"}>Awaiting Utility</MenuItem>
@@ -135,14 +127,24 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               </Select>
               <h4>{status}</h4>
             </div>
+          </div>
+          <div className={style.customerComponents}>  
+            <div>
+              <h4>Account ID</h4>
+            </div>
             <div>
               <h4>{dummyData.accountId}</h4>
+            </div>
+          </div>
+          <div className={style.customerComponents}>
+            <div>
+              <h4>Address</h4>
             </div>
             <div>
               <h4>{dummyData.propertyAddress}</h4>
             </div>
-          </div>
-        </div>
+          </div>  
+        </div>       
       </div>
 
       <hr />

@@ -28,22 +28,24 @@
 }
 
 .noteStack {
+    position: absolute;
     display: flex;
     flex-direction: column;
+    left: 255px;
 }
 
 .eligibilityStack {
     position: absolute;
     display: flex;
     flex-direction: column;
-    left: 255px;
+    left: 315px;
 }
 
 .documentStack {
     position: absolute;
     display: flex;
     flex-direction: column;
-    left: 255px;
+    left: 315px;
 }
 
 .sectionDocumentsContainer {
@@ -56,6 +58,19 @@
     border: 75px solid #CFEBFD;
 }
 
-.dropdown {
+.customerInfo {
+    display: flex;
+    flex-direction: row;
+}
 
+.customerComponents {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.dropdown {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
 }
