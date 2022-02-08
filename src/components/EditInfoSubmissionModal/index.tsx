@@ -1,3 +1,3 @@
-import { EditInfoSubmissionModal } from "./EditInfoSubmissionModal";
+import { EditInfoSubmissionModal } from './EditInfoSubmissionModal'
 
-export default EditInfoSubmissionModal;
+export default EditInfoSubmissionModal

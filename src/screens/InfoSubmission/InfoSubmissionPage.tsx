@@ -1,10 +1,9 @@
-import React, { useState, Component } from 'react'
+import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import {ApplicantStatus, ApplicantStatusColor} from '../../types/Applicant'
-import { Box, Checkbox, FormControlLabel, Switch } from '@mui/material'
-import { ConstructionRounded } from '@mui/icons-material'
-import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal';
+import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
+import { Box, Checkbox, FormControlLabel } from '@mui/material'
+import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
 
 interface Applicant {
   name: string
@@ -28,8 +27,6 @@ const setStatusColor = (status: ApplicantStatus): string => {
   return ApplicantStatusColor[status]
 }
 
-const back = '<   Back to Dashboard'
-
 interface PropTypes {
   applicantId: string
 }
@@ -52,21 +49,18 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [infoAns, setInfoAns] = useState('')
   const [indivAns, setIndivAns] = useState('')
 
-  function handleClick() {
-    setFormEditable(!formEditable);
+  function handleClick (): void {
+    setFormEditable(!formEditable)
   }
 
-  function handleBackToDash() {
-    if (formEditable)
-      setShowModal(formEditable)
-    else
-       window.location.href = "javascript:history.back()";
+  function handleBackToDash (): void {
+    if (formEditable) { setShowModal(formEditable) } else { window.location.href = 'javascript:history.back()' }
   }
 
   const closeModalHandler = (): void => setShowModal(false)
 
   const generateInfoSubmission = (): Object => {
-    setFormEditable(false);
+    setFormEditable(false)
     return {
       payments: booleanToYesOrNo(paymentAns),
       minimumService: booleanToYesOrNo(servicesAns),
@@ -86,11 +80,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
     return 'No'
   }
-  
+
   return (
     <div style = {{ padding: '25px', border: '75px solid #CFEBFD' }}>
       <div>
-        <div  className='accountModal'>
+        <div className='accountModal'>
           <a onClick={handleBackToDash}>Back to Dashboard</a>
           <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
         </div>
@@ -137,7 +131,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
       <Box sx={{ '& > button': { m: 1 } }}>
       <FormControlLabel
         sx={{
-          display: 'block',
+          display: 'block'
         }}
         control={
           <Button
@@ -193,7 +187,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
         <h3>Document Submission</h3>
         <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
-          <Button 
+          <Button
             variant="outlined"
             component="label"
             disabled={!formEditable}
@@ -233,14 +227,14 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         <h3>Other</h3>
         <div>
           <p>Are there any pending adjustments?</p>
-          <TextField 
-            id="adjustAns" 
+          <TextField
+            id="adjustAns"
             onChange= {(e) => setAdjustAns(e.target.value)}
             disabled={!formEditable}
             />
 
         <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
-        <TextField 
+        <TextField
             id="indivAns"
             onChange={(e) => setIndivAns(e.target.value)}
             disabled={!formEditable}/>
@@ -252,11 +246,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 onChange= {(e) => setInfoAns(e.target.value)}
                 disabled={!formEditable}/>
         </div>
-          <Button 
+          <Button
           type="button"
           variant = "outlined"
           onClick = {(() => console.log(generateInfoSubmission()))}>
-          
+
               Save
           </Button>
 
@@ -266,4 +260,3 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 }
 
 export default InfoSubmissionPage
-
