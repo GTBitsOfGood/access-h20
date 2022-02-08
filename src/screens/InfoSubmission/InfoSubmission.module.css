@@ -1,0 +1,28 @@
+.sectionContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.sectionTitleContainer {
+    width: 20%;
+    
+}
+.sectionRightFiller {
+    width: 20%;
+}
+
+.sectionContentContainer {
+    width: 60%;
+}
+
+.stickyNote {
+    border-radius: 10px;
+    border: none;
+}
+
+.noteStack {
+    display: flex;
+    flex-direction: column;
+}
