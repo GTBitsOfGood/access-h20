@@ -13,8 +13,13 @@
     width: 20%;
 }
 
-.sectionContentContainer {
+.sectionNotesContainer {
     width: 60%;
+}
+
+.sectionEligibilityContainer {
+    width: 60%;
+    height: 450px;
 }
 
 .stickyNote {
@@ -25,4 +30,31 @@
 .noteStack {
     display: flex;
     flex-direction: column;
+}
+
+.eligibilityStack {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 255px;
+}
+
+.documentStack {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 255px;
+}
+
+.sectionDocumentsContainer {
+    width: 60%;
+    height: 160px;
+}
+
+.infoSubmissionBackground {
+
+}
+
+.dropdown {
+    
 }

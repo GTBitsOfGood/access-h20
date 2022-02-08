@@ -105,7 +105,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   };
 
   return (
-    <div>
+    <div >
       <div>
         <a href="./">{back}</a>
         <h1>{dummyData.name}</h1>
@@ -152,7 +152,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <h3>Notes</h3>
         </div>
 
-        <div className={style.sectionContentContainer}>
+        <div className={style.sectionNotesContainer}>
           <div className={style.noteStack}>
             {notes.map((note) => (
               <TextField
@@ -166,18 +166,17 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           </div>
 
           <div>
-          {textFieldDisplayed ? (
-            <TextField
-              id="notesField"
-              label="Add your note here"
-              variant="outlined"
-              onChange={(e) => setCurrentInput(e.target.value)}
-              value={currentInput}
-            ></TextField>
-          ) : (
-            <a onClick={() => setTextFieldDisplayed(true)}> + Add Note </a>
-          )}
-
+            {textFieldDisplayed ? (
+              <TextField
+                id="notesField"
+                label="Add your note here"
+                variant="outlined"
+                onChange={(e) => setCurrentInput(e.target.value)}
+                value={currentInput}
+              ></TextField>
+            ) : (
+              <a onClick={() => setTextFieldDisplayed(true)}> + Add Note </a>
+            )}
           </div>
           <div>
             <Button
@@ -207,110 +206,114 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </Button>
           </div>
         </div>
-        <div className={style.sectionRightFiller}>
-
-        </div>
+        <div className={style.sectionRightFiller}></div>
       </div>
 
-      <div></div>
-
       <hr />
+      <div className={style.sectionContainer}>
+        <div className={style.sectionTitleContainer}>
+          <h3>Eligibility</h3>
+        </div>
 
-      <h3>Eligibility</h3>
-      <div>
-        <div>
-          <div>
-            <Checkbox
-              checked={paymentAns}
-              onChange={() => setPaymentAns(!paymentAns)}
-            />
-          </div>
-          <div>
-            <p>Payments</p>
-            <p>
-              Has the client made a minimum of 3 payments over the last 12
-              months?
-            </p>
-          </div>
-        </div>
-        <div>
-          <div>
-            <Checkbox
-              checked={servicesAns}
-              onChange={() => setServicesAns(!servicesAns)}
-            />
-          </div>
-          <div>
-            <p>Minimum Services</p>
-            <p>Does the customer have a minimum of 12 months of service?</p>
-          </div>
-        </div>
-        <div>
-          <div>
-            <Checkbox
-              checked={contactAns}
-              onChange={() => setContactAns(!contactAns)}
-            />
-          </div>
-          <div>
-            <p>Customer Contact</p>
-            <p>Has the customer been in contact with your utility company?</p>
-          </div>
-        </div>
-        <div>
-          <div>
-            <Checkbox
-              checked={waterAns}
-              onChange={() => setWaterAns(!waterAns)}
-            />
-          </div>
-          <div>
-            <p>Water Meter</p>
-            <p>Does the property with dedicated water meter?</p>
+        <div className={style.sectionEligibilityContainer}>
+          <div className={style.eligibilityStack}>
+            <div>
+              <Checkbox
+                checked={paymentAns}
+                onChange={() => setPaymentAns(!paymentAns)}
+              />
+            </div>
+            <div>
+              <p>Payments</p>
+              <p>
+                Has the client made a minimum of 3 payments over the last 12
+                months?
+              </p>
+            </div>
+            <div>
+              <Checkbox
+                checked={servicesAns}
+                onChange={() => setServicesAns(!servicesAns)}
+              />
+            </div>
+            <div>
+              <p>Minimum Services</p>
+              <p>Does the customer have a minimum of 12 months of service?</p>
+            </div>
+            <div>
+              <Checkbox
+                checked={contactAns}
+                onChange={() => setContactAns(!contactAns)}
+              />
+            </div>
+            <div>
+              <p>Customer Contact</p>
+              <p>Has the customer been in contact with your utility company?</p>
+            </div>
+            <div>
+              <Checkbox
+                checked={waterAns}
+                onChange={() => setWaterAns(!waterAns)}
+              />
+            </div>
+            <div>
+              <p>Water Meter</p>
+              <p>Does the property with dedicated water meter?</p>
+            </div>
           </div>
         </div>
       </div>
 
       <hr />
 
-      <h3>Documents</h3>
-      <div>
-        <Button variant="contained" component="label">
-          Upload
-          <input
-            id="paymentFile"
-            type="file"
-            hidden
-            onChange={(e) => {
-              if (e.target.files === null || e.target.files.length < 1) {
-                alert("Please upload a valid file.");
-                return;
-              }
+      <div className={style.sectionContainer}>
+        <div className={style.sectionTitleContainer}>
+          <h3>Documents</h3>
+        </div>
 
-              setPaymentFile(e.target.files[0]);
-            }}
-          />
-        </Button>
-        <p>Payment History</p>
-      </div>
-      <div>
-        <Button id="usageFile" variant="contained" component="label">
-          Upload
-          <input
-            id="paymentFile"
-            type="file"
-            hidden
-            onChange={(e) => {
-              if (e.target.files === null || e.target.files.length < 1) {
-                alert("Please upload a valid file.");
-                return;
-              }
+        <div className={style.sectionDocumentsContainer}>
+          <div className={style.documentStack}>
+            <div>
+              <Button variant="contained" component="label">
+                Upload
+                <input
+                  id="paymentFile"
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    if (e.target.files === null || e.target.files.length < 1) {
+                      alert("Please upload a valid file.");
+                      return;
+                    }
 
-              setUsageFile(e.target.files[0]);
-            }}
-          />
-        </Button>
-        <p>Usage History</p>
+                    setPaymentFile(e.target.files[0]);
+                  }}
+                />
+              </Button>
+              <p>Payment History</p>
+            </div>
+
+            <div>
+              <Button id="usageFile" variant="contained" component="label">
+                Upload
+                <input
+                  id="paymentFile"
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    if (e.target.files === null || e.target.files.length < 1) {
+                      alert("Please upload a valid file.");
+                      return;
+                    }
+
+                    setUsageFile(e.target.files[0]);
+                  }}
+                />
+              </Button>
+              <p>Usage History</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <hr />
