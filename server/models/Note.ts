@@ -1,6 +1,6 @@
 export interface Note {
-    sender: string,
-    receiver: string,
-    date: Date,
-    message: string
+  sender: string
+  receiver: string
+  date: Date
+  message: string
 }

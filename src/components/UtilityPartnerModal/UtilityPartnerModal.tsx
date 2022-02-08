@@ -1,15 +1,14 @@
-import * as React from "react";
-import classes from "./UtilityPartnerModal.module.css";
-import { Button, Modal, TextField, FormControl, Select } from "@material-ui/core";
-import PropTypes from "prop-types";
-import { useState } from "react";
+import * as React from 'react'
+import classes from './UtilityPartnerModal.module.css'
+import { Button, Modal, TextField, FormControl } from '@material-ui/core'
+import { useState } from 'react'
 // import { getPartner } from 'server/mongodb/actions/Partner'
 // import { Partner } from "server/models/Partner"
 import Stack from '@mui/material/Stack'
 
 interface PropTypes {
-    shouldShowModal: boolean
-    onClose: () => void
+  shouldShowModal: boolean
+  onClose: () => void
 }
 
 interface Partner {
@@ -24,47 +23,46 @@ interface Partner {
 }
 
 export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
-    const [showSucess, setShowSucess] = useState(false)
-    const [showAdd, setShowAdd] = useState(true)
+  const [showAdd, setShowAdd] = useState(true)
 
-    const [companyN, setCompanyN] = useState('')
-    const [newemail, setEmail] = useState('')
-    const [newphone, setPhone] = useState('')
-    const [newstreet, setStreet] = useState('')
-    const [newcity, setCity] = useState('')
-    const [newstate, setState] = useState('')
-    const [newzip, setZip] = useState('')
-    const [newnotes, setNotes] = useState("")
+  const [companyN, setCompanyN] = useState('')
+  const [newemail, setEmail] = useState('')
+  const [newphone, setPhone] = useState('')
+  const [newstreet, setStreet] = useState('')
+  const [newcity, setCity] = useState('')
+  const [newstate, setState] = useState('')
+  const [newzip, setZip] = useState('')
+  const [newnotes, setNotes] = useState('')
 
-    const addPartner = () => {
-      // TODO: implement backend submissions
-      const data: Partner = {
-        companyName: companyN,
-        email: newemail,
-        phone: newphone,
-        street: newstreet,
-        city: newcity,
-        state: newstate,
-        zip: newzip,
-        notes: newnotes
-      }
-      setShowAdd(false)
+  const addPartner = (): void => {
+    // TODO: implement backend submissions
+    const data: Partner = { // eslint-disable-line
+      companyName: companyN,
+      email: newemail,
+      phone: newphone,
+      street: newstreet,
+      city: newcity,
+      state: newstate,
+      zip: newzip,
+      notes: newnotes
     }
+    setShowAdd(false)
+  }
 
-    const finished = () => {
-      setShowAdd(true)
-      onClose()
-    }
-    return (
+  const finished = (): void => {
+    setShowAdd(true)
+    onClose()
+  }
+  return (
       <Modal className={classes.modalOverflow} open={shouldShowModal} onClose={onClose}>
-        {showAdd ?
-      <div className={classes.modalWrapper}>
+        {showAdd
+          ? <div className={classes.modalWrapper}>
         <div className={classes.modalHeader}>
           <h1>Add Utility Partner</h1>
           <span onClick={onClose} className={classes.closeButton}>&times;</span>
         </div>
         <div className={classes.modalContent}>
-          
+
           <FormControl>
             <div className={classes.inputContainer}>
               <label htmlFor="company">Company Name</label>
@@ -214,25 +212,25 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 >
                   <Button variant="contained" onClick={addPartner}
                   style={{
-                    backgroundColor: "#4DBAEA", 
+                    backgroundColor: '#4DBAEA',
                     color: '#FFFFFF',
                     borderRadius: '8px'
-                }}>Add Utility Partner</Button>
+                  }}>Add Utility Partner</Button>
                   <Button variant="text" onClick={() => onClose()}>Cancel</Button>
                 </Stack>
           </FormControl>
         </div>
-      </div> :
-        <div className={classes.modalWrapper2}>
+      </div>
+          : <div className={classes.modalWrapper2}>
           <div className={classes.logo}/>
           <h2>Utility Partner {companyN} has been successfully added</h2>
-          <Button 
-              onClick={finished} 
+          <Button
+              onClick={finished}
               variant="contained"
               style={{
-                  backgroundColor: "#4DBAEA", 
-                  color: '#FFFFFF',
-                  borderRadius: '8px'
+                backgroundColor: '#4DBAEA',
+                color: '#FFFFFF',
+                borderRadius: '8px'
               }}
               >
                   Continue
@@ -240,5 +238,5 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
       </div>
     }
     </Modal>
-    )
+  )
 }

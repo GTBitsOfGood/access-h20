@@ -23,7 +23,7 @@
     "secrets": "npm run secrets:logout && cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw` \"npm run secrets:sync\"",
     "secrets:logout": "(bw logout || exit 0)",
     "secrets:login": "bw login product@bitsofgood.org",
-    "secrets:sync": "bw sync && bw get item [ID_OR_NAME_FROM_STEP_2] | fx .notes > \".env\""
+    "secrets:sync": "bw sync && bw get item 54baaf4d-8bff-4ad9-9026-ae36001db984 | fx .notes > \".env\""
   },
   "husky": {
     "hooks": {
@@ -73,7 +73,9 @@
     "vercel": "^23.1.2"
   },
   "devDependencies": {
-    "@bitwarden/cli": "^1.17.1",
+    "@bitwarden/cli": "^1.20.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/lodash": "^4.14.173",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^5.10.2",

@@ -1,3 +1,3 @@
-import { NotesModal } from "./NotesModal";
+import { NotesModal } from './NotesModal'
 
-export default NotesModal;
+export default NotesModal

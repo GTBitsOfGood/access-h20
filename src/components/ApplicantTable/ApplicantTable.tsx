@@ -18,7 +18,7 @@ import { Announcement, MoreVert } from '@mui/icons-material'
 import { v4 as uuidv4 } from 'uuid'
 import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
-import { CompanyModal } from "src/components/CompanyModal/CompanyModal";
+import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 
@@ -361,7 +361,7 @@ const ApplicantTable = ({
                         <TableCell align="center">
                         <Tooltip title={'View notes'}>
                           <IconButton
-                            onClick={() => setShowNotesModal(true)} 
+                            onClick={() => setShowNotesModal(true)}
                           >
                             <Announcement/>
                           </IconButton>

@@ -1,16 +1,13 @@
-import * as React from "react";
-import classes from "./NotesModal.module.css";
-import TextField from "@material-ui/core/TextField";
-import { Divider } from '@mui/material';
+import * as React from 'react'
+import classes from './NotesModal.module.css'
+import TextField from '@material-ui/core/TextField'
+import { Divider, Link } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
-import Modal from "@mui/material/Modal";
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import { getNotes } from 'server/mongodb/actions/Note'
-import { Link } from "@mui/material";
-import urls from "utils/urls";
-import { Note } from "server/models/Note"
-
+import Modal from '@mui/material/Modal'
+import { useState } from 'react'
+// import { getNotes } from 'server/mongodb/actions/Note'
+import urls from 'utils/urls'
+import { Note } from 'server/models/Note'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -19,16 +16,16 @@ interface PropTypes {
 
 const starterNote: Note[] = [
   {
-    sender: "AccessH20",
-    receiver: "Utility",
-    date: new Date("02/03/2022"),
-    message: "First Note"
+    sender: 'AccessH20',
+    receiver: 'Utility',
+    date: new Date('02/03/2022'),
+    message: 'First Note'
   }
 ]
 export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
-  const [notes, setNotes] = useState(starterNote);
-  const [newNote, setNewNote] = useState("")
-  const [showAdd, setShowAdd] = useState(false);
+  const [notes, setNotes] = useState(starterNote)
+  const [newNote, setNewNote] = useState('')
+  const [showAdd, setShowAdd] = useState(false)
 
   // TODO utilize mongodb action getNotes()
   // useEffect(() => {
@@ -36,24 +33,24 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
   //   console.log(messages)
   //   setNotes(notes)
   // })
-  
-  const handleTextChange = (e) => {
+
+  const handleTextChange = (e: any): void => {
     setNewNote(e.target.value)
   }
 
-  const addNote = () => {
+  const addNote = (): void => {
     // TODO: utilize mongodb action addNote()
     const dummyDate: Note[] = [{
-      sender: "Utility",
-      receiver: "AccessH20",
+      sender: 'Utility',
+      receiver: 'AccessH20',
       date: new Date(),
       message: newNote
     }]
     setShowAdd(false)
     setNotes(notes.concat(dummyDate))
-    setNewNote("")
+    setNewNote('')
   }
-  
+
   return (
     <div>
       <div>
@@ -78,8 +75,8 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
                 </div>
               ))}
 
-              {showAdd ? 
-                <div>
+              {showAdd
+                ? <div>
                   <div className={classes.newNoteContainer}>
                     <TextField
                     value={newNote}
@@ -93,8 +90,8 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
                     <button className = {classes.saveNote} onClick={addNote}>Add Note</button>
                     <button onClick = {() => setShowAdd(false)} className={classes.cancel}>Cancel</button>
                   </div>
-                </div> :
-                <button onClick = {() => setShowAdd(true)} className={classes.plusNote}>+ Add Note</button>
+                </div>
+                : <button onClick = {() => setShowAdd(true)} className={classes.plusNote}>+ Add Note</button>
               }
               {/* TODO: Once table & infoSubmit are linked to backend, change link to match correct customer info */}
               <div className={classes.customer}>
