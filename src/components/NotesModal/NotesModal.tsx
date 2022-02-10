@@ -4,10 +4,12 @@ import TextField from '@material-ui/core/TextField'
 import { Divider, Link } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 import Modal from '@mui/material/Modal'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // import { getNotes } from 'server/mongodb/actions/Note'
 import urls from 'utils/urls'
 import { Note } from 'server/models/Note'
+
+import { testFunction } from 'server/mongodb/actions/Note'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -28,11 +30,11 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
   const [showAdd, setShowAdd] = useState(false)
 
   // TODO utilize mongodb action getNotes()
-  // useEffect(() => {
-  //   const messages = getNotes()
-  //   console.log(messages)
-  //   setNotes(notes)
-  // })
+  useEffect(() => {
+    const messages = testFunction()
+    console.log(messages);
+    // setNotes(notes)
+  })
 
   const handleTextChange = (e: any): void => {
     setNewNote(e.target.value)
