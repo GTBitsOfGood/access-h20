@@ -1,4 +1,4 @@
-import { Button, Divider, TextField } from '@mui/material'
+import { Button, Divider, Link, TextField } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create';
 import React, { useState } from 'react'
 import classes from './EditForm.module.css'
@@ -69,7 +69,10 @@ const EditFormPage = (): JSX.Element => {
     newEdit[index] = !newEdit[index]
     setEditStatus(newEdit)
   }
-  const addStatusEdit = () => {
+  const updateStatusQuestion = (index: number) => {
+    
+  }
+  const addStatus = () => {
     const newEdit = editStatus.slice()
     newEdit.push(true)
     setEditStatus(newEdit)
@@ -80,7 +83,7 @@ const EditFormPage = (): JSX.Element => {
       question: newStatusQuestion
     }]
     setStatusShowAdd(false)
-    addStatusEdit()
+    addStatus()
     setStatusQuestions(statusQuestions.concat(dummyData))
     setNewStatusTitle('')
     setNewStatusQuestion('')
@@ -97,7 +100,10 @@ const EditFormPage = (): JSX.Element => {
     newEdit[index] = !newEdit[index]
     setEditDoc(newEdit)
   }
-  const addDocEdit = () => {
+  const updateDocQuestion = (index: number) => {
+    
+  }
+  const addDoc = () => {
     const newEdit = editDoc.slice()
     newEdit.push(true)
     setEditDoc(newEdit)
@@ -108,7 +114,7 @@ const EditFormPage = (): JSX.Element => {
       description: newDocDescription
     }]
     setDocShowAdd(false)
-    addDocEdit()
+    addDoc()
     setDocQuestions(docQuestions.concat(dummyData))
     setNewDocTitle('')
     setNewDocDescription('')
@@ -125,7 +131,10 @@ const EditFormPage = (): JSX.Element => {
     newEdit[index] = !newEdit[index]
     setEditAddit(newEdit)
   }
-  const addAdditEdit = () => {
+  const updateAdditQuestion = (index: number) => {
+    
+  }
+  const addAddit = () => {
     const newEdit = editAddit.slice()
     newEdit.push(true)
     setEditAddit(newEdit)
@@ -135,7 +144,7 @@ const EditFormPage = (): JSX.Element => {
       question: newAdditQuestion,
     }]
     setAdditShowAdd(false)
-    addAdditEdit()
+    addAddit()
     setAdditQuestions(additQuestions.concat(dummyData))
     setNewAdditQuestion('')
   }
@@ -146,223 +155,219 @@ const EditFormPage = (): JSX.Element => {
 
 
   return (
-    <div className={classes.background}>
-      <div className={classes.body}>
-        <Button>{"<"} Back to Dashboard</Button>
-        <h1>Edit Form</h1>
-        <div className={classes.questionType}>
-          <div className={classes.edit}>
-            <h3>Eligibility</h3>
-          </div>
-          {statusQuestions.map((question, index) => (
-            <div className={classes.section}>
-              <CreateIcon className={classes.editButton} onClick={() => enableStatusEdit(index)}/>
-              {editStatus[index] ? 
-              <div className={classes.questions}>
-                <p>{question.title}</p>
-                <p>{question.question}</p>
-              </div> :
-                  <div className={classes.questions}>
+    <div className={classes.body}>
+      <Link href='/applicants' className={classes.backButton}>{"<"} Back to Dashboard</Link>
+      <h1 className={classes.pageTitle}>Edit Form</h1>
+      <div className={classes.questionType}>
+        <h3 className={classes.sectionTitle}>Eligibility</h3>
+        <div className={classes.statusSection}>
+        {statusQuestions.map((question, index) => (
+          <div className={classes.questions}>
+            <CreateIcon className={classes.editButton} onClick={() => enableStatusEdit(index)}/>
+            {editStatus[index] ? 
+            <div>
+              <p className={classes.title}>{question.title}</p>
+              <p className={classes.description}>{question.question}</p>
+            </div> :
+              <div>
+                <div className={classes.editQuestions}>
                   <TextField
                     InputProps={{
                       classes:{
                         root: classes.inputRoot,
-                        disabled: classes.disabled
                       },
-                      disableUnderline: true
                     }}
                     value={question.title}
                     disabled={editStatus[index]}
                     multiline
+                    size='small'
                   />
                   <TextField
                     InputProps={{
                       classes:{
                         root: classes.inputRoot,
-                        disabled: classes.disabled
                       },
-                      disableUnderline: true
                     }}
                     value={question.question}
                     disabled={editStatus[index]}
+                    multiline
+                    size='small'
                   />
                 </div>
-              }
-
-            </div>
-          ))}
-          { showStatusAdd ? 
-              <div className={classes.questions}>
+                <Button onClick={() => updateStatusQuestion(index)} className={classes.save}>Save</Button>
+                <Button onClick = {() => enableStatusEdit(index)} className={classes.cancel}>Cancel</Button>
+              </div>
+            }
+          </div>
+        ))}
+        { showStatusAdd ? 
+          <div className={classes.editQuestionsContainer}>
+            <div className={classes.editQuestions}>
               <TextField
                 InputProps={{
                   classes:{
                     root: classes.inputRoot,
-                    disabled: classes.disabled
                   },
-                  disableUnderline: true
                 }}
                 value={newStatusTitle}
                 onChange={handleStatusTitleChange}
+                multiline
                 label="Question Title"
+                size='small'
               />
               <TextField
                 InputProps={{
                   classes:{
                     root: classes.inputRoot,
-                    disabled: classes.disabled
                   },
-                  disableUnderline: true
                 }}
                 value={newStatusQuestion}
                 onChange={handleStatusQuestionChange}
                 multiline
                 label="Add brief description of required question"
+                size='small'
               />
-              <Button onClick={addStatusQuestion}>Save</Button>
-              <Button onClick = {() => setStatusShowAdd(false)} className={classes.cancel}>Cancel</Button>
-            </div> :
-            <Button onClick = {() => setStatusShowAdd(true)}>+ Add Requirement</Button>
-          }
+            </div>
+            <Button onClick={addStatusQuestion} className={classes.save}>Save</Button>
+            <Button onClick = {() => setStatusShowAdd(false)} className={classes.cancel}>Cancel</Button>
+          </div> :
+          <Button onClick = {() => setStatusShowAdd(true)} className={classes.reqButton}>+ Add Requirement</Button>
+        }
         </div>
-        <Divider />
-        <div className={classes.questionType}>
-          <div className={classes.edit}>
-            <h3>Document Submission</h3>
-          </div>
-          {docQuestions.map((question, index) => (
-            <div className={classes.section}>
-              <CreateIcon className={classes.editButton} onClick={() => enableDocEdit(index)}/>
-              {editDoc[index] ? 
-              <div className={classes.questions}>
-                <p>{question.title}</p>
-                <p>{question.description}</p>
-              </div> :
-                  <div className={classes.questions}>
+      </div>
+      <Divider className={classes.divider} />
+      <div className={classes.questionType}>
+        <h3 className={classes.sectionTitle}>Documents</h3>
+        <div className={classes.docSection}>
+        {docQuestions.map((question, index) => (
+          <div className={classes.questions}>
+            <CreateIcon className={classes.editButton} onClick={() => enableDocEdit(index)}/>
+            {editDoc[index] ? 
+            <div>
+              <p className={classes.title}>{question.title}</p>
+              <p className={classes.description}>{question.description}</p>
+            </div> :
+              <div>
+                <div className={classes.editQuestions}>
                   <TextField
                     InputProps={{
                       classes:{
                         root: classes.inputRoot,
-                        disabled: classes.disabled
                       },
-                      disableUnderline: true
                     }}
                     value={question.title}
                     disabled={editDoc[index]}
                     multiline
+                    size='small'
                   />
                   <TextField
                     InputProps={{
                       classes:{
                         root: classes.inputRoot,
-                        disabled: classes.disabled
                       },
-                      disableUnderline: true
                     }}
                     value={question.description}
                     disabled={editDoc[index]}
+                    multiline
+                    size='small'
                   />
                 </div>
-              }
+              <Button onClick={() => updateDocQuestion(index)} className={classes.save}>Save</Button>
+              <Button onClick = {() => enableDocEdit(index)} className={classes.cancel}>Cancel</Button>
+              </div>
+            }
 
-            </div>
-          ))}
-          { showDocAdd ? 
-              <div className={classes.questions}>
+          </div>
+        ))}
+        { showDocAdd ? 
+          <div className={classes.editQuestionsContainer}>
+            <div className={classes.editQuestions}>
               <TextField
                 InputProps={{
                   classes:{
                     root: classes.inputRoot,
-                    disabled: classes.disabled
                   },
-                  disableUnderline: true
                 }}
                 value={newDocTitle}
                 onChange={handleDocTitleChange}
+                multiline
                 label="Document Title"
+                size='small'
               />
               <TextField
                 InputProps={{
                   classes:{
                     root: classes.inputRoot,
-                    disabled: classes.disabled
                   },
-                  disableUnderline: true
                 }}
                 value={newDocDescription}
                 onChange={handleDocQuestionChange}
                 multiline
                 label="Add brief description of required document"
+                size='small'
               />
-              <Button onClick={addDocQuestion}>Save</Button>
-              <Button onClick = {() => setDocShowAdd(false)} className={classes.cancel}>Cancel</Button>
-            </div> :
-            <Button onClick = {() => setDocShowAdd(true)}>+ Add Requirement</Button>
-          }
-        </div>
-        <Divider />
-        <div className={classes.questionType}>
-          <div className={classes.edit}>
-            <h3>Additional</h3>
-          </div>
-          {additQuestions.map((question, index) => (
-            <div className={classes.section}>
-              <CreateIcon className={classes.editButton} onClick={() => enableAdditEdit(index)}/>
-              {editAddit[index] ? 
-              <div className={classes.questions}>
-                <p>{question.question}</p>
-              </div> :
-                  <div className={classes.questions}>
-                  <TextField
-                    InputProps={{
-                      classes:{
-                        root: classes.inputRoot,
-                        disabled: classes.disabled
-                      },
-                      disableUnderline: true
-                    }}
-                    value={question.question}
-                    disabled={editAddit[index]}
-                    multiline
-                  />
-                  <TextField
-                    InputProps={{
-                      classes:{
-                        root: classes.inputRoot,
-                        disabled: classes.disabled
-                      },
-                      disableUnderline: true
-                    }}
-                    value={question.question}
-                    disabled={editAddit[index]}
-                  />
-                </div>
-              }
-
             </div>
-          ))}
-          { showAdditAdd ? 
-              <div className={classes.questions}>
+            <Button onClick={addDocQuestion} className={classes.save}>Save</Button>
+            <Button onClick = {() => setDocShowAdd(false)} className={classes.cancel}>Cancel</Button>
+          </div> :
+          <Button onClick = {() => setDocShowAdd(true)} className={classes.reqButton}>+ Add Requirement</Button>
+        }
+        </div>
+      </div>
+      <Divider className={classes.divider} />
+      <div className={classes.questionType}>
+        <h3 className={classes.sectionTitle}>Additional</h3>
+        <div className={classes.additSection}>
+        {additQuestions.map((question, index) => (
+          <div className={classes.questions}>
+            <CreateIcon className={classes.editButton} onClick={() => enableAdditEdit(index)}/>
+            {editAddit[index] ? 
+            <div>
+              <p className={classes.title}>{question.question}</p>
+            </div> :
+            <div>
+              <div className={classes.editQuestions}>
+                <TextField
+                  InputProps={{
+                    classes:{
+                      root: classes.inputRoot,
+                    },
+                  }}
+                  value={question.question}
+                  disabled={editAddit[index]}
+                  multiline
+                  size='small'
+                />
+              </div>
+              <Button onClick={() => updateAdditQuestion(index)} className={classes.save}>Save</Button>
+              <Button onClick = {() => enableAdditEdit(index)} className={classes.cancel}>Cancel</Button>
+            </div>
+            }
+          </div>
+        ))}
+        { showAdditAdd ? 
+          <div className={classes.editQuestionsContainer}>
+            <div className={classes.editQuestions}>
               <TextField
                 InputProps={{
                   classes:{
                     root: classes.inputRoot,
-                    disabled: classes.disabled
                   },
-                  disableUnderline: true
                 }}
                 value={newAdditQuestion}
                 onChange={handleAdditChange}
                 multiline
                 label="Add brief description of required question"
+                size='small'
               />
-              <Button onClick={addAdditQuestion}>Save</Button>
-              <Button onClick = {() => setAdditShowAdd(false)} className={classes.cancel}>Cancel</Button>
-            </div> :
-            <Button onClick = {() => setAdditShowAdd(true)}>+ Add Requirement</Button>
-          }
+            </div>
+            <Button onClick={addAdditQuestion} className={classes.save}>Save</Button>
+            <Button onClick = {() => setAdditShowAdd(false)} className={classes.cancel}>Cancel</Button>
+          </div> :
+          <Button onClick = {() => setAdditShowAdd(true)} className={classes.reqButton}>+ Add Requirement</Button>
+        }
         </div>
       </div>
-
     </div>
   )
 }
