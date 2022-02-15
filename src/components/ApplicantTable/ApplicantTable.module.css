@@ -75,3 +75,8 @@
 .deleteButton {
     color: #F02052;
 }
+
+.highlightOnHover:hover {
+    background-color: #CFEBFD;
+    cursor: pointer
+}

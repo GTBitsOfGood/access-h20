@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import style from "./InfoSubmission.module.css";
 import { FormControl } from "@material-ui/core";
+import Box from '@mui/material/Box';
 
 interface Applicant {
   name: string;
@@ -110,17 +111,22 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         <div className={style.customerInfo}>
           <div className={style.customerComponent}>
             <h4>Status</h4>
-
-            <Select id="status-menu" onChange={handleStatusClick}>
-              <MenuItem value={"Awaiting Utility"}>Awaiting Utility</MenuItem>
-              <MenuItem value={"Terminated"}>Terminated</MenuItem>
-              <MenuItem value={"Denied"}>Denied</MenuItem>
-              <MenuItem value={"Completed"}>Completed</MenuItem>
-              <MenuItem value={"Approved"}>Approved</MenuItem>
-              <MenuItem value={"Awaiting AccessH2O"}>
-                Awaiting AccessH2O
-              </MenuItem>
-            </Select>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <Select id="status-menu" onChange={handleStatusClick}>
+                  <MenuItem value={"Awaiting Utility"}>
+                    Awaiting Utility
+                  </MenuItem>
+                  <MenuItem value={"Terminated"}>Terminated</MenuItem>
+                  <MenuItem value={"Denied"}>Denied</MenuItem>
+                  <MenuItem value={"Completed"}>Completed</MenuItem>
+                  <MenuItem value={"Approved"}>Approved</MenuItem>
+                  <MenuItem value={"Awaiting AccessH2O"}>
+                    Awaiting AccessH2O
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </div>
           <div className={style.customerComponent}>
             <h4>Account ID</h4>
@@ -145,8 +151,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
           <div className={style.sectionContentContainer}>
             {notes.map((note) => (
-                <div className={style.stickyNote}>{note}</div>
-              ))}
+              <div className={style.stickyNote}>{note}</div>
+            ))}
             {textFieldDisplayed ? (
               <FormControl fullWidth>
                 <TextField
