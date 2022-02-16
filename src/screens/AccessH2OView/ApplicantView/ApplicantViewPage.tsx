@@ -10,7 +10,7 @@ const ApplicantViewPage = (): JSX.Element => {
       <ApplicantNavLink />
       <h1 className={classes.header}>Dashboard</h1>
       <ApplicantTable
-        isUtilityView={true}
+        isUtilityView={false}
         infoSubmissionEndpoint={urls.pages.infosubmit}
       />
     </>

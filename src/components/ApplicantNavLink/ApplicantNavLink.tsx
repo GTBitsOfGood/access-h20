@@ -10,6 +10,10 @@ import classes from './ApplicantNavLink.module.css'
 import { UtilityPartnerModal } from 'src/components/UtilityPartnerModal/UtilityPartnerModal'
 import { useState } from 'react'
 
+interface PropTypes {
+  isUtilityView: boolean
+}
+
 export default function ApplicantNavLink (): JSX.Element {
   const [auth] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
