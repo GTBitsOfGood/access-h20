@@ -231,7 +231,7 @@ const ApplicantTable = ({
               disableUnderline: true,
               className: classes.searchFilterText
             }}
-            label="Search By"
+            label="Utility"
             select
             variant="standard"
             value={searchBy}

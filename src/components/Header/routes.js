@@ -14,8 +14,14 @@ const routes = [
     atEnd: false
   },
   {
-    name: 'Info Submission',
-    link: urls.pages.infosubmit,
+    name: 'AccessH20 View',
+    link: urls.pages.accessh20applicants,
+    auth: false,
+    atEnd: false
+  },
+  {
+    name: 'Utility View',
+    link: urls.pages.utilityapplicants,
     auth: false,
     atEnd: false
   },

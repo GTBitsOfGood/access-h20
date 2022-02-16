@@ -4,6 +4,8 @@ export default {
   pages: {
     index: '/',
     applicants: '/applicants',
+    utilityapplicants: '/utilityapplicants',
+    accessh20applicants: '/accessh20applicants',
     infosubmit: '/infosubmit',
     login: '/login',
     app: {
