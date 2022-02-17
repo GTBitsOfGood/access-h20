@@ -97,3 +97,64 @@
   flex-direction: column;
   margin-left: 1rem;
 }
+
+.documentContainer {
+  border-style: hidden hidden solid hidden;
+  border-color: #DADADA;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.documentHeader {
+  margin: 0rem;
+  margin-right: 6rem;
+}
+
+.documentBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.documentSubmission {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.submissionStack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.additionalContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.additionalHeader {
+  margin: 0rem;
+  margin-right: 6rem;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 8px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  align-self:center;
+  width:98%;
+}
+
+.additionalBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

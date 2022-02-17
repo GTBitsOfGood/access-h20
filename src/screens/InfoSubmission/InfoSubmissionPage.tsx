@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import {Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { Box, Checkbox, FormControlLabel } from '@mui/material'
@@ -175,66 +174,93 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
           </div>
 
-          <h3>Document Submission</h3>
-          <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
-            <Button
-              variant="outlined"
-              component="label"
-              disabled={!formEditable}
-              style = {{ flex: '50px', width: '75px', height: '50px' }}>
-              Upload
-              <input id="paymentFile" type="file" hidden onChange = {(e) => {
-                if (e.target.files === null || e.target.files.length < 1) {
-                  alert('Please upload a valid file.')
-                  return
-                }
+          <div className={classes.documentContainer}>
+            <h3 className={classes.documentHeader}>Documents</h3>
+            <div className={classes.documentBody}>
+              <div className={classes.documentSubmission}>
+                <h4 className={classes.headerNoMargin}>Payment History</h4>
+                <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's payment history over the last 12 months.</p>
+                <div className={classes.submissionStack}>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    disabled={!formEditable}
+                    style = {{ width: '15%', textTransform: 'none', marginRight: '0.5rem', height: '2rem' }}>
+                    Upload
+                    <input id="paymentFile" type="file" hidden onChange = {(e) => {
+                      if (e.target.files === null || e.target.files.length < 1) {
+                        alert('Please upload a valid file.')
+                        return
+                      }
 
-                setPaymentFile(e.target.files[0])
-              }}/>
-            </Button>
-            <p style = {{ flex: '50px', padding: '10px' }}>Payment History</p>
+                      setPaymentFile(e.target.files[0])
+                    }}/>
+                  </Button>
+                  <p>{paymentFile?.name}</p>
+                </div>
+              </div>
+              
+              <div className={classes.documentSubmission}>
+              <h4 className={classes.headerNoMargin}>Usage History</h4>
+                <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's usage history over the last 12 months.</p>
+                <div className={classes.submissionStack}>
+                  <Button
+                    id="usageFile"
+                    variant="contained"
+                    disabled={!formEditable}
+                    component="label"
+                    style = {{ width: '15%', textTransform: 'none', marginRight: '0.5rem', height: '2rem' }}>
+                    Upload
+                    <input id="paymentFile" type="file" hidden onChange = {(e) => {
+                      if (e.target.files === null || e.target.files.length < 1) {
+                        alert('Please upload a valid file.')
+                        return
+                      }
+
+                      setUsageFile(e.target.files[0])
+                    }}/>
+                  </Button>
+                  <p>{usageFile?.name}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
-            <Button
-              id="usageFile"
-              variant="outlined"
-              disabled={!formEditable}
-              component="label"
-              style = {{ flex: '50px', width: '75px', height: '50px' }}>
-              Upload
-              <input id="paymentFile" type="file" hidden onChange = {(e) => {
-                if (e.target.files === null || e.target.files.length < 1) {
-                  alert('Please upload a valid file.')
-                  return
-                }
 
-                setUsageFile(e.target.files[0])
-              }}/>
-            </Button>
-            <p style = {{ flex: '50px', padding: '10px' }}>Usage History</p>
-          </div>
-
-          <h3>Other</h3>
-          <div>
-            <p>Are there any pending adjustments?</p>
-            <TextField
-              id="adjustAns"
-              onChange= {(e) => setAdjustAns(e.target.value)}
-              disabled={!formEditable}
-              />
-
-          <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
-          <TextField
-              id="indivAns"
-              onChange={(e) => setIndivAns(e.target.value)}
-              disabled={!formEditable}/>
-          </div>
-          <div>
-              <p>Is there any additional information we should know about the account?</p>
-              <TextField
-                  id="infoAns"
-                  onChange= {(e) => setInfoAns(e.target.value)}
-                  disabled={!formEditable}/>
+          <div className={classes.additionalContainer}>
+            <h3 className={classes.additionalHeader}>Additional</h3>
+            <div className={classes.additionalBody}>
+              <div className={classes.inputContainer}>
+                <p>Are there any pending adjustments?</p>
+                <TextField
+                  id="adjustAns"
+                  minRows="5"
+                  multiline
+                  variant="outlined"
+                  onChange= {(e) => setAdjustAns(e.target.value)}
+                  disabled={!formEditable}
+                  />
+              </div>
+              <div className={classes.inputContainer}>
+                <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
+                <TextField
+                    id="indivAns"
+                    minRows="5"
+                    multiline
+                    variant="outlined"
+                    onChange={(e) => setIndivAns(e.target.value)}
+                    disabled={!formEditable}/>
+              </div>
+              <div className={classes.inputContainer}>
+                  <p>Is there any additional information we should know about the account?</p>
+                  <TextField
+                      id="infoAns"
+                      minRows="5"
+                      multiline
+                      variant="outlined"
+                      onChange= {(e) => setInfoAns(e.target.value)}
+                      disabled={!formEditable}/>
+              </div>
+            </div>
           </div>
             <Button
             type="button"
