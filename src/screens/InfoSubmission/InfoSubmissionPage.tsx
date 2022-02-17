@@ -273,8 +273,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       setPaymentFile(e.target.files[0])
                     }}/>
                   </Button>}
-                  {paymentFile !== null && <InsertDriveFileIcon color="disabled" />}
-                  <p className={classes.fileFontColor}>{paymentFile?.name}</p>
+                  {formEditable && paymentFile !== null && <InsertDriveFileIcon color="disabled" />}
+                  {formEditable && <p className={classes.fileFontColor}>{paymentFile?.name}</p>}
+                  {!formEditable && paymentFile !== null && <InsertDriveFileIcon color="primary" />}
+                  {!formEditable && <p className={classes.displayFileColor}>{paymentFile?.name}</p>}
                 </div>
               </div>
 
@@ -298,8 +300,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       setUsageFile(e.target.files[0])
                     }}/>
                   </Button>}
-                    {usageFile !== null && <InsertDriveFileIcon color="disabled" />}
-                    <p className={classes.fileFontColor}>{usageFile?.name}</p>
+                    {formEditable && usageFile !== null && <InsertDriveFileIcon color="disabled" />}
+                    {formEditable && <p className={classes.fileFontColor}>{usageFile?.name}</p>}
+                    {!formEditable && usageFile !== null && <InsertDriveFileIcon color="primary" />}
+                    {!formEditable && <p className={classes.displayFileColor}>{usageFile?.name}</p>}
                 </div>
               </div>
             </div>
