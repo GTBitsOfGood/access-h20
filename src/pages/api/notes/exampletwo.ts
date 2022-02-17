@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { testFunction2 } from "server/mongodb/actions/Note";
+import { testFunction2 } from "server/mongodb/actions/Example";
 
 export interface TestFunctionTwo {
   success: boolean,

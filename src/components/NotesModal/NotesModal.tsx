@@ -7,7 +7,7 @@ import Modal from '@mui/material/Modal'
 import { useState, useEffect } from 'react'
 import urls from 'utils/urls'
 import { Note } from 'server/models/Note'
-import { testFunction2 } from 'src/actions/Notes'
+import { testFunction2 } from 'src/actions/Example'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -27,13 +27,11 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
   const [newNote, setNewNote] = useState('')
   const [showAdd, setShowAdd] = useState(false)
 
-  const [test, setTest] = useState('hHAHAHAHAHAHHAHAHAHA')
-
   // TODO utilize mongodb action getNotes()
   useEffect(() => {
     const getNotes = async (): Promise<void> => {
       const message = await testFunction2()
-      setTest(message)
+      console.log(message)
     }
 
     void getNotes()
@@ -62,7 +60,7 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
         <Modal open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
-              <h3>Notes {test}</h3>
+              <h3>Notes</h3>
               <span onClick={onClose} className={classes.closemodalbtn}>
                 &#10799;
               </span>
