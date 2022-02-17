@@ -1,0 +1,38 @@
+.bacoground {
+  background-color: #CFEBFD;
+  padding: 4.5rem;
+  margin: 0px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+}
+.mainContainer {
+  padding: 4rem;
+  border-radius: 4px;
+  background-color: white;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  width: auto;
+  margin-bottom: 2rem;
+}
+
+.headerInfoBox {
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  transition: 0.3s;
+  align-self:center;
+  width:98%;
+}
+
+.headerNoMargin {
+  margin: 0px;
+}
+
+.streetAddress {
+  margin-bottom: 0px;
+}
