@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import { Button, TextField } from '@material-ui/core'
+import {Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { Box, Checkbox, FormControlLabel } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
+import { Edit } from '@mui/icons-material'
+import Stack from '@mui/material/Stack'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 interface Applicant {
   name: string
@@ -91,7 +95,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         <div>
           <div className='accountModal'>
             <div>
-              <a className={classes.back} onClick={handleBackToDash}>{'< Back to Dashboard'}</a>
+              <a className={classes.back} onClick={handleBackToDash}>{"< Back to Dashboard"}</a>
 
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -123,49 +127,69 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.noteHead}>Notes</h3>
             <a className={classes.addNote}>+ Add Note</a>
         </div>
-
-        <Box sx={{ '& > button': { m: 1 } }}>
-        <FormControlLabel
-          sx={{
-            display: 'block'
-          }}
-          control={
+        {!formEditable?
+        <Button
+          startIcon={<Edit />}
+          onClick={() => setFormEditable(!formEditable)}
+          variant="contained"
+          color = "primary"
+          style={{textTransform: 'none'}}
+        >
+          Update Info
+        </Button>
+        :
+        <Stack direction="row" spacing={2}>
             <Button
-              onClick={handleClick}
-              variant="outlined"
-              color = "primary"
-            >
-              Update Info
+            type="button"
+            variant = "contained"
+            color = "primary"
+            style={{textTransform: 'none'}}
+            onClick = {(() => console.log(generateInfoSubmission()))}>
+                Save
             </Button>
-          }
-          label=""
-          />
+            <Button
+            type="button"
+            variant = "text"
+            style={{textTransform: 'none'}}
+            onClick = {() => setFormEditable(!formEditable)}>
+                Cancel
+            </Button>
+          </Stack>
+}
           <div className={classes.eligibilityContainer}>
             <h3 className={classes.eligibilityHeader}>Eligibility</h3>
             <div className={classes.eligibilityBody}>
               <div className={classes.eligibilityCheckbox}>
-                  <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} disabled={!formEditable}/>
+              {formEditable && <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} disabled={!formEditable}/>}
+                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
                   <h4 className={classes.headerNoMargin}>Payments</h4>
                   <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-                  <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} disabled={!formEditable}/>
+              {formEditable && <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} disabled={!formEditable}/>}
+                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
                   <h4 className={classes.headerNoMargin}>Minimum Services</h4>
                   <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-                  <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} disabled={!formEditable}/>
+              {formEditable && <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} disabled={!formEditable}/>}
+                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
                   <h4 className={classes.headerNoMargin}>Customer Contact</h4>
                   <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-                  <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} disabled={!formEditable}/>
+              {formEditable && <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} disabled={!formEditable}/>}
+                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
                   <h4 className={classes.headerNoMargin}>Water Meter</h4>
                   <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
@@ -181,7 +205,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 <h4 className={classes.headerNoMargin}>Payment History</h4>
                 <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's payment history over the last 12 months.</p>
                 <div className={classes.submissionStack}>
-                  <Button
+                {formEditable && <Button
                     variant="contained"
                     component="label"
                     disabled={!formEditable}
@@ -195,16 +219,16 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
                       setPaymentFile(e.target.files[0])
                     }}/>
-                  </Button>
+                  </Button>}
                   <p>{paymentFile?.name}</p>
                 </div>
               </div>
-
+              
               <div className={classes.documentSubmission}>
               <h4 className={classes.headerNoMargin}>Usage History</h4>
                 <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's usage history over the last 12 months.</p>
                 <div className={classes.submissionStack}>
-                  <Button
+                {formEditable && <Button
                     id="usageFile"
                     variant="contained"
                     disabled={!formEditable}
@@ -219,7 +243,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
                       setUsageFile(e.target.files[0])
                     }}/>
-                  </Button>
+                  </Button>}
                   <p>{usageFile?.name}</p>
                 </div>
               </div>
@@ -231,46 +255,60 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.additionalBody}>
               <div className={classes.inputContainer}>
                 <p>Are there any pending adjustments?</p>
-                <TextField
+                {formEditable && <TextField
                   id="adjustAns"
                   minRows="5"
                   multiline
                   variant="outlined"
                   onChange= {(e) => setAdjustAns(e.target.value)}
                   disabled={!formEditable}
-                  />
+                  />}
+                  {!formEditable &&<p style = {{ fontWeight: 'lighter' }}>{adjustAns}</p>}
               </div>
               <div className={classes.inputContainer}>
                 <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
-                <TextField
+                {formEditable && <TextField
                     id="indivAns"
                     minRows="5"
                     multiline
                     variant="outlined"
                     onChange={(e) => setIndivAns(e.target.value)}
-                    disabled={!formEditable}/>
+                    disabled={!formEditable}/>}
+                    {!formEditable &&<p style = {{ fontWeight: 'lighter' }}>{indivAns}</p>}
               </div>
               <div className={classes.inputContainer}>
                   <p>Is there any additional information we should know about the account?</p>
-                  <TextField
+                  {formEditable && <TextField
                       id="infoAns"
                       minRows="5"
                       multiline
                       variant="outlined"
                       onChange= {(e) => setInfoAns(e.target.value)}
-                      disabled={!formEditable}/>
+                      disabled={!formEditable}/>}
+                      {!formEditable &&<p style = {{ fontWeight: 'lighter' }}>{infoAns}</p>}
               </div>
             </div>
           </div>
+          {formEditable?
+          <Stack direction="row" spacing={2}>
             <Button
             type="button"
-            variant = "outlined"
+            variant = "contained"
+            color = "primary"
+            style={{textTransform: 'none'}}
             onClick = {(() => console.log(generateInfoSubmission()))}>
-
                 Save
             </Button>
-
-        </Box>
+            <Button
+            type="button"
+            variant = "text"
+            style={{textTransform: 'none'}}
+            onClick = {() => setFormEditable(!formEditable)}>
+                Cancel
+            </Button>
+          </Stack>
+          : <div></div>
+}
       </div>
     </div>
   )
