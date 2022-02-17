@@ -8,6 +8,8 @@ import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 interface Applicant {
   name: string
@@ -191,7 +193,12 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.eligibilityHeader}>Eligibility</h3>
             <div className={classes.eligibilityBody}>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} disabled={!formEditable}/>}
+              {formEditable && <Checkbox 
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={paymentAns} 
+                                onChange={() => setPaymentAns(!paymentAns)} 
+                                disabled={!formEditable}/>}
                   {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
                   {!formEditable && !paymentAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
@@ -200,27 +207,43 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} disabled={!formEditable}/>}
-                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
-                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
+              {formEditable && <Checkbox 
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={servicesAns} 
+                                onChange={() => setServicesAns(!servicesAns)} 
+                                disabled={!formEditable}
+                                />}
+                  {!formEditable && servicesAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !servicesAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
                   <h4 className={classes.headerNoMargin}>Minimum Services</h4>
                   <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} disabled={!formEditable}/>}
-                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
-                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
+              {formEditable && <Checkbox 
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={contactAns} 
+                                onChange={() => setContactAns(!contactAns)} 
+                                disabled={!formEditable}/>}
+                  {!formEditable && contactAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !contactAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
                   <h4 className={classes.headerNoMargin}>Customer Contact</h4>
                   <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} disabled={!formEditable}/>}
-                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
-                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
+              {formEditable && <Checkbox 
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={waterAns} 
+                                onChange={() => setWaterAns(!waterAns)} 
+                                disabled={!formEditable}/>}
+                  {!formEditable && waterAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !waterAns && <CancelIcon color="error" />}
                 <div className={classes.eligibilityText}>
                   <h4 className={classes.headerNoMargin}>Water Meter</h4>
                   <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
@@ -251,7 +274,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       setPaymentFile(e.target.files[0])
                     }}/>
                   </Button>}
-                  <p>{paymentFile?.name}</p>
+                  {paymentFile !== null && <InsertDriveFileIcon color="disabled" />}
+                  <p className={classes.fileFontColor}>{paymentFile?.name}</p>
                 </div>
               </div>
               
@@ -275,7 +299,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       setUsageFile(e.target.files[0])
                     }}/>
                   </Button>}
-                  <p>{usageFile?.name}</p>
+                    {usageFile !== null && <InsertDriveFileIcon color="disabled" />}
+                    <p className={classes.fileFontColor}>{usageFile?.name}</p>
                 </div>
               </div>
             </div>
