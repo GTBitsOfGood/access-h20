@@ -5,7 +5,6 @@ import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { Box, Checkbox, FormControlLabel } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
-import {Helmet} from 'react';
 
 interface Applicant {
   name: string
@@ -93,7 +92,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         <div>
           <div className='accountModal'>
             <div>
-              <a onClick={handleBackToDash}>{"< Back to Dashboard"}</a>
+              <a className={classes.back} onClick={handleBackToDash}>{"< Back to Dashboard"}</a>
 
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -121,20 +120,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
           </div>
         </div>
-
-        <hr style = {{ width: '100%', border: '1px solid #DADADA' }}/>
-
-        <div style = {{ display: 'flex', width: '500px', height: '35px' }}>
-          <div style = {{ flex: '150px' }}>
-            <h3>Notes</h3>
-          </div>
-          <div style = {{ flex: '150px' }}>
-            <a style = {{ fontWeight: 'normal', color: '#4DBAEA', textDecoration: 'none', fontFamily: 'Roboto', padding: '15px' }}>+ Add Note</a>
-          </div>
+        <div className={classes.noteContainer}>
+            <h3 className={classes.noteHead}>Notes</h3>
+            <a className={classes.addNote}>+ Add Note</a>
         </div>
-
-        <hr style = {{ width: '100%', border: '1px solid #DADADA', marginTop: '30px', marginBottom: '30px' }}/>
-
+        
         <Box sx={{ '& > button': { m: 1 } }}>
         <FormControlLabel
           sx={{
@@ -151,43 +141,36 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           }
           label=""
           />
-
-          <h3>Eligibility</h3>
-          <div>
-            <div style = {{ display: 'flex', width: '1000px' }}>
-              <div style = {{ flex: '50px' }}>
-                <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} disabled={!formEditable}/>
+          <div className={classes.eligibilityContainer}>
+            <h3 className={classes.eligibilityHeader}>Eligibility</h3>
+            <div className={classes.eligibilityBody}>
+              <div className={classes.eligibilityCheckbox}>
+                  <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} disabled={!formEditable}/>
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Payments</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
+                </div>
               </div>
-              <div style = {{ flex: '700px' }}>
-                <p style = {{ fontWeight: 'bold' }}>Payments</p>
-                <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
+              <div className={classes.eligibilityCheckbox}>
+                  <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} disabled={!formEditable}/>
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Minimum Services</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
+                </div>
               </div>
-            </div>
-            <div style = {{ display: 'flex', width: '1000px' }}>
-              <div style = {{ flex: '50px' }}>
-                <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} disabled={!formEditable}/>
+              <div className={classes.eligibilityCheckbox}>
+                  <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} disabled={!formEditable}/>
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Customer Contact</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
+                </div>
               </div>
-              <div style = {{ flex: '700px' }}>
-                <p style = {{ fontWeight: 'bold' }}>Minimum Services</p>
-                <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
-              </div>
-            </div>
-            <div style = {{ display: 'flex', width: '1000px' }}>
-              <div style = {{ flex: '50px' }}>
-                <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} disabled={!formEditable}/>
-              </div>
-              <div style = {{ flex: '700px' }}>
-                <p style = {{ fontWeight: 'bold' }}>Customer Contact</p>
-                <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
-              </div>
-            </div>
-            <div style = {{ display: 'flex', width: '1000px' }}>
-              <div style = {{ flex: '50px' }}>
-                <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} disabled={!formEditable}/>
-              </div>
-              <div style = {{ flex: '700px' }}>
-                <p style = {{ fontWeight: 'bold' }}>Water Meter</p>
-                <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
+              <div className={classes.eligibilityCheckbox}>
+                  <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} disabled={!formEditable}/>
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Water Meter</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
+                </div>
               </div>
             </div>
           </div>

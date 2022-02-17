@@ -1,3 +1,8 @@
+.back {
+  color: gray;
+  cursor:pointer;
+}
+
 .bacoground {
   background-color: #CFEBFD;
   padding: 4.5rem;
@@ -9,7 +14,7 @@
 }
 .mainContainer {
   padding: 4rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   background-color: white;
   position: relative;
 }
@@ -35,4 +40,60 @@
 
 .streetAddress {
   margin-bottom: 0px;
+}
+
+.noteContainer {
+  border-style: solid hidden;
+  border-color: #DADADA;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2rem;
+}
+
+.noteHead {
+  margin-right: 6rem;
+}
+
+.addNote {
+  font-weight: normal;
+  color: #4DBAEA;
+  text-decoration: none;
+  cursor:pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 25px;
+}
+
+.eligibilityContainer {
+  border-style: solid hidden;
+  border-color: #DADADA;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.eligibilityHeader {
+  margin: 0rem;
+  margin-top: 2rem;
+  margin-right: 6rem;
+}
+
+.eligibilityBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+
+.eligibilityCheckbox {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.eligibilityText {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
 }
