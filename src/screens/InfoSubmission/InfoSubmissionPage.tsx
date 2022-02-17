@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Button, TextField } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { Box, Checkbox, FormControlLabel } from '@mui/material'
@@ -91,7 +91,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         <div>
           <div className='accountModal'>
             <div>
-              <a className={classes.back} onClick={handleBackToDash}>{"< Back to Dashboard"}</a>
+              <a className={classes.back} onClick={handleBackToDash}>{'< Back to Dashboard'}</a>
 
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -123,7 +123,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.noteHead}>Notes</h3>
             <a className={classes.addNote}>+ Add Note</a>
         </div>
-        
+
         <Box sx={{ '& > button': { m: 1 } }}>
         <FormControlLabel
           sx={{
@@ -199,7 +199,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   <p>{paymentFile?.name}</p>
                 </div>
               </div>
-              
+
               <div className={classes.documentSubmission}>
               <h4 className={classes.headerNoMargin}>Usage History</h4>
                 <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's usage history over the last 12 months.</p>
