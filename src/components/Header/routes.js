@@ -8,12 +8,6 @@ const routes = [
     atEnd: false
   },
   {
-    name: 'Applicant View',
-    link: urls.pages.applicants,
-    auth: false,
-    atEnd: false
-  },
-  {
     name: 'AccessH20 View',
     link: urls.pages.accessh20applicants,
     auth: false,

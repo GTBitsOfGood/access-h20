@@ -178,26 +178,28 @@ const ApplicantTable = ({
     }
     let searchedApplicants = dateApplicants
     const caseInsensitiveSearch = search.toLowerCase()
-    if (searchBy === 'All') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
-          applicant.utilityCompany
-            .toLowerCase()
-            .includes(caseInsensitiveSearch)
-      )
-    } else if (searchBy === 'Name') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.name.toLowerCase().includes(caseInsensitiveSearch)
-      )
-    } else if (searchBy === 'Utility Company') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.utilityCompany
-            .toLowerCase()
-            .includes(caseInsensitiveSearch)
-      )
+    if (!isUtilityView) {
+      if (searchBy === 'All') {
+        searchedApplicants = searchedApplicants.filter(
+          (applicant) =>
+            applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
+            applicant.utilityCompany
+              .toLowerCase()
+              .includes(caseInsensitiveSearch)
+        )
+      } else if (searchBy === 'Name') {
+        searchedApplicants = searchedApplicants.filter(
+          (applicant) =>
+            applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+        )
+      } else if (searchBy === 'Utility Company') {
+        searchedApplicants = searchedApplicants.filter(
+          (applicant) =>
+            applicant.utilityCompany
+              .toLowerCase()
+              .includes(caseInsensitiveSearch)
+        )
+      }
     }
 
     setfilteredApplicants(searchedApplicants)
@@ -225,13 +227,15 @@ const ApplicantTable = ({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <TextField
+
+          {!isUtilityView && (
+            <TextField
             className={classes.searchFilter}
             InputProps={{
               disableUnderline: true,
               className: classes.searchFilterText
             }}
-            label="Utility"
+            label="Search By"
             select
             variant="standard"
             value={searchBy}
@@ -247,6 +251,7 @@ const ApplicantTable = ({
               {'Name'}
             </MenuItem>
           </TextField>
+          )}
           <TextField
             className={classes.searchFilter}
             InputProps={{
@@ -297,8 +302,8 @@ const ApplicantTable = ({
         </div>
         {!isUtilityView && (
           <div>
-            <button onClick={() => setShowCompanyModal(true)} className={classes.addCustomerButton}>Add Company</button>
-            <CompanyModal shouldShowModal={showCompanyModal} onClose={() => setShowCompanyModal(false)} />
+            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
+            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
           </div>
         )}
       </div>
@@ -308,7 +313,9 @@ const ApplicantTable = ({
           <TableHead className={classes.tableHeader}>
             <TableRow>
               <TableCell className={classes.tableHeaderText}>Name</TableCell>
-              <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
+              {!isUtilityView && (
+                <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
+              )}
               <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
               <TableCell className={classes.tableHeaderText}>Property Address</TableCell>
               <TableCell className={classes.tableHeaderText}>Applied</TableCell>
@@ -342,7 +349,9 @@ const ApplicantTable = ({
                               {applicant.name}
                           </TableCell>
                         </Link>
-                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                        {!isUtilityView && (
+                          <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                        )}
                         <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
                         <TableCell className={classes.cell}>
                           {applicant.propertyAddress}

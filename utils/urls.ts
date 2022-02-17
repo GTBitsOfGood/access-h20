@@ -3,7 +3,6 @@ export default {
   dbUrl: process.env.MONGO_DB ?? 'mongodb://localhost:27017',
   pages: {
     index: '/',
-    applicants: '/applicants',
     utilityapplicants: '/utilityapplicants',
     accessh20applicants: '/accessh20applicants',
     infosubmit: '/infosubmit',
