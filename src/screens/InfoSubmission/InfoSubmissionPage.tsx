@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import {Button, TextField } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { Checkbox, FormLabel } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
 import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
 interface Applicant {
   name: string
@@ -127,7 +127,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         <div>
           <div className='accountModal'>
             <div>
-              <a className={classes.back} onClick={handleBackToDash}>{"< Back to Dashboard"}</a>
+              <a className={classes.back} onClick={handleBackToDash}>{'< Back to Dashboard'}</a>
 
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -159,31 +159,30 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.noteHead}>Notes</h3>
             <a className={classes.addNote}>+ Add Note</a>
         </div>
-        {!formEditable?
-        <Button
+        {!formEditable
+          ? <Button
           startIcon={<Edit />}
           onClick={() => setFormEditable(!formEditable)}
           variant="contained"
           color = "primary"
-          style={{textTransform: 'none'}}
+          style={{ textTransform: 'none' }}
         >
           Update Info
         </Button>
-        :
-        <Stack direction="row" spacing={2}>
+          : <Stack direction="row" spacing={2}>
             <Button
             type="button"
             variant = "contained"
             color = "primary"
-            disabled={(paymentFile === null || usageFile === null || infoAns === "" || indivAns === "" || adjustAns === "")}
-            style={{textTransform: 'none'}}
+            disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
+            style={{ textTransform: 'none' }}
             onClick = {(() => console.log(generateInfoSubmission()))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{textTransform: 'none'}}
+            style={{ textTransform: 'none' }}
             onClick = {handleClick}>
                 Cancel
             </Button>
@@ -193,11 +192,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.eligibilityHeader}>Eligibility</h3>
             <div className={classes.eligibilityBody}>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox 
+              {formEditable && <Checkbox
                                 icon={<RadioButtonUncheckedIcon />}
                                 checkedIcon={<CheckCircleIcon />}
-                                checked={paymentAns} 
-                                onChange={() => setPaymentAns(!paymentAns)} 
+                                checked={paymentAns}
+                                onChange={() => setPaymentAns(!paymentAns)}
                                 disabled={!formEditable}/>}
                   {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
                   {!formEditable && !paymentAns && <CancelIcon color="error" />}
@@ -207,11 +206,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox 
+              {formEditable && <Checkbox
                                 icon={<RadioButtonUncheckedIcon />}
                                 checkedIcon={<CheckCircleIcon />}
-                                checked={servicesAns} 
-                                onChange={() => setServicesAns(!servicesAns)} 
+                                checked={servicesAns}
+                                onChange={() => setServicesAns(!servicesAns)}
                                 disabled={!formEditable}
                                 />}
                   {!formEditable && servicesAns && <CheckCircleIcon color="success" />}
@@ -222,11 +221,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox 
+              {formEditable && <Checkbox
                                 icon={<RadioButtonUncheckedIcon />}
                                 checkedIcon={<CheckCircleIcon />}
-                                checked={contactAns} 
-                                onChange={() => setContactAns(!contactAns)} 
+                                checked={contactAns}
+                                onChange={() => setContactAns(!contactAns)}
                                 disabled={!formEditable}/>}
                   {!formEditable && contactAns && <CheckCircleIcon color="success" />}
                   {!formEditable && !contactAns && <CancelIcon color="error" />}
@@ -236,11 +235,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 </div>
               </div>
               <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox 
+              {formEditable && <Checkbox
                                 icon={<RadioButtonUncheckedIcon />}
                                 checkedIcon={<CheckCircleIcon />}
-                                checked={waterAns} 
-                                onChange={() => setWaterAns(!waterAns)} 
+                                checked={waterAns}
+                                onChange={() => setWaterAns(!waterAns)}
                                 disabled={!formEditable}/>}
                   {!formEditable && waterAns && <CheckCircleIcon color="success" />}
                   {!formEditable && !waterAns && <CancelIcon color="error" />}
@@ -256,7 +255,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.documentHeader}>Documents</h3>
             <div className={classes.documentBody}>
               <div className={classes.documentSubmission}>
-              <FormLabel style={{fontWeight: 'bold'}} error={paymentFile === null} htmlFor="infoAns">Payment History</FormLabel>
+              <FormLabel style={{ fontWeight: 'bold' }} error={paymentFile === null} htmlFor="infoAns">Payment History</FormLabel>
                 <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's payment history over the last 12 months.</p>
                 <div className={classes.submissionStack}>
                 {formEditable && <Button
@@ -278,9 +277,9 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   <p className={classes.fileFontColor}>{paymentFile?.name}</p>
                 </div>
               </div>
-              
+
               <div className={classes.documentSubmission}>
-              <FormLabel style={{fontWeight: 'bold'}} error={usageFile === null} htmlFor="infoAns">Payment History</FormLabel>
+              <FormLabel style={{ fontWeight: 'bold' }} error={usageFile === null} htmlFor="infoAns">Payment History</FormLabel>
                 <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's usage history over the last 12 months.</p>
                 <div className={classes.submissionStack}>
                 {formEditable && <Button
@@ -310,71 +309,71 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.additionalHeader}>Additional</h3>
             <div className={classes.additionalBody}>
               <div className={classes.inputContainer}>
-              <FormLabel style={{fontWeight: 'bold'}} error={adjustAns === ""} htmlFor="adjustAns">Are there any pending adjustments?</FormLabel>
+              <FormLabel style={{ fontWeight: 'bold' }} error={adjustAns === ''} htmlFor="adjustAns">Are there any pending adjustments?</FormLabel>
                 {formEditable && <TextField
                   id="adjustAns"
                   value={adjustAns}
                   required
-                  error={adjustAns === ""}
+                  error={adjustAns === ''}
                   minRows="5"
                   multiline
                   variant="outlined"
                   onChange= {(e) => setAdjustAns(e.target.value)}
                   disabled={!formEditable}
                   />}
-                  {!formEditable &&<p style = {{ fontWeight: 'lighter' }}>{adjustAns}</p>}
+                  {!formEditable && <p style = {{ fontWeight: 'lighter' }}>{adjustAns}</p>}
               </div>
               <div className={classes.inputContainer}>
-              <FormLabel style={{fontWeight: 'bold'}} error={indivAns === ""} htmlFor="indivAns">What (if any) other individuals are involved (spouse, landlord, dependent)?</FormLabel>
+              <FormLabel style={{ fontWeight: 'bold' }} error={indivAns === ''} htmlFor="indivAns">What (if any) other individuals are involved (spouse, landlord, dependent)?</FormLabel>
                 {formEditable && <TextField
                     id="indivAns"
                     value={indivAns}
                     required
-                    error={indivAns === ""}
+                    error={indivAns === ''}
                     minRows="5"
                     multiline
                     variant="outlined"
                     onChange={(e) => setIndivAns(e.target.value)}
                     disabled={!formEditable}/>}
-                    {!formEditable &&<p style = {{ fontWeight: 'lighter' }}>{indivAns}</p>}
+                    {!formEditable && <p style = {{ fontWeight: 'lighter' }}>{indivAns}</p>}
               </div>
               <div className={classes.inputContainer}>
-                <FormLabel style={{fontWeight: 'bold'}} error={infoAns === ""} htmlFor="infoAns">Is there any additional information we should know about the account?</FormLabel>
+                <FormLabel style={{ fontWeight: 'bold' }} error={infoAns === ''} htmlFor="infoAns">Is there any additional information we should know about the account?</FormLabel>
                   {formEditable && <TextField
                       id="infoAns"
                       value={infoAns}
                       required
-                      error={infoAns === ""}
+                      error={infoAns === ''}
                       minRows="5"
                       multiline
                       variant="outlined"
                       onChange= {(e) => setInfoAns(e.target.value)}
                       disabled={!formEditable}/>}
-                      {!formEditable &&<p style = {{ fontWeight: 'lighter' }}>{infoAns}</p>}
-                      {(paymentFile === null || usageFile === null || infoAns === "" || indivAns === "" || adjustAns === "") && formEditable && <FormLabel style={{fontWeight: 'bold', marginTop: '2rem'}} error>* Please fill all fields before updating customer info</FormLabel>}
+                      {!formEditable && <p style = {{ fontWeight: 'lighter' }}>{infoAns}</p>}
+                      {(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '') && formEditable && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* Please fill all fields before updating customer info</FormLabel>}
               </div>
             </div>
           </div>
-          {formEditable?
-          <Stack style={{marginLeft: '11.5rem'}} direction="row" spacing={2}>
+          {formEditable
+            ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
             <Button
             type="button"
-            disabled={(paymentFile === null || usageFile === null || infoAns === "" || indivAns === "" || adjustAns === "")}
+            disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
             variant = "contained"
             color = "primary"
-            style={{textTransform: 'none'}}
+            style={{ textTransform: 'none' }}
             onClick = {(() => console.log(generateInfoSubmission()))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{textTransform: 'none'}}
+            style={{ textTransform: 'none' }}
             onClick = {handleClick}>
                 Cancel
             </Button>
           </Stack>
-          : <div></div>
+            : <div></div>
 }
       </div>
     </div>
