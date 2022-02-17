@@ -297,9 +297,6 @@ const ApplicantTable = ({
         </div>
         {!isUtilityView && (
           <div>
-            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
-
             <button onClick={() => setShowCompanyModal(true)} className={classes.addCustomerButton}>Add Company</button>
             <CompanyModal shouldShowModal={showCompanyModal} onClose={() => setShowCompanyModal(false)} />
           </div>
