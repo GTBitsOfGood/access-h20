@@ -12,7 +12,7 @@ export const testFunction2 = async (): Promise<string> =>
     .then((json: TestFunctionTwo) => {
       if (json === null) {
         throw new Error('could not connect to API')
-      } else if (json.success === false) {
+      } else if (!json.success) {
         throw new Error(json.message)
       }
       if (json.payload === undefined) {
