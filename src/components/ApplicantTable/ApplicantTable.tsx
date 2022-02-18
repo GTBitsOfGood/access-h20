@@ -324,7 +324,7 @@ const ApplicantTable = ({
             <TableHead className={classes.tableHeader}>
               <TableRow>
                 <TableCell className={classes.tableHeaderText}>Name</TableCell>
-                <TableCell className={classes.tableHeaderText}>
+                <TableCell className={classes.tableHeaderText} style={{width: 100}} align="right">
                   Utility Company
                 </TableCell>
                 <TableCell className={classes.tableHeaderText}>
@@ -358,17 +358,18 @@ const ApplicantTable = ({
                   };
 
                   return (
-                    <div className={classes.highlightOnHover}>
-                    <TableRow key={applicant.accountId}>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + "/" + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          {applicant.name}
-                        </TableCell>
-                      </Link>
+                    <TableRow className={classes.highlightOnHover} >
+
+                        <Link
+                          href={
+                            infoSubmissionEndpoint + "/" + applicant.accountId
+                          }
+                        >
+                          <TableCell className={classes.cell}>
+                            {applicant.name}
+                          </TableCell>
+                        </Link>
+                      
                       <TableCell className={classes.cell}>
                         {applicant.utilityCompany}
                       </TableCell>
@@ -428,7 +429,6 @@ const ApplicantTable = ({
                         </Menu>
                       </TableCell>
                     </TableRow>
-                    </div>
                   );
                 }
               )}

@@ -56,6 +56,14 @@
 
 .tableHeader {
     background: #C4C4C4;
+    justify-content: center;
+}
+
+
+.utilityText {
+    font-weight: bold;
+    font-size: 18px;
+    left: 50px;
 }
 
 .tableHeaderText {
