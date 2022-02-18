@@ -7,7 +7,7 @@ import ApplicantNavLink from '../../../components/ApplicantNavLink'
 const ApplicantViewPage = (): JSX.Element => {
   return (
     <>
-      <ApplicantNavLink 
+      <ApplicantNavLink
         isUtilityView={true}
       />
       <h1 className={classes.header}>Dashboard</h1>
