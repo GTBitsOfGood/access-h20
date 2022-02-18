@@ -25,3 +25,8 @@ export const linkStyle = {
 export const dividerStyle = {
   margin: '0px 70px 0px 70px'
 }
+
+export const deleteStyle = {
+  color: '#D52600',
+  margin: '5px 0px 0px 10px'
+}

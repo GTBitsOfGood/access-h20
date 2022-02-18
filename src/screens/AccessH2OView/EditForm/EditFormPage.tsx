@@ -1,10 +1,11 @@
 import { Button, Divider, Link, TextField } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import React, { useState } from 'react'
 import classes from './EditForm.module.css'
-import { buttonStyles, linkStyle, dividerStyle } from './EditFormMUIStyles'
+import { buttonStyles, linkStyle, dividerStyle, deleteStyle } from './EditFormMUIStyles'
 
-const eligibilityStatuses = [
+const eligibilityQuestions = [
   {
     title: 'Payments',
     question: 'Has the customer made at least 3 payments?'
@@ -37,7 +38,7 @@ const otherQuestions = [
 ]
 
 const EditFormPage = (): JSX.Element => {
-  const [statusQuestions, setStatusQuestions] = useState(eligibilityStatuses)
+  const [statusQuestions, setStatusQuestions] = useState(eligibilityQuestions)
   const [editStatus, setEditStatus] = useState<boolean[]>([true, true])
   const [newStatusTitle, setNewStatusTitle] = useState('')
   const [newStatusQuestion, setNewStatusQuestion] = useState('')
@@ -91,6 +92,14 @@ const EditFormPage = (): JSX.Element => {
   const handleStatusQuestionChange = (e: any): void => {
     setNewStatusQuestion(e.target.value)
   }
+  const deleteStatusQuestion = (index: number): void => {
+    const removeEdit = editStatus.slice()
+    removeEdit.splice(index, 1)
+    setEditStatus(removeEdit)
+    const removeQuestion = statusQuestions.slice()
+    removeQuestion.splice(index, 1)
+    setStatusQuestions(removeQuestion)
+  }
 
   const enableDocEdit = (index: number): void => {
     const newEdit = editDoc.slice()
@@ -122,6 +131,14 @@ const EditFormPage = (): JSX.Element => {
   const handleDocQuestionChange = (e: any): void => {
     setNewDocDescription(e.target.value)
   }
+  const deleteDocQuestion = (index: number): void => {
+    const removeEdit = editDoc.slice()
+    removeEdit.splice(index, 1)
+    setEditStatus(removeEdit)
+    const removeQuestion = docQuestions.slice()
+    removeQuestion.splice(index, 1)
+    setDocQuestions(removeQuestion)
+  }
 
   const enableAdditEdit = (index: number): void => {
     const newEdit = editAddit.slice()
@@ -148,6 +165,14 @@ const EditFormPage = (): JSX.Element => {
   const handleAdditChange = (e: any): void => {
     setNewAdditQuestion(e.target.value)
   }
+  const deleteAdditQuestion = (index: number): void => {
+    const removeEdit = editAddit.slice()
+    removeEdit.splice(index, 1)
+    setEditStatus(removeEdit)
+    const removeQuestion = additQuestions.slice()
+    removeQuestion.splice(index, 1)
+    setAdditQuestions(removeQuestion)
+  }
 
   return (
     <div className={classes.background}>
@@ -167,17 +192,20 @@ const EditFormPage = (): JSX.Element => {
               </div>
                 : <div>
                   <div className={classes.editQuestions}>
-                    <TextField
-                      InputProps={{
-                        classes: {
-                          root: classes.inputRoot
-                        }
-                      }}
-                      value={question.title}
-                      fullWidth
-                      multiline
-                      size='small'
-                    />
+                    <div className={classes.delete}>
+                      <TextField
+                        InputProps={{
+                          classes: {
+                            root: classes.inputRoot
+                          }
+                        }}
+                        value={question.title}
+                        fullWidth
+                        multiline
+                        size='small'
+                      />
+                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteStatusQuestion(index)}/>
+                    </div>
                     <TextField
                       InputProps={{
                         classes: {
@@ -247,17 +275,20 @@ const EditFormPage = (): JSX.Element => {
               </div>
                 : <div>
                   <div className={classes.editQuestions}>
-                    <TextField
-                      InputProps={{
-                        classes: {
-                          root: classes.inputRoot
-                        }
-                      }}
-                      value={question.title}
-                      multiline
-                      fullWidth
-                      size='small'
-                    />
+                    <div className={classes.delete}>
+                      <TextField
+                        InputProps={{
+                          classes: {
+                            root: classes.inputRoot
+                          }
+                        }}
+                        value={question.title}
+                        multiline
+                        fullWidth
+                        size='small'
+                      />
+                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteDocQuestion(index)}/>
+                    </div>
                     <TextField
                       InputProps={{
                         classes: {
@@ -327,17 +358,20 @@ const EditFormPage = (): JSX.Element => {
               </div>
                 : <div>
                 <div className={classes.editQuestions}>
-                  <TextField
-                    InputProps={{
-                      classes: {
-                        root: classes.inputRoot
-                      }
-                    }}
-                    value={question.question}
-                    multiline
-                    fullWidth
-                    size='small'
-                  />
+                  <div className={classes.delete}>
+                    <TextField
+                      InputProps={{
+                        classes: {
+                          root: classes.inputRoot
+                        }
+                      }}
+                      value={question.question}
+                      multiline
+                      fullWidth
+                      size='small'
+                    />
+                    <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteAdditQuestion(index)}/>
+                  </div>
                 </div>
                 <Button onClick={() => updateAdditQuestion(index)} sx={buttonStyles} variant="contained">Save</Button>
                 <Button onClick = {() => enableAdditEdit(index)} sx={buttonStyles} variant="text">Cancel</Button>

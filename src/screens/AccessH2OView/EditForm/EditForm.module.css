@@ -60,6 +60,10 @@
     margin-top: 10px;
 }
 
+.delete {
+    display: inline-flex;
+}
+
 .editButton {
     margin: 15px 15px 0px 0px;
     color: #4DBAEA;
