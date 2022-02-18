@@ -166,3 +166,9 @@
 .displayFileColor {
   color: #48baeb;
 }
+
+.additionalfontStyle {
+  font-weight: lighter;
+  width: 38rem;
+  word-wrap: break-word;
+}

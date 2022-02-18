@@ -325,7 +325,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   onChange= {(e) => setAdjustAns(e.target.value)}
                   disabled={!formEditable}
                   />}
-                  {!formEditable && <p style = {{ fontWeight: 'lighter' }}>{adjustAns}</p>}
+                  {!formEditable && <p className={classes.additionalfontStyle}>{adjustAns}</p>}
               </div>
               <div className={classes.inputContainer}>
               <FormLabel style={{ fontWeight: 'bold' }} error={indivAns === ''} htmlFor="indivAns">What (if any) other individuals are involved (spouse, landlord, dependent)?</FormLabel>
@@ -339,7 +339,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                     variant="outlined"
                     onChange={(e) => setIndivAns(e.target.value)}
                     disabled={!formEditable}/>}
-                    {!formEditable && <p style = {{ fontWeight: 'lighter' }}>{indivAns}</p>}
+                    {!formEditable && <p className={classes.additionalfontStyle}>{indivAns}</p>}
               </div>
               <div className={classes.inputContainer}>
                 <FormLabel style={{ fontWeight: 'bold' }} error={infoAns === ''} htmlFor="infoAns">Is there any additional information we should know about the account?</FormLabel>
@@ -353,7 +353,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       variant="outlined"
                       onChange= {(e) => setInfoAns(e.target.value)}
                       disabled={!formEditable}/>}
-                      {!formEditable && <p style = {{ fontWeight: 'lighter' }}>{infoAns}</p>}
+                      {!formEditable && <p className={classes.additionalfontStyle}>{infoAns}</p>}
                       {(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '') && formEditable && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* Please fill all fields before updating customer info</FormLabel>}
               </div>
             </div>
