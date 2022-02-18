@@ -4,7 +4,6 @@ import Head from 'next/head'
 import Router from 'next/router'
 import { getCurrentUser } from '../actions/User'
 import urls from '../../utils/urls'
-import '../../public/static/styles/App.css'
 
 const MyApp = ({ Component, pageProps, currentUser = null }: PropTypes): JSX.Element => (
   <>
