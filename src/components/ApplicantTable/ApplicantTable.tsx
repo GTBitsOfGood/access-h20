@@ -18,7 +18,6 @@ import { Announcement, MoreVert } from '@mui/icons-material'
 import { v4 as uuidv4 } from 'uuid'
 import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
-import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 
@@ -206,7 +205,6 @@ const ApplicantTable = ({
   }, [search, statusFilter, searchBy, fromDate, toDate])
 
   const [showApplicantModal, setShowApplicantModal] = useState(false)
-  const [showCompanyModal, setShowCompanyModal] = useState(false)
   const [showNotesModal, setShowNotesModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {

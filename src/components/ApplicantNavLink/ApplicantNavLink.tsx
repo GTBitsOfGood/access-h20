@@ -14,8 +14,7 @@ interface PropTypes {
   isUtilityView: boolean
 }
 
-const ApplicantNavLink = ({
-  isUtilityView}: PropTypes): JSX.Element => {
+const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [auth] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [showUtilityPartnerModal, setShowUtilityPartnerModal] = useState(false)
@@ -47,7 +46,7 @@ const ApplicantNavLink = ({
         >
         </IconButton>
         {!isUtilityView && (
-            <span className={classes.editForm}>Edit Form</span> 
+            <span className={classes.editForm}>Edit Form</span>
         )}
         {!isUtilityView && (
             <span onClick = {() => setShowUtilityPartnerModal(true)} className={classes.addPartner}>Add Utility Partner</span>
@@ -82,7 +81,7 @@ const ApplicantNavLink = ({
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={() => setShowUtilityPartnerModal(true)}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
           </div>
