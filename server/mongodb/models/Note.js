@@ -21,4 +21,4 @@ const NoteSchema = new Schema({
   }
 })
 
-export default mongoose.models.Note ?? mongoose.model('Note', NoteSchema)
+export default mongoose.models?.Note ?? mongoose.model('Note', NoteSchema)

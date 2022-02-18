@@ -18,6 +18,9 @@ export default {
       login: '/api/user/login',
       logout: '/api/user/logout',
       getCurrent: '/api/user/get-current'
+    },
+    notes: {
+      testfunctiontwo: '/api/notes/exampletwo'
     }
   }
 }
