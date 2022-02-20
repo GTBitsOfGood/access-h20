@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
-import { Checkbox, FormLabel, Select, MenuItem, FormControl, Menu  } from '@mui/material'
+import { Checkbox, FormLabel, Select, MenuItem, FormControl } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
 import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
@@ -40,21 +40,20 @@ interface PropTypes {
 }
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
-
-  //Status
+  // Status
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
 
-  //Notes
-  const initArr: string[] = [];
-  const [editNote, setEditNote] = useState(false);
-  const [currentInput, setCurrentInput] = useState("");
-  const [notes, setNotes] = useState(initArr);
+  // Notes
+  const initArr: string[] = []
+  const [editNote, setEditNote] = useState(false)
+  const [currentInput, setCurrentInput] = useState('')
+  const [notes, setNotes] = useState(initArr)
 
   // Form Control
   const [showModal, setShowModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
 
-  //Checkbox selector
+  // Checkbox selector
   const [paymentAns, setPaymentAns] = useState(false)
   const [servicesAns, setServicesAns] = useState(false)
   const [contactAns, setContactAns] = useState(false)
@@ -177,19 +176,19 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
                 <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-                  <Select 
+                  <Select
                   MenuProps={{
                     anchorOrigin: {
-                      vertical: "bottom",
-                      horizontal: "left"
+                      vertical: 'bottom',
+                      horizontal: 'left'
                     },
                     transformOrigin: {
-                      vertical: "top",
-                      horizontal: "left"
+                      vertical: 'top',
+                      horizontal: 'left'
                     }
                   }}
                   value={status}
-                  style = {{borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem'}}
+                  style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
                   onChange={(e) => setStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
                     style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
@@ -236,8 +235,9 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.noteBody}>
               {notes.map((note) => (
                   <div className={classes.stickyNote}>{note}</div>
-                ))}
-              {editNote ? (
+              ))}
+              {editNote
+                ? (
                 <Stack direction="column" spacing={2}>
                   <TextField
                     id="notesField"
@@ -257,11 +257,9 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   color = "primary"
                   style={{ textTransform: 'none' }}
                   onClick={() => {
-                    if (currentInput) {
-                      setNotes([...notes, currentInput]);
-                      setCurrentInput("");
-                      setEditNote(false);
-                    }
+                    setNotes([...notes, currentInput])
+                    setCurrentInput('')
+                    setEditNote(false)
                   }}>
                       Add Note
                   </Button>
@@ -274,8 +272,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   </Button>
                 </Stack>
                 </Stack>
-              ) :
-              <a onClick={() => setEditNote(true)} className={classes.addNote}>+ Add Note</a>}
+                  )
+                : <a onClick={() => setEditNote(true)} className={classes.addNote}>+ Add Note</a>}
             </div>
         </div>
           <div className={classes.scetionContainer}>
