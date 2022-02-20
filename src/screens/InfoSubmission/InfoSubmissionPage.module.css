@@ -1,6 +1,10 @@
 .back {
-  color: gray;
-  cursor:pointer;
+  color: #9A9A9A;
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
 }
 
 .bacoground {

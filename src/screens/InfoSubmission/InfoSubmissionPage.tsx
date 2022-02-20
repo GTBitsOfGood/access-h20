@@ -42,9 +42,17 @@ interface PropTypes {
 }
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
-  // Yes or No
+    //Notes
+    const initArr: string[] = [];
+    const [editNote, setEditNote] = useState(false);
+    const [currentInput, setCurrentInput] = useState("");
+    const [notes, setNotes] = useState(initArr);
+
+  // Form Control
   const [showModal, setShowModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
+
+  //Checkbox selector
   const [paymentAns, setPaymentAns] = useState(false)
   const [servicesAns, setServicesAns] = useState(false)
   const [contactAns, setContactAns] = useState(false)
@@ -127,7 +135,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         <div>
           <div className='accountModal'>
             <div>
-              <a className={classes.back} onClick={handleBackToDash}>{'< Back to Dashboard'}</a>
+              <a className={classes.back} onClick={handleBackToDash}>&lt;&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard</a>
 
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
