@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
-import { Checkbox, FormLabel, FormControl } from '@mui/material'
+import { Checkbox, FormLabel, Select, MenuItem, FormControl, Menu  } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
 import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
@@ -19,7 +19,6 @@ interface Applicant {
   cityAddress: string
   phone: string
   applied: Date
-  status: ApplicantStatus
 }
 
 const dummyData: Applicant = {
@@ -29,8 +28,7 @@ const dummyData: Applicant = {
   streetAddress: '2886 Lime St',
   cityAddress: 'Durham, NC 27704',
   phone: '(404)123-4567',
-  applied: new Date('2019-01-16'),
-  status: ApplicantStatus.AwaitingUtility
+  applied: new Date('2019-01-16')
 }
 
 const setStatusColor = (status: ApplicantStatus): string => {
@@ -42,11 +40,15 @@ interface PropTypes {
 }
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
-    //Notes
-    const initArr: string[] = [];
-    const [editNote, setEditNote] = useState(false);
-    const [currentInput, setCurrentInput] = useState("");
-    const [notes, setNotes] = useState(initArr);
+
+  //Status
+  const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
+
+  //Notes
+  const initArr: string[] = [];
+  const [editNote, setEditNote] = useState(false);
+  const [currentInput, setCurrentInput] = useState("");
+  const [notes, setNotes] = useState(initArr);
 
   // Form Control
   const [showModal, setShowModal] = useState(false)
@@ -174,7 +176,44 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.header}>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
-                <p style = {{ backgroundColor: setStatusColor(dummyData.status), width: '9rem', textAlign: 'center', borderRadius: '8px' }}>{dummyData.status}</p>
+                <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+                  <Select 
+                  MenuProps={{
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "left"
+                    },
+                    transformOrigin: {
+                      vertical: "top",
+                      horizontal: "left"
+                    }
+                  }}
+                  value={status}
+                  style = {{borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem'}}
+                  onChange={(e) => setStatus(e.target.value as ApplicantStatus)}>
+                    <MenuItem value={ApplicantStatus.AwaitingUtility}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      AwaitingUtility</MenuItem>
+                    <MenuItem value={ApplicantStatus.AwaitingAccessH2O}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      AwaitingAccessH2O</MenuItem>
+                    <MenuItem value={ApplicantStatus.Completed}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Completed</MenuItem>
+                    <MenuItem value={ApplicantStatus.Approved}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Approved</MenuItem>
+                    <MenuItem value={ApplicantStatus.Denied}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Denied</MenuItem>
+                    <MenuItem value={ApplicantStatus.Terminated}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Terminated</MenuItem>
+                    <MenuItem value={ApplicantStatus.Incomplete}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Incomplete</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
