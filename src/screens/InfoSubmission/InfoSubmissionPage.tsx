@@ -134,9 +134,38 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
       <div className={classes.mainContainer}>
         <div>
           <div className='accountModal'>
-            <div>
+            <div className={classes.topContainer}>
               <a className={classes.back} onClick={handleBackToDash}>&lt;&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard</a>
-
+              {!formEditable
+                ? <div className={classes.last_item}>
+                <Button
+                startIcon={<Edit />}
+                onClick={() => setFormEditable(!formEditable)}
+                variant="contained"
+                color = "primary"
+                style={{ textTransform: 'none' }}
+              >
+                Update Info
+              </Button>
+              </div>
+                : <div className={classes.last_item}>
+                  <Button
+                  type="button"
+                  variant = "contained"
+                  color = "primary"
+                  disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
+                  style={{ textTransform: 'none' }}
+                  onClick = {(() => console.log(generateInfoSubmission()))}>
+                      Save
+                  </Button>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none', marginLeft: '8px' }}
+                  onClick = {handleClick}>
+                      Cancel
+                  </Button>
+                </div>}
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
           </div>
@@ -165,78 +194,52 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         </div>
         <div className={classes.noteContainer}>
             <h3 className={classes.noteHead}>Notes</h3>
-            {notes.map((note) => (
-                <div className={classes.stickyNote}>{note}</div>
-              ))}
-            {editNote ? (
-              <Stack direction="column" spacing={2}>
-                <FormControl fullWidth>
-                <TextField
-                  id="notesField"
-                  label="Add your note here"
-                  variant="outlined"
-                  onChange={(e) => setCurrentInput(e.target.value)}
-                  value={currentInput}
-                />
-              </FormControl>
-                <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
-                <Button
-                type="button"
-                disabled={(currentInput === '')}
-                variant = "contained"
-                color = "primary"
-                style={{ textTransform: 'none' }}
-                onClick={() => {
-                  if (currentInput) {
-                    setNotes([...notes, currentInput]);
-                    setCurrentInput("");
-                    setEditNote(false);
-                  }
-                }}>
-                    Add Note
-                </Button>
-                <Button
-                type="button"
-                variant = "text"
-                style={{ textTransform: 'none' }}
-                onClick = {() => setEditNote(false)}>
-                    Cancel
-                </Button>
-              </Stack>
-              </Stack>
-            ) :
-            <a onClick={() => setEditNote(true)} className={classes.addNote}>+ Add Note</a>}
+            <div className={classes.noteBody}>
+              {notes.map((note) => (
+                  <div className={classes.stickyNote}>{note}</div>
+                ))}
+              {editNote ? (
+                <Stack direction="column" spacing={2}>
+                  <TextField
+                    id="notesField"
+                    label="Add your note here"
+                    minRows="5"
+                    multiline
+                    variant="outlined"
+                    style={{ width: '38rem' }}
+                    onChange={(e) => setCurrentInput(e.target.value)}
+                    value={currentInput}
+                  />
+                  <Stack direction="row" spacing={2}>
+                  <Button
+                  type="button"
+                  disabled={(currentInput === '')}
+                  variant = "contained"
+                  color = "primary"
+                  style={{ textTransform: 'none' }}
+                  onClick={() => {
+                    if (currentInput) {
+                      setNotes([...notes, currentInput]);
+                      setCurrentInput("");
+                      setEditNote(false);
+                    }
+                  }}>
+                      Add Note
+                  </Button>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none' }}
+                  onClick = {() => setEditNote(false)}>
+                      Cancel
+                  </Button>
+                </Stack>
+                </Stack>
+              ) :
+              <a onClick={() => setEditNote(true)} className={classes.addNote}>+ Add Note</a>}
+            </div>
         </div>
-        {!formEditable
-          ? <Button
-          startIcon={<Edit />}
-          onClick={() => setFormEditable(!formEditable)}
-          variant="contained"
-          color = "primary"
-          style={{ textTransform: 'none' }}
-        >
-          Update Info
-        </Button>
-          : <Stack direction="row" spacing={2}>
-            <Button
-            type="button"
-            variant = "contained"
-            color = "primary"
-            disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
-            style={{ textTransform: 'none' }}
-            onClick = {(() => console.log(generateInfoSubmission()))}>
-                Save
-            </Button>
-            <Button
-            type="button"
-            variant = "text"
-            style={{ textTransform: 'none' }}
-            onClick = {handleClick}>
-                Cancel
-            </Button>
-          </Stack>
-}
-          <div className={classes.eligibilityContainer}>
+          <div className={classes.scetionContainer}>
             <h3 className={classes.eligibilityHeader}>Eligibility</h3>
             <div className={classes.eligibilityBody}>
               <div className={classes.eligibilityCheckbox}>
@@ -299,7 +302,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
           </div>
 
-          <div className={classes.documentContainer}>
+          <div className={classes.scetionContainer}>
             <h3 className={classes.documentHeader}>Documents</h3>
             <div className={classes.documentBody}>
               <div className={classes.documentSubmission}>
