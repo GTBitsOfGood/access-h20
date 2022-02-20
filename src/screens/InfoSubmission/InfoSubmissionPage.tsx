@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
-import { Checkbox, FormLabel } from '@mui/material'
+import { Checkbox, FormLabel, FormControl } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
 import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
@@ -165,7 +165,47 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         </div>
         <div className={classes.noteContainer}>
             <h3 className={classes.noteHead}>Notes</h3>
-            <a className={classes.addNote}>+ Add Note</a>
+            {notes.map((note) => (
+                <div className={classes.stickyNote}>{note}</div>
+              ))}
+            {editNote ? (
+              <Stack direction="column" spacing={2}>
+                <FormControl fullWidth>
+                <TextField
+                  id="notesField"
+                  label="Add your note here"
+                  variant="outlined"
+                  onChange={(e) => setCurrentInput(e.target.value)}
+                  value={currentInput}
+                />
+              </FormControl>
+                <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
+                <Button
+                type="button"
+                disabled={(currentInput === '')}
+                variant = "contained"
+                color = "primary"
+                style={{ textTransform: 'none' }}
+                onClick={() => {
+                  if (currentInput) {
+                    setNotes([...notes, currentInput]);
+                    setCurrentInput("");
+                    setEditNote(false);
+                  }
+                }}>
+                    Add Note
+                </Button>
+                <Button
+                type="button"
+                variant = "text"
+                style={{ textTransform: 'none' }}
+                onClick = {() => setEditNote(false)}>
+                    Cancel
+                </Button>
+              </Stack>
+              </Stack>
+            ) :
+            <a onClick={() => setEditNote(true)} className={classes.addNote}>+ Add Note</a>}
         </div>
         {!formEditable
           ? <Button
