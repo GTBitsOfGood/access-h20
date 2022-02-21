@@ -1,4 +1,4 @@
 export var EligibilityStatus = {
-    question: String,
-    answer: Boolean
+  question: String,
+  answer: Boolean
 }

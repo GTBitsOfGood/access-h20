@@ -1,3 +1,3 @@
-import { ApplicantModal } from "./ApplicantModal";
+import { ApplicantModal } from './ApplicantModal'
 
-export default ApplicantModal;
+export default ApplicantModal

@@ -1,3 +1,3 @@
-import ApplicantTable from "./ApplicantTable";
+import ApplicantTable from './ApplicantTable'
 
-export default ApplicantTable;
+export default ApplicantTable

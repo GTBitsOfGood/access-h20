@@ -1,11 +1,9 @@
-import * as React from "react";
-import Button from "@material-ui/core/Button";
-import classes from "./ApplicantModal.module.css";
-import TextField from "@material-ui/core/TextField";
-import Modal from "@mui/material/Modal";
-import PropTypes from "prop-types";
-import Box from '@mui/material/Box';
-import { fontSize } from "@mui/system";
+import * as React from 'react'
+import Button from '@material-ui/core/Button'
+import classes from './ApplicantModal.module.css'
+import TextField from '@material-ui/core/TextField'
+import Modal from '@mui/material/Modal'
+import Box from '@mui/material/Box'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -29,7 +27,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
               className={classes.modalcontent}
               component="form"
               sx={{
-                '& .MuiTextField-root': { m: 1, width: '32ch' },
+                '& .MuiTextField-root': { m: 1, width: '32ch' }
               }}
               noValidate
               autoComplete="off"
@@ -64,7 +62,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="property-address"
                     label="Property Address"
                     variant="outlined"
-                    style = {{width: 660}}
+                    style = {{ width: 660 }}
                   />
                 </div>
                 <div>
@@ -86,15 +84,15 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     multiline
                     rows={4}
                     variant="outlined"
-                    style = {{width: 660}}
+                    style = {{ width: 660 }}
                   />
                 </div>
                 <div className={classes.modalfooter}>
-                  <Button 
+                  <Button
                   onClick={onClose} className="btn-submit"
                   variant="contained"
                   style={{
-                    backgroundColor: "#4DBAEA", 
+                    backgroundColor: '#4DBAEA',
                     color: '#FFFFFF'
                   }}
                   >
@@ -102,7 +100,6 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                   </Button>
                 </div>
             </Box>
-
 
           </div>
         </Modal>

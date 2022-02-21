@@ -1,3 +1,3 @@
-import ApplicantNavLink from "./ApplicantNavLink";
+import ApplicantNavLink from './ApplicantNavLink'
 
-export default ApplicantNavLink;
+export default ApplicantNavLink

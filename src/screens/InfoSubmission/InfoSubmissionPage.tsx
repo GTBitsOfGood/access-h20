@@ -1,80 +1,89 @@
-import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { ApplicantStatus, ApplicantStatusColor } from "../../types/Applicant";
-import { Checkbox, Select } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import style from "./InfoSubmission.module.css";
-import { FormControl } from "@material-ui/core";
+import React, { useState } from 'react'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import { ApplicantStatus } from '../../types/Applicant'
+import { Box, Checkbox, Select, FormControlLabel } from '@mui/material'
+import MenuItem from '@mui/material/MenuItem'
+import style from './InfoSubmission.module.css'
+import { FormControl } from '@material-ui/core'
+import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
 
 interface Applicant {
-  name: string;
-  utilityCompany: string;
-  accountId: string;
-  propertyAddress: string;
-  applied: Date;
-  status: ApplicantStatus;
-  phoneNumber: string; // Get this checked with Charlie, shoudl applicant have phone num?
+  name: string
+  utilityCompany: string
+  accountId: string
+  propertyAddress: string
+  applied: Date
+  status: ApplicantStatus
+  phoneNumber: string // Get this checked with Charlie, shoudl applicant have phone num?
 }
 
 const dummyData: Applicant = {
-  name: "Ashley Miller",
-  utilityCompany: "Durham",
-  accountId: "50000123",
-  propertyAddress: "2886 Lime St Durham, NC 27704",
-  applied: new Date("2019-01-16"),
+  name: 'Ashley Miller',
+  utilityCompany: 'Durham',
+  accountId: '50000123',
+  propertyAddress: '2886 Lime St Durham, NC 27704',
+  applied: new Date('2019-01-16'),
   status: ApplicantStatus.AwaitingUtility,
-  phoneNumber: "(111)111-1111",
-};
-
-const setStatusColor = (status: ApplicantStatus): string => {
-  return ApplicantStatusColor[status];
-};
-
-const back = "&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard";
+  phoneNumber: '(111)111-1111'
+}
 
 interface PropTypes {
-  applicantId: string;
+  applicantId: string
 }
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
-  //Status
+  // Status
+  /*
   const [values, setValues] = useState([
-    "Terminated",
-    "Denied",
-    "Completed",
-    "Approved",
-    "Awaiting AccessH2O",
-    "Awaiting Utility",
-  ]);
-  const [status, setStatus] = useState("Awaiting Utility");
+    'Terminated',
+    'Denied',
+    'Completed',
+    'Approved',
+    'Awaiting AccessH2O',
+    'Awaiting Utility'
+  ])
+  */
+  const [status, setStatus] = useState('Awaiting Utility')
 
-  //Notes
-  const initArr: string[] = [];
-  const [textFieldDisplayed, setTextFieldDisplayed] = useState(false);
-  const [currentInput, setCurrentInput] = useState("");
-  const [notes, setNotes] = useState(initArr);
+  // Notes
+  const initArr: string[] = []
+  const [textFieldDisplayed, setTextFieldDisplayed] = useState(false)
+  const [currentInput, setCurrentInput] = useState('')
+  const [notes, setNotes] = useState(initArr)
 
   // const [showNotes, setShowNotes] = useState(false);
   // const [notes, setNotes] = useState([]);
 
   // Yes or No
-  const [paymentAns, setPaymentAns] = useState(false);
-  const [servicesAns, setServicesAns] = useState(false);
-  const [contactAns, setContactAns] = useState(false);
-  const [waterAns, setWaterAns] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+  const [formEditable, setFormEditable] = useState(false)
+  const [paymentAns, setPaymentAns] = useState(false)
+  const [servicesAns, setServicesAns] = useState(false)
+  const [contactAns, setContactAns] = useState(false)
+  const [waterAns, setWaterAns] = useState(false)
 
   // File
-  const [paymentFile, setPaymentFile] = useState<File | null>(null);
-  const [usageFile, setUsageFile] = useState<File | null>(null);
+  const [paymentFile, setPaymentFile] = useState<File | null>(null)
+  const [usageFile, setUsageFile] = useState<File | null>(null)
 
   // Short answer
-  const [adjustAns, setAdjustAns] = useState("");
-  const [infoAns, setInfoAns] = useState("");
-  const [indivAns, setIndivAns] = useState("");
+  const [adjustAns, setAdjustAns] = useState('')
+  const [infoAns, setInfoAns] = useState('')
+  const [indivAns, setIndivAns] = useState('')
+
+  function handleClick (): void {
+    setFormEditable(!formEditable)
+  }
+
+  function handleBackToDash (): void {
+    if (formEditable) { setShowModal(formEditable) } else { window.location.href = 'javascript:history.back()' }
+  }
+
+  const closeModalHandler = (): void => setShowModal(false)
 
   const generateInfoSubmission = (): Object => {
+    setFormEditable(false)
     return {
       payments: booleanToYesOrNo(paymentAns),
       minimumService: booleanToYesOrNo(servicesAns),
@@ -84,40 +93,43 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
       usageFile: usageFile,
       pendingAdjustments: adjustAns,
       individualsInvolved: indivAns,
-      additionalInformation: infoAns,
-    };
-  };
+      additionalInformation: infoAns
+    }
+  }
 
-  const handleStatusClick = (event: any) => {
-    setStatus(event.target.value);
-    console.log(event.target.value);
-  };
+  const handleStatusClick = (event: any): void => {
+    setStatus(event.target.value)
+    console.log(event.target.value)
+  }
 
   const booleanToYesOrNo = (input: boolean): string => {
     if (input) {
-      return "Yes";
+      return 'Yes'
     }
-    return "No";
-  };
+    return 'No'
+  }
 
   return (
     <div className={style.infoSubmissionBackground}>
       <div className={style.infoSubmissionContent}>
-        <a className={style.goBack} href="./">
-          &lt;&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard
-        </a>
+        <div className='accountModal'>
+          <a className={style.goBack} onClick={handleBackToDash}>
+            &lt;&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard
+          </a>
+          <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
+        </div>
         <h1>{dummyData.name}</h1>
         <div className={style.customerInfo}>
           <div className={style.customerComponent}>
             <h4>Status</h4>
 
-            <Select id="status-menu" onChange={handleStatusClick}>
-              <MenuItem value={"Awaiting Utility"}>Awaiting Utility</MenuItem>
-              <MenuItem value={"Terminated"}>Terminated</MenuItem>
-              <MenuItem value={"Denied"}>Denied</MenuItem>
-              <MenuItem value={"Completed"}>Completed</MenuItem>
-              <MenuItem value={"Approved"}>Approved</MenuItem>
-              <MenuItem value={"Awaiting AccessH2O"}>
+            <Select id="status-menu" onChange={handleStatusClick} value={status}>
+              <MenuItem value={'Awaiting Utility'}>Awaiting Utility</MenuItem>
+              <MenuItem value={'Terminated'}>Terminated</MenuItem>
+              <MenuItem value={'Denied'}>Denied</MenuItem>
+              <MenuItem value={'Completed'}>Completed</MenuItem>
+              <MenuItem value={'Approved'}>Approved</MenuItem>
+              <MenuItem value={'Awaiting AccessH2O'}>
                 Awaiting AccessH2O
               </MenuItem>
             </Select>
@@ -146,8 +158,9 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <div className={style.sectionContentContainer}>
             {notes.map((note) => (
                 <div className={style.stickyNote}>{note}</div>
-              ))}
-            {textFieldDisplayed ? (
+            ))}
+            {textFieldDisplayed
+              ? (
               <FormControl fullWidth>
                 <TextField
                   id="notesField"
@@ -157,18 +170,19 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   value={currentInput}
                 />
               </FormControl>
-            ) : (
+                )
+              : (
               <a onClick={() => setTextFieldDisplayed(true)}> + Add Note </a>
-            )}
+                )}
 
             <div>
               <Button
                 id="note"
                 onClick={() => {
-                  if (textFieldDisplayed && currentInput) {
-                    setNotes([...notes, currentInput]);
-                    setCurrentInput("");
-                    setTextFieldDisplayed(false);
+                  if (textFieldDisplayed && currentInput != null) {
+                    setNotes([...notes, currentInput])
+                    setCurrentInput('')
+                    setTextFieldDisplayed(false)
                   }
                 }}
                 variant="contained"
@@ -180,7 +194,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <Button
                 id="note"
                 onClick={() => {
-                  setTextFieldDisplayed(false);
+                  setTextFieldDisplayed(false)
                 }}
                 variant="contained"
                 component="label"
@@ -194,6 +208,24 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
         <hr />
 
+        <Box sx={{ '& > button': { m: 1 } }}>
+        <FormControlLabel
+          sx={{
+            display: 'block'
+          }}
+          control={
+            <Button
+              onClick={handleClick}
+              variant="outlined"
+              color = "primary"
+            >
+              Update Info
+            </Button>
+          }
+          label=""
+          />
+        </Box>
+
         <div className={style.sectionContainer}>
           <div className={style.sectionTitleContainer}>
             <h3>Eligibility</h3>
@@ -204,6 +236,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <Checkbox
                 checked={paymentAns}
                 onChange={() => setPaymentAns(!paymentAns)}
+                disabled={!formEditable}
               />
               <div>
                 <p>Payments</p>
@@ -218,6 +251,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <Checkbox
                 checked={servicesAns}
                 onChange={() => setServicesAns(!servicesAns)}
+                disabled={!formEditable}
               />
               <div>
                 <p>Minimum Services</p>
@@ -229,6 +263,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <Checkbox
                 checked={contactAns}
                 onChange={() => setContactAns(!contactAns)}
+                disabled={!formEditable}
               />
               <div>
                 <p>Customer Contact</p>
@@ -242,6 +277,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <Checkbox
                 checked={waterAns}
                 onChange={() => setWaterAns(!waterAns)}
+                disabled={!formEditable}
               />
               <div>
                 <p>Water Meter</p>
@@ -267,13 +303,14 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   id="paymentFile"
                   type="file"
                   hidden
+                  disabled={!formEditable}
                   onChange={(e) => {
                     if (e.target.files === null || e.target.files.length < 1) {
-                      alert("Please upload a valid file.");
-                      return;
+                      alert('Please upload a valid file.')
+                      return
                     }
 
-                    setPaymentFile(e.target.files[0]);
+                    setPaymentFile(e.target.files[0])
                   }}
                 />
               </Button>
@@ -287,13 +324,14 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   id="paymentFile"
                   type="file"
                   hidden
+                  disabled={!formEditable}
                   onChange={(e) => {
                     if (e.target.files === null || e.target.files.length < 1) {
-                      alert("Please upload a valid file.");
-                      return;
+                      alert('Please upload a valid file.')
+                      return
                     }
 
-                    setUsageFile(e.target.files[0]);
+                    setUsageFile(e.target.files[0])
                   }}
                 />
               </Button>
@@ -312,7 +350,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <div className={style.sectionContentContainer}>
             <div>
               <p>Are there any pending adjustments?</p>
-              <TextField id="notesField" />
+              <TextField
+                id="adjustAns"
+                onChange= {(e) => setAdjustAns(e.target.value)}
+                disabled={!formEditable}
+              />
               <p>
                 What (if any) other individuals are involved (spouse, landlord,
                 dependent)?
@@ -320,6 +362,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <TextField
                 id="indivAns"
                 onChange={(e) => setIndivAns(e.target.value)}
+                disabled={!formEditable}
               />
             </div>
             <div>
@@ -330,6 +373,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               <TextField
                 id="infoAns"
                 onChange={(e) => setInfoAns(e.target.value)}
+                disabled={!formEditable}
               />
             </div>
           </div>
@@ -344,7 +388,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default InfoSubmissionPage;
+export default InfoSubmissionPage

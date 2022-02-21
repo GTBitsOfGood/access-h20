@@ -25,8 +25,8 @@ const dummyInfoSub: InfoSubmission = {
 }
 
 const InfoSubmissionPage = (): JSX.Element => {
-  const [applicant, setApplicant] = useState(dummyApplicant)
-  const [infoSub, setInfoSub] = useState(dummyInfoSub)
+  const [applicant] = useState(dummyApplicant)
+  const [infoSub] = useState(dummyInfoSub)
   const [applicantStatus, setApplicantStatus] = useState(dummyApplicant.status)
   const [comments, setComments] = useState('')
 

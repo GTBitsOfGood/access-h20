@@ -18,8 +18,9 @@ import { Announcement, MoreVert } from '@mui/icons-material'
 import { v4 as uuidv4 } from 'uuid'
 import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
-import { CompanyModal } from "src/components/CompanyModal/CompanyModal";
+import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
 import classes from './ApplicantTable.module.css'
+import { NotesModal } from '../NotesModal/NotesModal'
 
 interface PropTypes {
   isUtilityView: boolean // true = utility view & false = AccessH2O view
@@ -204,6 +205,7 @@ const ApplicantTable = ({
 
   const [showApplicantModal, setShowApplicantModal] = useState(false)
   const [showCompanyModal, setShowCompanyModal] = useState(false)
+  const [showNotesModal, setShowNotesModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
@@ -358,7 +360,9 @@ const ApplicantTable = ({
                         </TableCell>
                         <TableCell align="center">
                         <Tooltip title={'View notes'}>
-                          <IconButton>
+                          <IconButton
+                            onClick={() => setShowNotesModal(true)}
+                          >
                             <Announcement/>
                           </IconButton>
                         </Tooltip>
@@ -383,7 +387,7 @@ const ApplicantTable = ({
                           }}
                         >
                           <MenuItem onClick={handleClose}>View</MenuItem>
-                          <MenuItem onClick={handleClose}>Add Notes</MenuItem>
+                          <MenuItem onClick={() => setShowNotesModal(true)}>Add Notes</MenuItem>
                           <MenuItem onClick={handleClose}>Change Status</MenuItem>
                           <div className={classes.deleteButton}>
                             <MenuItem onClick={handleClose}>Delete</MenuItem>
@@ -397,7 +401,7 @@ const ApplicantTable = ({
             }
           </TableBody>
         </Table>
-
+        <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} />
         <TablePagination
           count={applicants.length}
           rowsPerPage={rowsPerPage}
