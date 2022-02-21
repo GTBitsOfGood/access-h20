@@ -1,5 +1,3 @@
-
-   
 import React, { useState } from 'react'
 import classes from './Profile.module.css'
 import Router from 'next/router'
@@ -16,9 +14,9 @@ import {
 } from '@material-ui/core'
 
 interface PropTypes {
-    isUtilityView: boolean
+  isUtilityView: boolean
 }
-  
+
 const Profile = ({ isUtilityView }: PropTypes): JSX.Element => {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [name, setName] = useState('')
