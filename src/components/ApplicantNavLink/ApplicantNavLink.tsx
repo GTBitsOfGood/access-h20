@@ -9,6 +9,8 @@ import Menu from '@mui/material/Menu'
 import classes from './ApplicantNavLink.module.css'
 import { UtilityPartnerModal } from 'src/components/UtilityPartnerModal/UtilityPartnerModal'
 import { useState } from 'react'
+import urls from '../../../utils/urls'
+import { Link } from '@mui/material'
 
 interface PropTypes {
   isUtilityView: boolean
@@ -81,7 +83,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => setShowUtilityPartnerModal(true)}>Profile</MenuItem>
+              <MenuItem component='a' href={urls.pages.profile  + '/' + isUtilityView} >Profile</MenuItem>
               <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
           </div>

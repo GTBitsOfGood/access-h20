@@ -1,8 +1,10 @@
+
+   
 import React, { useState } from 'react'
 import classes from './Profile.module.css'
 import Router from 'next/router'
-import Image from 'next/image'
 import urls from 'utils/urls'
+import ApplicantNavLink from 'src/components/ApplicantNavLink'
 
 import Stack from '@mui/material/Stack'
 import {
@@ -13,7 +15,11 @@ import {
   Typography
 } from '@material-ui/core'
 
-const Profile = (): JSX.Element => {
+interface PropTypes {
+    isUtilityView: boolean
+}
+  
+const Profile = ({ isUtilityView }: PropTypes): JSX.Element => {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -26,14 +32,9 @@ const Profile = (): JSX.Element => {
 
   return (
     <div>
-      <div className={classes.profileHeader}>
-        <Image width="75" height="75" src="/static/access-h20-logo.jpg" />
-        <Stack direction="row" spacing={3}>
-          <Button size="small">Add Utility Partner</Button>
-          <Button size="small">Edit Form</Button>
-          <span className={classes.profilePic}></span>
-        </Stack>
-      </div>
+      <ApplicantNavLink
+        isUtilityView={isUtilityView}
+      />
 
       <div className={classes.profileContent}>
         <Typography
@@ -41,9 +42,9 @@ const Profile = (): JSX.Element => {
           className={classes.profileGrayText}
           onClick={async () => await Router.replace(urls.pages.index)}
         >
-          <b className={classes.textHover}>
+          <a className={classes.textHover} href = 'javascript:history.back()'>
             &lsaquo; Back to Dashboard
-          </b>
+          </a>
         </Typography>
         <Typography variant="h3">
           <b>Profile</b>
@@ -51,12 +52,23 @@ const Profile = (): JSX.Element => {
 
         <div className={classes.profileForm}>
           <div className={classes.formTitleContainer}>
-            <Typography variant="h4">
-              <b>Access H20</b>
-              <span className={classes.profileGrayText}>
-                Admin
-              </span>
-            </Typography>
+
+            {!isUtilityView && (
+                <Typography variant="h4">
+                    <b>Access H20</b>
+                    <span className={classes.profileGrayText}>
+                    Admin
+                    </span>
+                </Typography>
+            )}
+            {isUtilityView && (
+                <Typography variant="h4">
+                    <b>Marana Z</b>
+                    <span className={classes.profileGrayText}>
+                    Utility Partner
+                    </span>
+                </Typography>
+            )}
           </div>
 
           <FormControl>

@@ -6,6 +6,7 @@ export default {
     utilityapplicants: '/utilityapplicants',
     accessh20applicants: '/accessh20applicants',
     infosubmit: '/infosubmit',
+    profile: '/profile',
     login: '/login',
     app: {
       home: '/app'
