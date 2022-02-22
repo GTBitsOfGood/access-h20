@@ -5,6 +5,7 @@ export default {
     index: '/',
     applicants: '/applicants',
     infosubmit: '/infosubmit',
+    editform: '/editform',
     login: '/login',
     app: {
       home: '/app'
