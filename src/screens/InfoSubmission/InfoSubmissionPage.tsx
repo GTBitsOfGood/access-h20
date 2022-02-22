@@ -20,7 +20,6 @@ interface Applicant {
   phone: string
   applied: Date
   status: ApplicantStatus
-  phoneNumber: string // Get this checked with Charlie, shoudl applicant have phone num?
 }
 
 const dummyData: Applicant = {
@@ -30,7 +29,8 @@ const dummyData: Applicant = {
   streetAddress: '2886 Lime St',
   cityAddress: 'Durham, NC 27704',
   phone: '(404)123-4567',
-  applied: new Date('2019-01-16')
+  applied: new Date('2019-01-16'),
+  status: ApplicantStatus.AwaitingUtility
 }
 
 const setStatusColor = (status: ApplicantStatus): string => {
