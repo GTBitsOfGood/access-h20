@@ -11,20 +11,16 @@ import {
   Tooltip,
   TextField,
   MenuItem,
-  InputAdornment,
-  Menu,
-} from "@mui/material";
-import Link from "next/link";
-import { Announcement, MoreVert } from "@mui/icons-material";
-import { v4 as uuidv4 } from "uuid";
-import {
-  Applicant,
-  ApplicantStatus,
-  ApplicantStatusColor,
-} from "../../types/Applicant";
-import { ApplicantModal } from "src/components/ApplicantModal/ApplicantModal";
-import { CompanyModal } from "src/components/CompanyModal/CompanyModal";
-import classes from "./ApplicantTable.module.css";
+  InputAdornment, Menu
+} from '@mui/material'
+import Link from 'next/link'
+import { Announcement, MoreVert } from '@mui/icons-material'
+import { v4 as uuidv4 } from 'uuid'
+import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
+import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
+import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
+import classes from './ApplicantTable.module.css'
+import { NotesModal } from '../NotesModal/NotesModal'
 
 interface PropTypes {
   isUtilityView: boolean; // true = utility view & false = AccessH2O view
@@ -201,8 +197,9 @@ const ApplicantTable = ({
     setfilteredApplicants(searchedApplicants);
   }, [search, statusFilter, searchBy, fromDate, toDate]);
 
-  const [showApplicantModal, setShowApplicantModal] = useState(false);
-  const [showCompanyModal, setShowCompanyModal] = useState(false);
+  const [showApplicantModal, setShowApplicantModal] = useState(false)
+  const [showCompanyModal, setShowCompanyModal] = useState(false)
+  const [showNotesModal, setShowNotesModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status];
@@ -369,33 +366,25 @@ const ApplicantTable = ({
                             {applicant.name}
                           </TableCell>
                         </Link>
-                      
-                      <TableCell className={classes.cell}>
-                        {applicant.utilityCompany}
-                      </TableCell>
-                      <TableCell className={classes.cell}>
-                        {applicant.accountId}
-                      </TableCell>
-                      <TableCell className={classes.cell}>
-                        {applicant.propertyAddress}
-                      </TableCell>
-                      <TableCell className={classes.cell}>
-                        {applicant.applied.toDateString()}
-                      </TableCell>
-                      <TableCell className={classes.cell}>
-                        <span
-                          className={classes.status}
-                          style={{
-                            backgroundColor: statusColor(applicant.status),
-                          }}
-                        >
-                          {applicant.status}
-                        </span>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Tooltip title={"View notes"}>
-                          <IconButton>
-                            <Announcement />
+                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+                        <TableCell className={classes.cell}>
+                          {applicant.propertyAddress}
+                        </TableCell>
+                        <TableCell className={classes.cell}>
+                          {applicant.applied.toDateString()}
+                        </TableCell>
+                        <TableCell className={classes.cell}>
+                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
+                            {applicant.status}
+                          </span>
+                        </TableCell>
+                        <TableCell align="center">
+                        <Tooltip title={'View notes'}>
+                          <IconButton
+                            onClick={() => setShowNotesModal(true)}
+                          >
+                            <Announcement/>
                           </IconButton>
                         </Tooltip>
                       </TableCell>
@@ -419,10 +408,8 @@ const ApplicantTable = ({
                           }}
                         >
                           <MenuItem onClick={handleClose}>View</MenuItem>
-                          <MenuItem onClick={handleClose}>Add Notes</MenuItem>
-                          <MenuItem onClick={handleClose}>
-                            Change Status
-                          </MenuItem>
+                          <MenuItem onClick={() => setShowNotesModal(true)}>Add Notes</MenuItem>
+                          <MenuItem onClick={handleClose}>Change Status</MenuItem>
                           <div className={classes.deleteButton}>
                             <MenuItem onClick={handleClose}>Delete</MenuItem>
                           </div>
@@ -431,22 +418,21 @@ const ApplicantTable = ({
                     </TableRow>
                   );
                 }
-              )}
-            </TableBody>
-          </Table>
-
-          <TablePagination
-            count={applicants.length}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={(e) =>
-              setRowsPerPage(parseInt(e.target.value))
+              )
             }
-            page={page}
-            onPageChange={(_, page) => setPage(page)}
-          />
-        </TableContainer>
-      </div>
-  );
-};
+          </TableBody>
+        </Table>
+        <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} />
+        <TablePagination
+          count={applicants.length}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
+          page={page}
+          onPageChange={(_, page) => setPage(page)}
+        />
+      </TableContainer>
+    </div>
+  )
+}
 
 export default ApplicantTable;

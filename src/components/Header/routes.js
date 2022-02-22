@@ -1,35 +1,41 @@
-import urls from "../../../utils/urls";
+import urls from '../../../utils/urls'
 
 const routes = [
   {
-    name: "Home",
+    name: 'Home',
     link: urls.pages.index,
     auth: false,
-    atEnd: false,
+    atEnd: false
   },
   {
-    name: "Applicant View",
+    name: 'Applicant View',
     link: urls.pages.applicants,
     auth: false,
-    atEnd: false,
+    atEnd: false
   },
   {
-    name: "Info Submission",
+    name: 'Info Submission',
     link: urls.pages.infosubmit,
     auth: false,
-    atEnd: false,
+    atEnd: false
   },
   {
-    name: "Login",
+    name: 'Edit Form',
+    link: urls.pages.editform,
+    auth: false,
+    atEnd: false
+  },
+  {
+    name: 'Login',
     link: urls.pages.login,
     auth: false,
-    atEnd: true,
+    atEnd: true
   },
   {
-    name: "App Home",
+    name: 'App Home',
     link: urls.pages.app.home,
-    auth: true,
-  },
-];
+    auth: true
+  }
+]
 
-export default routes;
+export default routes
