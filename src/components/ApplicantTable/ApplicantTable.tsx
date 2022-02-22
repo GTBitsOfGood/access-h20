@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Table,
   TableBody,
@@ -23,116 +23,116 @@ import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 
 interface PropTypes {
-  isUtilityView: boolean; // true = utility view & false = AccessH2O view
-  infoSubmissionEndpoint: string;
+  isUtilityView: boolean
+  infoSubmissionEndpoint: string
 }
 
 const applicants: Applicant[] = [
   {
-    name: "applicant 1",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 1',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "123 George Burdell Blvd",
+    propertyAddress: '123 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.AwaitingAccessH2O,
+    status: ApplicantStatus.AwaitingAccessH2O
   },
   {
-    name: "applicant 2",
-    utilityCompany: "City of San Francisco",
+    name: 'applicant 2',
+    utilityCompany: 'City of San Francisco',
     accountId: uuidv4().toString(),
-    propertyAddress: "1234 San Francisco Blvd",
+    propertyAddress: '1234 San Francisco Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Completed,
+    status: ApplicantStatus.Completed
   },
   {
-    name: "applicant 3",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 3',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "523 George Burdell Blvd",
+    propertyAddress: '523 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Approved,
+    status: ApplicantStatus.Approved
   },
   {
-    name: "applicant 4",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 4',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 5",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 5',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.AwaitingUtility,
+    status: ApplicantStatus.AwaitingUtility
   },
   {
-    name: "applicant 6",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 6',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Denied,
+    status: ApplicantStatus.Denied
   },
   {
-    name: "applicant 7",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 7',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 8",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 8',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 9",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 9',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 10",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 10',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 11",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 11',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 12",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 12',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
+    status: ApplicantStatus.Terminated
   },
   {
-    name: "applicant 13",
-    utilityCompany: "City of Atlanta",
+    name: 'applicant 13',
+    utilityCompany: 'City of Atlanta',
     accountId: uuidv4().toString(),
-    propertyAddress: "125 George Burdell Blvd",
+    propertyAddress: '125 George Burdell Blvd',
     applied: new Date(),
-    status: ApplicantStatus.Terminated,
-  },
-];
+    status: ApplicantStatus.Terminated
+  }
+]
 
 /**
  * Paginates an applicant array.
@@ -146,64 +146,64 @@ const paginate = (
   page: number,
   rowsPerPage: number
 ): Applicant[] => {
-  return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
-};
+  return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+}
 
 const ApplicantTable = ({
   isUtilityView,
-  infoSubmissionEndpoint,
+  infoSubmissionEndpoint
 }: PropTypes): JSX.Element => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("Any");
-  const [searchBy, setSearchBy] = useState("All");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [filteredApplicants, setfilteredApplicants] = useState(applicants);
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('Any')
+  const [searchBy, setSearchBy] = useState('All')
+  const [fromDate, setFromDate] = useState('')
+  const [toDate, setToDate] = useState('')
+  const [filteredApplicants, setfilteredApplicants] = useState(applicants)
 
   useEffect(() => {
     const statusApplicants = applicants.filter(
-      (applicant) => statusFilter === "Any" || applicant.status === statusFilter
-    );
-    let dateApplicants = statusApplicants;
-    if (fromDate !== "" && toDate !== "") {
-      console.log("wassup");
+      (applicant) => statusFilter === 'Any' || applicant.status === statusFilter
+    )
+    let dateApplicants = statusApplicants
+    if (fromDate !== '' && toDate !== '') {
+      console.log('wassup')
       dateApplicants = dateApplicants.filter((applicant) => {
-        const applicantDate = new Date(applicant.applied);
+        const applicantDate = new Date(applicant.applied)
         return (
           applicantDate > new Date(fromDate) && applicantDate < new Date(toDate)
-        );
-      });
+        )
+      })
     }
-    let searchedApplicants = dateApplicants;
-    const caseInsensitiveSearch = search.toLowerCase();
-    if (searchBy === "All") {
+    let searchedApplicants = dateApplicants
+    const caseInsensitiveSearch = search.toLowerCase()
+    if (searchBy === 'All') {
       searchedApplicants = searchedApplicants.filter(
         (applicant) =>
           applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
           applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
-      );
-    } else if (searchBy === "Name") {
+      )
+    } else if (searchBy === 'Name') {
       searchedApplicants = searchedApplicants.filter((applicant) =>
         applicant.name.toLowerCase().includes(caseInsensitiveSearch)
-      );
-    } else if (searchBy === "Utility Company") {
+      )
+    } else if (searchBy === 'Utility Company') {
       searchedApplicants = searchedApplicants.filter((applicant) =>
         applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
-      );
+      )
     }
 
-    setfilteredApplicants(searchedApplicants);
-  }, [search, statusFilter, searchBy, fromDate, toDate]);
+    setfilteredApplicants(searchedApplicants)
+  }, [search, statusFilter, searchBy, fromDate, toDate])
 
   const [showApplicantModal, setShowApplicantModal] = useState(false)
   const [showCompanyModal, setShowCompanyModal] = useState(false)
   const [showNotesModal, setShowNotesModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {
-    return ApplicantStatusColor[status];
-  };
+    return ApplicantStatusColor[status]
+  }
 
   return (
       <div className={classes.root}>
@@ -212,7 +212,7 @@ const ApplicantTable = ({
             <TextField
               className={classes.searchBox}
               InputProps={{
-                className: classes.searchBox,
+                className: classes.searchBox
               }}
               label="Search"
               variant="outlined"
@@ -223,7 +223,7 @@ const ApplicantTable = ({
               className={classes.searchFilter}
               InputProps={{
                 disableUnderline: true,
-                className: classes.searchFilterText,
+                className: classes.searchFilterText
               }}
               label="Search By"
               select
@@ -231,21 +231,21 @@ const ApplicantTable = ({
               value={searchBy}
               onChange={(e) => setSearchBy(e.target.value)}
             >
-              <MenuItem key={"All"} value={"All"}>
-                {"All"}
+              <MenuItem key={'All'} value={'All'}>
+                {'All'}
               </MenuItem>
-              <MenuItem key={"Utility Company"} value={"Utility Company"}>
-                {"Utility Company"}
+              <MenuItem key={'Utility Company'} value={'Utility Company'}>
+                {'Utility Company'}
               </MenuItem>
-              <MenuItem key={"Name"} value={"Name"}>
-                {"Name"}
+              <MenuItem key={'Name'} value={'Name'}>
+                {'Name'}
               </MenuItem>
             </TextField>
             <TextField
               className={classes.searchFilter}
               InputProps={{
                 disableUnderline: true,
-                className: classes.searchFilterText,
+                className: classes.searchFilterText
               }}
               label="Status"
               select
@@ -253,8 +253,8 @@ const ApplicantTable = ({
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <MenuItem key={"Any"} value={"Any"}>
-                {"Any"}
+              <MenuItem key={'Any'} value={'Any'}>
+                {'Any'}
               </MenuItem>
               {Object.values(ApplicantStatus).map((option) => (
                 <MenuItem key={option} value={option}>
@@ -272,7 +272,7 @@ const ApplicantTable = ({
                 startAdornment: (
                   <InputAdornment position="start">From:</InputAdornment>
                 ),
-                className: classes.dateInputText,
+                className: classes.dateInputText
               }}
             />
             <TextField
@@ -285,7 +285,7 @@ const ApplicantTable = ({
                 startAdornment: (
                   <InputAdornment position="start">To:</InputAdornment>
                 ),
-                className: classes.dateInputText,
+                className: classes.dateInputText
               }}
             />
           </div>
@@ -321,7 +321,7 @@ const ApplicantTable = ({
             <TableHead className={classes.tableHeader}>
               <TableRow>
                 <TableCell className={classes.tableHeaderText}>Name</TableCell>
-                <TableCell className={classes.tableHeaderText} style={{width: 100}} align="right">
+                <TableCell className={classes.tableHeaderText} style={{ width: 100 }} align="right">
                   Utility Company
                 </TableCell>
                 <TableCell className={classes.tableHeaderText}>
@@ -340,26 +340,26 @@ const ApplicantTable = ({
                 <TableCell />
               </TableRow>
             </TableHead>
-            
+
             <TableBody>
               {paginate(filteredApplicants, page, rowsPerPage).map(
                 (applicant) => {
                   const [anchorEl, setAnchorEl] =
-                    React.useState<Element | null>(null);
-                  const open = Boolean(anchorEl);
+                    React.useState<Element | null>(null)
+                  const open = Boolean(anchorEl)
                   const handleClick = (event: React.MouseEvent): void => {
-                    setAnchorEl(event.currentTarget);
-                  };
+                    setAnchorEl(event.currentTarget)
+                  }
                   const handleClose = (): void => {
-                    setAnchorEl(null);
-                  };
+                    setAnchorEl(null)
+                  }
 
                   return (
                     <TableRow className={classes.highlightOnHover} >
 
                         <Link
                           href={
-                            infoSubmissionEndpoint + "/" + applicant.accountId
+                            infoSubmissionEndpoint + '/' + applicant.accountId
                           }
                         >
                           <TableCell className={classes.cell}>
@@ -393,7 +393,7 @@ const ApplicantTable = ({
                           id="basic-button"
                           aria-controls="basic-menu"
                           aria-haspopup="true"
-                          aria-expanded={open ? "true" : undefined}
+                          aria-expanded={open ? 'true' : undefined}
                           onClick={handleClick}
                         >
                           <MoreVert />
@@ -404,7 +404,7 @@ const ApplicantTable = ({
                           open={open}
                           onClose={handleClose}
                           MenuListProps={{
-                            "aria-labelledby": "basic-button",
+                            'aria-labelledby': 'basic-button'
                           }}
                         >
                           <MenuItem onClick={handleClose}>View</MenuItem>
@@ -416,7 +416,7 @@ const ApplicantTable = ({
                         </Menu>
                       </TableCell>
                     </TableRow>
-                  );
+                  )
                 }
               )
             }
@@ -435,4 +435,4 @@ const ApplicantTable = ({
   )
 }
 
-export default ApplicantTable;
+export default ApplicantTable
