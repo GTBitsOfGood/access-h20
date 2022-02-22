@@ -23,7 +23,7 @@ import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 
 interface PropTypes {
-  isUtilityView: boolean // true = utility view & false = AccessH2O view
+  isUtilityView: boolean
   infoSubmissionEndpoint: string
 }
 
@@ -167,7 +167,7 @@ const ApplicantTable = ({
       (applicant) => statusFilter === 'Any' || applicant.status === statusFilter
     )
     let dateApplicants = statusApplicants
-    if ((fromDate !== '') && (toDate !== '')) {
+    if (fromDate !== '' && toDate !== '') {
       console.log('wassup')
       dateApplicants = dateApplicants.filter((applicant) => {
         const applicantDate = new Date(applicant.applied)
@@ -182,21 +182,15 @@ const ApplicantTable = ({
       searchedApplicants = searchedApplicants.filter(
         (applicant) =>
           applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
-          applicant.utilityCompany
-            .toLowerCase()
-            .includes(caseInsensitiveSearch)
+          applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
       )
     } else if (searchBy === 'Name') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+      searchedApplicants = searchedApplicants.filter((applicant) =>
+        applicant.name.toLowerCase().includes(caseInsensitiveSearch)
       )
     } else if (searchBy === 'Utility Company') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.utilityCompany
-            .toLowerCase()
-            .includes(caseInsensitiveSearch)
+      searchedApplicants = searchedApplicants.filter((applicant) =>
+        applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
       )
     }
 
@@ -212,120 +206,146 @@ const ApplicantTable = ({
   }
 
   return (
-    <div className={classes.root}>
-      <div className={classes.header}>
-        <div className={classes.searchBar}>
-          <TextField
-            className={classes.searchBox}
-            InputProps={{
-              className: classes.searchBox
-            }}
-            label="Search"
-            variant="outlined"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <TextField
-            className={classes.searchFilter}
-            InputProps={{
-              disableUnderline: true,
-              className: classes.searchFilterText
-            }}
-            label="Search By"
-            select
-            variant="standard"
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <MenuItem key={'All'} value={'All'}>
-              {'All'}
-            </MenuItem>
-            <MenuItem key={'Utility Company'} value={'Utility Company'}>
-              {'Utility Company'}
-            </MenuItem>
-            <MenuItem key={'Name'} value={'Name'}>
-              {'Name'}
-            </MenuItem>
-          </TextField>
-          <TextField
-            className={classes.searchFilter}
-            InputProps={{
-              disableUnderline: true,
-              className: classes.searchFilterText
-            }}
-            label="Status"
-            select
-            variant="standard"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <MenuItem key={'Any'} value={'Any'}>
-              {'Any'}
-            </MenuItem>
-            {Object.values(ApplicantStatus).map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
+      <div className={classes.root}>
+        <div className={classes.header}>
+          <div className={classes.searchBar}>
+            <TextField
+              className={classes.searchBox}
+              InputProps={{
+                className: classes.searchBox
+              }}
+              label="Search"
+              variant="outlined"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <TextField
+              className={classes.searchFilter}
+              InputProps={{
+                disableUnderline: true,
+                className: classes.searchFilterText
+              }}
+              label="Search By"
+              select
+              variant="standard"
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+            >
+              <MenuItem key={'All'} value={'All'}>
+                {'All'}
               </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            className={classes.dateInput}
-            variant="outlined"
-            value={fromDate}
-            onChange={(e) => setFromDate(e.target.value)}
-            type="date"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">From:</InputAdornment>
-              ),
-              className: classes.dateInputText
-            }}
-          />
-          <TextField
-            className={classes.dateInput}
-            variant="outlined"
-            value={toDate}
-            onChange={(e) => setToDate(e.target.value)}
-            type="date"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">To:</InputAdornment>
-              ),
-              className: classes.dateInputText
-            }}
-          />
-        </div>
-        {!isUtilityView && (
-          <div>
-            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
-
-            <button onClick={() => setShowCompanyModal(true)} className={classes.addCustomerButton}>Add Company</button>
-            <CompanyModal shouldShowModal={showCompanyModal} onClose={() => setShowCompanyModal(false)} />
+              <MenuItem key={'Utility Company'} value={'Utility Company'}>
+                {'Utility Company'}
+              </MenuItem>
+              <MenuItem key={'Name'} value={'Name'}>
+                {'Name'}
+              </MenuItem>
+            </TextField>
+            <TextField
+              className={classes.searchFilter}
+              InputProps={{
+                disableUnderline: true,
+                className: classes.searchFilterText
+              }}
+              label="Status"
+              select
+              variant="standard"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <MenuItem key={'Any'} value={'Any'}>
+                {'Any'}
+              </MenuItem>
+              {Object.values(ApplicantStatus).map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              className={classes.dateInput}
+              variant="outlined"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              type="date"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">From:</InputAdornment>
+                ),
+                className: classes.dateInputText
+              }}
+            />
+            <TextField
+              className={classes.dateInput}
+              variant="outlined"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              type="date"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">To:</InputAdornment>
+                ),
+                className: classes.dateInputText
+              }}
+            />
           </div>
-        )}
-      </div>
+          {!isUtilityView && (
+            <div>
+              <button
+                onClick={() => setShowApplicantModal(true)}
+                className={classes.addCustomerButton}
+              >
+                Add Customer
+              </button>
+              <ApplicantModal
+                shouldShowModal={showApplicantModal}
+                onClose={() => setShowApplicantModal(false)}
+              />
 
-      <TableContainer>
-        <Table>
-          <TableHead className={classes.tableHeader}>
-            <TableRow>
-              <TableCell className={classes.tableHeaderText}>Name</TableCell>
-              <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
-              <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
-              <TableCell className={classes.tableHeaderText}>Property Address</TableCell>
-              <TableCell className={classes.tableHeaderText}>Applied</TableCell>
-              <TableCell className={classes.tableHeaderText}>Status</TableCell>
-              <TableCell className={classes.tableHeaderText}>Notes</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
+              <button
+                onClick={() => setShowCompanyModal(true)}
+                className={classes.addCustomerButton}
+              >
+                Add Company
+              </button>
+              <CompanyModal
+                shouldShowModal={showCompanyModal}
+                onClose={() => setShowCompanyModal(false)}
+              />
+            </div>
+          )}
+        </div>
 
-          <TableBody>
-            {
-              paginate(filteredApplicants, page, rowsPerPage).map(
+        <TableContainer>
+          <Table>
+            <TableHead className={classes.tableHeader}>
+              <TableRow>
+                <TableCell className={classes.tableHeaderText}>Name</TableCell>
+                <TableCell className={classes.tableHeaderText} style={{ width: 100 }} align="right">
+                  Utility Company
+                </TableCell>
+                <TableCell className={classes.tableHeaderText}>
+                  Account ID
+                </TableCell>
+                <TableCell className={classes.tableHeaderText}>
+                  Property Address
+                </TableCell>
+                <TableCell className={classes.tableHeaderText}>
+                  Applied
+                </TableCell>
+                <TableCell className={classes.tableHeaderText}>
+                  Status
+                </TableCell>
+                <TableCell className={classes.tableHeaderText}>Notes</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {paginate(filteredApplicants, page, rowsPerPage).map(
                 (applicant) => {
-                  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
+                  const [anchorEl, setAnchorEl] =
+                    React.useState<Element | null>(null)
                   const open = Boolean(anchorEl)
                   const handleClick = (event: React.MouseEvent): void => {
                     setAnchorEl(event.currentTarget)
@@ -335,14 +355,15 @@ const ApplicantTable = ({
                   }
 
                   return (
-                      <TableRow key={applicant.accountId}>
+                    <TableRow className={classes.highlightOnHover} >
+
                         <Link
                           href={
                             infoSubmissionEndpoint + '/' + applicant.accountId
                           }
                         >
                           <TableCell className={classes.cell}>
-                              {applicant.name}
+                            {applicant.name}
                           </TableCell>
                         </Link>
                         <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
@@ -375,7 +396,7 @@ const ApplicantTable = ({
                           aria-expanded={open ? 'true' : undefined}
                           onClick={handleClick}
                         >
-                          <MoreVert/>
+                          <MoreVert />
                         </IconButton>
                         <Menu
                           id="basic-menu"
