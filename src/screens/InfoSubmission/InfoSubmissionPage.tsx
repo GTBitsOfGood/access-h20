@@ -19,6 +19,8 @@ interface Applicant {
   cityAddress: string
   phone: string
   applied: Date
+  status: ApplicantStatus
+  phoneNumber: string // Get this checked with Charlie, shoudl applicant have phone num?
 }
 
 const dummyData: Applicant = {

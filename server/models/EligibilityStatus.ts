@@ -1,4 +1,4 @@
-export var EligibilityStatus = {
+export const EligibilityStatus = {
   question: String,
   answer: Boolean
 }
