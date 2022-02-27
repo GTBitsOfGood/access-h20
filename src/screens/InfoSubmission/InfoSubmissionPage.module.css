@@ -48,11 +48,6 @@
   width:98%;
 }
 
-/* .MuiMenu-list {
-  display: flex;
-  flex-direction: column;
-} */
-
 .MuiList-root.MuiMenu-list {
   display: flex;
   flex-direction: column;
