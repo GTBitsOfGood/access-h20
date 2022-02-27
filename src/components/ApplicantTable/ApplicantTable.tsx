@@ -11,7 +11,7 @@ import {
   Tooltip,
   TextField,
   MenuItem,
-  InputAdornment, Menu
+  Menu, FormControl, Select
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
@@ -21,6 +21,7 @@ import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 interface PropTypes {
   isUtilityView: boolean
@@ -215,17 +216,17 @@ const ApplicantTable = ({
                 className: classes.searchBox
               }}
               label="Search"
-              variant="outlined"
+              variant="standard"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
             <TextField
-              className={classes.searchFilter}
               InputProps={{
                 disableUnderline: true,
                 className: classes.searchFilterText
               }}
               label="Search By"
+              style = {{marginRight: '10px', marginLeft: '10px', marginTop: '-12px'}}
               select
               variant="standard"
               value={searchBy}
@@ -247,6 +248,7 @@ const ApplicantTable = ({
                 disableUnderline: true,
                 className: classes.searchFilterText
               }}
+              style = {{marginTop: '-12px'}}
               label="Status"
               select
               variant="standard"
