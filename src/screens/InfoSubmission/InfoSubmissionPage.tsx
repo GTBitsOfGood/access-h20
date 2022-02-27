@@ -192,7 +192,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   }}
                   value={status}
                   autoWidth
-                  style = {{flex: 'column', display: 'flex', borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
+                  style = {{ flex: 'column', display: 'flex', borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
                   onChange={(e) => setStatus(e.target.value as ApplicantStatus)}
                   >
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
