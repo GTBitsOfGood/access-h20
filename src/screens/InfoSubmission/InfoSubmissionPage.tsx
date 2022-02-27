@@ -10,7 +10,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { flexbox } from '@mui/system'
 
 interface Applicant {
   name: string
@@ -178,17 +177,17 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.header}>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
-                <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+                <FormControl variant='outlined' sx={{ m: 1, minWidth: 120 }}>
                   <Select
                   className={classes.mui}
                   MenuProps={{
                     anchorOrigin: {
-                      vertical: "bottom",
-                      horizontal: "left"
+                      vertical: 'bottom',
+                      horizontal: 'left'
                     },
                     transformOrigin: {
-                      vertical: "top",
-                      horizontal: "left"
+                      vertical: 'top',
+                      horizontal: 'left'
                     }
                   }}
                   value={status}
@@ -197,25 +196,25 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   onChange={(e) => setStatus(e.target.value as ApplicantStatus)}
                   >
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '7rem', textAlign: 'left', borderRadius: '8px', display: "flex", margin: "7px"}}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting Utility</MenuItem>
                     <MenuItem value={ApplicantStatus.AwaitingAccessH2O}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '10rem', textAlign: 'left', borderRadius: '8px',  display: "flex", margin: "7px"}}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '10rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting AccessH2O</MenuItem>
                     <MenuItem value={ApplicantStatus.Completed}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '6rem', textAlign: 'left', borderRadius: '8px', display: "flex", margin: "7px"}}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Completed</MenuItem>
                     <MenuItem value={ApplicantStatus.Approved}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '5rem', textAlign: 'left', borderRadius: '8px', display: "flex", margin: "7px"}}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Approved</MenuItem>
                     <MenuItem value={ApplicantStatus.Denied}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '4rem', textAlign: 'left', borderRadius: '8px',  display: "flex", margin: "7px"}}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '4rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                         Denied</MenuItem>
                     <MenuItem value={ApplicantStatus.Terminated}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '6rem', textAlign: 'left', borderRadius: '8px',  display: "flex", margin: "7px"}}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Terminated</MenuItem>
                     <MenuItem value={ApplicantStatus.Incomplete}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '6rem', textAlign: 'left', borderRadius: '8px',  display: "flex", margin: "7px"}}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Incomplete</MenuItem>
                   </Select>
                 </FormControl>
