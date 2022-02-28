@@ -22,6 +22,20 @@ export default {
     },
     notes: {
       testfunctiontwo: '/api/notes/exampletwo'
+    },
+    formQuestions: {
+      addEligibilityQuestion: '/api/form/addEligibilityQuestion',
+      addDocumentQuestion: '/api/form/addDocumentQuestion',
+      addOtherQuestion: '/api/form/addOtherQuestion',
+      getEligibilityQuestions: '/api/form/getEligibilityQuestions',
+      getDocumentQuestions: '/api/form/getDocumentQuestions',
+      getOtherQuestions: '/api/form/getOtherQuestions',
+      editEligibilityQuestion: '/api/form/editEligibilityQuestion',
+      editDocumentQuestion: '/api/form/editDocumentQuestion',
+      editOtherQuestion: '/api/form/editOtherQuestion',
+      removeEligibilityQuestion: '/api/form/removeEligibilityQuestion',
+      removeDocumentQuestion: '/api/form/removeDocumentQuestion',
+      removeOtherQuestion: '/api/form/removeOtherQuestion'
     }
   }
 }

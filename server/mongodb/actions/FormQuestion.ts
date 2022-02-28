@@ -9,17 +9,23 @@ import { Types } from 'mongoose'
 
 export async function addEligibilityQuestion (question: eligibilityQuestion): Promise<eligibilityQuestion> {
   await mongoDB()
-  return await EligibilityQuestionSchema.create(question)
+  return await EligibilityQuestionSchema.create({
+    title: question.title,
+    question: question.question
+  })
 }
 
 export async function addDocumentQuestion (question: documentQuestion): Promise<documentQuestion> {
   await mongoDB()
-  return await DocumentQuestionSchema.create(question)
+  return await DocumentQuestionSchema.create({
+    title: question.title,
+    description: question.description
+  })
 }
 
 export async function addOtherQuestion (question: otherQuestion): Promise<otherQuestion> {
   await mongoDB()
-  return await OtherQuestionSchema.create(question)
+  return await OtherQuestionSchema.create({ question: question.question })
 }
 
 export async function getEligibilityQuestions (): Promise<eligibilityQuestion[]> {
