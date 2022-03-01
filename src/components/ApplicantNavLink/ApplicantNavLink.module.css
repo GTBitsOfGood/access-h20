@@ -36,3 +36,11 @@
     right:0;
     transform: scale(1.6);
 }
+
+.addPartner {
+    background: transparent;
+    border: transparent;
+    color: #4DBAEA;
+    margin-right: 2rem;
+    cursor:pointer;
+}

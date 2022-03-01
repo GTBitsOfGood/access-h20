@@ -4,9 +4,9 @@ import classes from './ApplicantView.module.css'
 import urls from '../../../utils/urls'
 import ApplicantNavLink from '../../components/ApplicantNavLink'
 import { getAll } from '../../actions/Client'
-import { Applicant } from '../../types/Applicant'
+import { Applicant } from 'src/types/Applicant'
 
-const ApplicantViewPage = ({ applicants }): JSX.Element => {
+const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Element => {
   return (
     <>
       <ApplicantNavLink />

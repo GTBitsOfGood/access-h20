@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import classes from "./CompanyModal.module.css"
+import React, { useState } from 'react'
+import classes from './CompanyModal.module.css'
 
-import { signUp } from "src/actions/User";
-import { Button, Modal, TextField } from "@material-ui/core";
+// import { signUp } from 'src/actions/User'
+import { Button, Modal, TextField } from '@material-ui/core'
 
 interface PropTypes {
   shouldShowModal: boolean
   onClose: () => void
 }
 
-export const CompanyModal = ({ shouldShowModal, onClose }: PropTypes) => {
-  const [companyName, setCompanyName] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
+export const CompanyModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
+  const [companyName, setCompanyName] = useState('') // eslint-disable-line
+  const [contactEmail, setContactEmail] = useState('') // eslint-disable-line
 
-  const submitForm = () => {
+  const submitForm = (): void => {
     // todo: sign-up logic
-    onClose();
-  };
+    onClose()
+  }
 
   return (
     <Modal open={shouldShowModal} onClose={onClose}>
@@ -44,4 +44,4 @@ export const CompanyModal = ({ shouldShowModal, onClose }: PropTypes) => {
       </div>
     </Modal>
   )
-};
+}

@@ -4,11 +4,8 @@ import { update } from "server/mongodb/actions/User";
 // @route   POST api/user/update
 // @desc    Update User Request
 // @access  Public
-const handler = (
-  req: NextApiRequest,
-  res: NextApiResponse
-) =>
-  update(req.body)
+const handler = async (req: NextApiRequest, res: NextApiResponse) =>
+  await update(req.body)
     .then((updatedUser) =>
       res.status(200).json({
         success: true,

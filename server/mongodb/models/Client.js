@@ -1,16 +1,9 @@
 import mongoose, { Schema } from 'mongoose'
 import { ClientStatus } from '../../models/ClientStatus'
 import { EligibilityStatus } from '../../models/EligibilityStatus'
-// import { v4 as uuidv4 } from 'uuid'
 
 const ClientSchema = new Schema(
   {
-    accountId: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true
-    },
     name: {
       type: String,
       required: true
@@ -19,31 +12,36 @@ const ClientSchema = new Schema(
       type: String,
       required: true
     },
+    accountId: {
+      type: String,
+      required: true,
+      unique: true
+    },
     status: {
-      type: ClientStatus,
+      type: String,
+      enum: ClientStatus,
       required: true
     },
-    address: {
+    propertyAddress: {
       type: String,
       required: true
     },
     applied: {
       type: Date,
-      default: new Date(),
       required: true
     },
     notes: {
       type: [String],
-      required: true
+      required: false
     },
     eligibilityStatuses: {
       type: EligibilityStatus,
       required: false
     },
-    // documents: {
-    //   type: [File],
-    //   required: false
-    // },
+    documents: {
+      type: [String],
+      required: false
+    },
     otherQuestions: {
       type: [String],
       required: false
@@ -51,4 +49,4 @@ const ClientSchema = new Schema(
   }
 )
 
-export default mongoose.models.Client ?? mongoose.model('Client', ClientSchema)
+export default mongoose.models?.Client ?? mongoose.model('Client', ClientSchema)

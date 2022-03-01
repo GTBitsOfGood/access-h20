@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button'
 import classes from './AccountCreationModal.module.css'
 import TextField from '@material-ui/core/TextField'
 import Modal from '@mui/material/Modal'
-import PropTypes from 'prop-types'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { IconButton, InputAdornment } from '@material-ui/core'
 
@@ -15,19 +14,19 @@ interface PropTypes {
 export const AccountCreationModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
   const [values, setValues] = React.useState({
     password: '',
-    showPassword: false,
-  });
+    showPassword: false
+  })
 
-  const handleClickShowPassword = () => {
+  const handleClickShowPassword = (): void => {
     setValues({
       ...values,
-      showPassword: !values.showPassword,
-    });
-  };
+      showPassword: !values.showPassword
+    })
+  }
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.preventDefault()
+  }
 
   return (
     <div>
@@ -45,14 +44,14 @@ export const AccountCreationModal = ({ shouldShowModal, onClose }: PropTypes): J
               label="Email"
               variant="outlined"
               size="small"
-              InputProps={{className: classes.modalInput}}
+              InputProps={{ className: classes.modalInput }}
             />
             <TextField
               id="utility-company"
               label="Utility Company"
               variant="outlined"
               size="small"
-              InputProps={{className: classes.modalInput}}
+              InputProps={{ className: classes.modalInput }}
             />
             <TextField
               id="password"
@@ -76,7 +75,7 @@ export const AccountCreationModal = ({ shouldShowModal, onClose }: PropTypes): J
             />
           </div>
           <div className={classes.modalfooter}>
-            <Button onClick={onClose} className={classes.submit} style={{backgroundColor: "#4DBAEA"}}>
+            <Button onClick={onClose} className={classes.submit} style={{ backgroundColor: '#4DBAEA' }}>
               Submit
             </Button>
           </div>

@@ -1,7 +1,6 @@
-import React from 'react'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import NavLink from '../NavLink'
+import NavLink from '../NavLink' // eslint-disable-line
 import routes from './routes'
 import styles from './Header.module.css'
 

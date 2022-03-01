@@ -1,10 +1,23 @@
+function getBaseURL () {
+  // if backend
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  // if client-side
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  }
+  return 'http://localhost:3000'
+}
+
 export default {
-  baseUrl: process.env.BASE_URL ?? 'http://localhost:3000',
+  baseUrl: getBaseURL(),
   dbUrl: process.env.MONGO_DB ?? 'mongodb://localhost:27017',
   pages: {
     index: '/',
     applicants: '/applicants',
     infosubmit: '/infosubmit',
+    editform: '/editform',
     login: '/login',
     app: {
       home: '/app'
@@ -28,6 +41,9 @@ export default {
       getClient: '/api/client/get-client',
       getAll: '/api/client/get-all',
       addClient: '/api/client/add'
+    },
+    notes: {
+      testfunctiontwo: '/api/notes/exampletwo'
     }
   }
 }

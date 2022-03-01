@@ -1,3 +1,3 @@
-import { AccountCreationModal } from "./AccountCreationModal";
+import { AccountCreationModal } from './AccountCreationModal'
 
-export default AccountCreationModal;
+export default AccountCreationModal
