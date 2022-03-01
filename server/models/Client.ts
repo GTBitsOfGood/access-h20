@@ -4,11 +4,12 @@ export interface Client {
   utilityCompany: string
   accountId: string
   status: ClientStatus
-  address: string
+  propertyAddress: string
+  applied: Date
   notes: [string]
   eligibilityStatuses: {
-    question: String
-    answer: Boolean
+    question: string
+    answer: boolean
   }
   documents: [String]
   otherQuestions: [string]

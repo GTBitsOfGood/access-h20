@@ -13,12 +13,16 @@ const ApplicantViewPage = (): JSX.Element => {
     <>
       <div className={classes.accountModal}>
         <Button onClick={() => setShowModal(true)}>Account Creation</Button>
-        <AccountCreationModal shouldShowModal={showModal} onClose={closeModalHandler}/>
+        <AccountCreationModal
+          shouldShowModal={showModal}
+          onClose={closeModalHandler}
+        />
       </div>
       <h1 className={classes.header}>Dashboard</h1>
       <ApplicantTable
         isUtilityView={false}
         infoSubmissionEndpoint={urls.pages.infosubmit}
+        applicants={[]}
       />
     </>
   )

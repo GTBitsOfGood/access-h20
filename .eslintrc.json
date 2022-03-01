@@ -9,10 +9,7 @@
     "project": ["./tsconfig.json"],
     "sourceType": "module"
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "rules": {
     "no-underscore-dangle": "off",
     "implicit-arrow-linebreak": "off",
