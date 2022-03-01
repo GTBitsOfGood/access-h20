@@ -33,6 +33,7 @@ export default {
       getCurrent: '/api/user/get-current'
     },
     company: {
+      addCompany: '/api/company/add',
       getCompany: '/api/company/get-company',
       update: '/api/company/update'
     },

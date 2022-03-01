@@ -4,6 +4,12 @@ import errors from '../../../utils/consts'
 import mongoDB from '../index'
 import validator from 'email-validator'
 
+export async function addCompany (company: Company): Promise<Company> {
+  await mongoDB()
+  const newCompany = await CompanySchema.create(company)
+  return newCompany
+}
+
 export async function getCompany (accountId: Company['accountId']): Promise<Company> {
   await mongoDB()
   const company = await CompanySchema.findOne({ accountId: accountId })
