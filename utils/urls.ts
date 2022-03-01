@@ -5,6 +5,7 @@ export default {
     index: '/',
     applicants: '/applicants',
     infosubmit: '/infosubmit',
+    editform: '/editform',
     login: '/login',
     app: {
       home: '/app'
@@ -27,6 +28,9 @@ export default {
       getClient: '/api/client/get-client',
       getAll: '/api/client/get-all',
       addClient: '/api/client/add'
+    },
+    notes: {
+      testfunctiontwo: '/api/notes/exampletwo'
     }
   }
 }

@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
 import React, { useState } from 'react'
 import classes from './Profile.module.css'
 import Router from 'next/router'
-import { getCompany, update } from '../../actions/Company'
+import { update } from '../../actions/Company'
 import urls from 'utils/urls'
 import Image from 'next/image'
 
@@ -14,10 +16,25 @@ import {
   Typography
 } from '@material-ui/core'
 
+/*
 const ProfilePage = ({ json }): JSX.Element => {
   const [company, setCompany] = useState(json)
+*/
+const ProfilePage = (): JSX.Element => {
+  const [company, setCompany] = useState(
+    {
+      name: '',
+      email: '',
+      number: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      notes: ''
+    }
+  )
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (): Promise<void> => {
     const updatedCompany = await update(company)
     console.log(JSON.stringify(updatedCompany))
     setCompany(updatedCompany)
@@ -39,6 +56,7 @@ const ProfilePage = ({ json }): JSX.Element => {
         <Typography
           variant="button"
           className={classes.profileGrayText}
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async () => await Router.replace(urls.pages.index)}
         >
           <b className={classes.textHover}>&lsaquo; Back to Dashboard</b>
@@ -213,8 +231,10 @@ const ProfilePage = ({ json }): JSX.Element => {
   )
 }
 
+/*
 ProfilePage.getInitialProps = async ({ query }) => {
   const company = await getCompany(query.accountId)
   return { json: company }
 }
+*/
 export default ProfilePage

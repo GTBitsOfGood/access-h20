@@ -22,6 +22,7 @@ const ApplicantViewPage = (): JSX.Element => {
       <ApplicantTable
         isUtilityView={false}
         infoSubmissionEndpoint={urls.pages.infosubmit}
+        applicants={[]}
       />
     </>
   )

@@ -56,6 +56,14 @@
 
 .tableHeader {
     background: #C4C4C4;
+    justify-content: center;
+}
+
+
+.utilityText {
+    font-weight: bold;
+    font-size: 18px;
+    left: 50px;
 }
 
 .tableHeaderText {
@@ -74,4 +82,9 @@
 
 .deleteButton {
     color: #F02052;
+}
+
+.highlightOnHover:hover {
+    background-color: #CFEBFD;
+    cursor: pointer
 }

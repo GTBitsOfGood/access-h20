@@ -14,18 +14,11 @@ Building a web app for [AccessH2O](https://www.accessh2o.org/) to assist the vol
 
 1. Clone this project to your computer
 2. Navigate to this project in terminal and enter `npm install`
-3. Run `npm run secrets` to sync development secrets from Bitwarden and save them to a local `.env` file. Contact a leadership member for the Bitwarden password.
+3. Run `npm run secrets` to sync development secrets from Bitwarden. Contact a leadership member for the Bitwarden password.
 4. Run `npm run dev` to start the development server 
 
 
 ## Members
 
-- Claudia Tiller - Product Manager - ctiller7@gatech.edu
-- Charlie Luo - Engineering Manager - cvxluo@gatech.edu
 - Singer Cheng - Product Designer - scheng96@gatech.edu 
-- Ren Zheng - Product Designer - rzheng11@gatech.edu
-- Khusbu Patel - Developer - kpatel607@gatech.edu
-- Nidhisha Dasari - Developer - ndasari6@gatech.edu
-- Nicholas Boshart - Developer - nichabosh@gmail.com
-- Sukhmai Kapur - Developer - skapur33@gatech.edu
-- Jason Li - Developer - jasonli@gatech.edu
+- Charlie Luo - Engineering Manager - cvxluo@gatech.edu

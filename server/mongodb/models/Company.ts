@@ -42,4 +42,4 @@ const CompanySchema = new Schema(
   }
 )
 
-module.exports = mongoose.models.Company || mongoose.model('Company', CompanySchema)
+export default mongoose.models?.CompanySchema ?? mongoose.model('Company', CompanySchema)

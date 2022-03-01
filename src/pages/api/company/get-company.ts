@@ -1,7 +1,7 @@
 import { getCompany } from "../../../../server/mongodb/actions/Company";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => getCompany(req.query.accountId).then((company) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => getCompany(req.query.accountId as string).then((company) => {
     res.status(200)
     res.send({
         success: true,

@@ -3,30 +3,27 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import Switch from '@mui/material/Switch'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormGroup from '@mui/material/FormGroup'
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import classes from './ApplicantNavLink.module.css'
-import { Typography } from '@material-ui/core'
-import { Circle } from '@mui/icons-material'
+import { UtilityPartnerModal } from 'src/components/UtilityPartnerModal/UtilityPartnerModal'
+import { useState } from 'react'
 
-export default function ApplicantNavLink () {
-  const [auth, setAuth] = React.useState(true)
+export default function ApplicantNavLink (): JSX.Element {
+  const [auth] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
+  const [showUtilityPartnerModal, setShowUtilityPartnerModal] = useState(false)
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked)
-  }
+  // const handleChange = (event) => {
+  //   setAuth(event.target.checked)
+  // }
 
-  const handleMenu = (event) => {
+  const handleMenu = (event: any): void => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setAnchorEl(null)
   }
 
@@ -44,6 +41,8 @@ export default function ApplicantNavLink () {
           sx={{ mx: 'auto' }}
         >
         </IconButton>
+        <span onClick = {() => setShowUtilityPartnerModal(true)} className={classes.addPartner}>Add Utility Partner</span>
+        <UtilityPartnerModal shouldShowModal={showUtilityPartnerModal} onClose={() => setShowUtilityPartnerModal(false)} />
         {auth && (
           <div>
 

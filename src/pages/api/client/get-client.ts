@@ -1,7 +1,7 @@
 import { getClient } from '../../../../server/mongodb/actions/Client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => getClient(req.query.accountId).then((client) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => getClient(req.query.accountId as string).then((client) => {
     res.status(200)
     res.send({
         success: true,

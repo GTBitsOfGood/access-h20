@@ -15,16 +15,14 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
-import { addClient } from '../../actions/Client'
-import { v4 as uuidv4 } from 'uuid'
 import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
 import classes from './ApplicantTable.module.css'
-import { NextPage } from 'next'
+import { NotesModal } from '../NotesModal/NotesModal'
 
 interface PropTypes {
-  isUtilityView: boolean // true = utility view & false = AccessH2O view
+  isUtilityView: boolean
   infoSubmissionEndpoint: string
   applicants: Applicant[]
 }
@@ -63,7 +61,7 @@ const ApplicantTable = ({
       (applicant) => statusFilter === 'Any' || applicant.status === statusFilter
     )
     let dateApplicants = statusApplicants
-    if ((fromDate !== '') && (toDate !== '')) {
+    if (fromDate !== '' && toDate !== '') {
       console.log('wassup')
       dateApplicants = dateApplicants.filter((applicant) => {
         const applicantDate = new Date(applicant.applied)
@@ -78,21 +76,15 @@ const ApplicantTable = ({
       searchedApplicants = searchedApplicants.filter(
         (applicant) =>
           applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
-          applicant.utilityCompany
-            .toLowerCase()
-            .includes(caseInsensitiveSearch)
+          applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
       )
     } else if (searchBy === 'Name') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+      searchedApplicants = searchedApplicants.filter((applicant) =>
+        applicant.name.toLowerCase().includes(caseInsensitiveSearch)
       )
     } else if (searchBy === 'Utility Company') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.utilityCompany
-            .toLowerCase()
-            .includes(caseInsensitiveSearch)
+      searchedApplicants = searchedApplicants.filter((applicant) =>
+        applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
       )
     }
 
@@ -101,6 +93,7 @@ const ApplicantTable = ({
 
   const [showApplicantModal, setShowApplicantModal] = useState(false)
   const [showCompanyModal, setShowCompanyModal] = useState(false)
+  const [showNotesModal, setShowNotesModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
@@ -192,11 +185,27 @@ const ApplicantTable = ({
         </div>
         {!isUtilityView && (
           <div>
-            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
+            <button
+              onClick={() => setShowApplicantModal(true)}
+              className={classes.addCustomerButton}
+            >
+              Add Customer
+            </button>
+            <ApplicantModal
+              shouldShowModal={showApplicantModal}
+              onClose={() => setShowApplicantModal(false)}
+            />
 
-            <button onClick={() => setShowCompanyModal(true)} className={classes.addCustomerButton}>Add Company</button>
-            <CompanyModal shouldShowModal={showCompanyModal} onClose={() => setShowCompanyModal(false)} />
+            <button
+              onClick={() => setShowCompanyModal(true)}
+              className={classes.addCustomerButton}
+            >
+              Add Company
+            </button>
+            <CompanyModal
+              shouldShowModal={showCompanyModal}
+              onClose={() => setShowCompanyModal(false)}
+            />
           </div>
         )}
       </div>
@@ -206,100 +215,117 @@ const ApplicantTable = ({
           <TableHead className={classes.tableHeader}>
             <TableRow>
               <TableCell className={classes.tableHeaderText}>Name</TableCell>
-              <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
-              <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
-              <TableCell className={classes.tableHeaderText}>Property Address</TableCell>
-              <TableCell className={classes.tableHeaderText}>Applied</TableCell>
-              <TableCell className={classes.tableHeaderText}>Status</TableCell>
+              <TableCell className={classes.tableHeaderText} style={{ width: 100 }} align="right">
+                Utility Company
+              </TableCell>
+              <TableCell className={classes.tableHeaderText}>
+                Account ID
+              </TableCell>
+              <TableCell className={classes.tableHeaderText}>
+                Property Address
+              </TableCell>
+              <TableCell className={classes.tableHeaderText}>
+                Applied
+              </TableCell>
+              <TableCell className={classes.tableHeaderText}>
+                Status
+              </TableCell>
               <TableCell className={classes.tableHeaderText}>Notes</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
-          <TableBody>{
-  paginate(filteredApplicants, page, rowsPerPage).map(
-    (applicant) => {
-      const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
-      const open = Boolean(anchorEl)
-      const handleClick = (event: React.MouseEvent): void => {
-        setAnchorEl(event.currentTarget)
-      }
-      const handleClose = (): void => {
-        setAnchorEl(null)
-      }
 
-      return (
-        <TableRow key={applicant.accountId}>
-          <Link
-            href={
-              infoSubmissionEndpoint + '/' + applicant.accountId
-            }
-          >
-            <TableCell className={classes.cell}>
-                {applicant.name}
-            </TableCell>
-          </Link>
-          <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-          <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-          <TableCell className={classes.cell}>
-            {applicant.address}
-          </TableCell>
-          <TableCell className={classes.cell}>
-            {new Date(applicant.applied).toDateString()}
-          </TableCell>
-          <TableCell className={classes.cell}>
-            <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-              {applicant.status}
-            </span>
-          </TableCell>
-          <TableCell align="center">
-          <Tooltip title={'View notes'}>
-            <IconButton>
-              <Announcement/>
-            </IconButton>
-          </Tooltip>
-        </TableCell>
-        <TableCell>
-          <IconButton
-            id="basic-button"
-            aria-controls="basic-menu"
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-          >
-            <MoreVert/>
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button'
-            }}
-          >
-            <MenuItem onClick={handleClose}>View</MenuItem>
-            <MenuItem onClick={handleClose}>Add Notes</MenuItem>
-            <MenuItem onClick={handleClose}>Change Status</MenuItem>
-            <div className={classes.deleteButton}>
-              <MenuItem onClick={handleClose}>Delete</MenuItem>
-            </div>
-          </Menu>
-        </TableCell>
-      </TableRow>
-      )
-    }
-  )}</TableBody>
-        </Table>
+          <TableBody>
+            {paginate(filteredApplicants, page, rowsPerPage).map(
+              (applicant) => {
+                const [anchorEl, setAnchorEl] =
+                  React.useState<Element | null>(null)
+                const open = Boolean(anchorEl)
+                const handleClick = (event: React.MouseEvent): void => {
+                  setAnchorEl(event.currentTarget)
+                }
+                const handleClose = (): void => {
+                  setAnchorEl(null)
+                }
 
-        <TablePagination
-          count={applicants.length}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
-          page={page}
-          onPageChange={(_, page) => setPage(page)}
-        />
-      </TableContainer>
-    </div>
+                return (
+                  <TableRow className={classes.highlightOnHover} >
+
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
+                          {applicant.name}
+                        </TableCell>
+                      </Link>
+                      <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                      <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+                      <TableCell className={classes.cell}>
+                        {applicant.propertyAddress}
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        {new Date(applicant.applied).toDateString()}
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
+                          {applicant.status}
+                        </span>
+                      </TableCell>
+                      <TableCell align="center">
+                      <Tooltip title={'View notes'}>
+                        <IconButton
+                          onClick={() => setShowNotesModal(true)}
+                        >
+                          <Announcement/>
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        id="basic-button"
+                        aria-controls="basic-menu"
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                      >
+                        <MoreVert />
+                      </IconButton>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          'aria-labelledby': 'basic-button'
+                        }}
+                      >
+                        <MenuItem onClick={handleClose}>View</MenuItem>
+                        <MenuItem onClick={() => setShowNotesModal(true)}>Add Notes</MenuItem>
+                        <MenuItem onClick={handleClose}>Change Status</MenuItem>
+                        <div className={classes.deleteButton}>
+                          <MenuItem onClick={handleClose}>Delete</MenuItem>
+                        </div>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                )
+              }
+            )
+          }
+        </TableBody>
+      </Table>
+      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} />
+      <TablePagination
+        count={applicants.length}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
+        page={page}
+        onPageChange={(_, page) => setPage(page)}
+      />
+    </TableContainer>
+  </div>
   )
 }
 

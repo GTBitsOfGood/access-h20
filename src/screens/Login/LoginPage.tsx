@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
 import React, { useState } from 'react'
 import Router from 'next/router'
 import { login, signUp } from '../../actions/User'
