@@ -4,7 +4,8 @@ import mongoDB from '../index'
 
 export async function addClient (client: Client): Promise<Client> {
   await mongoDB()
-  return await ClientSchema.create(client)
+  const newClient = await ClientSchema.create(client)
+  return newClient
 }
 
 export async function getClient (accountId: Client['accountId']): Promise<Client> {
@@ -13,10 +14,10 @@ export async function getClient (accountId: Client['accountId']): Promise<Client
   return client
 }
 
-export async function getClients (): Promise<Client[]> {
+export async function getAll (): Promise<Client[]> {
   await mongoDB()
-  const client = await ClientSchema.find()
-  return client
+  const clients = await ClientSchema.find()
+  return clients
 }
 
 export async function editNotes (notes: Client['notes'], accountId: Client['accountId']): Promise<void> {

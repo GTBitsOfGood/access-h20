@@ -18,16 +18,21 @@ const ClientSchema = new Schema(
       unique: true
     },
     status: {
-      type: ClientStatus,
+      type: String,
+      enum: ClientStatus,
       required: true
     },
-    address: {
+    propertyAddress: {
       type: String,
+      required: true
+    },
+    applied: {
+      type: Date,
       required: true
     },
     notes: {
       type: [String],
-      required: true
+      required: false
     },
     eligibilityStatuses: {
       type: EligibilityStatus,
@@ -41,7 +46,6 @@ const ClientSchema = new Schema(
       type: [String],
       required: false
     }
-
   }
 )
 
