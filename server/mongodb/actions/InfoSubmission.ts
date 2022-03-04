@@ -11,8 +11,8 @@ export async function addInfo (info: Info): Promise<Info> {
 
 export async function getInfo (accountId: Info['accountId']): Promise<Info> {
   await mongoDB()
-  const client = await InfoSubmissionSchema.findOne({ accountId })
-  return client
+  const info = await InfoSubmissionSchema.findOne({ accountId })
+  return info
 }
 
 export async function update (infosubmited: Info): Promise<void> {

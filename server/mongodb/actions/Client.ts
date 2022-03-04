@@ -1,5 +1,5 @@
 import ClientSchema from '../models/Client'
-import { Client } from '../../models/Client'
+import { Client, Status } from '../../models/Client'
 import mongoDB from '../index'
 
 export async function addClient (client: Client): Promise<Client> {
@@ -27,10 +27,11 @@ export async function editNotes (notes: Client['notes'], accountId: Client['acco
   client.save()
 }
 
-export async function changeStatus (status: Client['status'], accountId: Client['accountId']): Promise<void> {
+export async function changeStatus (status: Status): Promise<void> {
+  const accountid = status.accountId
   await mongoDB()
-  const client = await ClientSchema.findOne({ accountId })
-  client.status = status
+  const client = await ClientSchema.findOne({ accountid })
+  client.status = status.status
   client.save()
 }
 

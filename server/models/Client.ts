@@ -14,3 +14,8 @@ export interface Client {
   documents: [String]
   otherQuestions: [string]
 }
+
+export interface Status {
+  accountId: string
+  status: ApplicantStatus
+}

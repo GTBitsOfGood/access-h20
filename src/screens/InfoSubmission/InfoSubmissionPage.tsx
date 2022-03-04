@@ -10,8 +10,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { getClient } from '../../actions/Client'
-import { update } from '../../actions/InfoSubmission'
+import { getClient, changeStatus } from '../../actions/Client'
+import { update, getInfo } from '../../actions/InfoSubmission'
 
 interface Applicant {
   phone: String
@@ -27,6 +27,11 @@ interface InfoPack {
   pendingAdjustments: String
   individualsInvolved: String
   additionalInformation: String
+}
+
+interface Client {
+  accountId: String
+  status : ApplicantStatus
 }
 
 const dummyData: Applicant = {
@@ -86,9 +91,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [oldInfoAns, setOldInfoAns] = useState('')
   const [oldIndivAns, setOldIndivAns] = useState('')
 
+  const [rendered] = useState(false)
   useEffect(() => {
     void getapplicants()
-  })
+    void getInfoPake()
+  }, [rendered])
 
   const getapplicants = async (): Promise<void> => {
     const applicant = await getClient(applicantId)
@@ -99,6 +106,17 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     if (applicant.note != null) {
       setNotes(applicant.note)
     }
+  }
+
+  const getInfoPake =async (): Promise<void> => {
+    const info = await getInfo(applicantId)
+    setPaymentAns(info.paymentAns)
+    setServicesAns(info.servicesAns)
+    setContactAns(info.contactAns)
+    setWaterAns(info.waterAns)
+    setAdjustAns(info.adjustAns)
+    setInfoAns(info.infoAns)
+    setIndivAns(info.indivAns)
   }
 
   const updateInfo = async (): Promise<void> => {
@@ -125,6 +143,15 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
 
     await update(infoPack)
+  }
+
+  const updateStatus =async (newStatus: ApplicantStatus): Promise<void> => {
+    setStatus(newStatus)
+    const data: Client = {
+      accountId: accountiD,
+      status: newStatus
+    }
+    const info = await changeStatus(data)
   }
 
   function handleClick (): void {
@@ -205,7 +232,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   }}
                   value={status}
                   style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
-                  onChange={(e) => setStatus(e.target.value as ApplicantStatus)}>
+                  onChange={(e) => updateStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
                     style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
                       AwaitingUtility</MenuItem>
