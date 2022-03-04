@@ -20,12 +20,6 @@ const routes = [
     atEnd: false
   },
   {
-    name: 'Edit Form',
-    link: urls.pages.editform,
-    auth: false,
-    atEnd: false
-  },
-  {
     name: 'Login',
     link: urls.pages.login,
     auth: false,

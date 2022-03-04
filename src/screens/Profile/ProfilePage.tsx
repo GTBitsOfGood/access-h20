@@ -48,7 +48,7 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   return (
     <div>
       <ApplicantNavLink
-        isUtilityView={isUtilityView}
+        isUtilityView={true}
       />
 
       <div className={classes.profileContent}>
