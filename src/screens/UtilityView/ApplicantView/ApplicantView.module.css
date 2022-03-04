@@ -1,10 +1,10 @@
 .header {
-    margin: 48px 0px 45px 55px;
-    font-family: Arial, serif;
+  margin: 48px 0px 45px 55px;
+  font-family: Arial, serif;
 }
 
 .accountModal {
-    display: flex;
-    justify-content: flex-end;
-    margin: 30px 45px 0px 0px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 30px 45px 0px 0px;
 }
