@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import { Button, TextField } from '@material-ui/core'
+import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
-import { Box, Checkbox, FormControlLabel } from '@mui/material'
+import { Checkbox, FormLabel, Select, MenuItem, FormControl } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
+import { Edit } from '@mui/icons-material'
+import Stack from '@mui/material/Stack'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
 interface Applicant {
   name: string
   utilityCompany: string
   accountId: string
-  propertyAddress: string
+  streetAddress: string
+  cityAddress: string
+  phone: string
   applied: Date
   status: ApplicantStatus
 }
@@ -18,7 +26,9 @@ const dummyData: Applicant = {
   name: 'Ashley Miller',
   utilityCompany: 'Durham',
   accountId: '50000123',
-  propertyAddress: '2886 Lime St Durham, NC 27704',
+  streetAddress: '2886 Lime St',
+  cityAddress: 'Durham, NC 27704',
+  phone: '(404)123-4567',
   applied: new Date('2019-01-16'),
   status: ApplicantStatus.AwaitingUtility
 }
@@ -32,24 +42,56 @@ interface PropTypes {
 }
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
-  // Yes or No
+  // Status
+  const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
+
+  // Notes
+  const initArr: string[] = []
+  const [editNote, setEditNote] = useState(false)
+  const [currentInput, setCurrentInput] = useState('')
+  const [notes, setNotes] = useState(initArr)
+
+  // Form Control
   const [showModal, setShowModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
+
+  // Checkbox selector
   const [paymentAns, setPaymentAns] = useState(false)
   const [servicesAns, setServicesAns] = useState(false)
   const [contactAns, setContactAns] = useState(false)
   const [waterAns, setWaterAns] = useState(false)
 
+  const [oldPaymentAns, setOldPaymentAns] = useState(false)
+  const [oldServicesAns, setOldServicesAns] = useState(false)
+  const [oldContactAns, setOldContactAns] = useState(false)
+  const [oldWaterAns, setOldWaterAns] = useState(false)
+
   // File
   const [paymentFile, setPaymentFile] = useState<File | null>(null)
   const [usageFile, setUsageFile] = useState<File | null>(null)
+
+  const [oldPaymentFile, setOldPaymentFile] = useState<File | null>(null)
+  const [oldUsageFile, setOldUsageFile] = useState<File | null>(null)
 
   // Short answer
   const [adjustAns, setAdjustAns] = useState('')
   const [infoAns, setInfoAns] = useState('')
   const [indivAns, setIndivAns] = useState('')
 
+  const [oldAdjustAns, setOldAdjustAns] = useState('')
+  const [oldInfoAns, setOldInfoAns] = useState('')
+  const [oldIndivAns, setOldIndivAns] = useState('')
+
   function handleClick (): void {
+    setPaymentAns(oldPaymentAns)
+    setServicesAns(oldServicesAns)
+    setContactAns(oldContactAns)
+    setWaterAns(oldWaterAns)
+    setPaymentFile(oldPaymentFile)
+    setUsageFile(oldUsageFile)
+    setAdjustAns(oldAdjustAns)
+    setInfoAns(oldInfoAns)
+    setIndivAns(oldIndivAns)
     setFormEditable(!formEditable)
   }
 
@@ -60,6 +102,15 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const closeModalHandler = (): void => setShowModal(false)
 
   const generateInfoSubmission = (): Object => {
+    setOldPaymentAns(paymentAns)
+    setOldServicesAns(servicesAns)
+    setOldContactAns(contactAns)
+    setOldWaterAns(waterAns)
+    setOldPaymentFile(paymentFile)
+    setOldUsageFile(usageFile)
+    setOldAdjustAns(adjustAns)
+    setOldInfoAns(infoAns)
+    setOldIndivAns(indivAns)
     setFormEditable(false)
     return {
       payments: booleanToYesOrNo(paymentAns),
@@ -82,180 +133,344 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   return (
-    <div style = {{ padding: '25px', border: '75px solid #CFEBFD' }}>
-      <div>
-        <div className='accountModal'>
-          <a onClick={handleBackToDash}>Back to Dashboard</a>
-          <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
-        </div>
-        <h1>{dummyData.name}</h1>
+    <div className={classes.bacoground}>
+      <div className={classes.mainContainer}>
         <div>
-          <div style = {{ display: 'flex', width: '500px', height: '35px' }}>
-            <div style = {{ flex: '150px' }}>
-              <h4>Status</h4>
+          <div className='accountModal'>
+            <div className={classes.topContainer}>
+              <a className={classes.back} onClick={handleBackToDash}>&lt;&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard</a>
+              {!formEditable
+                ? <div className={classes.last_item}>
+                <Button
+                startIcon={<Edit />}
+                onClick={() => setFormEditable(!formEditable)}
+                variant="contained"
+                color = "primary"
+                style={{ textTransform: 'none' }}
+              >
+                Update Info
+              </Button>
+              </div>
+                : <div className={classes.last_item}>
+                  <Button
+                  type="button"
+                  variant = "contained"
+                  color = "primary"
+                  disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
+                  style={{ textTransform: 'none' }}
+                  onClick = {(() => console.log(generateInfoSubmission()))}>
+                      Save
+                  </Button>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none', marginLeft: '8px' }}
+                  onClick = {handleClick}>
+                      Cancel
+                  </Button>
+                </div>}
             </div>
-            <div style = {{ flex: '100px' }}>
-              <h4>Account ID</h4>
-            </div>
-            <div style = {{ flex: '100px' }}>
-              <h4>Address</h4>
+            <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
+          </div>
+          <h1>{dummyData.name}</h1>
+          <div>
+            <div className={classes.header}>
+              <div className={classes.headerInfoBox}>
+                <h4 className={classes.headerNoMargin}>Status</h4>
+                <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+                  <Select
+                  MenuProps={{
+                    anchorOrigin: {
+                      vertical: 'bottom',
+                      horizontal: 'left'
+                    },
+                    transformOrigin: {
+                      vertical: 'top',
+                      horizontal: 'left'
+                    }
+                  }}
+                  value={status}
+                  style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
+                  onChange={(e) => setStatus(e.target.value as ApplicantStatus)}>
+                    <MenuItem value={ApplicantStatus.AwaitingUtility}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      AwaitingUtility</MenuItem>
+                    <MenuItem value={ApplicantStatus.AwaitingAccessH2O}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      AwaitingAccessH2O</MenuItem>
+                    <MenuItem value={ApplicantStatus.Completed}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Completed</MenuItem>
+                    <MenuItem value={ApplicantStatus.Approved}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Approved</MenuItem>
+                    <MenuItem value={ApplicantStatus.Denied}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Denied</MenuItem>
+                    <MenuItem value={ApplicantStatus.Terminated}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Terminated</MenuItem>
+                    <MenuItem value={ApplicantStatus.Incomplete}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
+                      Incomplete</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className={classes.headerInfoBox}>
+                <h4 className={classes.headerNoMargin}>Account ID</h4>
+                <p>{dummyData.accountId}</p>
+              </div>
+              <div className={classes.headerInfoBox}>
+                <h4 className={classes.headerNoMargin}>Phone Number</h4>
+                <p>{dummyData.phone}</p>
+              </div>
+              <div className={classes.headerInfoBox}>
+                <h4 className={classes.headerNoMargin}>Address</h4>
+                <p className={classes.streetAddress}>{dummyData.streetAddress}</p>
+                <p className={classes.headerNoMargin}>{dummyData.cityAddress}</p>
+              </div>
             </div>
           </div>
-          <div style = {{ display: 'flex', width: '500px' }}>
-            <div style = {{ flex: '150px' }}>
-              <h4 style = {{ fontWeight: 'normal', backgroundColor: setStatusColor(dummyData.status), width: '85%', textAlign: 'center', borderRadius: '8px' }}>{dummyData.status}</h4>
+        </div>
+        <div className={classes.noteContainer}>
+            <h3 className={classes.noteHead}>Notes</h3>
+            <div className={classes.noteBody}>
+              {notes.map((note) => (
+                  <div className={classes.stickyNote}>{note}</div>
+              ))}
+              {editNote
+                ? (
+                <Stack direction="column" spacing={2}>
+                  <TextField
+                    id="notesField"
+                    label="Add your note here"
+                    minRows="5"
+                    multiline
+                    variant="outlined"
+                    style={{ width: '38rem' }}
+                    onChange={(e) => setCurrentInput(e.target.value)}
+                    value={currentInput}
+                  />
+                  <Stack direction="row" spacing={2}>
+                  <Button
+                  type="button"
+                  disabled={(currentInput === '')}
+                  variant = "contained"
+                  color = "primary"
+                  style={{ textTransform: 'none' }}
+                  onClick={() => {
+                    setNotes([...notes, currentInput])
+                    setCurrentInput('')
+                    setEditNote(false)
+                  }}>
+                      Add Note
+                  </Button>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none' }}
+                  onClick = {() => setEditNote(false)}>
+                      Cancel
+                  </Button>
+                </Stack>
+                </Stack>
+                  )
+                : <a onClick={() => setEditNote(true)} className={classes.addNote}>+ Add Note</a>}
             </div>
-            <div style = {{ flex: '100px' }}>
-              <h4 style = {{ fontWeight: 'normal' }}>{dummyData.accountId}</h4>
-            </div>
-            <div style = {{ flex: '100px' }}>
-              <h4 style = {{ fontWeight: 'normal' }}>{dummyData.propertyAddress}</h4>
+        </div>
+          <div className={classes.scetionContainer}>
+            <h3 className={classes.eligibilityHeader}>Eligibility</h3>
+            <div className={classes.eligibilityBody}>
+              <div className={classes.eligibilityCheckbox}>
+              {formEditable && <Checkbox
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={paymentAns}
+                                onChange={() => setPaymentAns(!paymentAns)}
+                                disabled={!formEditable}/>}
+                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Payments</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
+                </div>
+              </div>
+              <div className={classes.eligibilityCheckbox}>
+              {formEditable && <Checkbox
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={servicesAns}
+                                onChange={() => setServicesAns(!servicesAns)}
+                                disabled={!formEditable}
+                                />}
+                  {!formEditable && servicesAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !servicesAns && <CancelIcon color="error" />}
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Minimum Services</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
+                </div>
+              </div>
+              <div className={classes.eligibilityCheckbox}>
+              {formEditable && <Checkbox
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={contactAns}
+                                onChange={() => setContactAns(!contactAns)}
+                                disabled={!formEditable}/>}
+                  {!formEditable && contactAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !contactAns && <CancelIcon color="error" />}
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Customer Contact</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
+                </div>
+              </div>
+              <div className={classes.eligibilityCheckbox}>
+              {formEditable && <Checkbox
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<CheckCircleIcon />}
+                                checked={waterAns}
+                                onChange={() => setWaterAns(!waterAns)}
+                                disabled={!formEditable}/>}
+                  {!formEditable && waterAns && <CheckCircleIcon color="success" />}
+                  {!formEditable && !waterAns && <CancelIcon color="error" />}
+                <div className={classes.eligibilityText}>
+                  <h4 className={classes.headerNoMargin}>Water Meter</h4>
+                  <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <hr style = {{ width: '100%', border: '1px solid #DADADA' }}/>
+          <div className={classes.scetionContainer}>
+            <h3 className={classes.documentHeader}>Documents</h3>
+            <div className={classes.documentBody}>
+              <div className={classes.documentSubmission}>
+              <FormLabel style={{ fontWeight: 'bold' }} error={paymentFile === null} htmlFor="infoAns">Payment History</FormLabel>
+                <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's payment history over the last 12 months.</p>
+                <div className={classes.submissionStack}>
+                {formEditable && <Button
+                    variant="contained"
+                    component="label"
+                    disabled={!formEditable}
+                    style = {{ width: '15%', textTransform: 'none', marginRight: '0.5rem', height: '2rem' }}>
+                    Upload
+                    <input id="paymentFile" type="file" hidden onChange = {(e) => {
+                      if (e.target.files === null || e.target.files.length < 1) {
+                        alert('Please upload a valid file.')
+                        return
+                      }
 
-      <div style = {{ display: 'flex', width: '500px', height: '35px' }}>
-        <div style = {{ flex: '150px' }}>
-          <h3>Notes</h3>
-        </div>
-        <div style = {{ flex: '150px' }}>
-          <a style = {{ fontWeight: 'normal', color: '#4DBAEA', textDecoration: 'none', fontFamily: 'Roboto', padding: '15px' }}>+ Add Note</a>
-        </div>
-      </div>
+                      setPaymentFile(e.target.files[0])
+                    }}/>
+                  </Button>}
+                  {formEditable && paymentFile !== null && <InsertDriveFileIcon color="disabled" />}
+                  {formEditable && <p className={classes.fileFontColor}>{paymentFile?.name}</p>}
+                  {!formEditable && paymentFile !== null && <InsertDriveFileIcon color="primary" />}
+                  {!formEditable && <p className={classes.displayFileColor}>{paymentFile?.name}</p>}
+                </div>
+              </div>
 
-      <hr style = {{ width: '100%', border: '1px solid #DADADA', marginTop: '30px', marginBottom: '30px' }}/>
+              <div className={classes.documentSubmission}>
+              <FormLabel style={{ fontWeight: 'bold' }} error={usageFile === null} htmlFor="infoAns">Payment History</FormLabel>
+                <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's usage history over the last 12 months.</p>
+                <div className={classes.submissionStack}>
+                {formEditable && <Button
+                    id="usageFile"
+                    variant="contained"
+                    disabled={!formEditable}
+                    component="label"
+                    style = {{ width: '15%', textTransform: 'none', marginRight: '0.5rem', height: '2rem' }}>
+                    Upload
+                    <input id="paymentFile" type="file" hidden onChange = {(e) => {
+                      if (e.target.files === null || e.target.files.length < 1) {
+                        alert('Please upload a valid file.')
+                        return
+                      }
 
-      <Box sx={{ '& > button': { m: 1 } }}>
-      <FormControlLabel
-        sx={{
-          display: 'block'
-        }}
-        control={
-          <Button
-            onClick={handleClick}
-            variant="outlined"
+                      setUsageFile(e.target.files[0])
+                    }}/>
+                  </Button>}
+                    {formEditable && usageFile !== null && <InsertDriveFileIcon color="disabled" />}
+                    {formEditable && <p className={classes.fileFontColor}>{usageFile?.name}</p>}
+                    {!formEditable && usageFile !== null && <InsertDriveFileIcon color="primary" />}
+                    {!formEditable && <p className={classes.displayFileColor}>{usageFile?.name}</p>}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={classes.additionalContainer}>
+            <h3 className={classes.additionalHeader}>Additional</h3>
+            <div className={classes.additionalBody}>
+              <div className={classes.inputContainer}>
+              <FormLabel style={{ fontWeight: 'bold' }} error={adjustAns === ''} htmlFor="adjustAns">Are there any pending adjustments?</FormLabel>
+                {formEditable && <TextField
+                  id="adjustAns"
+                  value={adjustAns}
+                  required
+                  error={adjustAns === ''}
+                  minRows="5"
+                  multiline
+                  variant="outlined"
+                  onChange= {(e) => setAdjustAns(e.target.value)}
+                  disabled={!formEditable}
+                  />}
+                  {!formEditable && <p className={classes.additionalfontStyle}>{adjustAns}</p>}
+              </div>
+              <div className={classes.inputContainer}>
+              <FormLabel style={{ fontWeight: 'bold' }} error={indivAns === ''} htmlFor="indivAns">What (if any) other individuals are involved (spouse, landlord, dependent)?</FormLabel>
+                {formEditable && <TextField
+                    id="indivAns"
+                    value={indivAns}
+                    required
+                    error={indivAns === ''}
+                    minRows="5"
+                    multiline
+                    variant="outlined"
+                    onChange={(e) => setIndivAns(e.target.value)}
+                    disabled={!formEditable}/>}
+                    {!formEditable && <p className={classes.additionalfontStyle}>{indivAns}</p>}
+              </div>
+              <div className={classes.inputContainer}>
+                <FormLabel style={{ fontWeight: 'bold' }} error={infoAns === ''} htmlFor="infoAns">Is there any additional information we should know about the account?</FormLabel>
+                  {formEditable && <TextField
+                      id="infoAns"
+                      value={infoAns}
+                      required
+                      error={infoAns === ''}
+                      minRows="5"
+                      multiline
+                      variant="outlined"
+                      onChange= {(e) => setInfoAns(e.target.value)}
+                      disabled={!formEditable}/>}
+                      {!formEditable && <p className={classes.additionalfontStyle}>{infoAns}</p>}
+                      {(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '') && formEditable && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* Please fill all fields before updating customer info</FormLabel>}
+              </div>
+            </div>
+          </div>
+          {formEditable
+            ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
+            <Button
+            type="button"
+            disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
+            variant = "contained"
             color = "primary"
-          >
-            Update Info
-          </Button>
-        }
-        label=""
-        />
-
-        <h3>Eligibility</h3>
-        <div>
-          <div style = {{ display: 'flex', width: '1000px' }}>
-            <div style = {{ flex: '50px' }}>
-              <Checkbox checked={paymentAns} onChange={() => setPaymentAns(!paymentAns)} disabled={!formEditable}/>
-            </div>
-            <div style = {{ flex: '700px' }}>
-              <p style = {{ fontWeight: 'bold' }}>Payments</p>
-              <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
-            </div>
-          </div>
-          <div style = {{ display: 'flex', width: '1000px' }}>
-            <div style = {{ flex: '50px' }}>
-              <Checkbox checked={servicesAns} onChange={() => setServicesAns(!servicesAns)} disabled={!formEditable}/>
-            </div>
-            <div style = {{ flex: '700px' }}>
-              <p style = {{ fontWeight: 'bold' }}>Minimum Services</p>
-              <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
-            </div>
-          </div>
-          <div style = {{ display: 'flex', width: '1000px' }}>
-            <div style = {{ flex: '50px' }}>
-              <Checkbox checked={contactAns} onChange={() => setContactAns(!contactAns)} disabled={!formEditable}/>
-            </div>
-            <div style = {{ flex: '700px' }}>
-              <p style = {{ fontWeight: 'bold' }}>Customer Contact</p>
-              <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
-            </div>
-          </div>
-          <div style = {{ display: 'flex', width: '1000px' }}>
-            <div style = {{ flex: '50px' }}>
-              <Checkbox checked={waterAns} onChange={() => setWaterAns(!waterAns)} disabled={!formEditable}/>
-            </div>
-            <div style = {{ flex: '700px' }}>
-              <p style = {{ fontWeight: 'bold' }}>Water Meter</p>
-              <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
-            </div>
-          </div>
-        </div>
-
-        <h3>Document Submission</h3>
-        <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
-          <Button
-            variant="outlined"
-            component="label"
-            disabled={!formEditable}
-            style = {{ flex: '50px', width: '75px', height: '50px' }}>
-            Upload
-            <input id="paymentFile" type="file" hidden onChange = {(e) => {
-              if (e.target.files === null || e.target.files.length < 1) {
-                alert('Please upload a valid file.')
-                return
-              }
-
-              setPaymentFile(e.target.files[0])
-            }}/>
-          </Button>
-          <p style = {{ flex: '50px', padding: '10px' }}>Payment History</p>
-        </div>
-        <div style = {{ display: 'flex', width: '300px', justifyContent: 'space-between' }}>
-          <Button
-            id="usageFile"
-            variant="outlined"
-            disabled={!formEditable}
-            component="label"
-            style = {{ flex: '50px', width: '75px', height: '50px' }}>
-            Upload
-            <input id="paymentFile" type="file" hidden onChange = {(e) => {
-              if (e.target.files === null || e.target.files.length < 1) {
-                alert('Please upload a valid file.')
-                return
-              }
-
-              setUsageFile(e.target.files[0])
-            }}/>
-          </Button>
-          <p style = {{ flex: '50px', padding: '10px' }}>Usage History</p>
-        </div>
-
-        <h3>Other</h3>
-        <div>
-          <p>Are there any pending adjustments?</p>
-          <TextField
-            id="adjustAns"
-            onChange= {(e) => setAdjustAns(e.target.value)}
-            disabled={!formEditable}
-            />
-
-        <p>What (if any) other individuals are involved (spouse, landlord, dependent)?</p>
-        <TextField
-            id="indivAns"
-            onChange={(e) => setIndivAns(e.target.value)}
-            disabled={!formEditable}/>
-        </div>
-        <div>
-            <p>Is there any additional information we should know about the account?</p>
-            <TextField
-                id="infoAns"
-                onChange= {(e) => setInfoAns(e.target.value)}
-                disabled={!formEditable}/>
-        </div>
-          <Button
-          type="button"
-          variant = "outlined"
-          onClick = {(() => console.log(generateInfoSubmission()))}>
-
-              Save
-          </Button>
-
-      </Box>
-     </div>
+            style={{ textTransform: 'none' }}
+            onClick = {(() => console.log(generateInfoSubmission()))}>
+                Save
+            </Button>
+            <Button
+            type="button"
+            variant = "text"
+            style={{ textTransform: 'none' }}
+            onClick = {handleClick}>
+                Cancel
+            </Button>
+          </Stack>
+            : <div></div>
+}
+      </div>
+    </div>
   )
 }
 
