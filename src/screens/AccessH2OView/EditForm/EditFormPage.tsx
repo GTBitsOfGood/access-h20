@@ -8,61 +8,49 @@ import { buttonStyles, linkStyle, dividerStyle, deleteStyle } from './EditFormMU
 import { eligibilityQuestion } from 'server/models/EligibilityQuestion'
 import { documentQuestion } from 'server/models/DocumentQuestion'
 import { otherQuestion } from 'server/models/OtherQuestion'
-import { addDocumentQuestion, addEligibilityQuestion, addOtherQuestion, getDocumentQuestions, getEligibilityQuestions, getOtherQuestions, removeDocumentQuestion, removeEligibilityQuestion, removeOtherQuestion } from 'src/actions/FormQuestions'
+import { addDocumentQuestion, addEligibilityQuestion, addOtherQuestion, editEligibilityQuestion, getDocumentQuestions, getEligibilityQuestions, getOtherQuestions, removeDocumentQuestion, removeEligibilityQuestion, removeOtherQuestion } from 'src/actions/FormQuestions'
 import { Types } from 'mongoose'
 
-const EditFormPage = (): JSX.Element => {
-  const [eligibilityQuestions, setEligibilityQuestions] = useState<eligibilityQuestion[]>()
+const EditFormPage = ({ eligibility, document, other }: {eligibility: eligibilityQuestion[], document: documentQuestion[], other: otherQuestion[]}): JSX.Element => {
+  const [eligibilityQuestions, setEligibilityQuestions] = useState<eligibilityQuestion[]>(eligibility)
   const [editEligibility, setEditEligibility] = useState<boolean[]>([])
   const [newEligibilityTitle, setNewEligibilityTitle] = useState('')
   const [newEligibilityQuestion, setNewEligibilityQuestion] = useState('')
   const [showNewEligibility, setShowNewEligibility] = useState(false)
 
-  const [documentQuestions, setDocumentQuestions] = useState<documentQuestion[]>()
+  const [documentQuestions, setDocumentQuestions] = useState<documentQuestion[]>(document)
   const [editDocument, setEditDocument] = useState<boolean[]>([])
   const [newDocumentTitle, setNewDocumentTitle] = useState('')
   const [newDocumentDescription, setNewDocumentDescription] = useState('')
   const [showNewDocument, setShowNewDocument] = useState(false)
 
-  const [otherQuestions, setOtherQuestions] = useState<otherQuestion[]>()
+  const [otherQuestions, setOtherQuestions] = useState<otherQuestion[]>(other)
   const [editOther, setEditOther] = useState<boolean[]>([])
   const [newOtherQuestion, setNewOtherQuestion] = useState('')
   const [showNewOther, setShowNewOther] = useState(false)
 
-  useEffect(() => {
-    const getEligibility = async (): Promise<void> => {
-      const questions = await getEligibilityQuestions()
-      setEligibilityQuestions(questions)
-      // const duplicate = []
-      // for(let i = 0; i < questions.length; i++) {
-      //   duplicate.push(true)
-      // }
-      // setEditEligibility(duplicate)
-    }
-    const getDocument = async (): Promise<void> => {
-      const questions = await getDocumentQuestions()
-      setDocumentQuestions(questions)
-    }
-    const getOther = async (): Promise<void> => {
-      const questions = await getOtherQuestions()
-      setOtherQuestions(questions)
-    }
-    void getEligibility()
-    void getDocument()
-    void getOther()
-  })
-
   const enableEditEligibility = (index: number): void => {
-    const duplicate = editEligibility.slice()
-    duplicate[index] = !duplicate[index]
-    setEditEligibility(duplicate)
+    // const duplicate = editEligibility.slice()
+    // duplicate[index] = !duplicate[index]
+    // setEditEligibility(duplicate)
+    setNewEligibilityTitle('')
+    setNewEligibilityQuestion('')
   }
-  const updateEligibilityQuestion = (index: number): void => {
-
+  const updateEligibilityQuestion = (index: number, id: Types.ObjectId): void => {
+    const addQuestion = async (): Promise<void> => {
+      await editEligibilityQuestion({
+        _id: id,
+        title: eligibilityQuestions[index].title,
+        question: eligibilityQuestions[index].question
+      })
+    }
+    void addQuestion()
+    setTimeout(() => { window.location.reload() }, 1500)
   }
   const addNewEligibilityQuestion = (): void => {
     const addQuestion = async (): Promise<void> => {
       await addEligibilityQuestion({
+        // _id: id,
         title: newEligibilityTitle,
         question: newEligibilityQuestion
       })
@@ -71,26 +59,41 @@ const EditFormPage = (): JSX.Element => {
     setShowNewEligibility(false)
     setNewEligibilityTitle('')
     setNewEligibilityQuestion('')
+    setTimeout(() => { window.location.reload() }, 1500)
 
-    const duplicate = editEligibility.slice()
-    duplicate.push(true)
-    setEditEligibility(duplicate)
+    // const duplicate = editEligibility.slice()
+    // duplicate.push(true)
+    // setEditEligibility(duplicate)
   }
-  const handleEligibilityTitleChange = (e: any): void => {
-    setNewEligibilityTitle(e.target.value)
+  const handleEligibilityTitleChange = (text: any, id: Types.ObjectId, index: number): void => {
+    if (id === '') { setNewEligibilityTitle(text.target.value) } else {
+      const duplicate = eligibilityQuestions.slice()
+      duplicate[index].title = text.target.value
+      setEligibilityQuestions(duplicate)
+    }
   }
-  const handleEligibilityQuestionChange = (e: any): void => {
-    setNewEligibilityQuestion(e.target.value)
+  const handleEligibilityQuestionChange = (text: any, id: Types.ObjectId, index: number): void => {
+    if (id === '') { setNewEligibilityQuestion(text.target.value) } else {
+      const duplicate = eligibilityQuestions.slice()
+      duplicate[index].question = text.target.value
+      setEligibilityQuestions(duplicate)
+    }
   }
   const deleteEligibilityQuestion = (id: Types.ObjectId, index: number): void => {
     const removeQuestion = async (): Promise<void> => {
       await removeEligibilityQuestion(id)
     }
     void removeQuestion()
+    setTimeout(() => { window.location.reload() }, 1500)
 
-    const duplicate = editEligibility.slice()
-    duplicate.splice(index, 1)
-    setEditEligibility(duplicate)
+    // const duplicate = editEligibility.slice()
+    // duplicate.splice(index, 1)
+    // setEditEligibility(duplicate)
+  }
+  const enableShowNewEligibility = (): void => {
+    setShowNewEligibility(false)
+    setNewEligibilityTitle('')
+    setNewEligibilityQuestion('')
   }
 
   const enableEditDocument = (index: number): void => {
@@ -113,9 +116,9 @@ const EditFormPage = (): JSX.Element => {
     setNewDocumentTitle('')
     setNewDocumentDescription('')
 
-    const duplicate = editDocument.slice()
-    duplicate.push(true)
-    setEditDocument(duplicate)
+    // const duplicate = editDocument.slice()
+    // duplicate.push(true)
+    // setEditDocument(duplicate)
   }
   const handleDocumentTitleChange = (e: any): void => {
     setNewDocumentTitle(e.target.value)
@@ -129,9 +132,9 @@ const EditFormPage = (): JSX.Element => {
     }
     void removeQuestion()
 
-    const duplicate = editDocument.slice()
-    duplicate.splice(index, 1)
-    setEditDocument(duplicate)
+    // const duplicate = editDocument.slice()
+    // duplicate.splice(index, 1)
+    // setEditDocument(duplicate)
   }
 
   const enableEditOther = (index: number): void => {
@@ -152,9 +155,9 @@ const EditFormPage = (): JSX.Element => {
     setShowNewOther(false)
     setNewOtherQuestion('')
 
-    const duplicate = editOther.slice()
-    duplicate.push(true)
-    setEditOther(duplicate)
+    // const duplicate = editOther.slice()
+    // duplicate.push(true)
+    // setEditOther(duplicate)
   }
   const handleOtherQuestionChange = (e: any): void => {
     setNewOtherQuestion(e.target.value)
@@ -165,9 +168,9 @@ const EditFormPage = (): JSX.Element => {
     }
     void removeQuestion()
 
-    const duplicate = editOther.slice()
-    duplicate.splice(index, 1)
-    setEditOther(duplicate)
+    // const duplicate = editOther.slice()
+    // duplicate.splice(index, 1)
+    // setEditOther(duplicate)
   }
 
   return (
@@ -196,11 +199,12 @@ const EditFormPage = (): JSX.Element => {
                           }
                         }}
                         value={question.title}
+                        onChange={(title) => handleEligibilityTitleChange(title, question._id, index)}
                         fullWidth
                         multiline
                         size='small'
                       />
-                      {/* <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteEligibilityQuestion(question?._id, index)}/> */}
+                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteEligibilityQuestion(question._id, index)}/>
                     </div>
                     <TextField
                       InputProps={{
@@ -209,12 +213,13 @@ const EditFormPage = (): JSX.Element => {
                         }
                       }}
                       value={question.question}
+                      onChange={(title) => handleEligibilityQuestionChange(title, question._id, index)}
                       fullWidth
                       multiline
                       size='small'
                     />
                   </div>
-                  <Button onClick={() => updateEligibilityQuestion(index)} sx={buttonStyles} variant="contained">Save</Button>
+                  <Button onClick={() => updateEligibilityQuestion(index, question._id)} sx={buttonStyles} variant="contained">Save</Button>
                   <Button onClick = {() => enableEditEligibility(index)} sx={buttonStyles} variant="text">Cancel</Button>
                 </div>
               }
@@ -230,7 +235,7 @@ const EditFormPage = (): JSX.Element => {
                     }
                   }}
                   value={newEligibilityTitle}
-                  onChange={handleEligibilityTitleChange}
+                  onChange={(text) => handleEligibilityTitleChange(text, '', -1)}
                   multiline
                   fullWidth
                   label="Question Title"
@@ -243,7 +248,7 @@ const EditFormPage = (): JSX.Element => {
                     }
                   }}
                   value={newEligibilityQuestion}
-                  onChange={handleEligibilityQuestionChange}
+                  onChange={(text) => handleEligibilityQuestionChange(text, '', -1)}
                   multiline
                   fullWidth
                   label="Add brief description of required question"
@@ -251,7 +256,7 @@ const EditFormPage = (): JSX.Element => {
                 />
               </div>
               <Button onClick={addNewEligibilityQuestion} sx={buttonStyles} variant="contained">Save</Button>
-              <Button onClick = {() => setShowNewEligibility(false)} sx={buttonStyles} variant="text">Cancel</Button>
+              <Button onClick = {enableShowNewEligibility} sx={buttonStyles} variant="text">Cancel</Button>
             </div>
             : <Button onClick = {() => setShowNewEligibility(true)} sx={buttonStyles} variant="outlined">+ Add Requirement</Button>
           }
@@ -402,6 +407,17 @@ const EditFormPage = (): JSX.Element => {
       </div>
     </div>
   )
+}
+
+EditFormPage.getInitialProps = async () => {
+  const eligibilityQuestions = await getEligibilityQuestions()
+  const documentQuestions = await getDocumentQuestions()
+  const otherQuestions = await getOtherQuestions()
+  return {
+    eligibility: eligibilityQuestions,
+    document: documentQuestions,
+    other: otherQuestions
+  }
 }
 
 export default EditFormPage

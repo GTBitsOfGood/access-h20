@@ -139,7 +139,7 @@ export const getOtherQuestions = async (): Promise<otherQuestion[]> =>
       return json.payload
     })
 
-export const editEligibilityQuestion = async (questionId: Types.ObjectId, question: eligibilityQuestion): Promise<eligibilityQuestion> =>
+export const editEligibilityQuestion = async (question: eligibilityQuestion): Promise<eligibilityQuestion> =>
   await fetch(urls.baseUrl + urls.api.formQuestions.editEligibilityQuestion, {
     method: 'PUT',
     mode: 'same-origin',
@@ -148,8 +148,9 @@ export const editEligibilityQuestion = async (questionId: Types.ObjectId, questi
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      questionId,
-      question
+      _id: question._id,
+      title: question.title,
+      question: question.question
     })
   })
     .then(async (response) => await response.json())

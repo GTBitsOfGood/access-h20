@@ -1,5 +1,7 @@
+import { Types } from 'mongoose'
+
 export interface eligibilityQuestion {
-  _id?: string
+  _id?: Types.ObjectId
   title: string
   question: string
 };

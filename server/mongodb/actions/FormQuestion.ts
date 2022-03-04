@@ -46,9 +46,9 @@ export async function getOtherQuestions (): Promise<otherQuestion[]> {
   return questions
 }
 
-export async function editEligibilityQuestion (questionId: Types.ObjectId, question: eligibilityQuestion): Promise<eligibilityQuestion> {
+export async function editEligibilityQuestion (question: eligibilityQuestion): Promise<eligibilityQuestion> {
   await mongoDB()
-  return await EligibilityQuestionSchema.findByIdAndUpdate(questionId, question)
+  return await EligibilityQuestionSchema.findByIdAndUpdate(question._id, { title: question.title, question: question.question })
 }
 
 export async function editDocumentQuestion (questionId: Types.ObjectId, question: documentQuestion): Promise<documentQuestion> {
