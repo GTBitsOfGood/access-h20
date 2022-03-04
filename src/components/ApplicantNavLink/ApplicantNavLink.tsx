@@ -82,7 +82,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem component='a' href={urls.pages.profile + '/' + isUtilityView}> Profile</MenuItem>
+              <MenuItem component='a' href={urls.pages.profile + '/' + isUtilityView.toString()}> Profile</MenuItem>
               <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
           </div>

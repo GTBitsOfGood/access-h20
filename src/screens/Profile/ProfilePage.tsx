@@ -5,7 +5,6 @@ import classes from './Profile.module.css'
 import Router from 'next/router'
 import { update } from '../../actions/Company'
 import urls from 'utils/urls'
-import Image from 'next/image'
 import ApplicantNavLink from 'src/components/ApplicantNavLink'
 
 import Stack from '@mui/material/Stack'
@@ -74,7 +73,7 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                       Admin
                       </span>
                   </Typography>
-              )}
+            )}
               {isUtilityView && (
                   <Typography variant="h4">
                       <b>Marana Z</b>
