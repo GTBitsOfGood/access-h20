@@ -2,12 +2,12 @@ import * as React from 'react'
 import classes from './NotesModal.module.css'
 import TextField from '@material-ui/core/TextField'
 import { Divider, Link } from '@mui/material'
-import { v4 as uuidv4 } from 'uuid'
 import Modal from '@mui/material/Modal'
 import { useState, useEffect } from 'react'
 import urls from 'utils/urls'
 import { Note } from 'server/models/Note'
 import { testFunction2 } from 'src/actions/Example'
+import { addNote } from 'src/actions/Note'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -17,6 +17,7 @@ interface PropTypes {
 
 const starterNote: Note[] = [
   {
+    accountID: '',
     sender: 'AccessH20',
     receiver: 'Utility',
     date: new Date('02/03/2022'),
@@ -42,16 +43,18 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
     setNewNote(e.target.value)
   }
 
-  const addNote = (): void => {
+  const addNewNote = async (): Promise<void> => {
     // TODO: utilize mongodb action addNote()
-    const dummyDate: Note[] = [{
+    const data: Note = {
+      accountID: accountID,
       sender: 'Utility',
       receiver: 'AccessH20',
       date: new Date(),
       message: newNote
-    }]
+    }
+    await addNote(data)
     setShowAdd(false)
-    setNotes(notes.concat(dummyDate))
+    setNotes(notes.concat(data))
     setNewNote('')
   }
 
@@ -91,7 +94,7 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
                     minRows={2} />
                   </div>
                   <div className={classes.addNoteButtons}>
-                    <button className = {classes.saveNote} onClick={addNote}>Add Note</button>
+                    <button className = {classes.saveNote} onClick={addNewNote}>Add Note</button>
                     <button onClick = {() => setShowAdd(false)} className={classes.cancel}>Cancel</button>
                   </div>
                 </div>

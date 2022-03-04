@@ -46,7 +46,8 @@ export default {
       changeStatus: '/api/client/change-status'
     },
     notes: {
-      testfunctiontwo: '/api/notes/exampletwo'
+      testfunctiontwo: '/api/notes/exampletwo',
+      add: '/api/notes/add'
     },
     info: {
       addInfo: '/api/InfoSubmission/add',
