@@ -9,15 +9,16 @@
 }
 
 .profilePic {
-  width: 50px; height: 50px;
-  background-color: #BBBBBB;
+  width: 50px;
+  height: 50px;
+  background-color: #bbbbbb;
   display: inline-block;
   border-radius: 50%;
 }
 
 .profileContent {
   padding: 5vh 10vw;
-  background: #EBF2F8;
+  background: #ebf2f8;
   color: #333333;
 }
 
@@ -25,13 +26,13 @@
   width: 650px;
   margin: auto;
   background: white;
-  border: 1px solid #9A9A9A;
+  border: 1px solid #9a9a9a;
   box-sizing: border-box;
-  border-radius: 8px; 
+  border-radius: 8px;
 }
 
 .profileGrayText {
-  color: #AAAAAA;
+  color: #aaaaaa;
   font-size: 18px;
   font-weight: 600;
   margin-left: 1em;
@@ -54,7 +55,15 @@
   font-weight: 600 !important;
 }
 
-.textElem { margin-top: 8px; }
-.textHover { cursor: pointer; }
-.formTitleContainer { margin: 30px 20px 0px 20px; }
-.formSubmitContainer { margin: 30px 20px 30px 20px; }
+.textElem {
+  margin-top: 8px;
+}
+.textHover {
+  cursor: pointer;
+}
+.formTitleContainer {
+  margin: 30px 20px 0px 20px;
+}
+.formSubmitContainer {
+  margin: 30px 20px 30px 20px;
+}
