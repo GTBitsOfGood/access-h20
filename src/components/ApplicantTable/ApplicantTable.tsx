@@ -17,7 +17,6 @@ import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
 import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
-import { CompanyModal } from 'src/components/CompanyModal/CompanyModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 
@@ -72,27 +71,34 @@ const ApplicantTable = ({
     }
     let searchedApplicants = dateApplicants
     const caseInsensitiveSearch = search.toLowerCase()
-    if (searchBy === 'All') {
-      searchedApplicants = searchedApplicants.filter(
-        (applicant) =>
-          applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
-          applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
-      )
-    } else if (searchBy === 'Name') {
-      searchedApplicants = searchedApplicants.filter((applicant) =>
-        applicant.name.toLowerCase().includes(caseInsensitiveSearch)
-      )
-    } else if (searchBy === 'Utility Company') {
-      searchedApplicants = searchedApplicants.filter((applicant) =>
-        applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
-      )
+    if (!isUtilityView) {
+      if (searchBy === 'All') {
+        searchedApplicants = searchedApplicants.filter(
+          (applicant) =>
+            applicant.name.toLowerCase().includes(caseInsensitiveSearch) ||
+            applicant.utilityCompany
+              .toLowerCase()
+              .includes(caseInsensitiveSearch)
+        )
+      } else if (searchBy === 'Name') {
+        searchedApplicants = searchedApplicants.filter(
+          (applicant) =>
+            applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+        )
+      } else if (searchBy === 'Utility Company') {
+        searchedApplicants = searchedApplicants.filter(
+          (applicant) =>
+            applicant.utilityCompany
+              .toLowerCase()
+              .includes(caseInsensitiveSearch)
+        )
+      }
     }
 
     setfilteredApplicants(searchedApplicants)
   }, [search, statusFilter, searchBy, fromDate, toDate])
 
   const [showApplicantModal, setShowApplicantModal] = useState(false)
-  const [showCompanyModal, setShowCompanyModal] = useState(false)
   const [showNotesModal, setShowNotesModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {
@@ -113,7 +119,9 @@ const ApplicantTable = ({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <TextField
+
+          {!isUtilityView && (
+            <TextField
             className={classes.searchFilter}
             InputProps={{
               disableUnderline: true,
@@ -135,6 +143,7 @@ const ApplicantTable = ({
               {'Name'}
             </MenuItem>
           </TextField>
+          )}
           <TextField
             className={classes.searchFilter}
             InputProps={{
@@ -185,27 +194,8 @@ const ApplicantTable = ({
         </div>
         {!isUtilityView && (
           <div>
-            <button
-              onClick={() => setShowApplicantModal(true)}
-              className={classes.addCustomerButton}
-            >
-              Add Customer
-            </button>
-            <ApplicantModal
-              shouldShowModal={showApplicantModal}
-              onClose={() => setShowApplicantModal(false)}
-            />
-
-            <button
-              onClick={() => setShowCompanyModal(true)}
-              className={classes.addCustomerButton}
-            >
-              Add Company
-            </button>
-            <CompanyModal
-              shouldShowModal={showCompanyModal}
-              onClose={() => setShowCompanyModal(false)}
-            />
+            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
+            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
           </div>
         )}
       </div>
@@ -215,21 +205,13 @@ const ApplicantTable = ({
           <TableHead className={classes.tableHeader}>
             <TableRow>
               <TableCell className={classes.tableHeaderText}>Name</TableCell>
-              <TableCell className={classes.tableHeaderText} style={{ width: 100 }} align="right">
-                Utility Company
-              </TableCell>
-              <TableCell className={classes.tableHeaderText}>
-                Account ID
-              </TableCell>
-              <TableCell className={classes.tableHeaderText}>
-                Property Address
-              </TableCell>
-              <TableCell className={classes.tableHeaderText}>
-                Applied
-              </TableCell>
-              <TableCell className={classes.tableHeaderText}>
-                Status
-              </TableCell>
+              {!isUtilityView && (
+                <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
+              )}
+              <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
+              <TableCell className={classes.tableHeaderText}>Property Address</TableCell>
+              <TableCell className={classes.tableHeaderText}>Applied</TableCell>
+              <TableCell className={classes.tableHeaderText}>Status</TableCell>
               <TableCell className={classes.tableHeaderText}>Notes</TableCell>
               <TableCell />
             </TableRow>
@@ -250,7 +232,6 @@ const ApplicantTable = ({
 
                 return (
                   <TableRow className={classes.highlightOnHover} >
-
                       <Link
                         href={
                           infoSubmissionEndpoint + '/' + applicant.accountId

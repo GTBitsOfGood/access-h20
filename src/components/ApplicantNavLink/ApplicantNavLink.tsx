@@ -9,8 +9,13 @@ import Menu from '@mui/material/Menu'
 import classes from './ApplicantNavLink.module.css'
 import { UtilityPartnerModal } from 'src/components/UtilityPartnerModal/UtilityPartnerModal'
 import { useState } from 'react'
+import urls from '../../../utils/urls'
 
-export default function ApplicantNavLink (): JSX.Element {
+interface PropTypes {
+  isUtilityView: boolean
+}
+
+const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [auth] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [showUtilityPartnerModal, setShowUtilityPartnerModal] = useState(false)
@@ -41,8 +46,14 @@ export default function ApplicantNavLink (): JSX.Element {
           sx={{ mx: 'auto' }}
         >
         </IconButton>
-        <span onClick = {() => setShowUtilityPartnerModal(true)} className={classes.addPartner}>Add Utility Partner</span>
+        {!isUtilityView && (
+            <span className={classes.editForm}>Edit Form</span>
+        )}
+        {!isUtilityView && (
+            <span onClick = {() => setShowUtilityPartnerModal(true)} className={classes.addPartner}>Add Utility Partner</span>
+        )}
         <UtilityPartnerModal shouldShowModal={showUtilityPartnerModal} onClose={() => setShowUtilityPartnerModal(false)} />
+
         {auth && (
           <div>
 
@@ -71,7 +82,7 @@ export default function ApplicantNavLink (): JSX.Element {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem component='a' href={urls.pages.profile + '/' + isUtilityView.toString()}> Profile</MenuItem>
               <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
           </div>
@@ -81,3 +92,5 @@ export default function ApplicantNavLink (): JSX.Element {
     </Box>
   )
 }
+
+export default ApplicantNavLink

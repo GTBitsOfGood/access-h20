@@ -5,7 +5,7 @@ import classes from './Profile.module.css'
 import Router from 'next/router'
 import { update } from '../../actions/Company'
 import urls from 'utils/urls'
-import Image from 'next/image'
+import ApplicantNavLink from 'src/components/ApplicantNavLink'
 
 import Stack from '@mui/material/Stack'
 import {
@@ -20,7 +20,11 @@ import {
 const ProfilePage = ({ json }): JSX.Element => {
   const [company, setCompany] = useState(json)
 */
-const ProfilePage = (): JSX.Element => {
+interface PropTypes {
+  isUtilityView: boolean
+}
+
+const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [company, setCompany] = useState(
     {
       name: '',
@@ -43,14 +47,9 @@ const ProfilePage = (): JSX.Element => {
 
   return (
     <div>
-      <div className={classes.profileHeader}>
-        <Image width="75" height="75" src="/static/access-h20-logo.jpg" />
-        <Stack direction="row" spacing={3}>
-          <Button size="small">Add Utility Partner</Button>
-          <Button size="small">Edit Form</Button>
-          <span className={classes.profilePic}></span>
-        </Stack>
-      </div>
+      <ApplicantNavLink
+        isUtilityView={true}
+      />
 
       <div className={classes.profileContent}>
         <Typography
@@ -67,10 +66,22 @@ const ProfilePage = (): JSX.Element => {
 
         <div className={classes.profileForm}>
           <div className={classes.formTitleContainer}>
-            <Typography variant="h4">
-              <b>Access H2O</b>
-              <span className={classes.profileGrayText}>Admin</span>
-            </Typography>
+            {!isUtilityView && (
+                  <Typography variant="h4">
+                      <b>Access H20</b>
+                      <span className={classes.profileGrayText}>
+                      Admin
+                      </span>
+                  </Typography>
+            )}
+              {isUtilityView && (
+                  <Typography variant="h4">
+                      <b>Marana Z</b>
+                      <span className={classes.profileGrayText}>
+                      Utility Partner
+                      </span>
+                  </Typography>
+              )}
           </div>
 
           <FormControl>
