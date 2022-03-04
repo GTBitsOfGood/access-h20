@@ -16,8 +16,8 @@
     "dev": "next -p 3000",
     "build": "next build",
     "start": "next build && next start",
-    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && tsc",
+    "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && tsc",
     "format": "prettier \"**/*.{js,jsx,ts,tsx}\" --write",
     "format:check": "prettier \"**/*.{js,jsx,ts,tsx}\" -l",
     "secrets": "npm run secrets:logout && cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw` \"npm run secrets:sync\"",
@@ -27,12 +27,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged; tsc"
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint"
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
     ],
     "*.{js,jsx,css}": [
       "prettier --write"
@@ -89,7 +89,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "fx": "^20.0.2",
-    "husky": "^7.0.4",
+    "husky": "^4.3.8",
     "lint-staged": "^12.3.3",
     "prettier": "2.5.1",
     "prettier-eslint": "^13.0.0",

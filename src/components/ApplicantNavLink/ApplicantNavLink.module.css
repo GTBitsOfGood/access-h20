@@ -44,3 +44,11 @@
     margin-right: 2rem;
     cursor:pointer;
 }
+
+.editForm {
+    background: transparent;
+    border: transparent;
+    color: #4DBAEA;
+    margin-right: 2rem;
+    cursor:pointer;
+}

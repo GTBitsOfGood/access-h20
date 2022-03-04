@@ -22,7 +22,14 @@ export interface Applicant {
   name: string
   utilityCompany: string
   accountId: string
+  status: ApplicantStatus
   propertyAddress: string
   applied: Date
-  status: ApplicantStatus
+  notes?: [string]
+  eligibilityStatuses?: {
+    question: string
+    answer: boolean
+  }
+  documents?: [String]
+  otherQuestions?: [string]
 }
