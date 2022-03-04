@@ -54,6 +54,7 @@ const ApplicantTable = ({
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
   const [filteredApplicants, setfilteredApplicants] = useState(applicants)
+  const [accountID, setAcccountID] = useState('')
 
   useEffect(() => {
     const statusApplicants = applicants.filter(
@@ -97,6 +98,12 @@ const ApplicantTable = ({
 
     setfilteredApplicants(searchedApplicants)
   }, [search, statusFilter, searchBy, fromDate, toDate])
+
+  function editNote (accountId: string): void {
+    setAcccountID(accountId)
+    console.log(accountID)
+    setShowNotesModal(true)
+  }
 
   const [showApplicantModal, setShowApplicantModal] = useState(false)
   const [showNotesModal, setShowNotesModal] = useState(false)
@@ -257,7 +264,7 @@ const ApplicantTable = ({
                       <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
-                          onClick={() => setShowNotesModal(true)}
+                          onClick={() => editNote(applicant.accountId)}
                         >
                           <Announcement/>
                         </IconButton>
@@ -283,12 +290,13 @@ const ApplicantTable = ({
                         }}
                       >
                         <MenuItem onClick={handleClose}>View</MenuItem>
-                        <MenuItem onClick={() => setShowNotesModal(true)}>Add Notes</MenuItem>
+                        <MenuItem onClick={() => editNote(applicant.accountId)}>Add Notes</MenuItem>
                         <MenuItem onClick={handleClose}>Change Status</MenuItem>
                         <div className={classes.deleteButton}>
                           <MenuItem onClick={handleClose}>Delete</MenuItem>
                         </div>
                       </Menu>
+                      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
                     </TableCell>
                   </TableRow>
                 )
@@ -297,7 +305,6 @@ const ApplicantTable = ({
           }
         </TableBody>
       </Table>
-      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} />
       <TablePagination
         count={applicants.length}
         rowsPerPage={rowsPerPage}

@@ -31,7 +31,7 @@ interface InfoPack {
 
 interface Client {
   accountId: String
-  status : ApplicantStatus
+  status: ApplicantStatus
 }
 
 const dummyData: Applicant = {
@@ -108,7 +108,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     }
   }
 
-  const getInfoPake =async (): Promise<void> => {
+  const getInfoPake = async (): Promise<void> => {
     const info = await getInfo(applicantId)
     setPaymentAns(info.paymentAns)
     setServicesAns(info.servicesAns)
@@ -145,7 +145,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     await update(infoPack)
   }
 
-  const updateStatus =async (newStatus: ApplicantStatus): Promise<void> => {
+  const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
     setStatus(newStatus)
     const data: Client = {
       accountId: accountiD,
@@ -232,7 +232,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   }}
                   value={status}
                   style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
-                  onChange={(e) => updateStatus(e.target.value as ApplicantStatus)}>
+                  onChange={async (e) => await updateStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
                     style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'center', borderRadius: '8px' }}>
                       AwaitingUtility</MenuItem>

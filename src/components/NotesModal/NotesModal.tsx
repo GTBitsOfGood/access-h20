@@ -12,6 +12,7 @@ import { testFunction2 } from 'src/actions/Example'
 interface PropTypes {
   shouldShowModal: boolean
   onClose: () => void
+  accountID: String
 }
 
 const starterNote: Note[] = [
@@ -22,7 +23,7 @@ const starterNote: Note[] = [
     message: 'First Note'
   }
 ]
-export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
+export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): JSX.Element => {
   const [notes, setNotes] = useState(starterNote)
   const [newNote, setNewNote] = useState('')
   const [showAdd, setShowAdd] = useState(false)
@@ -31,7 +32,7 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
   useEffect(() => {
     const getNotes = async (): Promise<void> => {
       const message = await testFunction2()
-      console.log(message)
+      console.log(accountID)
     }
 
     void getNotes()
@@ -98,7 +99,7 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
               }
               {/* TODO: Once table & infoSubmit are linked to backend, change link to match correct customer info */}
               <div className={classes.customer}>
-                <Link href={urls.pages.infosubmit + '/' + uuidv4().toString()} className={classes.customerButton}>View Customer Info</Link>
+                <Link href={urls.pages.infosubmit + '/' + accountID} className={classes.customerButton}>View Customer Info</Link>
               </div>
             </div>
           </div>
