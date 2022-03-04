@@ -46,6 +46,11 @@ export default {
     },
     notes: {
       testfunctiontwo: '/api/notes/exampletwo'
+    },
+    info: {
+      addInfo: '/api/InfoSubmission/add',
+      getInfo: '/api/InfoSubmission/get-info',
+      update: '/api/InfoSubmission/update'
     }
   }
 }

@@ -1,38 +1,38 @@
 import mongoose, { Schema } from 'mongoose'
 
-const InfoSubmissionSchema = new Schema ({
-  paymentAns : {
-      type: String,
-      required: true
+const InfoSubmissionSchema = new Schema({
+  accountId: {
+    type: String,
+    required: true
   },
-  servicesAns : {
-      type: String,
-      required: true
+  paymentAns: {
+    type: Boolean,
+    required: true
   },
-  contactAns : {
-      type: String,
-      required: true
+  servicesAns: {
+    type: Boolean,
+    required: true
   },
-  waterAns : {
-      type: String,
-      required: true
+  contactAns: {
+    type: Boolean,
+    required: true
   },
-  adjustAns : {
-      type: String,
-      required: true
+  waterAns: {
+    type: Boolean,
+    required: true
   },
-  infoAns : {
-      type: String,
-      required: true
+  adjustAns: {
+    type: String,
+    required: true
   },
-  indivAns : {
-      type: String,
-      required: true
+  infoAns: {
+    type: String,
+    required: true
   },
-  documents: {
-      type: [String],
-      required: false
-    }
+  indivAns: {
+    type: String,
+    required: true
+  }
 })
 
-export default mongoose.models?.InfoSubmission?? mongoose.model('InfoSubmission', InfoSubmissionSchema)
+export default mongoose.models?.InfoSubmission ?? mongoose.model('InfoSubmission', InfoSubmissionSchema)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
@@ -10,26 +10,27 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import { getClient } from '../../actions/Client'
+import { update } from '../../actions/InfoSubmission'
 
 interface Applicant {
-  name: string
-  utilityCompany: string
-  accountId: string
-  streetAddress: string
-  cityAddress: string
-  phone: string
-  applied: Date
+  phone: String
   status: ApplicantStatus
 }
 
+interface InfoPack {
+  accountId: String
+  payments: Boolean
+  minimumService: Boolean
+  customerContact: Boolean
+  waterMeter: Boolean
+  pendingAdjustments: String
+  individualsInvolved: String
+  additionalInformation: String
+}
+
 const dummyData: Applicant = {
-  name: 'Ashley Miller',
-  utilityCompany: 'Durham',
-  accountId: '50000123',
-  streetAddress: '2886 Lime St',
-  cityAddress: 'Durham, NC 27704',
   phone: '(404)123-4567',
-  applied: new Date('2019-01-16'),
   status: ApplicantStatus.AwaitingUtility
 }
 
@@ -43,7 +44,10 @@ interface PropTypes {
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   // Status
+  const [accountiD, setAccountID] = useState(applicantId)
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
 
   // Notes
   const initArr: string[] = []
@@ -82,6 +86,47 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [oldInfoAns, setOldInfoAns] = useState('')
   const [oldIndivAns, setOldIndivAns] = useState('')
 
+  useEffect(() => {
+    void getapplicants()
+  })
+
+  const getapplicants = async (): Promise<void> => {
+    const applicant = await getClient(applicantId)
+    setName(applicant.name)
+    setAccountID(applicantId)
+    setAddress(applicant.propertyAddress)
+    setStatus(applicant.status)
+    if (applicant.note != null) {
+      setNotes(applicant.note)
+    }
+  }
+
+  const updateInfo = async (): Promise<void> => {
+    setOldPaymentAns(paymentAns)
+    setOldServicesAns(servicesAns)
+    setOldContactAns(contactAns)
+    setOldWaterAns(waterAns)
+    setOldPaymentFile(paymentFile)
+    setOldUsageFile(usageFile)
+    setOldAdjustAns(adjustAns)
+    setOldInfoAns(infoAns)
+    setOldIndivAns(indivAns)
+    setFormEditable(false)
+
+    const infoPack: InfoPack = {
+      accountId: accountiD,
+      payments: paymentAns,
+      minimumService: servicesAns,
+      customerContact: contactAns,
+      waterMeter: waterAns,
+      pendingAdjustments: adjustAns,
+      individualsInvolved: indivAns,
+      additionalInformation: infoAns
+    }
+
+    await update(infoPack)
+  }
+
   function handleClick (): void {
     setPaymentAns(oldPaymentAns)
     setServicesAns(oldServicesAns)
@@ -100,37 +145,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   const closeModalHandler = (): void => setShowModal(false)
-
-  const generateInfoSubmission = (): Object => {
-    setOldPaymentAns(paymentAns)
-    setOldServicesAns(servicesAns)
-    setOldContactAns(contactAns)
-    setOldWaterAns(waterAns)
-    setOldPaymentFile(paymentFile)
-    setOldUsageFile(usageFile)
-    setOldAdjustAns(adjustAns)
-    setOldInfoAns(infoAns)
-    setOldIndivAns(indivAns)
-    setFormEditable(false)
-    return {
-      payments: booleanToYesOrNo(paymentAns),
-      minimumService: booleanToYesOrNo(servicesAns),
-      customerContact: booleanToYesOrNo(contactAns),
-      waterMeter: booleanToYesOrNo(waterAns),
-      paymentFile: paymentFile,
-      usageFile: usageFile,
-      pendingAdjustments: adjustAns,
-      individualsInvolved: indivAns,
-      additionalInformation: infoAns
-    }
-  }
-
-  const booleanToYesOrNo = (input: boolean): string => {
-    if (input) {
-      return 'Yes'
-    }
-    return 'No'
-  }
 
   return (
     <div className={classes.bacoground}>
@@ -158,7 +172,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   color = "primary"
                   disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
                   style={{ textTransform: 'none' }}
-                  onClick = {(() => console.log(generateInfoSubmission()))}>
+                  onClick = {(() => console.log(updateInfo()))}>
                       Save
                   </Button>
                   <Button
@@ -172,7 +186,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
           </div>
-          <h1>{dummyData.name}</h1>
+          <h1>{name}</h1>
           <div>
             <div className={classes.header}>
               <div className={classes.headerInfoBox}>
@@ -218,7 +232,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
-                <p>{dummyData.accountId}</p>
+                <p>{accountiD}</p>
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
@@ -226,8 +240,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
-                <p className={classes.streetAddress}>{dummyData.streetAddress}</p>
-                <p className={classes.headerNoMargin}>{dummyData.cityAddress}</p>
+                <p className={classes.streetAddress}>{address}</p>
               </div>
             </div>
           </div>
@@ -456,7 +469,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             variant = "contained"
             color = "primary"
             style={{ textTransform: 'none' }}
-            onClick = {(() => console.log(generateInfoSubmission()))}>
+            onClick = {(() => console.log(updateInfo()))}>
                 Save
             </Button>
             <Button

@@ -1,21 +1,34 @@
 import mongoDB from '../index'
-import { Client } from '../../models/Client'
 import InfoSubmissionSchema from '../models/InfoSubmission'
+import { Info } from '../../models/InfoSubmission'
+import errors from '../../../utils/consts'
 
-export async function addDocument (document: File, accountId: Client['accountId']): Promise<void> {
+export async function addInfo (info: Info): Promise<Info> {
   await mongoDB()
-  const client = await InfoSubmissionSchema.findOne({ accountId })
-  client.documents.push(document)
-  client.save()
+  const newCompany = await InfoSubmissionSchema.create(info)
+  return newCompany
 }
 
-export async function removeDocument (document: File, accountId: Client['accountId']): Promise<void> {
+export async function getInfo (accountId: Info['accountId']): Promise<Info> {
   await mongoDB()
   const client = await InfoSubmissionSchema.findOne({ accountId })
-  const docs = client.documents
-  const index = docs.indexOf(File)
-  if (index > -1) {
-    docs.splice(index, 1)
-  }
-  client.save()
+  return client
+}
+
+export async function update (infosubmited: Info): Promise<void> {
+  const accountId = infosubmited.accountId
+  const attributes = infosubmited
+
+  await mongoDB()
+
+  const info = await InfoSubmissionSchema.findOne({ accountId: accountId })
+  if (info === undefined) throw new Error(errors.user.INVALID_ID)
+  info.paymentAns = attributes.payments
+  info.servicesAns = attributes.minimumService
+  info.contactAns = attributes.customerContact
+  info.waterAns = attributes.waterMeter
+  info.adjustAns = attributes.pendingAdjustments
+  info.infoAns = attributes.additionalInformation
+  info.indivAns = attributes.individualsInvolved
+  info.save()
 }

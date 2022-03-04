@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch'
 import urls from '../../utils/urls'
 
-export const addClient = async (client) => fetch(urls.baseUrl + urls.api.client.addClient, {
+export const addInfo = async (client) => fetch(urls.baseUrl + urls.api.info.addInfo, {
   method: 'POST',
   mode: 'same-origin',
   headers: {
@@ -20,21 +20,7 @@ export const addClient = async (client) => fetch(urls.baseUrl + urls.api.client.
     return json.payload
   })
 
-export const getAll = async () => fetch(urls.baseUrl + urls.api.client.getAll, {
-  method: 'GET'
-})
-  .then((response) => response.json())
-  .then((json) => {
-    if (json == null) {
-      throw new Error('Could not connect to API')
-    }
-    if (!json.success) {
-      throw new Error(json.message)
-    }
-    return json.payload
-  })
-
-export const getClient = async (accountId) => fetch(urls.baseUrl + urls.api.client.getClient + '?accountId=' + accountId, {
+export const getInfo = async (accountId) => fetch(urls.baseUrl + urls.api.info.getInfo + '?accountId=' + accountId, {
   method: 'GET'
 }).then((response) => response.json()).then((json) => {
   if (json == null) {
@@ -46,3 +32,22 @@ export const getClient = async (accountId) => fetch(urls.baseUrl + urls.api.clie
   }
   return json.payload
 })
+
+export const update = async (updatedCompany) => fetch(urls.baseUrl + urls.api.info.update, {
+  method: 'POST',
+  mode: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(updatedCompany)
+})
+  .then((response) => response.json())
+  .then((json) => {
+    if (json == null) {
+      throw new Error('Could not connect to API')
+    }
+    if (!json.success) {
+      throw new Error(json.message)
+    }
+    return json.payload
+  })
