@@ -1,9 +1,10 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import classes from './ApplicantModal.module.css'
 import TextField from '@material-ui/core/TextField'
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
+import { AddRemoveModal } from '../AddRemoveModal/AddRemoveModal'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -11,6 +12,14 @@ interface PropTypes {
 }
 
 export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
+
+  const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
+
+  function handleAdd(): void {
+    setShowAddRemoveModal(true);
+    onClose();
+  }
+
   return (
     <div>
       <div>
@@ -89,7 +98,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                 </div>
                 <div className={classes.modalfooter}>
                   <Button
-                  onClick={onClose} className="btn-submit"
+                  onClick={() => handleAdd()}
                   variant="contained"
                   style={{
                     backgroundColor: '#4DBAEA',
@@ -100,7 +109,11 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                   </Button>
                 </div>
             </Box>
-
+            <AddRemoveModal 
+              isAdd={true}
+              shouldShowModal={showAddRemoveModal}
+              onClose={() => setShowAddRemoveModal(false)} 
+            />
           </div>
         </Modal>
       </div>
