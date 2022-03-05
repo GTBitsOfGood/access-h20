@@ -10,7 +10,7 @@ const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Ele
   return (
     <>
       <ApplicantNavLink
-        isUtilityView={true}
+        isUtilityView={false}
       />
       <h1 className={classes.header}>Dashboard</h1>
       <ApplicantTable

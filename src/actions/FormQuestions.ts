@@ -219,7 +219,7 @@ export const editOtherQuestion = async (question: otherQuestion): Promise<otherQ
       return json.payload
     })
 
-export const removeEligibilityQuestion = async (questionId: Types.ObjectId): Promise<void> =>
+export const removeEligibilityQuestion = async (questionId: Types.ObjectId): Promise<eligibilityQuestion> =>
   await fetch(urls.baseUrl + urls.api.formQuestions.removeEligibilityQuestion, {
     method: 'DELETE',
     mode: 'same-origin',
@@ -244,7 +244,7 @@ export const removeEligibilityQuestion = async (questionId: Types.ObjectId): Pro
       return json.payload
     })
 
-export const removeDocumentQuestion = async (questionId: Types.ObjectId): Promise<void> =>
+export const removeDocumentQuestion = async (questionId: Types.ObjectId): Promise<documentQuestion> =>
   await fetch(urls.baseUrl + urls.api.formQuestions.removeDocumentQuestion, {
     method: 'DELETE',
     mode: 'same-origin',
@@ -269,7 +269,7 @@ export const removeDocumentQuestion = async (questionId: Types.ObjectId): Promis
       return json.payload
     })
 
-export const removeOtherQuestion = async (questionId: Types.ObjectId): Promise<void> =>
+export const removeOtherQuestion = async (questionId: Types.ObjectId): Promise<otherQuestion> =>
   await fetch(urls.baseUrl + urls.api.formQuestions.removeOtherQuestion, {
     method: 'DELETE',
     mode: 'same-origin',

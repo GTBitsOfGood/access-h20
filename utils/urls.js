@@ -19,6 +19,7 @@ export default {
     utilityapplicants: '/utilityapplicants',
     accessh20applicants: '/accessh20applicants',
     infosubmit: '/infosubmit',
+    editform: '/editform',
     profile: '/profile',
     login: '/login',
     app: {

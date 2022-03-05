@@ -9,7 +9,7 @@ import { eligibilityQuestion } from 'server/models/EligibilityQuestion'
 import { documentQuestion } from 'server/models/DocumentQuestion'
 import { otherQuestion } from 'server/models/OtherQuestion'
 import { addDocumentQuestion, addEligibilityQuestion, addOtherQuestion, editDocumentQuestion, editEligibilityQuestion, editOtherQuestion, getDocumentQuestions, getEligibilityQuestions, getOtherQuestions, removeDocumentQuestion, removeEligibilityQuestion, removeOtherQuestion } from 'src/actions/FormQuestions'
-import { ObjectId, Types } from 'mongoose'
+import { Types } from 'mongoose'
 
 const EditFormPage = ({ eligibility, document, other, showEligibility, showDocument, showOther }: {eligibility: eligibilityQuestion[], document: documentQuestion[], other: otherQuestion[], showEligibility: boolean[], showDocument: boolean[], showOther: boolean[]}): JSX.Element => {
   const [eligibilityQuestions, setEligibilityQuestions] = useState<eligibilityQuestion[]>(eligibility)
@@ -64,18 +64,20 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
     setEditEligibility(duplicate)
   }
   const handleEligibilityTitleChange = (text: any, id: Types.ObjectId, index: number): void => {
-    if (id === '') { setNewEligibilityTitle(text.target.value) } else {
-      const duplicate = eligibilityQuestions.slice()
-      duplicate[index].title = text.target.value
-      setEligibilityQuestions(duplicate)
-    }
+    const duplicate = eligibilityQuestions.slice()
+    duplicate[index].title = text.target.value
+    setEligibilityQuestions(duplicate)
+  }
+  const handleNewEligibilityTitleChange = (text: any): void => {
+    setNewEligibilityTitle(text.target.value)
   }
   const handleEligibilityQuestionChange = (text: any, id: Types.ObjectId, index: number): void => {
-    if (id === '') { setNewEligibilityQuestion(text.target.value) } else {
-      const duplicate = eligibilityQuestions.slice()
-      duplicate[index].question = text.target.value
-      setEligibilityQuestions(duplicate)
-    }
+    const duplicate = eligibilityQuestions.slice()
+    duplicate[index].question = text.target.value
+    setEligibilityQuestions(duplicate)
+  }
+  const handleNewEligibilityQuestionChange = (text: any): void => {
+    setNewEligibilityQuestion(text.target.value)
   }
   const deleteEligibilityQuestion = (id: Types.ObjectId, index: number): void => {
     const removeQuestion = async (): Promise<void> => {
@@ -129,18 +131,20 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
     setEditDocument(duplicate)
   }
   const handleDocumentTitleChange = (text: any, id: Types.ObjectId, index: number): void => {
-    if (id === '') { setNewDocumentTitle(text.target.value) } else {
-      const duplicate = documentQuestions.slice()
-      duplicate[index].title = text.target.value
-      setDocumentQuestions(duplicate)
-    }
+    const duplicate = documentQuestions.slice()
+    duplicate[index].title = text.target.value
+    setDocumentQuestions(duplicate)
+  }
+  const handleNewDocumentTitleChange = (text: any): void => {
+    setNewDocumentTitle(text.target.value)
   }
   const handleDocumentDescriptionChange = (text: any, id: Types.ObjectId, index: number): void => {
-    if (id === '') { setNewDocumentDescription(text.target.value) } else {
-      const duplicate = documentQuestions.slice()
-      duplicate[index].description = text.target.value
-      setDocumentQuestions(duplicate)
-    }
+    const duplicate = documentQuestions.slice()
+    duplicate[index].description = text.target.value
+    setDocumentQuestions(duplicate)
+  }
+  const handleNewDocumentDescriptionChange = (text: any): void => {
+    setNewDocumentDescription(text.target.value)
   }
   const deleteDocumentQuestion = (id: Types.ObjectId, index: number): void => {
     const removeQuestion = async (): Promise<void> => {
@@ -191,11 +195,12 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
     setEditOther(duplicate)
   }
   const handleOtherQuestionChange = (text: any, id: Types.ObjectId, index: number): void => {
-    if (id === '') { setNewOtherQuestion(text.target.value) } else {
-      const duplicate = otherQuestions.slice()
-      duplicate[index].question = text.target.value
-      setOtherQuestions(duplicate)
-    }
+    const duplicate = otherQuestions.slice()
+    duplicate[index].question = text.target.value
+    setOtherQuestions(duplicate)
+  }
+  const handleNewOtherQuestionChange = (text: any): void => {
+    setNewOtherQuestion(text.target.value)
   }
   const deleteOtherQuestion = (id: Types.ObjectId, index: number): void => {
     const removeQuestion = async (): Promise<void> => {
@@ -239,12 +244,12 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                           }
                         }}
                         value={question.title}
-                        onChange={(title) => handleEligibilityTitleChange(title, question._id as ObjectId, index)}
+                        onChange={(title) => handleEligibilityTitleChange(title, question._id as Types.ObjectId, index)}
                         fullWidth
                         multiline
                         size='small'
                       />
-                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteEligibilityQuestion(question._id as ObjectId, index)}/>
+                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteEligibilityQuestion(question._id as Types.ObjectId, index)}/>
                     </div>
                     <TextField
                       InputProps={{
@@ -253,13 +258,13 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                         }
                       }}
                       value={question.question}
-                      onChange={(text) => handleEligibilityQuestionChange(text, question._id as ObjectId, index)}
+                      onChange={(text) => handleEligibilityQuestionChange(text, question._id as Types.ObjectId, index)}
                       fullWidth
                       multiline
                       size='small'
                     />
                   </div>
-                  <Button onClick={() => updateEligibilityQuestion(index, question._id as ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
+                  <Button onClick={() => updateEligibilityQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
                   <Button onClick = {() => enableEditEligibility(index)} sx={buttonStyles} variant="text">Cancel</Button>
                 </div>
               }
@@ -275,7 +280,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                     }
                   }}
                   value={newEligibilityTitle}
-                  onChange={(text) => handleEligibilityTitleChange(text, '', -1)}
+                  onChange={(text) => handleNewEligibilityTitleChange(text)}
                   multiline
                   fullWidth
                   label="Question Title"
@@ -288,7 +293,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                     }
                   }}
                   value={newEligibilityQuestion}
-                  onChange={(text) => handleEligibilityQuestionChange(text, '', -1)}
+                  onChange={(text) => handleNewEligibilityQuestionChange(text)}
                   multiline
                   fullWidth
                   label="Add brief description of required question"
@@ -324,12 +329,12 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                           }
                         }}
                         value={question.title}
-                        onChange={(title) => handleDocumentTitleChange(title, question._id as ObjectId, index)}
+                        onChange={(title) => handleDocumentTitleChange(title, question._id as Types.ObjectId, index)}
                         multiline
                         fullWidth
                         size='small'
                       />
-                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteDocumentQuestion(question._id as ObjectId, index)}/>
+                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteDocumentQuestion(question._id as Types.ObjectId, index)}/>
                     </div>
                     <TextField
                       InputProps={{
@@ -338,13 +343,13 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                         }
                       }}
                       value={question.description}
-                      onChange={(description) => handleDocumentDescriptionChange(description, question._id as ObjectId, index)}
+                      onChange={(description) => handleDocumentDescriptionChange(description, question._id as Types.ObjectId, index)}
                       multiline
                       fullWidth
                       size='small'
                     />
                   </div>
-                <Button onClick={() => updateDocumentQuestion(index, question._id as ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
+                <Button onClick={() => updateDocumentQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
                 <Button onClick = {() => enableEditDocument(index)} sx={buttonStyles} variant="text">Cancel</Button>
                 </div>
               }
@@ -361,7 +366,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                     }
                   }}
                   value={newDocumentTitle}
-                  onChange={(text) => handleDocumentTitleChange(text, '', -1)}
+                  onChange={(text) => handleNewDocumentTitleChange(text)}
                   multiline
                   fullWidth
                   label="Document Title"
@@ -374,7 +379,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                     }
                   }}
                   value={newDocumentDescription}
-                  onChange={(text) => handleDocumentDescriptionChange(text, '', -1)}
+                  onChange={(text) => handleNewDocumentDescriptionChange(text)}
                   multiline
                   fullWidth
                   label="Add brief description of required document"
@@ -409,15 +414,15 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                         }
                       }}
                       value={question.question}
-                      onChange={(text) => handleOtherQuestionChange(text, question._id as ObjectId, index)}
+                      onChange={(text) => handleOtherQuestionChange(text, question._id as Types.ObjectId, index)}
                       multiline
                       fullWidth
                       size='small'
                     />
-                    <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteOtherQuestion(question._id as ObjectId, index)}/>
+                    <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteOtherQuestion(question._id as Types.ObjectId, index)}/>
                   </div>
                 </div>
-                <Button onClick={() => updateOtherQuestion(index, question._id as ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
+                <Button onClick={() => updateOtherQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
                 <Button onClick = {() => enableEditOther(index)} sx={buttonStyles} variant="text">Cancel</Button>
               </div>
               }
@@ -433,7 +438,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                     }
                   }}
                   value={newOtherQuestion}
-                  onChange={(text) => handleOtherQuestionChange(text, '', -1)}
+                  onChange={(text) => handleNewOtherQuestionChange(text)}
                   multiline
                   fullWidth
                   label="Add brief description of required question"

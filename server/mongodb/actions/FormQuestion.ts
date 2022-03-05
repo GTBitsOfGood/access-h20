@@ -48,30 +48,30 @@ export async function getOtherQuestions (): Promise<otherQuestion[]> {
 
 export async function editEligibilityQuestion (question: eligibilityQuestion): Promise<eligibilityQuestion> {
   await mongoDB()
-  return await EligibilityQuestionSchema.findByIdAndUpdate(question._id, { title: question.title, question: question.question })
+  return await EligibilityQuestionSchema.findByIdAndUpdate(question._id, { title: question.title, question: question.question }) as eligibilityQuestion
 }
 
 export async function editDocumentQuestion (question: documentQuestion): Promise<documentQuestion> {
   await mongoDB()
-  return await DocumentQuestionSchema.findByIdAndUpdate(question._id, { title: question.title, description: question.description })
+  return await DocumentQuestionSchema.findByIdAndUpdate(question._id, { title: question.title, description: question.description }) as documentQuestion
 }
 
 export async function editOtherQuestion (question: otherQuestion): Promise<otherQuestion> {
   await mongoDB()
-  return await OtherQuestionSchema.findByIdAndUpdate(question._id, { question: question.question })
+  return await OtherQuestionSchema.findByIdAndUpdate(question._id, { question: question.question }) as otherQuestion
 }
 
-export async function removeEligibilityQuestion (questionId: Types.ObjectId): Promise<void> {
+export async function removeEligibilityQuestion (questionId: Types.ObjectId): Promise<eligibilityQuestion> {
   await mongoDB()
-  return await EligibilityQuestionSchema.findByIdAndDelete(questionId)
+  return await EligibilityQuestionSchema.findByIdAndDelete(questionId) as eligibilityQuestion
 }
 
-export async function removeDocumentQuestion (questionId: Types.ObjectId): Promise<void> {
+export async function removeDocumentQuestion (questionId: Types.ObjectId): Promise<documentQuestion> {
   await mongoDB()
-  return await DocumentQuestionSchema.findByIdAndDelete(questionId)
+  return await DocumentQuestionSchema.findByIdAndDelete(questionId) as documentQuestion
 }
 
-export async function removeOtherQuestion (questionId: Types.ObjectId): Promise<void> {
+export async function removeOtherQuestion (questionId: Types.ObjectId): Promise<otherQuestion> {
   await mongoDB()
-  return await OtherQuestionSchema.findByIdAndDelete(questionId)
+  return await OtherQuestionSchema.findByIdAndDelete(questionId) as otherQuestion
 }
