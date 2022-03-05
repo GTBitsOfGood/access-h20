@@ -1,31 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ApplicantTable from '../../../components/ApplicantTable'
 import classes from './ApplicantView.module.css'
 import urls from '../../../../utils/urls'
-import AccountCreationModal from '../../../components/AccountCreationModal'
-import { Button } from '@material-ui/core'
+import ApplicantNavLink from '../../../components/ApplicantNavLink'
+import { getAll } from '../../../actions/Client'
+import { Applicant } from 'src/types/Applicant'
 
-const ApplicantViewPage = (): JSX.Element => {
-  const [showModal, setShowModal] = useState(false)
-
-  const closeModalHandler = (): void => setShowModal(false)
+const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Element => {
   return (
     <>
-      <div className={classes.accountModal}>
-        <Button onClick={() => setShowModal(true)}>Account Creation</Button>
-        <AccountCreationModal
-          shouldShowModal={showModal}
-          onClose={closeModalHandler}
-        />
-      </div>
+      <ApplicantNavLink
+        isUtilityView={true}
+      />
       <h1 className={classes.header}>Dashboard</h1>
       <ApplicantTable
         isUtilityView={false}
         infoSubmissionEndpoint={urls.pages.infosubmit}
-        applicants={[]}
+        applicants={applicants}
       />
     </>
   )
+}
+
+ApplicantViewPage.getInitialProps = async () => {
+  const applicants = await getAll()
+  return { applicants: applicants }
 }
 
 export default ApplicantViewPage

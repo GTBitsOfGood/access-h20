@@ -8,20 +8,14 @@ const routes = [
     atEnd: false
   },
   {
-    name: 'Applicant View',
-    link: urls.pages.applicants,
+    name: 'AccessH20 View',
+    link: urls.pages.accessh20applicants,
     auth: false,
     atEnd: false
   },
   {
-    name: 'Info Submission',
-    link: urls.pages.infosubmit,
-    auth: false,
-    atEnd: false
-  },
-  {
-    name: 'Edit Form',
-    link: urls.pages.editform,
+    name: 'Utility View',
+    link: urls.pages.utilityapplicants,
     auth: false,
     atEnd: false
   },

@@ -25,6 +25,7 @@
   right: 0px;
   left: 0px;
 }
+
 .mainContainer {
   padding: 4rem;
   border-radius: 0.5rem;
@@ -45,6 +46,12 @@
   transition: 0.3s;
   align-self:center;
   width:98%;
+}
+
+.MuiList-root.MuiMenu-list {
+  display: flex;
+  flex-direction: column;
+  color:black;
 }
 
 .headerNoMargin {
