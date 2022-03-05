@@ -11,7 +11,7 @@ import { addNote, getNote } from 'src/actions/Note'
 interface PropTypes {
   shouldShowModal: boolean
   onClose: () => void
-  accountID: String
+  accountID: string
 }
 
 const starterNote: Note[] = []
@@ -20,7 +20,6 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
   const [notes, setNotes] = useState(starterNote)
   const [newNote, setNewNote] = useState('')
   const [showAdd, setShowAdd] = useState(false)
-
 
   // TODO utilize mongodb action getNotes()
   useEffect(() => {
@@ -52,7 +51,7 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
   return (
     <div>
       <div>
-        <Modal className={classes.modalOverflow}  open={shouldShowModal} onClose={onClose}>
+        <Modal className={classes.modalOverflow} open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
               <h3>Notes</h3>
