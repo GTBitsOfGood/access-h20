@@ -42,7 +42,7 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
 
   const handleUpdate = async (): Promise<void> => {
-    setShowAddRemoveModal(true);
+    setShowAddRemoveModal(true)
     const updatedCompany = await update(company)
     console.log(JSON.stringify(updatedCompany))
     setCompany(updatedCompany)
@@ -240,12 +240,12 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
               <Button variant="text" onClick={handleCancel}>Cancel</Button>
             </Stack>
           </FormControl>
-          <AddRemoveModal 
-              name = {"Your profile"}
+          <AddRemoveModal
+              name = {'Your profile'}
               isSuccessful={true}
-              modalAction={"updated"}
+              modalAction={'updated'}
               shouldShowModal={showAddRemoveModal}
-              onClose={() => setShowAddRemoveModal(false)} 
+              onClose={() => setShowAddRemoveModal(false)}
           />
         </div>
       </div>

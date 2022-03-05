@@ -19,10 +19,10 @@ export const AddRemoveModal = ({ name, isSuccessful, modalAction, shouldShowModa
     <Modal open={shouldShowModal} onClose={onClose}>
       <div className={classes.modalwrapper}>
           {!isSuccessful && (
-            <DeleteForeverOutlinedIcon color="error" sx={{ fontSize: 50 }} />
+            <DeleteForeverOutlinedIcon color='error' sx={{ fontSize: 50 }} />
           )}
           {isSuccessful && (
-            <CheckCircleOutlineIcon color="primary" sx={{ fontSize: 50 }}/>
+            <CheckCircleOutlineIcon color='primary' sx={{ fontSize: 50 }}/>
           )}
           <h2>{name} has been successfully {modalAction}!</h2>
           <Button
