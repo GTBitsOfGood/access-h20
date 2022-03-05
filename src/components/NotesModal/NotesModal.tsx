@@ -21,11 +21,12 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
   const [newNote, setNewNote] = useState('')
   const [showAdd, setShowAdd] = useState(false)
 
+
   // TODO utilize mongodb action getNotes()
   useEffect(() => {
     const getNotes = async (): Promise<void> => {
       const data = await getNote(accountID)
-      setNotes(notes.concat(data))
+      setNotes(starterNote.concat(data))
     }
     void getNotes()
   }, [shouldShowModal])
@@ -51,7 +52,7 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
   return (
     <div>
       <div>
-        <Modal open={shouldShowModal} onClose={onClose}>
+        <Modal className={classes.modalOverflow}  open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
               <h3>Notes</h3>
