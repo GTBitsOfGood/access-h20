@@ -1,4 +1,6 @@
+import { Types } from 'mongoose'
+
 export interface otherQuestion {
-  _id?: string
+  _id?: Types.ObjectId
   question: string
 };

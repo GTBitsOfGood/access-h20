@@ -166,7 +166,7 @@ export const editEligibilityQuestion = async (question: eligibilityQuestion): Pr
       return json.payload
     })
 
-export const editDocumentQuestion = async (questionId: Types.ObjectId, question: documentQuestion): Promise<documentQuestion> =>
+export const editDocumentQuestion = async (question: documentQuestion): Promise<documentQuestion> =>
   await fetch(urls.baseUrl + urls.api.formQuestions.editDocumentQuestion, {
     method: 'PUT',
     mode: 'same-origin',
@@ -175,8 +175,9 @@ export const editDocumentQuestion = async (questionId: Types.ObjectId, question:
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      questionId,
-      question
+      _id: question._id,
+      title: question.title,
+      description: question.description
     })
   })
     .then(async (response) => await response.json())
@@ -192,7 +193,7 @@ export const editDocumentQuestion = async (questionId: Types.ObjectId, question:
       return json.payload
     })
 
-export const editOtherQuestion = async (questionId: Types.ObjectId, question: otherQuestion): Promise<otherQuestion> =>
+export const editOtherQuestion = async (question: otherQuestion): Promise<otherQuestion> =>
   await fetch(urls.baseUrl + urls.api.formQuestions.editOtherQuestion, {
     method: 'PUT',
     mode: 'same-origin',
@@ -201,8 +202,8 @@ export const editOtherQuestion = async (questionId: Types.ObjectId, question: ot
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      questionId,
-      question
+      _id: question._id,
+      question: question.question
     })
   })
     .then(async (response) => await response.json())

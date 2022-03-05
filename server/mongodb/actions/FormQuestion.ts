@@ -51,14 +51,14 @@ export async function editEligibilityQuestion (question: eligibilityQuestion): P
   return await EligibilityQuestionSchema.findByIdAndUpdate(question._id, { title: question.title, question: question.question })
 }
 
-export async function editDocumentQuestion (questionId: Types.ObjectId, question: documentQuestion): Promise<documentQuestion> {
+export async function editDocumentQuestion (question: documentQuestion): Promise<documentQuestion> {
   await mongoDB()
-  return await DocumentQuestionSchema.findByIdAndUpdate(questionId, question)
+  return await DocumentQuestionSchema.findByIdAndUpdate(question._id, { title: question.title, description: question.description })
 }
 
-export async function editOtherQuestion (questionId: Types.ObjectId, question: otherQuestion): Promise<otherQuestion> {
+export async function editOtherQuestion (question: otherQuestion): Promise<otherQuestion> {
   await mongoDB()
-  return await OtherQuestionSchema.findByIdAndUpdate(questionId, question)
+  return await OtherQuestionSchema.findByIdAndUpdate(question._id, { question: question.question })
 }
 
 export async function removeEligibilityQuestion (questionId: Types.ObjectId): Promise<void> {

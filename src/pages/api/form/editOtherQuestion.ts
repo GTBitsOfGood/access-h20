@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { editOtherQuestion } from "server/mongodb/actions/FormQuestion";
 
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => editOtherQuestion(req.body.id, req.body.question).then((question) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => editOtherQuestion(req.body).then((question) => {
     res.status(200)
     res.send({
         success: true,
