@@ -154,7 +154,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
       accountId: accountiD,
       status: newStatus
     }
-    const info = await changeStatus(data)
+    await changeStatus(data)
   }
 
   const addNewNote = async (): Promise<void> => {
@@ -320,7 +320,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   color = "primary"
                   style={{ textTransform: 'none' }}
                   onClick={() => {
-                    addNewNote()
+                    void addNewNote()
                   }}>
                       Add Note
                   </Button>
