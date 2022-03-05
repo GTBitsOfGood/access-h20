@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
+import notestyle from '../../components/NotesModal/NotesModal.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { Checkbox, FormLabel, Select, MenuItem, FormControl } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
@@ -297,7 +298,13 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.noteHead}>Notes</h3>
             <div className={classes.noteBody}>
               {notes.map((note) => (
-                  <div className={classes.stickyNote}>{note.message}</div>
+                  <div className={classes.stickyNote}>
+                  <div className={notestyle.noteHeader}>
+                    <p className={notestyle.sender}>{note.sender}</p>
+                    <p className={notestyle.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
+                  </div>
+                  <p className={classes.message}>{note.message}</p>
+                </div>
               ))}
               {editNote
                 ? (
