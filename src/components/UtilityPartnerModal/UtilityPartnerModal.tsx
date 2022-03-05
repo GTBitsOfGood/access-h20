@@ -5,6 +5,7 @@ import { useState } from 'react'
 // import { getPartner } from 'server/mongodb/actions/Partner'
 // import { Partner } from "server/models/Partner"
 import Stack from '@mui/material/Stack'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -212,7 +213,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 >
                   <Button variant="contained" onClick={addPartner}
                   style={{
-                    backgroundColor: '#4DBAEA',
+                    backgroundColor: '#3F78B5',
                     color: '#FFFFFF',
                     borderRadius: '8px'
                   }}>Add Utility Partner</Button>
@@ -222,13 +223,13 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
         </div>
       </div>
           : <div className={classes.modalWrapper2}>
-          <div className={classes.logo}/>
-          <h2>Utility Partner {companyN} has been successfully added</h2>
+          <CheckCircleOutlineIcon color="primary" sx={{ fontSize: 50 }}/>
+          <h2>Utility Partner {companyN} has been successfully added!</h2>
           <Button
               onClick={finished}
               variant="contained"
               style={{
-                backgroundColor: '#4DBAEA',
+                backgroundColor: '#3F78B5',
                 color: '#FFFFFF',
                 borderRadius: '8px'
               }}
