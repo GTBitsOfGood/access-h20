@@ -12,24 +12,14 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { getClient, changeStatus } from '../../actions/Client'
-import { update, getInfo } from '../../actions/InfoSubmission'
+import { update, getInfo, addInfo } from '../../actions/InfoSubmission'
 import { addNote, getNote } from 'src/actions/Note'
 import { Note } from 'server/models/Note'
+import { Info } from 'server/models/InfoSubmission'
 
 interface Applicant {
   phone: String
   status: ApplicantStatus
-}
-
-interface InfoPack {
-  accountId: String
-  payments: Boolean
-  minimumService: Boolean
-  customerContact: Boolean
-  waterMeter: Boolean
-  pendingAdjustments: String
-  individualsInvolved: String
-  additionalInformation: String
 }
 
 interface Client {
@@ -66,6 +56,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   // Form Control
   const [showModal, setShowModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
+  const [createInfo, setCreateInfo] = useState(false)
 
   // Checkbox selector
   const [paymentAns, setPaymentAns] = useState(false)
@@ -114,6 +105,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   const getInfoPake = async (): Promise<void> => {
     const info = await getInfo(applicantId)
+    if (info === null) {
+      setCreateInfo(true)
+      return
+    }
     setPaymentAns(info.paymentAns)
     setServicesAns(info.servicesAns)
     setContactAns(info.contactAns)
@@ -135,18 +130,22 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setOldIndivAns(indivAns)
     setFormEditable(false)
 
-    const infoPack: InfoPack = {
+    const data: Info = {
       accountId: accountiD,
-      payments: paymentAns,
-      minimumService: servicesAns,
-      customerContact: contactAns,
-      waterMeter: waterAns,
-      pendingAdjustments: adjustAns,
-      individualsInvolved: indivAns,
-      additionalInformation: infoAns
-    }
+      paymentAns: paymentAns,
+      servicesAns: servicesAns,
+      contactAns: contactAns,
+      waterAns: waterAns,
+      adjustAns: adjustAns,
+      infoAns: infoAns,
+      indivAns: indivAns
 
-    await update(infoPack)
+    }
+    if (createInfo) {
+      await addInfo(data)
+      return
+    }
+    await update(data)
   }
 
   const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {

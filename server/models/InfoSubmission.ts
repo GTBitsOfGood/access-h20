@@ -1,10 +1,10 @@
 export interface Info {
   accountId: String
-  payments: Boolean
-  minimumService: Boolean
-  customerContact: Boolean
-  waterMeter: Boolean
-  pendingAdjustments: String
-  individualsInvolved: String
-  additionalInformation: String
+  paymentAns: Boolean
+  servicesAns: Boolean
+  contactAns: Boolean
+  waterAns: Boolean
+  adjustAns: String
+  infoAns: String
+  indivAns: String
 }
