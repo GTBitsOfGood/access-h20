@@ -47,7 +47,8 @@ export default {
     },
     notes: {
       testfunctiontwo: '/api/notes/exampletwo',
-      add: '/api/notes/add'
+      add: '/api/notes/add',
+      getNote: '/api/notes/get-note'
     },
     info: {
       addInfo: '/api/InfoSubmission/add',

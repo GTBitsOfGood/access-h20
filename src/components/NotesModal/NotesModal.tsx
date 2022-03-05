@@ -6,8 +6,7 @@ import Modal from '@mui/material/Modal'
 import { useState, useEffect } from 'react'
 import urls from 'utils/urls'
 import { Note } from 'server/models/Note'
-import { testFunction2 } from 'src/actions/Example'
-import { addNote } from 'src/actions/Note'
+import { addNote, getNote } from 'src/actions/Note'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -15,15 +14,8 @@ interface PropTypes {
   accountID: String
 }
 
-const starterNote: Note[] = [
-  {
-    accountID: '',
-    sender: 'AccessH20',
-    receiver: 'Utility',
-    date: new Date('02/03/2022'),
-    message: 'First Note'
-  }
-]
+const starterNote: Note[] = []
+
 export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): JSX.Element => {
   const [notes, setNotes] = useState(starterNote)
   const [newNote, setNewNote] = useState('')
@@ -32,19 +24,17 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
   // TODO utilize mongodb action getNotes()
   useEffect(() => {
     const getNotes = async (): Promise<void> => {
-      const message = await testFunction2()
-      console.log(accountID)
+      const data = await getNote(accountID)
+      setNotes(notes.concat(data))
     }
-
     void getNotes()
-  })
+  }, [shouldShowModal])
 
   const handleTextChange = (e: any): void => {
     setNewNote(e.target.value)
   }
 
   const addNewNote = async (): Promise<void> => {
-    // TODO: utilize mongodb action addNote()
     const data: Note = {
       accountID: accountID,
       sender: 'Utility',
@@ -75,7 +65,7 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
                 <div>
                   <div className={classes.noteHeader}>
                     <p className={classes.sender}>{note.sender}</p>
-                    <p className={classes.date}>{note.date.getMonth()}/{note.date.getDate()}/{note.date.getFullYear()}</p>
+                    <p className={classes.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
                   </div>
                   <p className={classes.message}>{note.message}</p>
                   <Divider />

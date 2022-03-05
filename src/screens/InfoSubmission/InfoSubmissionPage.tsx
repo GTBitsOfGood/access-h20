@@ -12,6 +12,8 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { getClient, changeStatus } from '../../actions/Client'
 import { update, getInfo } from '../../actions/InfoSubmission'
+import { addNote, getNote } from 'src/actions/Note'
+import { Note } from 'server/models/Note'
 
 interface Applicant {
   phone: String
@@ -55,7 +57,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [address, setAddress] = useState('')
 
   // Notes
-  const initArr: string[] = []
+  const initArr: Note[] = []
   const [editNote, setEditNote] = useState(false)
   const [currentInput, setCurrentInput] = useState('')
   const [notes, setNotes] = useState(initArr)
@@ -95,6 +97,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   useEffect(() => {
     void getapplicants()
     void getInfoPake()
+    void getNotes()
   }, [rendered])
 
   const getapplicants = async (): Promise<void> => {
@@ -152,6 +155,24 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
       status: newStatus
     }
     const info = await changeStatus(data)
+  }
+
+  const addNewNote = async (): Promise<void> => {
+    const data: Note = {
+      accountID: accountiD,
+      sender: 'Utility',
+      receiver: 'AccessH20',
+      date: new Date(),
+      message: currentInput
+    }
+    await addNote(data)
+    setNotes(notes.concat(data))
+    setCurrentInput('')
+  }
+
+  const getNotes = async (): Promise<void> => {
+    const data = await getNote(accountiD)
+    setNotes(notes.concat(data))
   }
 
   function handleClick (): void {
@@ -276,7 +297,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.noteHead}>Notes</h3>
             <div className={classes.noteBody}>
               {notes.map((note) => (
-                  <div className={classes.stickyNote}>{note}</div>
+                  <div className={classes.stickyNote}>{note.message}</div>
               ))}
               {editNote
                 ? (
@@ -299,9 +320,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   color = "primary"
                   style={{ textTransform: 'none' }}
                   onClick={() => {
-                    setNotes([...notes, currentInput])
-                    setCurrentInput('')
-                    setEditNote(false)
+                    addNewNote()
                   }}>
                       Add Note
                   </Button>
