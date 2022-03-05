@@ -6,23 +6,25 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 
 interface PropTypes {
-  isAdd: boolean
+  name: string
+  isSuccessful: boolean
+  modalAction: string
   shouldShowModal: boolean
   onClose: () => void
 }
 
-export const AddRemoveModal = ({ isAdd, shouldShowModal, onClose }: PropTypes): JSX.Element => {
+export const AddRemoveModal = ({ name, isSuccessful, modalAction, shouldShowModal, onClose }: PropTypes): JSX.Element => {
   return (
   <div>
     <Modal open={shouldShowModal} onClose={onClose}>
       <div className={classes.modalwrapper}>
-          {!isAdd && (
-            <DeleteForeverOutlinedIcon color="error" fontSize="large" />
+          {!isSuccessful && (
+            <DeleteForeverOutlinedIcon color="error" sx={{ fontSize: 50 }} />
           )}
-          {isAdd && (
-            <CheckCircleOutlineIcon color="primary" fontSize="large" />
+          {isSuccessful && (
+            <CheckCircleOutlineIcon color="primary" sx={{ fontSize: 50 }}/>
           )}
-          <h2>Utility Partner has been successfully added!</h2>
+          <h2>{name} has been successfully {modalAction}!</h2>
           <Button
               onClick={onClose}
               variant="contained"

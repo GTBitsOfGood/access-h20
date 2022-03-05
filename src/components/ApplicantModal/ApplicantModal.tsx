@@ -11,13 +11,42 @@ interface PropTypes {
   onClose: () => void
 }
 
+interface Customer {
+  firstName: string
+  lastName: string
+  accountID: string
+  utilityCompany: string
+  propertyAddress: string
+  zip: string
+  city: string
+}
+
 export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
 
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
 
+  const [fName, setfName] = useState('')
+  const [lName, setlName] = useState('')
+  const [uCompany, setuCompany] = useState('')
+  const [propAddress, setpropAddress] = useState('')
+  const [myzip, setmyZip] = useState('')
+  const [mycity, setmyCity] = useState('')
+
   function handleAdd(): void {
+    const data: Customer = {
+      firstName: fName,
+      lastName: lName,
+      accountID: uCompany,
+      utilityCompany: propAddress,
+      propertyAddress: myzip,
+      zip: myzip,
+      city: mycity
+    }
     setShowAddRemoveModal(true);
-    onClose();
+  }
+
+  function setFullName(): string {
+    return fName + lName
   }
 
   return (
@@ -44,14 +73,16 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                 <div>
                   <TextField
                     className="first-name"
+                    id="first_name"
                     label="First Name"
-                    defaultValue="Default Value"
                     variant="outlined"
+                    onChange={(e) => setfName(e.target.value)}
                   />
                   <TextField
                     id="last-name"
                     label="Last Name"
                     variant="outlined"
+                    onChange={(e) => setlName(e.target.value)}
                   />
                 </div>
                 <div>
@@ -101,8 +132,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                   onClick={() => handleAdd()}
                   variant="contained"
                   style={{
-                    backgroundColor: '#4DBAEA',
-                    color: '#FFFFFF'
+                    backgroundColor: '#3F78B5',
+                    color: '#FFFFFF',
+                    borderRadius: '8px'
                   }}
                   >
                     Add New Customer
@@ -110,7 +142,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                 </div>
             </Box>
             <AddRemoveModal 
-              isAdd={true}
+              name = {fName + " " + lName}
+              isSuccessful={true}
+              modalAction={"added"}
               shouldShowModal={showAddRemoveModal}
               onClose={() => setShowAddRemoveModal(false)} 
             />
