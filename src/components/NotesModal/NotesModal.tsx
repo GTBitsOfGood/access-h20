@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-misused-promises */
+
 import * as React from 'react'
 import classes from './NotesModal.module.css'
 import TextField from '@material-ui/core/TextField'
