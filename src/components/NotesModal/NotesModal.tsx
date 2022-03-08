@@ -1,28 +1,24 @@
+/* eslint-disable  @typescript-eslint/no-misused-promises */
+
 import * as React from 'react'
 import classes from './NotesModal.module.css'
 import TextField from '@material-ui/core/TextField'
 import { Divider, Link } from '@mui/material'
-import { v4 as uuidv4 } from 'uuid'
 import Modal from '@mui/material/Modal'
 import { useState, useEffect } from 'react'
 import urls from 'utils/urls'
 import { Note } from 'server/models/Note'
-import { testFunction2 } from 'src/actions/Example'
+import { addNote, getNote } from 'src/actions/Note'
 
 interface PropTypes {
   shouldShowModal: boolean
   onClose: () => void
+  accountID: string
 }
 
-const starterNote: Note[] = [
-  {
-    sender: 'AccessH20',
-    receiver: 'Utility',
-    date: new Date('02/03/2022'),
-    message: 'First Note'
-  }
-]
-export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
+const starterNote: Note[] = []
+
+export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): JSX.Element => {
   const [notes, setNotes] = useState(starterNote)
   const [newNote, setNewNote] = useState('')
   const [showAdd, setShowAdd] = useState(false)
@@ -30,34 +26,34 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
   // TODO utilize mongodb action getNotes()
   useEffect(() => {
     const getNotes = async (): Promise<void> => {
-      const message = await testFunction2()
-      console.log(message)
+      const data = await getNote(accountID)
+      setNotes(starterNote.concat(data))
     }
-
     void getNotes()
-  })
+  }, [shouldShowModal])
 
   const handleTextChange = (e: any): void => {
     setNewNote(e.target.value)
   }
 
-  const addNote = (): void => {
-    // TODO: utilize mongodb action addNote()
-    const dummyDate: Note[] = [{
+  const addNewNote = async (): Promise<void> => {
+    const data: Note = {
+      accountID: accountID,
       sender: 'Utility',
       receiver: 'AccessH20',
       date: new Date(),
       message: newNote
-    }]
+    }
+    await addNote(data)
     setShowAdd(false)
-    setNotes(notes.concat(dummyDate))
+    setNotes(notes.concat(data))
     setNewNote('')
   }
 
   return (
     <div>
       <div>
-        <Modal open={shouldShowModal} onClose={onClose}>
+        <Modal className={classes.modalOverflow} open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
               <h3>Notes</h3>
@@ -71,7 +67,7 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
                 <div>
                   <div className={classes.noteHeader}>
                     <p className={classes.sender}>{note.sender}</p>
-                    <p className={classes.date}>{note.date.getMonth()}/{note.date.getDate()}/{note.date.getFullYear()}</p>
+                    <p className={classes.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
                   </div>
                   <p className={classes.message}>{note.message}</p>
                   <Divider />
@@ -90,7 +86,7 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
                     minRows={2} />
                   </div>
                   <div className={classes.addNoteButtons}>
-                    <button className = {classes.saveNote} onClick={addNote}>Add Note</button>
+                    <button className = {classes.saveNote} onClick={addNewNote}>Add Note</button>
                     <button onClick = {() => setShowAdd(false)} className={classes.cancel}>Cancel</button>
                   </div>
                 </div>
@@ -98,7 +94,7 @@ export const NotesModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element
               }
               {/* TODO: Once table & infoSubmit are linked to backend, change link to match correct customer info */}
               <div className={classes.customer}>
-                <Link href={urls.pages.infosubmit + '/' + uuidv4().toString()} className={classes.customerButton}>View Customer Info</Link>
+                <Link href={urls.pages.infosubmit + '/' + accountID} className={classes.customerButton}>View Customer Info</Link>
               </div>
             </div>
           </div>

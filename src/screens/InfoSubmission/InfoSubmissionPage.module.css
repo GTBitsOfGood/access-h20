@@ -3,7 +3,7 @@
 }
 
 .back {
-  color: #9A9A9A;
+  color: #9a9a9a;
   text-decoration: none;
   cursor: pointer;
 }
@@ -17,7 +17,7 @@
 }
 
 .bacoground {
-  background-color: #CFEBFD;
+  background-color: #cfebfd;
   padding: 4.5rem;
   margin: 0px;
   position: absolute;
@@ -44,14 +44,14 @@
   flex-direction: column;
   border-radius: 4px;
   transition: 0.3s;
-  align-self:center;
-  width:98%;
+  align-self: center;
+  width: 98%;
 }
 
 .MuiList-root.MuiMenu-list {
   display: flex;
   flex-direction: column;
-  color:black;
+  color: black;
 }
 
 .headerNoMargin {
@@ -64,7 +64,7 @@
 
 .scetionContainer {
   border-style: hidden hidden solid hidden;
-  border-color: #DADADA;
+  border-color: #dadada;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -73,7 +73,7 @@
 
 .noteContainer {
   border-style: solid hidden;
-  border-color: #DADADA;
+  border-color: #dadada;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -90,16 +90,17 @@
 
 .addNote {
   font-weight: normal;
-  color: #4DBAEA;
+  color: #4dbaea;
   text-decoration: none;
-  cursor:pointer;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .stickyNote {
   border-radius: 10px;
   padding: 18.5px 14px;
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   margin-bottom: 20px;
   width: 38rem;
   word-wrap: break-word;
@@ -179,8 +180,8 @@
   border-radius: 4px;
   margin-bottom: 20px;
   transition: 0.3s;
-  align-self:center;
-  width:98%;
+  align-self: center;
+  width: 98%;
 }
 
 .additionalBody {

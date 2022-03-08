@@ -43,10 +43,18 @@ export default {
     client: {
       getClient: '/api/client/get-client',
       getAll: '/api/client/get-all',
-      addClient: '/api/client/add'
+      addClient: '/api/client/add',
+      changeStatus: '/api/client/change-status'
     },
     notes: {
-      testfunctiontwo: '/api/notes/exampletwo'
+      testfunctiontwo: '/api/notes/exampletwo',
+      add: '/api/notes/add',
+      getNote: '/api/notes/get-note'
+    },
+    info: {
+      addInfo: '/api/InfoSubmission/add',
+      getInfo: '/api/InfoSubmission/get-info',
+      update: '/api/InfoSubmission/update'
     },
     formQuestions: {
       addEligibilityQuestion: '/api/form/addEligibilityQuestion',

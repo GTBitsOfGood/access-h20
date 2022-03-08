@@ -1,9 +1,9 @@
-import { ClientStatus } from './ClientStatus'
+import { ApplicantStatus } from 'src/types/Applicant'
 export interface Client {
   name: string
   utilityCompany: string
   accountId: string
-  status: ClientStatus
+  status: ApplicantStatus
   propertyAddress: string
   applied: Date
   notes: [string]
@@ -13,4 +13,9 @@ export interface Client {
   }
   documents: [String]
   otherQuestions: [string]
+}
+
+export interface Status {
+  accountId: string
+  status: ApplicantStatus
 }

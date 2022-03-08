@@ -1,6 +1,5 @@
 import NoteSchema from '../models/Note'
 import { Note } from '../../models/Note'
-import { Client } from '../../models/Client'
 import mongoDB from '../index'
 
 export async function addNote (note: Note): Promise<Note> {
@@ -8,8 +7,10 @@ export async function addNote (note: Note): Promise<Note> {
   return await NoteSchema.create(note)
 }
 
-export async function getNotes (): Promise<Client> {
+export async function getNotes (accountID: String): Promise<Note[]> {
   await mongoDB()
-  const client = await NoteSchema.find()
-  return client as unknown as Client
+  const note = await NoteSchema.find({ accountID })
+  console.log(accountID)
+  console.log(note)
+  return note
 }

@@ -3,6 +3,10 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const NoteSchema = new Schema({
+  accountID: {
+    type: String,
+    required: true
+  },
   sender: {
     type: String,
     required: true

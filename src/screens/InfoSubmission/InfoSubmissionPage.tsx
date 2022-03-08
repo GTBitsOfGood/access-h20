@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+/* eslint-disable  @typescript-eslint/no-misused-promises */
+
+import React, { useEffect, useState } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import classes from './InfoSubmissionPage.module.css'
+import notestyle from '../../components/NotesModal/NotesModal.module.css'
 import { ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
 import { Checkbox, FormLabel, Select, MenuItem, FormControl } from '@mui/material'
 import EditInfoSubmissionModal from 'src/components/EditInfoSubmissionModal'
@@ -10,26 +13,24 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import { getClient, changeStatus } from '../../actions/Client'
+import { update, getInfo, addInfo } from '../../actions/InfoSubmission'
+import { addNote, getNote } from 'src/actions/Note'
+import { Note } from 'server/models/Note'
+import { Info } from 'server/models/InfoSubmission'
 
 interface Applicant {
-  name: string
-  utilityCompany: string
-  accountId: string
-  streetAddress: string
-  cityAddress: string
-  phone: string
-  applied: Date
+  phone: String
+  status: ApplicantStatus
+}
+
+interface Client {
+  accountId: String
   status: ApplicantStatus
 }
 
 const dummyData: Applicant = {
-  name: 'Ashley Miller',
-  utilityCompany: 'Durham',
-  accountId: '50000123',
-  streetAddress: '2886 Lime St',
-  cityAddress: 'Durham, NC 27704',
   phone: '(404)123-4567',
-  applied: new Date('2019-01-16'),
   status: ApplicantStatus.AwaitingUtility
 }
 
@@ -43,10 +44,13 @@ interface PropTypes {
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   // Status
+  const [accountiD, setAccountID] = useState(applicantId)
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
 
   // Notes
-  const initArr: string[] = []
+  const initArr: Note[] = []
   const [editNote, setEditNote] = useState(false)
   const [currentInput, setCurrentInput] = useState('')
   const [notes, setNotes] = useState(initArr)
@@ -54,6 +58,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   // Form Control
   const [showModal, setShowModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
+  const [createInfo, setCreateInfo] = useState(false)
 
   // Checkbox selector
   const [paymentAns, setPaymentAns] = useState(false)
@@ -82,6 +87,96 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [oldInfoAns, setOldInfoAns] = useState('')
   const [oldIndivAns, setOldIndivAns] = useState('')
 
+  const [rendered] = useState(false)
+  useEffect(() => {
+    void getapplicants()
+    void getInfoPake()
+    void getNotes()
+  }, [rendered])
+
+  const getapplicants = async (): Promise<void> => {
+    const applicant = await getClient(applicantId)
+    setName(applicant.name)
+    setAccountID(applicantId)
+    setAddress(applicant.propertyAddress)
+    setStatus(applicant.status)
+    if (applicant.note != null) {
+      setNotes(applicant.note)
+    }
+  }
+
+  const getInfoPake = async (): Promise<void> => {
+    const info = await getInfo(applicantId)
+    if (info === null) {
+      setCreateInfo(true)
+      return
+    }
+    setPaymentAns(info.paymentAns)
+    setServicesAns(info.servicesAns)
+    setContactAns(info.contactAns)
+    setWaterAns(info.waterAns)
+    setAdjustAns(info.adjustAns)
+    setInfoAns(info.infoAns)
+    setIndivAns(info.indivAns)
+  }
+
+  const updateInfo = async (): Promise<void> => {
+    setOldPaymentAns(paymentAns)
+    setOldServicesAns(servicesAns)
+    setOldContactAns(contactAns)
+    setOldWaterAns(waterAns)
+    setOldPaymentFile(paymentFile)
+    setOldUsageFile(usageFile)
+    setOldAdjustAns(adjustAns)
+    setOldInfoAns(infoAns)
+    setOldIndivAns(indivAns)
+    setFormEditable(false)
+
+    const data: Info = {
+      accountId: accountiD,
+      paymentAns: paymentAns,
+      servicesAns: servicesAns,
+      contactAns: contactAns,
+      waterAns: waterAns,
+      adjustAns: adjustAns,
+      infoAns: infoAns,
+      indivAns: indivAns
+
+    }
+    if (createInfo) {
+      await addInfo(data)
+      return
+    }
+    await update(data)
+  }
+
+  const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
+    setStatus(newStatus)
+    const data: Client = {
+      accountId: accountiD,
+      status: newStatus
+    }
+    await changeStatus(data)
+  }
+
+  const addNewNote = async (): Promise<void> => {
+    const data: Note = {
+      accountID: accountiD,
+      sender: 'Utility',
+      receiver: 'AccessH20',
+      date: new Date(),
+      message: currentInput
+    }
+    await addNote(data)
+    setNotes(notes.concat(data))
+    setCurrentInput('')
+  }
+
+  const getNotes = async (): Promise<void> => {
+    const data = await getNote(accountiD)
+    setNotes(notes.concat(data))
+  }
+
   function handleClick (): void {
     setPaymentAns(oldPaymentAns)
     setServicesAns(oldServicesAns)
@@ -100,37 +195,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   const closeModalHandler = (): void => setShowModal(false)
-
-  const generateInfoSubmission = (): Object => {
-    setOldPaymentAns(paymentAns)
-    setOldServicesAns(servicesAns)
-    setOldContactAns(contactAns)
-    setOldWaterAns(waterAns)
-    setOldPaymentFile(paymentFile)
-    setOldUsageFile(usageFile)
-    setOldAdjustAns(adjustAns)
-    setOldInfoAns(infoAns)
-    setOldIndivAns(indivAns)
-    setFormEditable(false)
-    return {
-      payments: booleanToYesOrNo(paymentAns),
-      minimumService: booleanToYesOrNo(servicesAns),
-      customerContact: booleanToYesOrNo(contactAns),
-      waterMeter: booleanToYesOrNo(waterAns),
-      paymentFile: paymentFile,
-      usageFile: usageFile,
-      pendingAdjustments: adjustAns,
-      individualsInvolved: indivAns,
-      additionalInformation: infoAns
-    }
-  }
-
-  const booleanToYesOrNo = (input: boolean): string => {
-    if (input) {
-      return 'Yes'
-    }
-    return 'No'
-  }
 
   return (
     <div className={classes.bacoground}>
@@ -158,7 +222,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   color = "primary"
                   disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
                   style={{ textTransform: 'none' }}
-                  onClick = {(() => console.log(generateInfoSubmission()))}>
+                  onClick = {(() => console.log(updateInfo()))}>
                       Save
                   </Button>
                   <Button
@@ -172,7 +236,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
           </div>
-          <h1>{dummyData.name}</h1>
+          <h1>{name}</h1>
           <div>
             <div className={classes.header}>
               <div className={classes.headerInfoBox}>
@@ -191,10 +255,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                     }
                   }}
                   value={status}
-                  autoWidth
-                  style = {{ flex: 'column', display: 'flex', borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
-                  onChange={(e) => setStatus(e.target.value as ApplicantStatus)}
-                  >
+                  style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
+                  onChange={async (e) => await updateStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
                     style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting Utility</MenuItem>
@@ -221,7 +283,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
-                <p>{dummyData.accountId}</p>
+                <p>{accountiD}</p>
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
@@ -229,8 +291,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
-                <p className={classes.streetAddress}>{dummyData.streetAddress}</p>
-                <p className={classes.headerNoMargin}>{dummyData.cityAddress}</p>
+                <p className={classes.streetAddress}>{address}</p>
               </div>
             </div>
           </div>
@@ -239,7 +300,13 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <h3 className={classes.noteHead}>Notes</h3>
             <div className={classes.noteBody}>
               {notes.map((note) => (
-                  <div className={classes.stickyNote}>{note}</div>
+                  <div className={classes.stickyNote}>
+                  <div className={notestyle.noteHeader}>
+                    <p className={notestyle.sender}>{note.sender}</p>
+                    <p className={notestyle.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
+                  </div>
+                  <p className={classes.message}>{note.message}</p>
+                </div>
               ))}
               {editNote
                 ? (
@@ -262,9 +329,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   color = "primary"
                   style={{ textTransform: 'none' }}
                   onClick={() => {
-                    setNotes([...notes, currentInput])
-                    setCurrentInput('')
-                    setEditNote(false)
+                    void addNewNote()
                   }}>
                       Add Note
                   </Button>
@@ -459,7 +524,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             variant = "contained"
             color = "primary"
             style={{ textTransform: 'none' }}
-            onClick = {(() => console.log(generateInfoSubmission()))}>
+            onClick = {(() => console.log(updateInfo()))}>
                 Save
             </Button>
             <Button
