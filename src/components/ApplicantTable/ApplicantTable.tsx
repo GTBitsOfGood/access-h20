@@ -57,6 +57,12 @@ const ApplicantTable = ({
   const [filteredApplicants, setfilteredApplicants] = useState(applicants)
   const [accountID, setAcccountID] = useState('')
 
+  const [showApplicantModal, setShowApplicantModal] = useState(false)
+  const [showNotesModal, setShowNotesModal] = useState(false)
+
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
+  const open = Boolean(anchorEl)
+
   useEffect(() => {
     const statusApplicants = applicants.filter(
       (applicant) => statusFilter === 'Any' || applicant.status === statusFilter
@@ -106,8 +112,20 @@ const ApplicantTable = ({
     setShowNotesModal(true)
   }
 
-  const [showApplicantModal, setShowApplicantModal] = useState(false)
-  const [showNotesModal, setShowNotesModal] = useState(false)
+  const handleClick = (event: React.MouseEvent): void => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = (): void => {
+    setAnchorEl(null)
+  }
+  const handleChangePage = (event: any, page: number): void => {
+    setPage(page)
+  }
+  const handleChangeRowsPerPage = (event: any): void => {
+    console.log(event)
+    setRowsPerPage(parseInt(event.target.value))
+    setPage(0)
+  }
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
@@ -228,19 +246,8 @@ const ApplicantTable = ({
           </TableHead>
 
           <TableBody>
-            {paginate(filteredApplicants, page, rowsPerPage).map(
-              (applicant) => {
-                const [anchorEl, setAnchorEl] =
-                  React.useState<Element | null>(null)
-                const open = Boolean(anchorEl)
-                const handleClick = (event: React.MouseEvent): void => {
-                  setAnchorEl(event.currentTarget)
-                }
-                const handleClose = (): void => {
-                  setAnchorEl(null)
-                }
-
-                return (
+            {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
+              return (
                   <TableRow className={classes.highlightOnHover} >
                       <Link
                         href={
@@ -302,19 +309,19 @@ const ApplicantTable = ({
                       <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
                     </TableCell>
                   </TableRow>
-                )
-              }
+              )
+            }
             )
           }
         </TableBody>
       </Table>
       <TablePagination
-        count={applicants.length}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
-        page={page}
-        onPageChange={(_, page) => setPage(page)}
-      />
+              count={applicants.length}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+            />
     </TableContainer>
   </div>
   )
