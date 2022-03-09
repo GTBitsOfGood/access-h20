@@ -258,19 +258,49 @@ const ApplicantTable = ({
                           {applicant.name}
                         </TableCell>
                       </Link>
-                      <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                      <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                      <TableCell className={classes.cell}>
-                        {applicant.propertyAddress}
-                      </TableCell>
-                      <TableCell className={classes.cell}>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
+                          {applicant.propertyAddress}
+                        </TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
                         {new Date(applicant.applied).toDateString()}
                       </TableCell>
-                      <TableCell className={classes.cell}>
-                        <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-                          {applicant.status}
-                        </span>
-                      </TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
+                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
+                            {applicant.status}
+                          </span>
+                        </TableCell>
+                      </Link>
                       <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
