@@ -25,6 +25,8 @@ interface PropTypes {
   isUtilityView: boolean
 }
 
+var isSubmitted = new Boolean(false);
+
 const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [company, setCompany] = useState(
     {
@@ -40,14 +42,36 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   )
 
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isAllFilled, setIsAllFilled] = useState(false)
 
   const handleUpdate = async (): Promise<void> => {
-    setShowAddRemoveModal(true)
-    const updatedCompany = await update(company)
-    console.log(JSON.stringify(updatedCompany))
-    setCompany(updatedCompany)
+    setIsSubmitted(true)
+    checkError()
+    if (isAllFilled) {
+      setShowAddRemoveModal(true)
+      const updatedCompany = await update(company)
+      console.log(JSON.stringify(updatedCompany))
+      setCompany(updatedCompany)
+    }
   }
+  
   const handleCancel = (): void => {}
+
+  const checkError = () => {
+    if (company.name != '' 
+        && company.address != ''
+        && company.city != ''
+        && company.email != ''
+        && company.number != ''
+        && company.state != ''
+        && company.zip != '') {
+      setIsAllFilled(true)
+    }
+    else {
+      setIsAllFilled(false)
+    }
+ }
 
   return (
     <div>
@@ -101,9 +125,11 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                   placeholder="AccessH2O"
                   required={true}
                   value={company.name}
-                  error={company.name === ''}
-                  helperText={company.name === '' ? 'This field is required.' : ''}
-                  onChange={(e) => setCompany({ ...company, name: e.target.value })}
+                  error={company.name === '' && isSubmitted}
+                  helperText={company.name === '' && isSubmitted ? 'This field is required.' : ''}
+                  onChange={
+                    (e) => setCompany({ ...company, name: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -120,8 +146,8 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                     placeholder="info@accessh2o.org"
                     required={true}
                     value={company.email}
-                    error={company.email === ''}
-                    helperText={company.email === '' ? 'This field is required.' : ''}
+                    error={company.email === '' && isSubmitted}
+                    helperText={company.email === '' && isSubmitted ? 'This field is required.' : ''}
                     onChange={(e) => setCompany({ ...company, email: e.target.value })}
                   />
                 </div>
@@ -137,8 +163,8 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                     placeholder="(404) 381-1045"
                     required={true}
                     value={company.number}
-                    error={company.number === ''}
-                    helperText={company.number === '' ? 'This field is required.' : ''}
+                    error={company.number === '' && isSubmitted}
+                    helperText={company.number === '' && isSubmitted ? 'This field is required.' : ''}
                     onChange={(e) => setCompany({ ...company, number: e.target.value })}
                   />
                 </div>
@@ -156,8 +182,8 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                   placeholder="885 Woodstock Rd. #430-312"
                   required={true}
                   value={company.address}
-                  error={company.address === ''}
-                  helperText={company.address === '' ? 'This field is required.' : ''}
+                  error={company.address === '' && isSubmitted}
+                  helperText={company.address === '' && isSubmitted ? 'This field is required.' : ''}
                   onChange={(e) => setCompany({ ...company, address: e.target.value })}
                 />
               </div>
@@ -174,8 +200,8 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                     placeholder="Roswell"
                     required={true}
                     value={company.city}
-                    error={company.city === ''}
-                    helperText={company.city === '' ? 'This field is required.' : ''}
+                    error={company.city === '' && isSubmitted}
+                    helperText={company.city === '' && isSubmitted ? 'This field is required.' : ''}
                     onChange={(e) => setCompany({ ...company, city: e.target.value })}
                   />
                 </div>
@@ -190,8 +216,8 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                     variant="outlined"
                     placeholder="Georgia"
                     value={company.state}
-                    error={company.state === ''}
-                    helperText={company.state === '' ? 'This field is required.' : ''}
+                    error={company.state === '' && isSubmitted}
+                    helperText={company.state === '' && isSubmitted ? 'This field is required.' : ''}
                     onChange={(e) => setCompany({ ...company, state: e.target.value })}
                   />
                 </div>
@@ -205,8 +231,8 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                     id="zip-input"
                     variant="outlined"
                     placeholder="30075"
-                    error={company.zip === ''}
-                    helperText={company.zip === '' ? 'This field is required.' : ''}
+                    error={company.zip === '' && isSubmitted}
+                    helperText={company.zip === '' && isSubmitted ? 'This field is required.' : ''}
                     value={company.zip}
                     onChange={(e) => setCompany({ ...company, zip: e.target.value })}
                   />
