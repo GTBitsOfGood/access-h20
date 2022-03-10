@@ -25,8 +25,6 @@ interface PropTypes {
   isUtilityView: boolean
 }
 
-var isSubmitted = new Boolean(false);
-
 const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [company, setCompany] = useState(
     {
@@ -55,23 +53,16 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
       setCompany(updatedCompany)
     }
   }
-  
+
   const handleCancel = (): void => {}
 
-  const checkError = () => {
-    if (company.name != '' 
-        && company.address != ''
-        && company.city != ''
-        && company.email != ''
-        && company.number != ''
-        && company.state != ''
-        && company.zip != '') {
+  const checkError = (): void => {
+    if (company.name !== '' && company.address !== '' && company.city !== '' && company.email !== '' && company.number !== '' && company.state !== '' && company.zip !== '') {
       setIsAllFilled(true)
-    }
-    else {
+    } else {
       setIsAllFilled(false)
     }
- }
+  }
 
   return (
     <div>
