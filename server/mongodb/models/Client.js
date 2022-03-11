@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
-import { ClientStatus } from '../../models/ClientStatus'
 import { EligibilityStatus } from '../../models/EligibilityStatus'
+import { ApplicantStatus } from 'src/types/Applicant'
 
 const ClientSchema = new Schema({
   name: {
@@ -18,7 +18,7 @@ const ClientSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ClientStatus,
+    enum: ApplicantStatus,
     required: true
   },
   propertyAddress: {
@@ -27,6 +27,10 @@ const ClientSchema = new Schema({
   },
   applied: {
     type: Date,
+    required: true
+  },
+  phone: {
+    type: String,
     required: true
   },
   notes: {

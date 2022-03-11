@@ -6,6 +6,9 @@ import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import { AddRemoveModal } from '../AddRemoveModal/AddRemoveModal'
 import { Select } from '@material-ui/core'
+import { Client } from 'server/models/Client'
+import { ApplicantStatus } from 'src/types/Applicant'
+import { addClient } from 'src/actions/Client'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -29,7 +32,10 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
 
   const [fName, setfName] = useState('')
   const [lName, setlName] = useState('')
+  const [accountID, setAccountID] = useState('')
   /* eslint-disable */
+  const [note, setNote] = useState('')
+  const [state, setState] = useState('')
   const [uCompany, setuCompany] = useState('')
   const [myphoneNumber, setmyPhoneNumber] = useState('')
   const [propAddress, setpropAddress] = useState('')
@@ -37,23 +43,31 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   const [mycity, setmyCity] = useState('')
   /* eslint-enable */
 
-  function handleAdd (): void {
-    // firstNameTextInput.current.value = "";
-    // lastNameTextInput.current.value = "";
-    // utilCompanyNameTextInput.current.value = ""
-    // addressTextInput.current.value = ""
-    // zipTextInput.current.value = ""
-    // cityNameTextInput.current.value = ""
-    // notesTextInput.current.value = ""
-    // stateNameTextInput.current.value = ""
-    // phoneNumTextInput.current.value = ""
+  async function handleAdd (): Promise<void> {
+    const data: Client = {
+      accountId: accountID,
+      name: fName + ' ' + lName,
+      status: ApplicantStatus.AwaitingAccessH2O,
+      propertyAddress: propAddress,
+      utilityCompany: uCompany,
+      applied: new Date(),
+      phone: myphoneNumber,
+      notes: [''],
+      eligibilityStatuses: {
+        question: '',
+        answer: false
+      },
+      documents: [''],
+      otherQuestions: ['']
+    }
     setShowAddRemoveModal(true)
+    await addClient(data)
   }
 
   return (
     <div>
       <div>
-        <Modal open={shouldShowModal} onClose={onClose}>
+        <Modal className={classes.modalOverflow} open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
               <h3 className={classes.addcustomer}>Add Customer</h3>
@@ -94,7 +108,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     label="Account ID"
                     variant="outlined"
                     inputRef={lastNameTextInput}
-                    onChange={(e) => setuCompany(e.target.value)}
+                    onChange={(e) => setAccountID(e.target.value)}
                   />
                   <TextField
                     id="utility-company"
@@ -138,7 +152,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     variant="outlined"
                     onChange={(e) => setmyCity(e.target.value)}
                   />
-                  <Select className={classes.selector} variant="outlined" style = {{ width: 120 }} label="State">
+                  <Select onChange={(e) => setState(e.target.value as string)} className={classes.selector} variant="outlined" style = {{ width: 120 }} label="State">
                     <option value=""></option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -217,11 +231,12 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     variant="outlined"
                     inputRef={notesTextInput}
                     style = {{ width: 665 }}
+                    onChange={(e) => setNote(e.target.value)}
                   />
                 </div>
                 <div className={classes.modalfooter}>
                   <Button
-                  onClick={() => handleAdd()}
+                  onClick={(() => console.log(handleAdd()))}
                   variant="contained"
                   style={{
                     backgroundColor: '#3F78B5',

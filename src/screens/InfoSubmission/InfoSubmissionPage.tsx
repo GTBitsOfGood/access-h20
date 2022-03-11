@@ -19,19 +19,9 @@ import { addNote, getNote } from 'src/actions/Note'
 import { Note } from 'server/models/Note'
 import { Info } from 'server/models/InfoSubmission'
 
-interface Applicant {
-  phone: String
-  status: ApplicantStatus
-}
-
 interface Client {
   accountId: String
   status: ApplicantStatus
-}
-
-const dummyData: Applicant = {
-  phone: '(404)123-4567',
-  status: ApplicantStatus.AwaitingUtility
 }
 
 const setStatusColor = (status: ApplicantStatus): string => {
@@ -48,6 +38,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('Not exist')
 
   // Notes
   const initArr: Note[] = []
@@ -100,6 +91,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setAccountID(applicantId)
     setAddress(applicant.propertyAddress)
     setStatus(applicant.status)
+    setPhone(applicant.phone)
     if (applicant.note != null) {
       setNotes(applicant.note)
     }
@@ -287,7 +279,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
-                <p>{dummyData.phone}</p>
+                <p>{phone}</p>
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
