@@ -7,6 +7,7 @@ import { update } from '../../actions/Company'
 import urls from 'utils/urls'
 import ApplicantNavLink from 'src/components/ApplicantNavLink'
 import { AddRemoveModal } from '../../components/AddRemoveModal/AddRemoveModal'
+import { FormErrorModal } from '../../components/FormErrorModal/FormErrorModal'
 
 import Stack from '@mui/material/Stack'
 import {
@@ -40,29 +41,28 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   )
 
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
+  const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isAllFilled, setIsAllFilled] = useState(false)
 
   const handleUpdate = async (): Promise<void> => {
     setIsSubmitted(true)
-    checkError()
-    if (isAllFilled) {
-      setShowAddRemoveModal(true)
-      const updatedCompany = await update(company)
-      console.log(JSON.stringify(updatedCompany))
-      setCompany(updatedCompany)
-    }
-  }
-
-  const handleCancel = (): void => {}
-
-  const checkError = (): void => {
     if (company.name !== '' && company.address !== '' && company.city !== '' && company.email !== '' && company.number !== '' && company.state !== '' && company.zip !== '') {
       setIsAllFilled(true)
     } else {
       setIsAllFilled(false)
     }
+    if (isAllFilled) {
+      setShowAddRemoveModal(true)
+      const updatedCompany = await update(company)
+      console.log(JSON.stringify(updatedCompany))
+      setCompany(updatedCompany)
+    } else {
+      setShowErrorModal(true);
+    }
   }
+
+  const handleCancel = (): void => {}
 
   return (
     <div>
@@ -263,6 +263,10 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
               modalAction={'updated'}
               shouldShowModal={showAddRemoveModal}
               onClose={() => setShowAddRemoveModal(false)}
+          />
+          <FormErrorModal
+              shouldShowModal={showErrorFormModal}
+              onClose={() => setShowErrorModal(false)}
           />
         </div>
       </div>
