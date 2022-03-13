@@ -5,3 +5,8 @@ export interface documentQuestion {
   title: string
   description: string
 };
+
+export interface documentQA {
+  question: documentQuestion
+  answer?: File
+}

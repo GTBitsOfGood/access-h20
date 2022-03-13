@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
 import { ClientStatus } from '../../models/ClientStatus'
-import { EligibilityStatus } from '../../models/EligibilityStatus'
 
 const ClientSchema = new Schema({
   name: {
@@ -30,18 +29,6 @@ const ClientSchema = new Schema({
     required: true
   },
   notes: {
-    type: [String],
-    required: false
-  },
-  eligibilityStatuses: {
-    type: EligibilityStatus,
-    required: false
-  },
-  documents: {
-    type: [String],
-    required: false
-  },
-  otherQuestions: {
     type: [String],
     required: false
   }

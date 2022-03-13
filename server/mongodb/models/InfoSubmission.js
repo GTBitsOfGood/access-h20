@@ -1,38 +1,26 @@
 import mongoose, { Schema } from 'mongoose'
+import { eligibilityQA } from 'server/models/EligibilityQuestion'
+import { documentQA } from 'server/models/DocumentQuestion'
+import { otherQA } from 'server/models/OtherQuestion'
 
 const InfoSubmissionSchema = new Schema({
   accountId: {
     type: String,
     required: true
   },
-  paymentAns: {
-    type: Boolean,
-    required: true
+  eligibilityQuestions: {
+    type: [eligibilityQA],
+    required: false
   },
-  servicesAns: {
-    type: Boolean,
-    required: true
+  documents: {
+    type: [documentQA],
+    required: false
   },
-  contactAns: {
-    type: Boolean,
-    required: true
-  },
-  waterAns: {
-    type: Boolean,
-    required: true
-  },
-  adjustAns: {
-    type: String,
-    required: true
-  },
-  infoAns: {
-    type: String,
-    required: true
-  },
-  indivAns: {
-    type: String,
-    required: true
+  otherQuestions: {
+    type: [otherQA],
+    required: false
   }
 })
 
-export default mongoose.models?.InfoSubmission ?? mongoose.model('InfoSubmission', InfoSubmissionSchema)
+export default mongoose.models?.InfoSubmission ??
+  mongoose.model('InfoSubmission', InfoSubmissionSchema)
