@@ -20,23 +20,29 @@ const LoginPage = (): JSX.Element => {
   const handleClickShowPassword = (): void => setShowPassword(!showPassword)
   const handleMouseDownPassword = (): void => setShowPassword(!showPassword)
 
-  const handleSubmit = async (event: { preventDefault: () => void }): Promise<any> => {
+  const handleSubmit = (event: { preventDefault: () => void }): any => {
     event.preventDefault()
 
-    if (isRegistering) {
-      return await signUp(email, password)
-        .then(async () => await Router.replace(urls.pages.app.home))
-        .catch((error) => window.alert(error.message))
-    }
+    // if (isRegistering) {
+    //   return await signUp(email, password)
+    //     .then(async () => await Router.replace(urls.pages.index))
+    //     .catch((error) => window.alert(error.message))
+    // }
 
-    return await login(email, password)
-      .then(async () => await Router.replace(urls.pages.app.home))
-      .catch((error) => window.alert(error.message))
+    return (
+      login(email, password)
+        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+        .then(
+          async () =>
+            await Router.push(Router.query.returnUrl || urls.pages.app.home)
+        )
+        .catch((error) => window.alert(error.message))
+    )
   }
 
   return (
     <div className={classes.root}>
-      <div className={classes.logo}/>
+      <div className={classes.logo} />
       <form className={classes.form} onSubmit={handleSubmit}>
         <h2 className={classes.welcomeText}>Welcome!</h2>
         <h3 className={classes.infoText}>
@@ -76,7 +82,7 @@ const LoginPage = (): JSX.Element => {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             }
@@ -85,23 +91,21 @@ const LoginPage = (): JSX.Element => {
         <button className={classes.bttn} type="submit">
           {isRegistering ? 'Register' : 'Login'}
         </button>
-        {isRegistering
-          ? (
+        {isRegistering ? (
           <p className={classes.switchText}>
             Already have an account?
             <a className={classes.buttonText} onClick={() => setIsReg(false)}>
               Login now
             </a>
           </p>
-            )
-          : (
+        ) : (
           <p className={classes.switchText}>
             {"Don't have an account?"}
             <a className={classes.buttonText} onClick={() => setIsReg(true)}>
               Register now
             </a>
           </p>
-            )}
+        )}
       </form>
     </div>
   )

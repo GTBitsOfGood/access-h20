@@ -15,5 +15,9 @@ export default {
     DOESNT_EXIST: 'No users are currently signed in.',
     IS_INVALID: 'The provided token is invalid.',
     DELETED_USER: 'The desired user no longer exists.'
+  },
+  company: {
+    UNAVAILABLE_COMPANY: 'No company is found with this id.',
+    INVALID_ATTRIBUTES: 'One or more provided attributes are invalid.'
   }
 }

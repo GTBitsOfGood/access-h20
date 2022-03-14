@@ -16,7 +16,7 @@ interface PropTypes {
 }
 
 const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
-  const [auth] = React.useState(true)
+  const [auth, setAuth] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [showUtilityPartnerModal, setShowUtilityPartnerModal] = useState(false)
 
@@ -34,61 +34,76 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static" color="transparent" className={classes.root}>
-      <Toolbar>
-        <div className={classes.logo1}/>
-        <div className={classes.logo2}/>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mx: 'auto' }}
-        >
-        </IconButton>
-        {!isUtilityView && (
+      <AppBar position="static" color="transparent" className={classes.root}>
+        <Toolbar>
+          <div className={classes.logo1} />
+          <div className={classes.logo2} />
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mx: 'auto' }}
+          ></IconButton>
+          {!isUtilityView && (
             <span className={classes.editForm}>Edit Form</span>
-        )}
-        {!isUtilityView && (
-            <span onClick = {() => setShowUtilityPartnerModal(true)} className={classes.addPartner}>Add Utility Partner</span>
-        )}
-        <UtilityPartnerModal shouldShowModal={showUtilityPartnerModal} onClose={() => setShowUtilityPartnerModal(false)} />
-
-        {auth && (
-          <div>
-
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
+          )}
+          {!isUtilityView && (
+            <span
+              onClick={() => setShowUtilityPartnerModal(true)}
+              className={classes.addPartner}
             >
-              <AccountCircle color="action" className = {classes.profilebutton}/>
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem component='a' href={urls.pages.profile + '/' + isUtilityView.toString()}> Profile</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
-            </Menu>
-          </div>
-        )}
-      </Toolbar>
-    </AppBar>
+              Add Utility Partner
+            </span>
+          )}
+          <UtilityPartnerModal
+            shouldShowModal={showUtilityPartnerModal}
+            onClose={() => setShowUtilityPartnerModal(false)}
+          />
+
+          {auth && (
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle
+                  color="action"
+                  className={classes.profilebutton}
+                />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  component="a"
+                  href={urls.pages.profile + '/' + isUtilityView.toString()}
+                >
+                  {' '}
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+              </Menu>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
     </Box>
   )
 }
