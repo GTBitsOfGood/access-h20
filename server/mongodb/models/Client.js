@@ -1,8 +1,13 @@
 import mongoose, { Schema } from 'mongoose'
 import { ClientStatus } from '../../models/ClientStatus'
 import { EligibilityStatus } from '../../models/EligibilityStatus'
+import { ObjectId } from 'mongodb'
 
 const ClientSchema = new Schema({
+  utilityCompanyId: {
+    type: ObjectId,
+    required: false
+  },
   name: {
     type: String,
     required: true
@@ -10,11 +15,6 @@ const ClientSchema = new Schema({
   utilityCompany: {
     type: String,
     required: true
-  },
-  accountId: {
-    type: String,
-    required: true,
-    unique: true
   },
   status: {
     type: String,

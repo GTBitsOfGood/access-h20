@@ -25,7 +25,7 @@ function RouteGuard({ children, cookies }) {
   }, [])
 
   function authCheck(url, cks) {
-    const publicPaths = [urls.pages.login]
+    const publicPaths = [urls.pages.login, urls.pages.index]
     const path = url.split('?')[0]
 
     // console.log('returnUrl param:', router.asPath)

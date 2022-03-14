@@ -4,7 +4,7 @@ import mongoose, { Schema } from 'mongoose'
 const CompanySchema = new Schema({
   accountId: {
     type: ObjectId,
-    required: true,
+    required: false,
     unique: true
   },
   name: {
