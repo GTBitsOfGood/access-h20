@@ -41,5 +41,5 @@ const CompanySchema = new Schema({
   }
 })
 
-export default mongoose.models?.CompanySchema ??
+export default mongoose.models.CompanySchema ??
   mongoose.model('Company', CompanySchema)
