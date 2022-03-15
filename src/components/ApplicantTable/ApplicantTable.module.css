@@ -15,14 +15,14 @@
 }
 
 .searchBox {
-  width: 296px;
+  width: 300px;
   height: 42px;
   color: #9a9a9a;
   font-size: 18px;
 }
 
 .searchFilterText {
-  width: 126px;
+  width: 150px;
   height: 42px;
   background: #c4c4c4;
   border-radius: 8px;
@@ -32,11 +32,11 @@
 }
 
 .dateInput {
-  margin: 0px 0px 14px 20px;
+  margin: 0px 10px 10px 0px;
 }
 
 .dateInputText {
-  width: 270px;
+  width: 235px;
   height: 42px;
   font-size: 18px;
 }
@@ -46,9 +46,9 @@
   border-color: transparent;
   border-radius: 8px;
   font-size: 18px;
-  width: 162px;
+  width: 150px;
   height: 42px;
-  margin: 21px 22px 14px 0px;
+  margin: 27px 22px 14px 0px;
 }
 
 .tableHeader {

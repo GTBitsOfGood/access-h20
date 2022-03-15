@@ -20,6 +20,7 @@ import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import SearchIcon from '@mui/icons-material/Search'
 
 interface PropTypes {
   isUtilityView: boolean
@@ -136,12 +137,17 @@ const ApplicantTable = ({
       <div className={classes.header}>
         <div className={classes.searchBar}>
           <TextField
+            style = { { marginRight: '10px', marginTop: '5px' } }
             className={classes.searchBox}
             InputProps={{
-              className: classes.searchBox
+              className: classes.searchBox,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              )
             }}
             label="Search"
-            variant="standard"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -154,7 +160,7 @@ const ApplicantTable = ({
               className: classes.searchFilterText
             }}
             label="Search By"
-            style = { { marginRight: '10px', marginLeft: '10px', marginTop: '-12px' } }
+            style = { { marginRight: '10px', marginTop: '-10px' } }
             select
             variant="standard"
             value={searchBy}
@@ -177,7 +183,7 @@ const ApplicantTable = ({
               disableUnderline: true,
               className: classes.searchFilterText
             }}
-            style = {{ marginTop: '-12px' }}
+            style = {{ marginRight: '10px', marginTop: '-10px' }}
             label="Status"
             select
             variant="standard"
@@ -195,6 +201,7 @@ const ApplicantTable = ({
           </TextField>
           <TextField
             className={classes.dateInput}
+            style = {{ marginTop: '5px' }}
             variant="outlined"
             value={fromDate}
             onChange={(e) => setFromDate(e.target.value)}
@@ -208,6 +215,7 @@ const ApplicantTable = ({
           />
           <TextField
             className={classes.dateInput}
+            style = {{ marginTop: '5px' }}
             variant="outlined"
             value={toDate}
             onChange={(e) => setToDate(e.target.value)}
