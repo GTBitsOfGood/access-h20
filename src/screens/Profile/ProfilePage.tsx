@@ -43,16 +43,11 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
   const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isAllFilled, setIsAllFilled] = useState(false)
 
   const handleUpdate = async (): Promise<void> => {
     setIsSubmitted(true)
+    
     if (company.name !== '' && company.address !== '' && company.city !== '' && company.email !== '' && company.number !== '' && company.state !== '' && company.zip !== '') {
-      setIsAllFilled(true)
-    } else {
-      setIsAllFilled(false)
-    }
-    if (isAllFilled) {
       setShowAddRemoveModal(true)
       const updatedCompany = await update(company)
       console.log(JSON.stringify(updatedCompany))
@@ -60,6 +55,7 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
     } else {
       setShowErrorModal(true);
     }
+
   }
 
   const handleCancel = (): void => {}

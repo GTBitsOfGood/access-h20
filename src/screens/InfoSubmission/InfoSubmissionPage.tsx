@@ -18,6 +18,7 @@ import { update, getInfo, addInfo } from '../../actions/InfoSubmission'
 import { addNote, getNote } from 'src/actions/Note'
 import { Note } from 'server/models/Note'
 import { Info } from 'server/models/InfoSubmission'
+import { FormErrorModal } from '../../components/FormErrorModal/FormErrorModal'
 
 interface Applicant {
   phone: String
@@ -57,6 +58,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   // Form Control
   const [showModal, setShowModal] = useState(false)
+  const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
   const [createInfo, setCreateInfo] = useState(false)
 
@@ -121,33 +123,36 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   const updateInfo = async (): Promise<void> => {
-    setOldPaymentAns(paymentAns)
-    setOldServicesAns(servicesAns)
-    setOldContactAns(contactAns)
-    setOldWaterAns(waterAns)
-    setOldPaymentFile(paymentFile)
-    setOldUsageFile(usageFile)
-    setOldAdjustAns(adjustAns)
-    setOldInfoAns(infoAns)
-    setOldIndivAns(indivAns)
-    setFormEditable(false)
+    if ((paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')) {
+      setShowErrorModal(true);
+    } else {
+      setOldPaymentAns(paymentAns)
+      setOldServicesAns(servicesAns)
+      setOldContactAns(contactAns)
+      setOldWaterAns(waterAns)
+      setOldPaymentFile(paymentFile)
+      setOldUsageFile(usageFile)
+      setOldAdjustAns(adjustAns)
+      setOldInfoAns(infoAns)
+      setOldIndivAns(indivAns)
+      setFormEditable(false)
 
-    const data: Info = {
-      accountId: accountiD,
-      paymentAns: paymentAns,
-      servicesAns: servicesAns,
-      contactAns: contactAns,
-      waterAns: waterAns,
-      adjustAns: adjustAns,
-      infoAns: infoAns,
-      indivAns: indivAns
-
+      const data: Info = {
+        accountId: accountiD,
+        paymentAns: paymentAns,
+        servicesAns: servicesAns,
+        contactAns: contactAns,
+        waterAns: waterAns,
+        adjustAns: adjustAns,
+        infoAns: infoAns,
+        indivAns: indivAns
+      }
+      if (createInfo) {
+        await addInfo(data)
+        return
+      }
+      await update(data)
     }
-    if (createInfo) {
-      await addInfo(data)
-      return
-    }
-    await update(data)
   }
 
   const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
@@ -220,7 +225,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   type="button"
                   variant = "contained"
                   color = "primary"
-                  disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
                   style={{ textTransform: 'none' }}
                   onClick = {(() => console.log(updateInfo()))}>
                       Save
@@ -520,7 +524,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
             <Button
             type="button"
-            disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
             variant = "contained"
             color = "primary"
             style={{ textTransform: 'none' }}
@@ -538,6 +541,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             : <div></div>
 }
       </div>
+      <FormErrorModal
+        shouldShowModal={showErrorFormModal}
+        onClose={() => setShowErrorModal(false)}
+      />
     </div>
   )
 }

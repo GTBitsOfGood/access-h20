@@ -2,7 +2,7 @@ import * as React from 'react'
 import Button from '@material-ui/core/Button'
 import classes from './FormErrorModal.module.css'
 import Modal from '@mui/material/Modal'
-import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt'
 
 interface PropTypes {
   shouldShowModal: boolean
