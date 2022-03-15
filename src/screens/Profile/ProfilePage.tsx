@@ -46,16 +46,15 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
 
   const handleUpdate = async (): Promise<void> => {
     setIsSubmitted(true)
-    
+
     if (company.name !== '' && company.address !== '' && company.city !== '' && company.email !== '' && company.number !== '' && company.state !== '' && company.zip !== '') {
       setShowAddRemoveModal(true)
       const updatedCompany = await update(company)
       console.log(JSON.stringify(updatedCompany))
       setCompany(updatedCompany)
     } else {
-      setShowErrorModal(true);
+      setShowErrorModal(true)
     }
-
   }
 
   const handleCancel = (): void => {}

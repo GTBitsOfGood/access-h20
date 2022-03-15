@@ -124,7 +124,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   const updateInfo = async (): Promise<void> => {
     if ((paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')) {
-      setShowErrorModal(true);
+      setShowErrorModal(true)
     } else {
       setOldPaymentAns(paymentAns)
       setOldServicesAns(servicesAns)
