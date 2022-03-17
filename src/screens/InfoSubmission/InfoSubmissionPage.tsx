@@ -69,13 +69,17 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [oldEligibilityQuestions, setOldEligibilityQuestions] = useState<eligibilityQA[]>([])
   const [oldDocumentQuestions, setOldDocumentQuestions] = useState<documentQA[]>([])
   const [oldOtherQuestions, setOldOtherQuestions] = useState<otherQA[]>([])
+  const [emptyDocumentQuestions, setEmptyDocumentQuestions] = useState<boolean[]>([])
+  const [emptyOtherQuestions, setEmptyOtherQuestions] = useState<boolean[]>([])
+  const [render, setRender] = useState(false)
 
-  const [rendered] = useState(false)
   useEffect(() => {
     void getapplicants()
     void getNotes()
     void getInfoPack()
-  }, [rendered])
+    void getEmptyBoxes()
+    setRender(false)
+  }, [oldEligibilityQuestions, oldDocumentQuestions, oldOtherQuestions, render])
 
   const getapplicants = async (): Promise<void> => {
     const applicant = await getClient(applicantId)
@@ -92,16 +96,22 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setEligibilityQuestions(info.eligibilityQuestions)
     setDocumentQuestions(info.documents)
     setOtherQuestions(info.otherQuestions)
-    setOldEligibilityQuestions(info.eligibilityQuestions)
-    setOldDocumentQuestions(info.documents)
-    setOldOtherQuestions(info.otherQuestions)
+  }
+
+  const getEmptyBoxes = (): void => {
+    const document = []
+    const other = []
+    for (let i = 0; i < otherQuestions.length; i++) {
+      if (otherQuestions[i].answer === '') { other.push(false) } else { other.push(true) }
+    }
+    for (let i = 0; i < documentQuestions.length; i++) {
+      if (documentQuestions[i].answer === null) { document.push(false) } else { document.push(true) }
+    }
+    setEmptyDocumentQuestions(document)
+    setEmptyOtherQuestions(other)
   }
 
   const updateEligibility = (check: any, index: number): void => {
-    console.log('old')
-    console.log(oldEligibilityQuestions)
-    console.log('new')
-    console.log(eligibilityQuestions)
     const duplicate = eligibilityQuestions.slice()
     duplicate[index].answer = check.target.checked
     setEligibilityQuestions(duplicate)
@@ -109,26 +119,55 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const updateDocument = (file: any, index: number): void => {
     const duplicate = documentQuestions.slice()
     duplicate[index].answer = file.target.files[0]
+    const emptyDuplicate = emptyDocumentQuestions.slice()
+    if (file.target.value === null) {
+      emptyDuplicate[index] = false
+    } else {
+      emptyDuplicate[index] = true
+    }
     setDocumentQuestions(duplicate)
+    setEmptyDocumentQuestions(emptyDuplicate)
   }
   const updateOther = (text: any, index: number): void => {
     const duplicate = otherQuestions.slice()
     duplicate[index].answer = text.target.value
-    setOtherQuestions(duplicate)
-  }
-  const updateInfo = async (): Promise<void> => {
-    setOldEligibilityQuestions(eligibilityQuestions)
-    setOldDocumentQuestions(documentQuestions)
-    setOldOtherQuestions(otherQuestions)
-    setFormEditable(false)
-
-    const data: Info = {
-      accountId: accountiD,
-      eligibilityQuestions: eligibilityQuestions,
-      documents: documentQuestions,
-      otherQuestions: otherQuestions
+    const emptyDuplicate = emptyOtherQuestions.slice()
+    if (text.target.value === '') {
+      emptyDuplicate[index] = false
+    } else {
+      emptyDuplicate[index] = true
     }
-    await update(data)
+    setOtherQuestions(duplicate)
+    setEmptyOtherQuestions(emptyDuplicate)
+  }
+  const updateInfo = async (updateDatabase: boolean): Promise<void> => {
+    let document = true
+    let other = true
+    for (let i = 0; i < emptyOtherQuestions.length; i++) {
+      if (!emptyOtherQuestions[i]) { other = false }
+    }
+    for (let i = 0; i < emptyDocumentQuestions.length; i++) {
+      if (!emptyDocumentQuestions[i]) { document = false }
+    }
+    if (!document || !other) {
+      // add error modal here
+      console.log('Answer all questions')
+    } else {
+      setFormEditable(!formEditable)
+      setOldEligibilityQuestions(eligibilityQuestions)
+      setOldDocumentQuestions(documentQuestions)
+      setOldOtherQuestions(otherQuestions)
+      if (updateDatabase) {
+        const data: Info = {
+          accountId: accountiD,
+          eligibilityQuestions: eligibilityQuestions,
+          documents: documentQuestions,
+          otherQuestions: otherQuestions
+        }
+        await update(data)
+        setRender(true)
+      }
+    }
   }
 
   const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
@@ -159,8 +198,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   function handleClick (): void {
-    console.log(eligibilityQuestions)
-    console.log(oldEligibilityQuestions)
     setEligibilityQuestions(oldEligibilityQuestions)
     setDocumentQuestions(oldDocumentQuestions)
     setOtherQuestions(oldOtherQuestions)
@@ -184,7 +221,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 ? <div className={classes.last_item}>
                 <Button
                 startIcon={<Edit />}
-                onClick={() => setFormEditable(!formEditable)}
+                onClick={async () => await updateInfo(false)}
                 variant="contained"
                 color = "primary"
                 style={{ textTransform: 'none' }}
@@ -198,7 +235,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   variant = "contained"
                   color = "primary"
                   style={{ textTransform: 'none' }}
-                  onClick = {(() => console.log(updateInfo()))}>
+                  onClick = {(() => console.log(updateInfo(true)))}>
                       Save
                   </Button>
                   <Button
@@ -349,8 +386,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.documentBody}>
               {documentQuestions?.map((info, index) => (
                 <div className={classes.documentSubmission}>
-                  {/* error={paymentFile === null} */}
-                <FormLabel style={{ fontWeight: 'bold' }} htmlFor="infoAns">{info.question.title}</FormLabel>
+                <FormLabel style={{ fontWeight: 'bold' }} error={info.answer === null} htmlFor="infoAns">{info.question.title}</FormLabel>
                   <p style = {{ fontWeight: 'lighter' }}>{info.question.description}</p>
                   <div className={classes.submissionStack}>
                   {formEditable && <Button
@@ -364,13 +400,12 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                           alert('Please upload a valid file.')
                         }
                         updateDocument(e, index)
-                        // setPaymentFile(e.target.files[0])
                       }}/>
                     </Button>}
                     {formEditable && info.answer !== null && <InsertDriveFileIcon color="disabled" />}
-                    {formEditable && <p className={classes.fileFontColor}>{info.answer?.name}</p>}
+                    {formEditable && <p className={classes.fileFontColor}>{info.answer.name}</p>}
                     {!formEditable && info.answer !== null && <InsertDriveFileIcon color="primary" />}
-                    {!formEditable && <p className={classes.displayFileColor}>{info.answer?.name}</p>}
+                    {!formEditable && <p className={classes.displayFileColor}>{info.answer.name}</p>}
                   </div>
                 </div>
               ))}
@@ -382,13 +417,12 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.additionalBody}>
               {otherQuestions?.map((info, index) => (
               <div className={classes.inputContainer}>
-                {/* error={adjustAns === ''} */}
                 <FormLabel style={{ fontWeight: 'bold' }} htmlFor="adjustAns">{info.question.question}</FormLabel>
                   {formEditable && <TextField
                     id="adjustAns"
                     value={info.answer}
                     required
-                    // error={adjustAns === ''}
+                    error={info.answer === ''}
                     minRows="5"
                     multiline
                     variant="outlined"
@@ -407,7 +441,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             variant = "contained"
             color = "primary"
             style={{ textTransform: 'none' }}
-            onClick = {(() => console.log(updateInfo()))}>
+            onClick = {(() => console.log(updateInfo(true)))}>
                 Save
             </Button>
             <Button

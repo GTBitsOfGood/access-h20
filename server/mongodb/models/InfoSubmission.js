@@ -1,7 +1,4 @@
 import mongoose, { Schema } from 'mongoose'
-import { eligibilityQA } from 'server/models/EligibilityQuestion'
-import { documentQA } from 'server/models/DocumentQuestion'
-import { otherQA } from 'server/models/OtherQuestion'
 
 const InfoSubmissionSchema = new Schema({
   accountId: {
@@ -9,15 +6,38 @@ const InfoSubmissionSchema = new Schema({
     required: true
   },
   eligibilityQuestions: {
-    type: [eligibilityQA],
+    type: [
+      {
+        question: {
+          title: String,
+          question: String
+        },
+        answer: Boolean
+      }
+    ],
     required: false
   },
   documents: {
-    type: [documentQA],
+    type: [
+      {
+        question: {
+          title: String,
+          description: String
+        },
+        answer: String
+      }
+    ],
     required: false
   },
   otherQuestions: {
-    type: [otherQA],
+    type: [
+      {
+        question: {
+          question: String
+        },
+        answer: String
+      }
+    ],
     required: false
   }
 })

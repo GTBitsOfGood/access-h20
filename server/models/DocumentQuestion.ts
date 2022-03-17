@@ -8,5 +8,5 @@ export interface documentQuestion {
 
 export interface documentQA {
   question: documentQuestion
-  answer?: File
+  answer: File
 }
