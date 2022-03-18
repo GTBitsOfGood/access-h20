@@ -20,11 +20,6 @@ import { Note } from 'server/models/Note'
 import { Info } from 'server/models/InfoSubmission'
 import { Status } from 'server/models/Client'
 
-interface Client {
-  accountId: String
-  status: ApplicantStatus
-}
-
 const setStatusColor = (status: ApplicantStatus): string => {
   return ApplicantStatusColor[status]
 }
