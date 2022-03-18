@@ -49,6 +49,7 @@
   width: 162px;
   height: 42px;
   margin: 21px 22px 14px 0px;
+  cursor: pointer;
 }
 
 .tableHeader {

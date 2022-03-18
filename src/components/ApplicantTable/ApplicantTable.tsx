@@ -296,7 +296,6 @@ const ApplicantTable = ({
                           <MenuItem onClick={handleClose}>Delete</MenuItem>
                         </div>
                       </Menu>
-                      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
                     </TableCell>
                   </TableRow>
                 )
@@ -305,6 +304,7 @@ const ApplicantTable = ({
           }
         </TableBody>
       </Table>
+      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
       <TablePagination
         count={applicants.length}
         rowsPerPage={rowsPerPage}
