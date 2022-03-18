@@ -11,7 +11,7 @@ import {
   Tooltip,
   TextField,
   MenuItem,
-  Menu
+  InputAdornment, Menu
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
@@ -19,7 +19,6 @@ import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Ap
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
-import InputAdornment from '@material-ui/core/InputAdornment'
 
 interface PropTypes {
   isUtilityView: boolean
@@ -56,12 +55,6 @@ const ApplicantTable = ({
   const [toDate, setToDate] = useState('')
   const [filteredApplicants, setfilteredApplicants] = useState(applicants)
   const [accountID, setAcccountID] = useState('')
-
-  const [showApplicantModal, setShowApplicantModal] = useState(false)
-  const [showNotesModal, setShowNotesModal] = useState(false)
-
-  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
-  const open = Boolean(anchorEl)
 
   useEffect(() => {
     const statusApplicants = applicants.filter(
@@ -112,20 +105,8 @@ const ApplicantTable = ({
     setShowNotesModal(true)
   }
 
-  const handleClick = (event: React.MouseEvent): void => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = (): void => {
-    setAnchorEl(null)
-  }
-  const handleChangePage = (event: any, page: number): void => {
-    setPage(page)
-  }
-  const handleChangeRowsPerPage = (event: any): void => {
-    console.log(event)
-    setRowsPerPage(parseInt(event.target.value))
-    setPage(0)
-  }
+  const [showApplicantModal, setShowApplicantModal] = useState(false)
+  const [showNotesModal, setShowNotesModal] = useState(false)
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
@@ -141,7 +122,7 @@ const ApplicantTable = ({
               className: classes.searchBox
             }}
             label="Search"
-            variant="standard"
+            variant="outlined"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -154,7 +135,6 @@ const ApplicantTable = ({
               className: classes.searchFilterText
             }}
             label="Search By"
-            style = { { marginRight: '10px', marginLeft: '10px', marginTop: '-12px' } }
             select
             variant="standard"
             value={searchBy}
@@ -177,7 +157,6 @@ const ApplicantTable = ({
               disableUnderline: true,
               className: classes.searchFilterText
             }}
-            style = {{ marginTop: '-12px' }}
             label="Status"
             select
             variant="standard"
@@ -246,8 +225,19 @@ const ApplicantTable = ({
           </TableHead>
 
           <TableBody>
-            {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
-              return (
+            {paginate(filteredApplicants, page, rowsPerPage).map(
+              (applicant) => {
+                const [anchorEl, setAnchorEl] =
+                  React.useState<Element | null>(null)
+                const open = Boolean(anchorEl)
+                const handleClick = (event: React.MouseEvent): void => {
+                  setAnchorEl(event.currentTarget)
+                }
+                const handleClose = (): void => {
+                  setAnchorEl(null)
+                }
+
+                return (
                   <TableRow className={classes.highlightOnHover} >
                       <Link
                         href={
@@ -258,49 +248,19 @@ const ApplicantTable = ({
                           {applicant.name}
                         </TableCell>
                       </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          {applicant.propertyAddress}
-                        </TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
+                      <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                      <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+                      <TableCell className={classes.cell}>
+                        {applicant.propertyAddress}
+                      </TableCell>
+                      <TableCell className={classes.cell}>
                         {new Date(applicant.applied).toDateString()}
                       </TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-                            {applicant.status}
-                          </span>
-                        </TableCell>
-                      </Link>
+                      <TableCell className={classes.cell}>
+                        <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
+                          {applicant.status}
+                        </span>
+                      </TableCell>
                       <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
@@ -339,19 +299,19 @@ const ApplicantTable = ({
                       <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
                     </TableCell>
                   </TableRow>
-              )
-            }
+                )
+              }
             )
           }
         </TableBody>
       </Table>
       <TablePagination
-              count={applicants.length}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-            />
+        count={applicants.length}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
+        page={page}
+        onPageChange={(_, page) => setPage(page)}
+      />
     </TableContainer>
   </div>
   )

@@ -8,6 +8,11 @@ export async function addClient (client: Client): Promise<Client> {
   return newClient
 }
 
+export async function removeClient (accountId: Client['accountId']): Promise<void> {
+  await mongoDB()
+  await ClientSchema.findOneAndDelete({ accountId })
+}
+
 export async function getClient (accountId: Client['accountId']): Promise<Client> {
   await mongoDB()
   const client = await ClientSchema.findOne({ accountId })
