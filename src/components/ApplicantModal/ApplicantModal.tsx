@@ -62,6 +62,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
     }
     setShowAddRemoveModal(true)
     await addClient(data)
+    window.location.reload()
   }
 
   return (

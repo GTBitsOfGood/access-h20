@@ -19,6 +19,7 @@ import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Ap
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
+import { removeClient } from '../../actions/Client'
 
 interface PropTypes {
   isUtilityView: boolean
@@ -110,6 +111,11 @@ const ApplicantTable = ({
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
+  }
+
+  const removeApplicant = async (accountId: string): Promise<void> => {
+    console.log(accountId)
+    await removeClient(accountId)
   }
 
   return (
@@ -293,7 +299,7 @@ const ApplicantTable = ({
                         <MenuItem onClick={() => editNote(applicant.accountId)}>Add Notes</MenuItem>
                         <MenuItem onClick={handleClose}>Change Status</MenuItem>
                         <div className={classes.deleteButton}>
-                          <MenuItem onClick={handleClose}>Delete</MenuItem>
+                          <MenuItem onClick={() => removeApplicant(applicant.accountId)}>Delete</MenuItem>
                         </div>
                       </Menu>
                     </TableCell>

@@ -72,14 +72,9 @@ export const getClient = async (accountId) =>
       return json.payload
     })
 
-export const removeClient = async (client) =>
-  fetch(urls.baseUrl + urls.api.client.changeStatus, {
-    method: 'POST',
-    mode: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(client)
+export const removeClient = async (accountId) =>
+  fetch(urls.baseUrl + urls.api.client.removeClient + '?accountId=' + accountId, {
+    method: 'GET'
   })
     .then((response) => response.json())
     .then((json) => {

@@ -1,7 +1,7 @@
-import { changeStatus } from "../../../../server/mongodb/actions/Client";
+import { removeClient } from "../../../../server/mongodb/actions/Client";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => changeStatus(req.body).then((client) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => removeClient(req.query.accountId as string).then((client) => {
     res.status(200)
     res.send({
         success: true,

@@ -44,7 +44,8 @@ export default {
       getClient: '/api/client/get-client',
       getAll: '/api/client/get-all',
       addClient: '/api/client/add',
-      changeStatus: '/api/client/change-status'
+      changeStatus: '/api/client/change-status',
+      removeClient: '/api/client/remove'
     },
     notes: {
       testfunctiontwo: '/api/notes/exampletwo',
