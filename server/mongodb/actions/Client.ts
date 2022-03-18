@@ -33,9 +33,10 @@ export async function editNotes (notes: Client['notes'], accountId: Client['acco
 }
 
 export async function changeStatus (status: Status): Promise<void> {
-  const accountid = status.accountId
+  const accountId = status.accountId
   await mongoDB()
-  const client = await ClientSchema.findOne({ accountid })
+  const client = await ClientSchema.findOne({ accountId: accountId })
+  console.log(client)
   client.status = status.status
   client.save()
 }

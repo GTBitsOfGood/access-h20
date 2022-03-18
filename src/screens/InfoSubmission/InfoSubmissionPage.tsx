@@ -18,6 +18,7 @@ import { update, getInfo, addInfo } from '../../actions/InfoSubmission'
 import { addNote, getNote } from 'src/actions/Note'
 import { Note } from 'server/models/Note'
 import { Info } from 'server/models/InfoSubmission'
+import { Status } from 'server/models/Client'
 
 interface Client {
   accountId: String
@@ -144,10 +145,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
     setStatus(newStatus)
-    const data: Client = {
+    const data: Status = {
       accountId: accountiD,
       status: newStatus
     }
+    console.log(data)
     await changeStatus(data)
   }
 
