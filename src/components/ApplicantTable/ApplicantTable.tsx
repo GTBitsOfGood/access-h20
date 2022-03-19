@@ -118,6 +118,16 @@ const ApplicantTable = ({
     await removeClient(accountId)
   }
 
+  const handleChangePage = (event: any, page: number): void => {
+    setPage(page)
+  }
+
+  const handleChangeRowsPerPage = (event: any): void => {
+    console.log(event)
+    setRowsPerPage(parseInt(event.target.value))
+    setPage(0)
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.header}>
@@ -314,9 +324,9 @@ const ApplicantTable = ({
       <TablePagination
         count={applicants.length}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
+        onRowsPerPageChange={handleChangeRowsPerPage}
         page={page}
-        onPageChange={(_, page) => setPage(page)}
+        onPageChange={handleChangePage}
       />
     </TableContainer>
   </div>
