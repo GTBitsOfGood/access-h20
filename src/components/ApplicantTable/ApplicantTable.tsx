@@ -98,7 +98,7 @@ const ApplicantTable = ({
     }
 
     setfilteredApplicants(searchedApplicants)
-  }, [search, statusFilter, searchBy, fromDate, toDate])
+  }, [search, statusFilter, searchBy, fromDate, toDate, page, rowsPerPage])
 
   function editNote (accountId: string): void {
     setAcccountID(accountId)
