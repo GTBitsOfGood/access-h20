@@ -1,5 +1,6 @@
 .modalwrapper {
     box-sizing: border-box;
+    position: relative;
     background: white;
     border-radius: 10px;;
     width: 90%;

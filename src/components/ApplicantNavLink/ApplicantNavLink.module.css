@@ -1,5 +1,6 @@
 .root {
   position: relative;
+  display: flex;
 }
 
 .logo1 {
@@ -31,13 +32,15 @@
 }
 
 .profilebutton {
-  position: absolute;
+  position: relative ;
   display: inline;
   right: 0;
   transform: scale(1.6);
 }
 
 .addPartner {
+  position: relative;
+  float: right;
   background: transparent;
   border: transparent;
   color: #4dbaea;
@@ -46,6 +49,7 @@
 }
 
 .editForm {
+  position: relative;
   background: transparent;
   border: transparent;
   color: #4dbaea;
