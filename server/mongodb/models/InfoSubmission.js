@@ -5,34 +5,42 @@ const InfoSubmissionSchema = new Schema({
     type: String,
     required: true
   },
-  paymentAns: {
-    type: Boolean,
-    required: true
+  eligibilityQuestions: {
+    type: [
+      {
+        question: {
+          title: String,
+          question: String
+        },
+        answer: Boolean
+      }
+    ],
+    required: false
   },
-  servicesAns: {
-    type: Boolean,
-    required: true
+  documents: {
+    type: [
+      {
+        question: {
+          title: String,
+          description: String
+        },
+        answer: String
+      }
+    ],
+    required: false
   },
-  contactAns: {
-    type: Boolean,
-    required: true
-  },
-  waterAns: {
-    type: Boolean,
-    required: true
-  },
-  adjustAns: {
-    type: String,
-    required: true
-  },
-  infoAns: {
-    type: String,
-    required: true
-  },
-  indivAns: {
-    type: String,
-    required: true
+  otherQuestions: {
+    type: [
+      {
+        question: {
+          question: String
+        },
+        answer: String
+      }
+    ],
+    required: false
   }
 })
 
-export default mongoose.models?.InfoSubmission ?? mongoose.model('InfoSubmission', InfoSubmissionSchema)
+export default mongoose.models?.InfoSubmission ??
+  mongoose.model('InfoSubmission', InfoSubmissionSchema)
