@@ -10,13 +10,14 @@ import classes from './ApplicantNavLink.module.css'
 import { UtilityPartnerModal } from 'src/components/UtilityPartnerModal/UtilityPartnerModal'
 import { useState } from 'react'
 import urls from '../../../utils/urls'
+import { Link } from '@mui/material'
 
 interface PropTypes {
   isUtilityView: boolean
 }
 
 const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
-  const [auth, setAuth] = React.useState(true)
+  const [auth] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [showUtilityPartnerModal, setShowUtilityPartnerModal] = useState(false)
 
@@ -46,7 +47,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
             sx={{ mx: 'auto' }}
           ></IconButton>
           {!isUtilityView && (
-            <span className={classes.editForm}>Edit Form</span>
+            <span className={classes.editForm}><Link href='/editform' underline="none">Edit Form</Link></span>
           )}
           {!isUtilityView && (
             <span

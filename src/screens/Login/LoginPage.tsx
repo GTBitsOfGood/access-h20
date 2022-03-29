@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Router from 'next/router'
-import { login, signUp } from '../../actions/User'
+import { login } from '../../actions/User'
 import urls from '../../../utils/urls'
 import classes from './LoginPage.module.css'
 import TextField from '@material-ui/core/TextField'
@@ -31,10 +31,10 @@ const LoginPage = (): JSX.Element => {
 
     return (
       login(email, password)
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
         .then(
           async () =>
-            await Router.push(Router.query.returnUrl || urls.pages.app.home)
+            // eslint-disable-next-line
+            await Router.push((Router.query.returnUrl || urls.pages.app.home) as string)
         )
         .catch((error) => window.alert(error.message))
     )
@@ -91,21 +91,23 @@ const LoginPage = (): JSX.Element => {
         <button className={classes.bttn} type="submit">
           {isRegistering ? 'Register' : 'Login'}
         </button>
-        {isRegistering ? (
+        {isRegistering
+          ? (
           <p className={classes.switchText}>
             Already have an account?
             <a className={classes.buttonText} onClick={() => setIsReg(false)}>
               Login now
             </a>
           </p>
-        ) : (
+            )
+          : (
           <p className={classes.switchText}>
             {"Don't have an account?"}
             <a className={classes.buttonText} onClick={() => setIsReg(true)}>
               Register now
             </a>
           </p>
-        )}
+            )}
       </form>
     </div>
   )

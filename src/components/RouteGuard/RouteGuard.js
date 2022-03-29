@@ -3,11 +3,14 @@ import Router, { useRouter } from 'next/router'
 import { CookieContext } from 'src/contexts/CookieContext'
 import urls from '../../../utils/urls'
 
-function RouteGuard({ children, cookies }) {
+function RouteGuard ({ children, cookies }) {
   const router = useRouter()
   const cookieContext = useContext(CookieContext)
 
-  cookieContext.updateCookie(cookies)
+  useEffect(() => {
+    cookieContext.updateCookie(cookies)
+  }, [])
+
   console.log('cookies: ' + cookies + ', path: ' + router.asPath)
   const [authorized, setAuthorized] = useState(false)
 
@@ -24,7 +27,7 @@ function RouteGuard({ children, cookies }) {
     }
   }, [])
 
-  function authCheck(url, cks) {
+  function authCheck (url, cks) {
     const publicPaths = [urls.pages.login, urls.pages.index]
     const path = url.split('?')[0]
 

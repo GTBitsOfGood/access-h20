@@ -19,6 +19,7 @@ export default {
     utilityapplicants: '/utilityapplicants',
     accessh20applicants: '/accessh20applicants',
     infosubmit: '/infosubmit',
+    editform: '/editform',
     profile: '/profile',
     login: '/login',
     app: {
@@ -42,10 +43,32 @@ export default {
     client: {
       getClient: '/api/client/get-client',
       getAll: '/api/client/get-all',
-      addClient: '/api/client/add'
+      addClient: '/api/client/add',
+      changeStatus: '/api/client/change-status'
     },
     notes: {
-      testfunctiontwo: '/api/notes/exampletwo'
+      testfunctiontwo: '/api/notes/exampletwo',
+      add: '/api/notes/add',
+      getNote: '/api/notes/get-note'
+    },
+    info: {
+      addInfo: '/api/InfoSubmission/add',
+      getInfo: '/api/InfoSubmission/get-info',
+      update: '/api/InfoSubmission/update'
+    },
+    formQuestions: {
+      addEligibilityQuestion: '/api/form/addEligibilityQuestion',
+      addDocumentQuestion: '/api/form/addDocumentQuestion',
+      addOtherQuestion: '/api/form/addOtherQuestion',
+      getEligibilityQuestions: '/api/form/getEligibilityQuestions',
+      getDocumentQuestions: '/api/form/getDocumentQuestions',
+      getOtherQuestions: '/api/form/getOtherQuestions',
+      editEligibilityQuestion: '/api/form/editEligibilityQuestion',
+      editDocumentQuestion: '/api/form/editDocumentQuestion',
+      editOtherQuestion: '/api/form/editOtherQuestion',
+      removeEligibilityQuestion: '/api/form/removeEligibilityQuestion',
+      removeDocumentQuestion: '/api/form/removeDocumentQuestion',
+      removeOtherQuestion: '/api/form/removeOtherQuestion'
     }
   }
 }

@@ -55,6 +55,13 @@ const ApplicantTable = ({
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
   const [filteredApplicants, setfilteredApplicants] = useState(applicants)
+  const [accountID, setAcccountID] = useState('')
+
+  const [showApplicantModal, setShowApplicantModal] = useState(false)
+  const [showNotesModal, setShowNotesModal] = useState(false)
+
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
+  const open = Boolean(anchorEl)
 
   useEffect(() => {
     const statusApplicants = applicants.filter(
@@ -99,8 +106,26 @@ const ApplicantTable = ({
     setfilteredApplicants(searchedApplicants)
   }, [search, statusFilter, searchBy, fromDate, toDate])
 
-  const [showApplicantModal, setShowApplicantModal] = useState(false)
-  const [showNotesModal, setShowNotesModal] = useState(false)
+  function editNote (accountId: string): void {
+    setAcccountID(accountId)
+    console.log(accountID)
+    setShowNotesModal(true)
+  }
+
+  const handleClick = (event: React.MouseEvent): void => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = (): void => {
+    setAnchorEl(null)
+  }
+  const handleChangePage = (event: any, page: number): void => {
+    setPage(page)
+  }
+  const handleChangeRowsPerPage = (event: any): void => {
+    console.log(event)
+    setRowsPerPage(parseInt(event.target.value))
+    setPage(0)
+  }
 
   const statusColor = (status: ApplicantStatus): string => {
     return ApplicantStatusColor[status]
@@ -221,19 +246,8 @@ const ApplicantTable = ({
           </TableHead>
 
           <TableBody>
-            {paginate(filteredApplicants, page, rowsPerPage).map(
-              (applicant) => {
-                const [anchorEl, setAnchorEl] =
-                  React.useState<Element | null>(null)
-                const open = Boolean(anchorEl)
-                const handleClick = (event: React.MouseEvent): void => {
-                  setAnchorEl(event.currentTarget)
-                }
-                const handleClose = (): void => {
-                  setAnchorEl(null)
-                }
-
-                return (
+            {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
+              return (
                   <TableRow className={classes.highlightOnHover} >
                       <Link
                         href={
@@ -244,23 +258,53 @@ const ApplicantTable = ({
                           {applicant.name}
                         </TableCell>
                       </Link>
-                      <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                      <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                      <TableCell className={classes.cell}>
-                        {applicant.propertyAddress}
-                      </TableCell>
-                      <TableCell className={classes.cell}>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
+                          {applicant.propertyAddress}
+                        </TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
                         {new Date(applicant.applied).toDateString()}
                       </TableCell>
-                      <TableCell className={classes.cell}>
-                        <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-                          {applicant.status}
-                        </span>
-                      </TableCell>
+                      </Link>
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
+                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
+                            {applicant.status}
+                          </span>
+                        </TableCell>
+                      </Link>
                       <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
-                          onClick={() => setShowNotesModal(true)}
+                          onClick={() => editNote(applicant.accountId)}
                         >
                           <Announcement/>
                         </IconButton>
@@ -286,28 +330,28 @@ const ApplicantTable = ({
                         }}
                       >
                         <MenuItem onClick={handleClose}>View</MenuItem>
-                        <MenuItem onClick={() => setShowNotesModal(true)}>Add Notes</MenuItem>
+                        <MenuItem onClick={() => editNote(applicant.accountId)}>Add Notes</MenuItem>
                         <MenuItem onClick={handleClose}>Change Status</MenuItem>
                         <div className={classes.deleteButton}>
                           <MenuItem onClick={handleClose}>Delete</MenuItem>
                         </div>
                       </Menu>
+                      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
                     </TableCell>
                   </TableRow>
-                )
-              }
+              )
+            }
             )
           }
         </TableBody>
       </Table>
-      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} />
       <TablePagination
-        count={applicants.length}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={(e) => setRowsPerPage(parseInt(e.target.value))}
-        page={page}
-        onPageChange={(_, page) => setPage(page)}
-      />
+              count={applicants.length}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+            />
     </TableContainer>
   </div>
   )

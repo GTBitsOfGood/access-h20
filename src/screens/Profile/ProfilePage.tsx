@@ -6,6 +6,7 @@ import Router from 'next/router'
 import { update } from '../../actions/Company'
 import urls from 'utils/urls'
 import ApplicantNavLink from 'src/components/ApplicantNavLink'
+import { AddRemoveModal } from '../../components/AddRemoveModal/AddRemoveModal'
 
 import Stack from '@mui/material/Stack'
 import {
@@ -38,7 +39,10 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
     }
   )
 
+  const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
+
   const handleUpdate = async (): Promise<void> => {
+    setShowAddRemoveModal(true)
     const updatedCompany = await update(company)
     console.log(JSON.stringify(updatedCompany))
     setCompany(updatedCompany)
@@ -236,6 +240,13 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
               <Button variant="text" onClick={handleCancel}>Cancel</Button>
             </Stack>
           </FormControl>
+          <AddRemoveModal
+              name = {'Your profile'}
+              isSuccessful={true}
+              modalAction={'updated'}
+              shouldShowModal={showAddRemoveModal}
+              onClose={() => setShowAddRemoveModal(false)}
+          />
         </div>
       </div>
     </div>
