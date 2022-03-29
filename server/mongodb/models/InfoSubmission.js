@@ -35,5 +35,4 @@ const InfoSubmissionSchema = new Schema({
   }
 })
 
-export default mongoose.models?.InfoSubmission ??
-  mongoose.model('InfoSubmission', InfoSubmissionSchema)
+export default mongoose.models?.InfoSubmission ?? mongoose.model('InfoSubmission', InfoSubmissionSchema)
