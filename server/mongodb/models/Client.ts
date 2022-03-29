@@ -14,37 +14,37 @@ const ClientSchema = new Schema({
   },
   utilityCompany: {
     type: String,
-    required: true
+    required: false
   },
   status: {
-    type: String,
-    enum: ClientStatus,
+    type: ClientStatus,
     required: true
   },
-  propertyAddress: {
+  address: {
     type: String,
     required: true
   },
   applied: {
     type: Date,
+    default: new Date(),
     required: true
   },
   notes: {
     type: [String],
-    required: false
+    required: true
   },
   eligibilityStatuses: {
     type: EligibilityStatus,
     required: false
   },
-  documents: {
-    type: [String],
-    required: false
-  },
+  // documents: {
+  //   type: [File],
+  //   required: false
+  // },
   otherQuestions: {
     type: [String],
     required: false
   }
 })
 
-export default mongoose.models?.Client ?? mongoose.model('Client', ClientSchema)
+export default mongoose.models.Client ?? mongoose.model('Client', ClientSchema)
