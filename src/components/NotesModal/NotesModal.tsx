@@ -94,7 +94,7 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
               }
               {/* TODO: Once table & infoSubmit are linked to backend, change link to match correct customer info */}
               <div className={classes.customer}>
-                <Link href={urls.pages.infosubmit + '/' + accountID} className={classes.customerButton}>View Customer Info</Link>
+                <Link underline="none" href={urls.pages.infosubmit + '/' + accountID} className={classes.customerButton}>View Customer Info</Link>
               </div>
             </div>
           </div>

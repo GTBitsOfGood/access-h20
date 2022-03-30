@@ -81,12 +81,14 @@
   color: white;
   font-weight: 400;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .cancel {
   background-color: transparent;
   border: transparent;
   color: #9a9a9a;
+  cursor: pointer;
 }
 
 .plusNote {
@@ -110,4 +112,5 @@
   border-radius: 8px;
   padding: 8px 20px 8px 20px;
   font-weight: 400;
+  cursor: pointer;
 }
