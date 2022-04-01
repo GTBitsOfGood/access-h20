@@ -252,6 +252,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <h1>{name}</h1>
           <div>
             <div className={classes.header}>
+            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing={20}>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
                 <FormControl variant='outlined' sx={{ m: 1, minWidth: 120 }}>
@@ -294,18 +295,19 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   </Select>
                 </FormControl>
               </div>
-              <div className={classes.headerInfoBox}>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
-                <p>{accountiD}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p className={classes.headerNoMargin}>{accountiD}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
-                <p>{dummyData.phone}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p className={classes.headerNoMargin}>{dummyData.phone}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
-                <p className={classes.streetAddress}>{address}</p>
-              </div>
+                <p className={classes.headerNoMargin}>{address}</p>
+              </Stack>
+              </Stack>
             </div>
           </div>
         </div>
