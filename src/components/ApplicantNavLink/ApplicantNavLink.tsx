@@ -35,7 +35,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="transparent" className={classes.root}>
+      <AppBar position="static" color="transparent" elevation={0} className={classes.root}>
         <Toolbar>
           <div className={classes.logo1} />
           <div className={classes.logo2} />

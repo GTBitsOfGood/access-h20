@@ -11,7 +11,10 @@ import {
   Tooltip,
   TextField,
   MenuItem,
-  Menu
+  Menu,
+  FormControl,
+  InputLabel,
+  Select
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
@@ -20,6 +23,7 @@ import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import SearchIcon from '@mui/icons-material/Search';
 
 interface PropTypes {
   isUtilityView: boolean
@@ -138,25 +142,31 @@ const ApplicantTable = ({
           <TextField
             className={classes.searchBox}
             InputProps={{
-              className: classes.searchBox
+              className: classes.searchBox,
+              disableUnderline: true,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon
+                    color="disabled" 
+                  />
+                </InputAdornment>
+              ),
             }}
-            label="Search"
-            variant="standard"
+            style={{background: "#EEEEEE", marginRight: '8px'}}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           {!isUtilityView && (
+            
             <TextField
             className={classes.searchFilter}
             InputProps={{
-              disableUnderline: true,
               className: classes.searchFilterText
             }}
             label="Search By"
-            style = { { marginRight: '10px', marginLeft: '10px', marginTop: '-12px' } }
+            style = { { marginRight: '8px'} }
             select
-            variant="standard"
             value={searchBy}
             onChange={(e) => setSearchBy(e.target.value)}
           >
@@ -174,13 +184,11 @@ const ApplicantTable = ({
           <TextField
             className={classes.searchFilter}
             InputProps={{
-              disableUnderline: true,
               className: classes.searchFilterText
             }}
-            style = {{ marginTop: '-12px' }}
+            style = {{ marginRight: '8px' }}
             label="Status"
             select
-            variant="standard"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -205,6 +213,7 @@ const ApplicantTable = ({
               ),
               className: classes.dateInputText
             }}
+            style = {{ marginRight: '8px' }}
           />
           <TextField
             className={classes.dateInput}
@@ -237,7 +246,7 @@ const ApplicantTable = ({
                 <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
               )}
               <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
-              <TableCell className={classes.tableHeaderText}>Property Address</TableCell>
+              <TableCell className={classes.tableHeaderText}>Property Address </TableCell>
               <TableCell className={classes.tableHeaderText}>Applied</TableCell>
               <TableCell className={classes.tableHeaderText}>Status</TableCell>
               <TableCell className={classes.tableHeaderText}>Notes</TableCell>
@@ -258,17 +267,19 @@ const ApplicantTable = ({
                           {applicant.name}
                         </TableCell>
                       </Link>
-                      <Link
+                      {!isUtilityView && (
+                        <Link
                         href={
                           infoSubmissionEndpoint + '/' + applicant.accountId
                         }
-                      >
-                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                      </Link>
+                        >
+                          <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                        </Link>
+                      )}
                       <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
+                      href={
+                        infoSubmissionEndpoint + '/' + applicant.accountId
+                      }
                       >
                         <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
                       </Link>

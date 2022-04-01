@@ -1,14 +1,15 @@
 .root {
   position: relative;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
 .logo1 {
   background: url('../../assets/images/accessh2owater.png');
   background-repeat: no-repeat;
   background-position: top;
-  padding-left: 10px;
+  margin: -10px 0px 0px 20px;
   width: 47px;
-  height: 66px;
+  height: 70px;
 }
 
 .logo2 {
@@ -40,7 +41,7 @@
 .addPartner {
   background: transparent;
   border: transparent;
-  color: #4dbaea;
+  color: black;
   margin-right: 2rem;
   cursor: pointer;
 }
@@ -48,7 +49,7 @@
 .editForm {
   background: transparent;
   border: transparent;
-  color: #4dbaea;
+  color: black;
   margin-right: 2rem;
   cursor: pointer;
 }
