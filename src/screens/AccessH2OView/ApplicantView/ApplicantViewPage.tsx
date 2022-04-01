@@ -12,7 +12,6 @@ const ApplicantViewPage = ({
 }: {
   applicants: Applicant[]
 }): JSX.Element => {
-  console.log('ApplicantViewPage, applicants: ', applicants)
   return (
     <>
       <ApplicantNavLink isUtilityView={false} />

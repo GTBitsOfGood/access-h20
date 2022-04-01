@@ -1,5 +1,5 @@
 import ApplicantViewPage from '../screens/AccessH2OView/ApplicantView'
-import { getAll } from '../actions/Client'
+// import { getAll } from '../actions/Client'
 
 // export const getServerSideProps = async (ctx) => {
 // //   console.log(

@@ -56,7 +56,6 @@ export const getAll = async (cookies) => {
     credentials: 'include',
     ...conditionals
   }).then((response) => {
-    // console.log('getAll res: ', response)
     if (response.status === 401) {
       return []
     }
