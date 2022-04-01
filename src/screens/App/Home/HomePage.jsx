@@ -4,6 +4,7 @@ import { getCurrentUser, logout } from '../../../actions/User'
 import urls from '../../../../utils/urls'
 import { useContext } from 'react'
 import { CookieContext } from 'src/contexts/CookieContext'
+import { getAll } from '../../../actions/Client'
 
 const handleLogout = () =>
   logout()
@@ -16,6 +17,12 @@ const handleGetCurrent = async (cookies) => {
   const res = await getCurrentUser(cookies)
   console.log(res)
 }
+
+const handleGetClients = async () => {
+  const applicants = await getAll()
+  console.log('HomePage, applicants: ', applicants)
+}
+
 const HomePage = ({ currentUser }) => {
   const cookieContext = useContext(CookieContext)
   return (
@@ -30,6 +37,9 @@ const HomePage = ({ currentUser }) => {
         onClick={() => handleGetCurrent(cookieContext.cookie)}
       >
         Get Current User
+      </button>
+      <button type="button" onClick={() => handleGetClients()}>
+        Get Clients
       </button>
       <button type="button" onClick={handleLogout}>
         Logout

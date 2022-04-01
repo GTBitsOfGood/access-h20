@@ -34,4 +34,4 @@ const ClientSchema = new Schema({
   }
 })
 
-export default mongoose.models?.Client ?? mongoose.model('Client', ClientSchema)
+export default mongoose.models.Client ?? mongoose.model('Client', ClientSchema)
