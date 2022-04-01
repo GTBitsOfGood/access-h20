@@ -252,8 +252,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <h1>{name}</h1>
           <div>
             <div className={classes.header}>
-            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing="2rem">
-              <div className={classes.headerInfoBox}>
+            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing="8rem">
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
                 <FormControl variant='outlined' sx={{ m: 1, minWidth: 120 }}>
                   <Select
@@ -294,7 +294,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       Incomplete</MenuItem>
                   </Select>
                 </FormControl>
-              </div>
+              </Stack>
               <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
                 <p className={classes.headerNoMargin}>{accountiD}</p>
