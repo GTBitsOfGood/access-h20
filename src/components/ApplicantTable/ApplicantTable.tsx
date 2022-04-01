@@ -15,7 +15,11 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
-import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
+import {
+  Applicant,
+  ApplicantStatus,
+  ApplicantStatusColor
+} from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
@@ -89,16 +93,12 @@ const ApplicantTable = ({
               .includes(caseInsensitiveSearch)
         )
       } else if (searchBy === 'Name') {
-        searchedApplicants = searchedApplicants.filter(
-          (applicant) =>
-            applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+        searchedApplicants = searchedApplicants.filter((applicant) =>
+          applicant.name.toLowerCase().includes(caseInsensitiveSearch)
         )
       } else if (searchBy === 'Utility Company') {
-        searchedApplicants = searchedApplicants.filter(
-          (applicant) =>
-            applicant.utilityCompany
-              .toLowerCase()
-              .includes(caseInsensitiveSearch)
+        searchedApplicants = searchedApplicants.filter((applicant) =>
+          applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
         )
       }
     }
@@ -148,28 +148,32 @@ const ApplicantTable = ({
 
           {!isUtilityView && (
             <TextField
-            className={classes.searchFilter}
-            InputProps={{
-              disableUnderline: true,
-              className: classes.searchFilterText
-            }}
-            label="Search By"
-            style = { { marginRight: '10px', marginLeft: '10px', marginTop: '-12px' } }
-            select
-            variant="standard"
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <MenuItem key={'All'} value={'All'}>
-              {'All'}
-            </MenuItem>
-            <MenuItem key={'Utility Company'} value={'Utility Company'}>
-              {'Utility Company'}
-            </MenuItem>
-            <MenuItem key={'Name'} value={'Name'}>
-              {'Name'}
-            </MenuItem>
-          </TextField>
+              className={classes.searchFilter}
+              InputProps={{
+                disableUnderline: true,
+                className: classes.searchFilterText
+              }}
+              label="Search By"
+              style={{
+                marginRight: '10px',
+                marginLeft: '10px',
+                marginTop: '-12px'
+              }}
+              select
+              variant="standard"
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+            >
+              <MenuItem key={'All'} value={'All'}>
+                {'All'}
+              </MenuItem>
+              <MenuItem key={'Utility Company'} value={'Utility Company'}>
+                {'Utility Company'}
+              </MenuItem>
+              <MenuItem key={'Name'} value={'Name'}>
+                {'Name'}
+              </MenuItem>
+            </TextField>
           )}
           <TextField
             className={classes.searchFilter}
@@ -177,7 +181,7 @@ const ApplicantTable = ({
               disableUnderline: true,
               className: classes.searchFilterText
             }}
-            style = {{ marginTop: '-12px' }}
+            style={{ marginTop: '-12px' }}
             label="Status"
             select
             variant="standard"
@@ -222,8 +226,16 @@ const ApplicantTable = ({
         </div>
         {!isUtilityView && (
           <div>
-            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
+            <button
+              onClick={() => setShowApplicantModal(true)}
+              className={classes.addCustomerButton}
+            >
+              Add Customer
+            </button>
+            <ApplicantModal
+              shouldShowModal={showApplicantModal}
+              onClose={() => setShowApplicantModal(false)}
+            />
           </div>
         )}
       </div>
@@ -234,10 +246,16 @@ const ApplicantTable = ({
             <TableRow>
               <TableCell className={classes.tableHeaderText}>Name</TableCell>
               {!isUtilityView && (
-                <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
+                <TableCell className={classes.tableHeaderText}>
+                  Utility Company
+                </TableCell>
               )}
-              <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
-              <TableCell className={classes.tableHeaderText}>Property Address</TableCell>
+              <TableCell className={classes.tableHeaderText}>
+                Account ID
+              </TableCell>
+              <TableCell className={classes.tableHeaderText}>
+                Property Address
+              </TableCell>
               <TableCell className={classes.tableHeaderText}>Applied</TableCell>
               <TableCell className={classes.tableHeaderText}>Status</TableCell>
               <TableCell className={classes.tableHeaderText}>Notes</TableCell>
@@ -246,67 +264,65 @@ const ApplicantTable = ({
           </TableHead>
 
           <TableBody>
-            {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
-              return (
-                  <TableRow className={classes.highlightOnHover} >
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          {applicant.name}
-                        </TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          {applicant.propertyAddress}
-                        </TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
+            {paginate(filteredApplicants, page, rowsPerPage).map(
+              (applicant) => {
+                return (
+                  <TableRow className={classes.highlightOnHover}>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.name}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.utilityCompany}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.accountId}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.propertyAddress}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
                         {new Date(applicant.applied).toDateString()}
                       </TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-                            {applicant.status}
-                          </span>
-                        </TableCell>
-                      </Link>
-                      <TableCell align="center">
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        <span
+                          className={classes.status}
+                          style={{
+                            backgroundColor: statusColor(applicant.status)
+                          }}
+                        >
+                          {applicant.status}
+                        </span>
+                      </TableCell>
+                    </Link>
+                    <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
                           onClick={() => editNote(applicant.accountId)}
                         >
-                          <Announcement/>
+                          <Announcement />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
@@ -330,30 +346,35 @@ const ApplicantTable = ({
                         }}
                       >
                         <MenuItem onClick={handleClose}>View</MenuItem>
-                        <MenuItem onClick={() => editNote(applicant.accountId)}>Add Notes</MenuItem>
+                        <MenuItem onClick={() => editNote(applicant.accountId)}>
+                          Add Notes
+                        </MenuItem>
                         <MenuItem onClick={handleClose}>Change Status</MenuItem>
                         <div className={classes.deleteButton}>
                           <MenuItem onClick={handleClose}>Delete</MenuItem>
                         </div>
                       </Menu>
-                      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
+                      <NotesModal
+                        shouldShowModal={showNotesModal}
+                        onClose={() => setShowNotesModal(false)}
+                        accountID={accountID}
+                      />
                     </TableCell>
                   </TableRow>
-              )
-            }
-            )
-          }
-        </TableBody>
-      </Table>
-      <TablePagination
-              count={applicants.length}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-            />
-    </TableContainer>
-  </div>
+                )
+              }
+            )}
+          </TableBody>
+        </Table>
+        <TablePagination
+          count={applicants.length}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+        />
+      </TableContainer>
+    </div>
   )
 }
 
