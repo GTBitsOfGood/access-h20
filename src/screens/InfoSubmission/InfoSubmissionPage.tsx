@@ -21,6 +21,7 @@ import { otherQA } from 'server/models/OtherQuestion'
 import { documentQA } from 'server/models/DocumentQuestion'
 import { eligibilityQA } from 'server/models/EligibilityQuestion'
 import { Info } from 'server/models/InfoSubmission'
+import { FormErrorModal } from '../../components/FormErrorModal/FormErrorModal'
 
 interface Applicant {
   phone: String
@@ -60,6 +61,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   // Form Control
   const [showModal, setShowModal] = useState(false)
+  const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
 
   // Questions
@@ -455,6 +457,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             : <div></div>
 }
       </div>
+      <FormErrorModal
+        shouldShowModal={showErrorFormModal}
+        onClose={() => setShowErrorModal(false)}
+      />
     </div>
   )
 }
