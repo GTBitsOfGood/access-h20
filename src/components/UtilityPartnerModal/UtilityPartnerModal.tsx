@@ -20,7 +20,6 @@ interface Partner {
   city: string
   state: string
   zip: string
-  notes: string
 }
 
 export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
@@ -33,7 +32,6 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
   const [newcity, setCity] = useState('')
   const [newstate, setState] = useState('')
   const [newzip, setZip] = useState('')
-  const [newnotes, setNotes] = useState('')
 
   const addPartner = (): void => {
     // TODO: implement backend submissions
@@ -44,8 +42,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
       street: newstreet,
       city: newcity,
       state: newstate,
-      zip: newzip,
-      notes: newnotes
+      zip: newzip
     }
     setShowAdd(false)
   }
@@ -195,16 +192,6 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                   />
                 </div>
               </div>
-              <div className={classes.inputContainer}>
-                  <label htmlFor="notes">Notes(Optional)</label>
-                  <TextField
-                    minRows="5"
-                    variant="outlined"
-                    id="notes"
-                    multiline
-                    onChange={(e) => setNotes(e.target.value)}
-                  />
-                </div>
                 <Stack
                   className={classes.formSubmitContainer}
                   direction="row-reverse"

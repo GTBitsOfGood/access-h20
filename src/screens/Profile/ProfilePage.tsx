@@ -35,8 +35,7 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
       address: '',
       city: '',
       state: '',
-      zip: '',
-      notes: ''
+      zip: ''
     }
   )
 
@@ -223,22 +222,6 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
                     onChange={(e) => setCompany({ ...company, zip: e.target.value })}
                   />
                 </div>
-              </div>
-            </div>
-            <div className={classes.formElem}>
-              <FormLabel className={classes.formFont} htmlFor="notes-input">
-                Notes (Optional)
-              </FormLabel>
-              <div className={classes.textElem}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={3}
-                  id="notes-input"
-                  variant="outlined"
-                  value={company.notes}
-                  onChange={(e) => setCompany({ ...company, notes: e.target.value })}
-                />
               </div>
             </div>
 
