@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Button from '@material-ui/core/Button'
 import classes from './EditInfoSubmissionModal.module.css'
 import { Modal, Stack, Link } from '@mui/material'
 
