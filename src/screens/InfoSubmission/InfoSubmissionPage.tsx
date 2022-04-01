@@ -224,27 +224,29 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 onClick={async () => await updateInfo(false)}
                 variant="contained"
                 color = "primary"
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 1.2rem', borderRadius: '8px' }}
               >
                 Update Info
               </Button>
               </div>
                 : <div className={classes.last_item}>
+                  <Stack direction="row" spacing={2}>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
+                  onClick = {handleClick}>
+                      Cancel
+                  </Button>
                   <Button
                   type="button"
                   variant = "contained"
                   color = "primary"
-                  style={{ textTransform: 'none' }}
+                  style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
                   onClick = {(() => console.log(updateInfo(true)))}>
                       Save
                   </Button>
-                  <Button
-                  type="button"
-                  variant = "text"
-                  style={{ textTransform: 'none', marginLeft: '8px' }}
-                  onClick = {handleClick}>
-                      Cancel
-                  </Button>
+                  </Stack>
                 </div>}
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -437,19 +439,19 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
           </div>
           {formEditable
-            ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
+            ? <Stack style={{ marginLeft: '12.5rem' }} direction="row" spacing={2}>
             <Button
             type="button"
             variant = "contained"
             color = "primary"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {(() => console.log(updateInfo(true)))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {handleClick}>
                 Cancel
             </Button>
