@@ -27,10 +27,6 @@ const ClientSchema = new Schema({
   applied: {
     type: Date,
     required: true
-  },
-  notes: {
-    type: [String],
-    required: false
   }
 })
 

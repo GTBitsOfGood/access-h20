@@ -20,13 +20,6 @@ export async function getAll (): Promise<Client[]> {
   return clients
 }
 
-export async function editNotes (notes: Client['notes'], accountId: Client['accountId']): Promise<void> {
-  await mongoDB()
-  const client = await ClientSchema.findOne({ accountId })
-  client.notes = notes
-  client.save()
-}
-
 export async function changeStatus (status: Status): Promise<void> {
   const accountid = status.accountId
   await mongoDB()
