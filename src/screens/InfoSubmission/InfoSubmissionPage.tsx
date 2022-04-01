@@ -292,7 +292,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   <div className={classes.stickyNote}>
                   <div className={notestyle.noteHeader}>
                     <p className={notestyle.sender}>{note.sender}</p>
-                    <p className={notestyle.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
+                    <p className={notestyle.date}>{new Date(note.date).getMonth() + 1}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
                   </div>
                   <p className={classes.message}>{note.message}</p>
                 </div>
