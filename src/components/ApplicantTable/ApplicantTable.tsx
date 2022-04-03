@@ -11,10 +11,7 @@ import {
   Tooltip,
   TextField,
   MenuItem,
-  Menu,
-  FormControl,
-  InputLabel,
-  Select
+  Menu
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
@@ -23,7 +20,7 @@ import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from '@mui/icons-material/Search'
 
 interface PropTypes {
   isUtilityView: boolean
@@ -137,7 +134,7 @@ const ApplicantTable = ({
 
   return (
     <div className={classes.root}>
-      <div className={classes.header}>
+      <div className={classes.header} style={{ borderRight: 1, borderBottom: 1, borderLeft: 1, borderColor: '#CBCBCB' }}>
         <div className={classes.searchBar}>
           <TextField
             className={classes.searchBox}
@@ -147,25 +144,25 @@ const ApplicantTable = ({
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchIcon
-                    color="disabled" 
+                    color="disabled"
                   />
                 </InputAdornment>
-              ),
+              )
             }}
-            style={{background: "#EEEEEE", marginRight: '8px'}}
+            placeholder="Search"
+            style={{ background: '#EEEEEE', marginRight: '8px' }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           {!isUtilityView && (
-            
             <TextField
             className={classes.searchFilter}
             InputProps={{
               className: classes.searchFilterText
             }}
             label="Search By"
-            style = { { marginRight: '8px'} }
+            style = {{ marginRight: '8px' }}
             select
             value={searchBy}
             onChange={(e) => setSearchBy(e.target.value)}
@@ -241,15 +238,64 @@ const ApplicantTable = ({
         <Table>
           <TableHead className={classes.tableHeader}>
             <TableRow>
-              <TableCell className={classes.tableHeaderText}>Name</TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Name
+              </TableCell>
               {!isUtilityView && (
-                <TableCell className={classes.tableHeaderText}>Utility Company</TableCell>
+                <TableCell
+                  className={classes.tableHeaderText}
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 'bold'
+                  }}>
+                  Utility Company
+                </TableCell>
               )}
-              <TableCell className={classes.tableHeaderText}>Account ID</TableCell>
-              <TableCell className={classes.tableHeaderText}>Property Address </TableCell>
-              <TableCell className={classes.tableHeaderText}>Applied</TableCell>
-              <TableCell className={classes.tableHeaderText}>Status</TableCell>
-              <TableCell className={classes.tableHeaderText}>Notes</TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Account ID
+              </TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Property Address
+              </TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Applied
+              </TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Status
+              </TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Notes
+              </TableCell>
               <TableCell />
             </TableRow>
           </TableHead>

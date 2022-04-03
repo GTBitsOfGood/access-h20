@@ -1,6 +1,8 @@
 .root {
   position: relative;
   font-family:Arial, Helvetica, sans-serif;
+  padding-right: 35px;
+  padding-bottom: 8px;
 }
 
 .logo1 {
@@ -42,7 +44,7 @@
   background: transparent;
   border: transparent;
   color: black;
-  margin-right: 2rem;
+  margin-right: 3rem;
   cursor: pointer;
 }
 
@@ -50,6 +52,6 @@
   background: transparent;
   border: transparent;
   color: black;
-  margin-right: 2rem;
+  margin-right: 3rem;
   cursor: pointer;
 }

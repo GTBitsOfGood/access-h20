@@ -47,7 +47,13 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
             sx={{ mx: 'auto' }}
           ></IconButton>
           {!isUtilityView && (
-            <span className={classes.editForm}><Link href='/editform' underline="none">Edit Form</Link></span>
+            <span className={classes.editForm}>
+              <Link
+                href='/editform'
+                underline="none"
+                color="inherit">
+                Edit Form
+              </Link></span>
           )}
           {!isUtilityView && (
             <span
@@ -73,7 +79,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
                 color="inherit"
               >
                 <AccountCircle
-                  color="action"
+                  color="disabled"
                   className={classes.profilebutton}
                 />
               </IconButton>
