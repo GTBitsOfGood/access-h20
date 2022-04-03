@@ -34,11 +34,8 @@ const CompanySchema = new Schema({
   zip: {
     type: String,
     required: true
-  },
-  notes: {
-    type: [String],
-    required: false
   }
 })
 
-export default mongoose.models?.Company ?? mongoose.model('Company', CompanySchema)
+export default mongoose.models.Company ??
+  mongoose.model('Company', CompanySchema)

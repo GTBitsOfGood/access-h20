@@ -15,7 +15,11 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
-import { Applicant, ApplicantStatus, ApplicantStatusColor } from '../../types/Applicant'
+import {
+  Applicant,
+  ApplicantStatus,
+  ApplicantStatusColor
+} from '../../types/Applicant'
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
@@ -90,16 +94,12 @@ const ApplicantTable = ({
               .includes(caseInsensitiveSearch)
         )
       } else if (searchBy === 'Name') {
-        searchedApplicants = searchedApplicants.filter(
-          (applicant) =>
-            applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+        searchedApplicants = searchedApplicants.filter((applicant) =>
+          applicant.name.toLowerCase().includes(caseInsensitiveSearch)
         )
       } else if (searchBy === 'Utility Company') {
-        searchedApplicants = searchedApplicants.filter(
-          (applicant) =>
-            applicant.utilityCompany
-              .toLowerCase()
-              .includes(caseInsensitiveSearch)
+        searchedApplicants = searchedApplicants.filter((applicant) =>
+          applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
         )
       }
     }
@@ -228,8 +228,16 @@ const ApplicantTable = ({
         </div>
         {!isUtilityView && (
           <div>
-            <button onClick={() => setShowApplicantModal(true)} className={classes.addCustomerButton}>Add Customer</button>
-            <ApplicantModal shouldShowModal={showApplicantModal} onClose={() => setShowApplicantModal(false)} />
+            <button
+              onClick={() => setShowApplicantModal(true)}
+              className={classes.addCustomerButton}
+            >
+              Add Customer
+            </button>
+            <ApplicantModal
+              shouldShowModal={showApplicantModal}
+              onClose={() => setShowApplicantModal(false)}
+            />
           </div>
         )}
       </div>
@@ -302,68 +310,63 @@ const ApplicantTable = ({
 
           <TableBody>
             {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
-              return (
-                  <TableRow className={classes.highlightOnHover} >
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          {applicant.name}
-                        </TableCell>
-                      </Link>
-                      {!isUtilityView && (
-                        <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                        >
-                          <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                        </Link>
-                      )}
-                      <Link
-                      href={
-                        infoSubmissionEndpoint + '/' + applicant.accountId
-                      }
-                      >
-                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          {applicant.propertyAddress}
-                        </TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
+                return (
+                  <TableRow className={classes.highlightOnHover}>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.name}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.utilityCompany}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.accountId}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.propertyAddress}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
                         {new Date(applicant.applied).toDateString()}
                       </TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-                            {applicant.status}
-                          </span>
-                        </TableCell>
-                      </Link>
-                      <TableCell align="center">
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        <span
+                          className={classes.status}
+                          style={{
+                            backgroundColor: statusColor(applicant.status)
+                          }}
+                        >
+                          {applicant.status}
+                        </span>
+                      </TableCell>
+                    </Link>
+                    <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
                           onClick={() => editNote(applicant.accountId)}
                         >
-                          <Announcement/>
+                          <Announcement />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
@@ -387,30 +390,35 @@ const ApplicantTable = ({
                         }}
                       >
                         <MenuItem onClick={handleClose}>View</MenuItem>
-                        <MenuItem onClick={() => editNote(applicant.accountId)}>Add Notes</MenuItem>
+                        <MenuItem onClick={() => editNote(applicant.accountId)}>
+                          Add Notes
+                        </MenuItem>
                         <MenuItem onClick={handleClose}>Change Status</MenuItem>
                         <div className={classes.deleteButton}>
                           <MenuItem onClick={handleClose}>Delete</MenuItem>
                         </div>
                       </Menu>
-                      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
+                      <NotesModal
+                        shouldShowModal={showNotesModal}
+                        onClose={() => setShowNotesModal(false)}
+                        accountID={accountID}
+                      />
                     </TableCell>
                   </TableRow>
-              )
-            }
-            )
-          }
-        </TableBody>
-      </Table>
-      <TablePagination
-              count={applicants.length}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-            />
-    </TableContainer>
-  </div>
+                )
+              }
+            )}
+          </TableBody>
+        </Table>
+        <TablePagination
+          count={applicants.length}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+        />
+      </TableContainer>
+    </div>
   )
 }
 

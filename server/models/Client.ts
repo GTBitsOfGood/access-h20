@@ -6,7 +6,6 @@ export interface Client {
   status: ApplicantStatus
   propertyAddress: string
   applied: Date
-  notes: [string]
   eligibilityStatuses: {
     question: string
     answer: boolean

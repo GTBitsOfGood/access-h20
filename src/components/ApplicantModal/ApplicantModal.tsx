@@ -20,7 +20,6 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   const addressTextInput = React.useRef(null)
   const zipTextInput = React.useRef(null)
   const cityNameTextInput = React.useRef(null)
-  const notesTextInput = React.useRef(null)
   const stateNameTextInput = React.useRef(null)
   const phoneNumTextInput = React.useRef(null)
   /* eslint-enable */
@@ -44,7 +43,6 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
     // addressTextInput.current.value = ""
     // zipTextInput.current.value = ""
     // cityNameTextInput.current.value = ""
-    // notesTextInput.current.value = ""
     // stateNameTextInput.current.value = ""
     // phoneNumTextInput.current.value = ""
     setShowAddRemoveModal(true)
@@ -207,17 +205,6 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     <option value="WI">Wisconsin</option>
                     <option value="WY">Wyoming</option>
                   </Select>
-                </div>
-                <div>
-                  <TextField
-                    id="notes-multiline"
-                    label="Notes (Optional)"
-                    multiline
-                    rows={4}
-                    variant="outlined"
-                    inputRef={notesTextInput}
-                    style = {{ width: 665 }}
-                  />
                 </div>
                 <div className={classes.modalfooter}>
                   <Button

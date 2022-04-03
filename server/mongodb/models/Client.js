@@ -27,11 +27,7 @@ const ClientSchema = new Schema({
   applied: {
     type: Date,
     required: true
-  },
-  notes: {
-    type: [String],
-    required: false
   }
 })
 
-export default mongoose.models?.Client ?? mongoose.model('Client', ClientSchema)
+export default mongoose.models.Client ?? mongoose.model('Client', ClientSchema)
