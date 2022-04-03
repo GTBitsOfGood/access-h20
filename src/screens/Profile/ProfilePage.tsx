@@ -71,7 +71,12 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async () => await Router.replace(urls.pages.index)}
         >
-          <b className={classes.textHover}>&lsaquo; Back to Dashboard</b>
+          {!isUtilityView && (
+            <a className={classes.dashboard} href="/accessh20applicants"><b>Back to Dashboard</b></a>
+          )}
+          {isUtilityView && (
+            <a className={classes.dashboard} href="/utilityapplicants"><b>Back to Dashboard</b></a>
+          )}
         </Typography>
         <Typography variant="h3">
           <b>Profile</b>

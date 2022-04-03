@@ -221,7 +221,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
   return (
     <div className={classes.background}>
       <div className={classes.body}>
-        <Link href='/applicants' underline="none" style={linkStyle}>{'<'} Back to Dashboard</Link>
+        <Link href="javascript:history.back()" underline="none" style={linkStyle}>{'<'} Back to Dashboard</Link>
         <h1 className={classes.pageTitle}>Edit Form</h1>
         <div className={classes.questionType}>
           <h3 className={classes.sectionTitle}>Eligibility</h3>

@@ -80,6 +80,10 @@
   color: #f02052;
 }
 
+.addCustomerButton:hover {
+  cursor: pointer;
+}
+
 .highlightOnHover:hover {
   background-color: #cfebfd;
   cursor: pointer;
