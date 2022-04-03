@@ -375,7 +375,6 @@ const ApplicantTable = ({
                         <MenuItem onClick={() => editNote(applicant.accountId)}>
                           Add Notes
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>Change Status</MenuItem>
                         <div className={classes.deleteButton}>
                           <MenuItem onClick={() => console.log(removeApplicant(applicant.accountId))}>Delete</MenuItem>
                         </div>
