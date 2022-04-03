@@ -5,3 +5,8 @@ export interface eligibilityQuestion {
   title: string
   question: string
 };
+
+export interface eligibilityQA {
+  question: eligibilityQuestion
+  answer: boolean
+}

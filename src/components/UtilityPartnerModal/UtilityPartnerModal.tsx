@@ -27,7 +27,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
   const [companyN, setCompanyN] = useState('')
   const [newemail, setEmail] = useState('')
   const [newphone, setPhone] = useState('')
-  const [newnotes, setNotes] = useState('')
+  const [newnotes] = useState('')
   const [newpassword, setPassword] = useState('')
   const [newconfirmpassword, setConfirmPassword] = useState('')
 
@@ -108,16 +108,6 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 />
               </div>
             </div>
-              <div className={classes.inputContainer}>
-                  <label htmlFor="notes">Notes(Optional)</label>
-                  <TextField
-                    minRows="5"
-                    variant="outlined"
-                    id="notes"
-                    multiline
-                    onChange={(e) => setNotes(e.target.value)}
-                  />
-                </div>
                 <Stack
                   className={classes.formSubmitContainer}
                   direction="row-reverse"

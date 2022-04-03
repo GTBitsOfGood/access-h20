@@ -11,24 +11,19 @@ export async function addInfo (info: Info): Promise<Info> {
 
 export async function getInfo (accountId: Info['accountId']): Promise<Info> {
   await mongoDB()
-  const info = await InfoSubmissionSchema.findOne({ accountId })
+  const info = await InfoSubmissionSchema.findOne({ accountId: accountId })
   return info
 }
 
-export async function update (infosubmited: Info): Promise<void> {
-  const accountId = infosubmited.accountId
-  const attributes = infosubmited
+export async function update (infosubmitted: Info): Promise<void> {
+  const accountId = infosubmitted.accountId
 
   await mongoDB()
 
   const info = await InfoSubmissionSchema.findOne({ accountId: accountId })
   if (info === undefined) throw new Error(errors.user.INVALID_ID)
-  info.paymentAns = attributes.paymentAns
-  info.servicesAns = attributes.servicesAns
-  info.contactAns = attributes.contactAns
-  info.waterAns = attributes.waterAns
-  info.adjustAns = attributes.adjustAns
-  info.infoAns = attributes.infoAns
-  info.indivAns = attributes.indivAns
+  info.eligibilityQuestions = infosubmitted.eligibilityQuestions
+  info.documents = infosubmitted.documents
+  info.otherQuestions = infosubmitted.otherQuestions
   info.save()
 }
