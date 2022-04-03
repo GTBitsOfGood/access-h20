@@ -310,7 +310,7 @@ const ApplicantTable = ({
 
           <TableBody>
             {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
-                return (
+              return (
                   <TableRow className={classes.highlightOnHover}>
                     <Link
                       href={infoSubmissionEndpoint + '/' + applicant.accountId}
@@ -405,8 +405,8 @@ const ApplicantTable = ({
                       />
                     </TableCell>
                   </TableRow>
-                )
-              }
+              )
+            }
             )}
           </TableBody>
         </Table>
