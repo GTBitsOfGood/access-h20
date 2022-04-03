@@ -11,7 +11,7 @@
 }
 
 .searchBar {
-  color: #EEEEEE;
+  color: #eeeeee;
   margin: 25px 0px 14px 20px;
   padding-right: 8px;
 }
@@ -19,7 +19,7 @@
 .searchBox {
   width: 296px;
   height: 42px;
-  color: #EEEEEE;
+  color: #eeeeee;
   font-size: 18px;
 }
 
@@ -48,8 +48,8 @@
 }
 
 .addCustomerButton {
-  background: #3F78B5;
-  color:white;
+  background: #3f78b5;
+  color: white;
   border-color: transparent;
   border-radius: 8px;
   font-size: 18px;
@@ -86,6 +86,6 @@
 }
 
 .highlightOnHover:hover {
-  background-color: #E9F2F9;
+  background-color: #e9f2f9;
   cursor: pointer;
 }

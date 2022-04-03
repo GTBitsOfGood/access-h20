@@ -21,22 +21,8 @@ import { otherQA } from 'server/models/OtherQuestion'
 import { documentQA } from 'server/models/DocumentQuestion'
 import { eligibilityQA } from 'server/models/EligibilityQuestion'
 import { Info } from 'server/models/InfoSubmission'
+import { Status } from 'server/models/Client'
 import { FormErrorModal } from '../../components/FormErrorModal/FormErrorModal'
-
-interface Applicant {
-  phone: String
-  status: ApplicantStatus
-}
-
-interface Client {
-  accountId: String
-  status: ApplicantStatus
-}
-
-const dummyData: Applicant = {
-  phone: '(404)123-4567',
-  status: ApplicantStatus.AwaitingUtility
-}
 
 const setStatusColor = (status: ApplicantStatus): string => {
   return ApplicantStatusColor[status]
@@ -52,6 +38,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('Not exist')
 
   // Notes
   const initArr: Note[] = []
@@ -89,12 +76,14 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setAccountID(applicantId)
     setAddress(applicant.propertyAddress)
     setStatus(applicant.status)
+    setPhone(applicant.phone)
     if (applicant.note != null) {
       setNotes(applicant.note)
     }
   }
   const getInfoPack = async (): Promise<void> => {
     const info = await getInfo(applicantId)
+    console.log(info)
     setEligibilityQuestions(info.eligibilityQuestions)
     setDocumentQuestions(info.documents)
     setOtherQuestions(info.otherQuestions)
@@ -174,10 +163,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
     setStatus(newStatus)
-    const data: Client = {
+    const data: Status = {
       accountId: accountiD,
       status: newStatus
     }
+    console.log(data)
     await changeStatus(data)
   }
 
@@ -302,7 +292,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
-                <p>{dummyData.phone}</p>
+                <p>{phone}</p>
               </div>
               <div className={classes.headerInfoBox}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
@@ -318,7 +308,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   <div className={classes.stickyNote}>
                   <div className={notestyle.noteHeader}>
                     <p className={notestyle.sender}>{note.sender}</p>
-                    <p className={notestyle.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
+                    <p className={notestyle.date}>{new Date(note.date).getMonth() + 1}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
                   </div>
                   <p className={classes.message}>{note.message}</p>
                 </div>
@@ -405,9 +395,9 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       }}/>
                     </Button>}
                     {formEditable && info.answer !== null && <InsertDriveFileIcon color="disabled" />}
-                    {formEditable && <p className={classes.fileFontColor}>{info.answer.name}</p>}
+                    {formEditable && <p className={classes.fileFontColor}>{info.answer}</p>}
                     {!formEditable && info.answer !== null && <InsertDriveFileIcon color="primary" />}
-                    {!formEditable && <p className={classes.displayFileColor}>{info.answer.name}</p>}
+                    {!formEditable && <p className={classes.displayFileColor}>{info.answer}</p>}
                   </div>
                 </div>
               ))}

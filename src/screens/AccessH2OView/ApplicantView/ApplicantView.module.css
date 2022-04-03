@@ -1,19 +1,19 @@
 .root {
-    background-color: #E9F2F9;
+  background-color: #e9f2f9;
 }
 
 .header1 {
-    padding-top: 50px;
-    margin: 0px 0px 45px 55px;
-    font-family: Arial, serif;
+  padding-top: 50px;
+  margin: 0px 0px 45px 55px;
+  font-family: Arial, serif;
 }
 
 .header2 {
-    padding-bottom: 50px;
+  padding-bottom: 50px;
 }
 
 .accountModal {
-    display: flex;
-    justify-content: flex-end;
-    margin: 30px 45px 0px 0px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 30px 45px 0px 0px;
 }

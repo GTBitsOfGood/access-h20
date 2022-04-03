@@ -11,6 +11,7 @@ import {
   Tooltip,
   TextField,
   MenuItem,
+  InputAdornment,
   Menu
 } from '@mui/material'
 import Link from 'next/link'
@@ -23,7 +24,7 @@ import {
 import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
-import InputAdornment from '@material-ui/core/InputAdornment'
+import { removeClient } from '../../actions/Client'
 import SearchIcon from '@mui/icons-material/Search'
 
 interface PropTypes {
@@ -62,12 +63,6 @@ const ApplicantTable = ({
   const [filteredApplicants, setfilteredApplicants] = useState(applicants)
   const [accountID, setAcccountID] = useState('')
 
-  const [showApplicantModal, setShowApplicantModal] = useState(false)
-  const [showNotesModal, setShowNotesModal] = useState(false)
-
-  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
-  const open = Boolean(anchorEl)
-
   useEffect(() => {
     const statusApplicants = applicants.filter(
       (applicant) => statusFilter === 'Any' || applicant.status === statusFilter
@@ -105,7 +100,7 @@ const ApplicantTable = ({
     }
 
     setfilteredApplicants(searchedApplicants)
-  }, [search, statusFilter, searchBy, fromDate, toDate])
+  }, [search, statusFilter, searchBy, fromDate, toDate, page, rowsPerPage])
 
   function editNote (accountId: string): void {
     setAcccountID(accountId)
@@ -113,23 +108,26 @@ const ApplicantTable = ({
     setShowNotesModal(true)
   }
 
-  const handleClick = (event: React.MouseEvent): void => {
-    setAnchorEl(event.currentTarget)
+  const [showApplicantModal, setShowApplicantModal] = useState(false)
+  const [showNotesModal, setShowNotesModal] = useState(false)
+
+  const statusColor = (status: ApplicantStatus): string => {
+    return ApplicantStatusColor[status]
   }
-  const handleClose = (): void => {
-    setAnchorEl(null)
+
+  const removeApplicant = async (accountId: string): Promise<void> => {
+    console.log(accountId)
+    await removeClient(accountId)
   }
+
   const handleChangePage = (event: any, page: number): void => {
     setPage(page)
   }
+
   const handleChangeRowsPerPage = (event: any): void => {
     console.log(event)
     setRowsPerPage(parseInt(event.target.value))
     setPage(0)
-  }
-
-  const statusColor = (status: ApplicantStatus): string => {
-    return ApplicantStatusColor[status]
   }
 
   return (
@@ -309,59 +307,43 @@ const ApplicantTable = ({
           </TableHead>
 
           <TableBody>
-            {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
-              return (
-                  <TableRow className={classes.highlightOnHover}>
-                    <Link
-                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
-                    >
-                      <TableCell className={classes.cell}>
-                        {applicant.name}
-                      </TableCell>
-                    </Link>
-                    <Link
-                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
-                    >
-                      <TableCell className={classes.cell}>
-                        {applicant.utilityCompany}
-                      </TableCell>
-                    </Link>
-                    <Link
-                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
-                    >
-                      <TableCell className={classes.cell}>
-                        {applicant.accountId}
-                      </TableCell>
-                    </Link>
-                    <Link
-                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
-                    >
+            {paginate(filteredApplicants, page, rowsPerPage).map(
+              (applicant) => {
+                const [anchorEl, setAnchorEl] =
+                  React.useState<Element | null>(null)
+                const open = Boolean(anchorEl)
+                const handleClick = (event: React.MouseEvent): void => {
+                  setAnchorEl(event.currentTarget)
+                }
+                const handleClose = (): void => {
+                  setAnchorEl(null)
+                }
+
+                return (
+                  <TableRow className={classes.highlightOnHover} >
+                      <Link
+                        href={
+                          infoSubmissionEndpoint + '/' + applicant.accountId
+                        }
+                      >
+                        <TableCell className={classes.cell}>
+                          {applicant.name}
+                        </TableCell>
+                      </Link>
+                      <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                      <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
                       <TableCell className={classes.cell}>
                         {applicant.propertyAddress}
                       </TableCell>
-                    </Link>
-                    <Link
-                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
-                    >
                       <TableCell className={classes.cell}>
                         {new Date(applicant.applied).toDateString()}
                       </TableCell>
-                    </Link>
-                    <Link
-                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
-                    >
                       <TableCell className={classes.cell}>
-                        <span
-                          className={classes.status}
-                          style={{
-                            backgroundColor: statusColor(applicant.status)
-                          }}
-                        >
+                        <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
                           {applicant.status}
                         </span>
                       </TableCell>
-                    </Link>
-                    <TableCell align="center">
+                      <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
                           onClick={() => editNote(applicant.accountId)}
@@ -395,30 +377,27 @@ const ApplicantTable = ({
                         </MenuItem>
                         <MenuItem onClick={handleClose}>Change Status</MenuItem>
                         <div className={classes.deleteButton}>
-                          <MenuItem onClick={handleClose}>Delete</MenuItem>
+                          <MenuItem onClick={() => console.log(removeApplicant(applicant.accountId))}>Delete</MenuItem>
                         </div>
                       </Menu>
-                      <NotesModal
-                        shouldShowModal={showNotesModal}
-                        onClose={() => setShowNotesModal(false)}
-                        accountID={accountID}
-                      />
                     </TableCell>
                   </TableRow>
-              )
-            }
-            )}
-          </TableBody>
-        </Table>
-        <TablePagination
-          count={applicants.length}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-        />
-      </TableContainer>
-    </div>
+                )
+              }
+            )
+          }
+        </TableBody>
+      </Table>
+      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
+      <TablePagination
+        count={applicants.length}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+      />
+    </TableContainer>
+  </div>
   )
 }
 

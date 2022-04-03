@@ -1,8 +1,13 @@
 import mongoose, { Schema } from 'mongoose'
-import { ClientStatus } from '../../models/ClientStatus'
+import { ApplicantStatus } from 'src/types/Applicant'
 import { ObjectId } from 'mongodb'
 
 const ClientSchema = new Schema({
+  accountId: {
+    type: String,
+    required: true,
+    unique: true
+  },
   utilityCompanyId: {
     type: ObjectId,
     required: false
@@ -17,7 +22,7 @@ const ClientSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ClientStatus,
+    enum: ApplicantStatus,
     required: true
   },
   propertyAddress: {
@@ -27,6 +32,10 @@ const ClientSchema = new Schema({
   applied: {
     type: Date,
     required: true
+  },
+  phone: {
+    type: String,
+    required: false
   }
 })
 
