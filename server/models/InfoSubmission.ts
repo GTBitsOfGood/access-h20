@@ -1,10 +1,10 @@
+import { documentQA } from './DocumentQuestion'
+import { eligibilityQA } from './EligibilityQuestion'
+import { otherQA } from './OtherQuestion'
+
 export interface Info {
-  accountId: String
-  paymentAns: Boolean
-  servicesAns: Boolean
-  contactAns: Boolean
-  waterAns: Boolean
-  adjustAns: String
-  infoAns: String
-  indivAns: String
+  accountId: string
+  eligibilityQuestions: eligibilityQA[]
+  documents: documentQA[]
+  otherQuestions: otherQA[]
 }
