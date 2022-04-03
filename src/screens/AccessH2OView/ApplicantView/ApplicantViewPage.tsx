@@ -21,7 +21,7 @@ const ApplicantViewPage = ({
         <h1 className={classes.header1}>Dashboard</h1>
         <ApplicantTable
           isUtilityView={false}
-          infoSubmissionEndpoint={urls.pages.infosubmit}
+          infoSubmissionEndpoint={urls.pages.accessh2oView.infosubmit}
           applicants={applicants}
         />
         <h1 className={classes.header2}></h1>
