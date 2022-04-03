@@ -10,6 +10,14 @@ import { Client } from 'server/models/Client'
 import { ApplicantStatus } from 'src/types/Applicant'
 import { addClient } from 'src/actions/Client'
 
+import { getEligibilityQuestions, getDocumentQuestions, getOtherQuestions } from 'src/actions/FormQuestions'
+import { addInfo } from 'src/actions/InfoSubmission'
+
+import { eligibilityQuestion, eligibilityQA } from 'server/models/EligibilityQuestion'
+import { documentQuestion, documentQA } from 'server/models/DocumentQuestion'
+import { otherQuestion, otherQA } from 'server/models/OtherQuestion'
+import { Info } from 'server/models/InfoSubmission'
+
 interface PropTypes {
   shouldShowModal: boolean
   onClose: () => void
@@ -23,7 +31,6 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   const addressTextInput = React.useRef(null)
   const zipTextInput = React.useRef(null)
   const cityNameTextInput = React.useRef(null)
-  const notesTextInput = React.useRef(null)
   const stateNameTextInput = React.useRef(null)
   const phoneNumTextInput = React.useRef(null)
   /* eslint-enable */
@@ -48,21 +55,57 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
       accountId: accountID,
       name: fName + ' ' + lName,
       status: ApplicantStatus.AwaitingAccessH2O,
+      phoneNumber: myphoneNumber,
       propertyAddress: propAddress,
       utilityCompany: uCompany,
-      applied: new Date(),
-      phone: myphoneNumber,
-      notes: [''],
-      eligibilityStatuses: {
-        question: '',
-        answer: false
-      },
-      documents: [''],
-      otherQuestions: ['']
+      applied: new Date()
     }
+
     setShowAddRemoveModal(true)
+
+    const eligibilityQuestionsPromise = getEligibilityQuestions()
+    const documentQuestionsPromise = getDocumentQuestions()
+    const otherQuestionsPromise = getOtherQuestions()
+
+    const values = await Promise.all([eligibilityQuestionsPromise, documentQuestionsPromise, otherQuestionsPromise])
+    const eligibilityQuestions = values[0]
+    const documentQuestions = values[1]
+    const otherQuestions = values[2]
+
+    const eligibilityQuestionAnswer: eligibilityQA[] = eligibilityQuestions.map((question: eligibilityQuestion) => {
+      return {
+        question: question,
+        answer: false
+      }
+    })
+
+    const documentQuestionAnswer: documentQA[] = documentQuestions.map((question: documentQuestion) => {
+      return {
+        question: question,
+        answer: ''
+      }
+    })
+
+    const otherQuestionAnswer: otherQA[] = otherQuestions.map((question: otherQuestion) => {
+      return {
+        question: question,
+        answer: ''
+      }
+    })
+
+    const info: Info = {
+      accountId: accountID,
+      eligibilityQuestions: eligibilityQuestionAnswer,
+      documents: documentQuestionAnswer,
+      otherQuestions: otherQuestionAnswer
+    }
+
+    console.log(data)
+    console.log(info)
+
+    await addInfo(info)
     await addClient(data)
-    window.location.reload()
+    //  window.location.reload()
   }
 
   return (
@@ -223,21 +266,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     <option value="WY">Wyoming</option>
                   </Select>
                 </div>
-                <div>
-                  <TextField
-                    id="notes-multiline"
-                    label="Notes (Optional)"
-                    multiline
-                    rows={4}
-                    variant="outlined"
-                    inputRef={notesTextInput}
-                    style = {{ width: 665 }}
-                    onChange={(e) => setNote(e.target.value)}
-                  />
-                </div>
                 <div className={classes.modalfooter}>
                   <Button
-                  onClick={(() => console.log(handleAdd()))}
+                  onClick={(async () => await handleAdd())}
                   variant="contained"
                   style={{
                     backgroundColor: '#3F78B5',

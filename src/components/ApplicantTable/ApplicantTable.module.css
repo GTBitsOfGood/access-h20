@@ -1,7 +1,8 @@
 .root {
   margin: 0px 50px 50px 50px;
-  background: rgba(196, 196, 196, 0.2);
+  background: white;
   border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .header {
@@ -10,25 +11,30 @@
 }
 
 .searchBar {
+  color: #eeeeee;
   margin: 25px 0px 14px 20px;
-  padding-right: 3px;
+  padding-right: 8px;
 }
 
 .searchBox {
   width: 296px;
   height: 42px;
-  color: #9a9a9a;
+  color: #eeeeee;
   font-size: 18px;
 }
 
 .searchFilterText {
   width: 126px;
   height: 42px;
-  background: #c4c4c4;
+  background: white;
   border-radius: 8px;
   border-bottom: none;
   text-align: center;
   font-size: 18px;
+}
+
+.searchFilterText {
+  background: white;
 }
 
 .dateInput {
@@ -42,30 +48,24 @@
 }
 
 .addCustomerButton {
-  background: #c4c4c4;
+  background: #3f78b5;
+  color: white;
   border-color: transparent;
   border-radius: 8px;
   font-size: 18px;
-  width: 162px;
+  width: 150px;
   height: 42px;
-  margin: 21px 22px 14px 0px;
-  cursor: pointer;
+  margin: 25px 23px 14px 0px;
 }
 
 .tableHeader {
-  background: #c4c4c4;
+  background: white;
   justify-content: center;
-}
-
-.utilityText {
-  font-weight: bold;
-  font-size: 18px;
-  left: 50px;
 }
 
 .tableHeaderText {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 30px;
 }
 
 .cell {
@@ -82,6 +82,6 @@
 }
 
 .highlightOnHover:hover {
-  background-color: #cfebfd;
+  background-color: #e9f2f9;
   cursor: pointer;
 }

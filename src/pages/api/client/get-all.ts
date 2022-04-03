@@ -1,16 +1,21 @@
 import { getAll } from '../../../../server/mongodb/actions/Client'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { adminOnly } from '../middleware/isAdmin'
+import { isLoggedIn } from '../middleware/isLoggedIn'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => getAll().then((clients) => {
-    // console.log('src/pages/api/get-all: ' + JSON.stringify(clients))
-    res.status(200)
-    res.send({
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
+  return getAll()
+    .then((clients) => {
+      res.status(200)
+      res.send({
         success: true,
         payload: clients
+      })
     })
-    return res
-}).catch((error) => 
-    res.status(400).json({ success: false, message: error.message})
-)
+    .catch((error) =>
+      res.status(400).json({ success: false, message: error.message })
+    )
+}
 
-export default handler;
+// export default handler
+export default isLoggedIn(adminOnly(handler))

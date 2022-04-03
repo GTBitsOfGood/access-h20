@@ -41,12 +41,25 @@ export const addClient = async (client) =>
       return json.payload
     })
 
-export const getAll = async () =>
-  fetch(urls.baseUrl + urls.api.client.getAll, {
-    method: 'GET'
-  })
-    .then((response) => response.json())
-    .then((json) => {
+export const getAll = async (cookies) => {
+  const conditionals = {}
+
+  if (cookies != null) {
+    conditionals.headers = {
+      cookie: cookies
+    }
+  }
+
+  return fetch(urls.baseUrl + urls.api.client.getAll, {
+    method: 'GET',
+    mode: 'same-origin',
+    credentials: 'include',
+    ...conditionals
+  }).then((response) => {
+    if (response.status === 401) {
+      return []
+    }
+    return response.json().then((json) => {
       if (json == null) {
         throw new Error('Could not connect to API')
       }
@@ -55,6 +68,8 @@ export const getAll = async () =>
       }
       return json.payload
     })
+  })
+}
 
 export const getClient = async (accountId) =>
   fetch(urls.baseUrl + urls.api.client.getClient + '?accountId=' + accountId, {
@@ -73,9 +88,12 @@ export const getClient = async (accountId) =>
     })
 
 export const removeClient = async (accountId) =>
-  fetch(urls.baseUrl + urls.api.client.removeClient + '?accountId=' + accountId, {
-    method: 'GET'
-  })
+  fetch(
+    urls.baseUrl + urls.api.client.removeClient + '?accountId=' + accountId,
+    {
+      method: 'GET'
+    }
+  )
     .then((response) => response.json())
     .then((json) => {
       if (json == null) {
