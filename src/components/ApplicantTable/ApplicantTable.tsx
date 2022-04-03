@@ -24,6 +24,7 @@ import { ApplicantModal } from 'src/components/ApplicantModal/ApplicantModal'
 import classes from './ApplicantTable.module.css'
 import { NotesModal } from '../NotesModal/NotesModal'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import SearchIcon from '@mui/icons-material/Search'
 
 interface PropTypes {
   isUtilityView: boolean
@@ -133,58 +134,58 @@ const ApplicantTable = ({
 
   return (
     <div className={classes.root}>
-      <div className={classes.header}>
+      <div className={classes.header} style={{ borderRight: 1, borderBottom: 1, borderLeft: 1, borderColor: '#CBCBCB' }}>
         <div className={classes.searchBar}>
           <TextField
             className={classes.searchBox}
             InputProps={{
-              className: classes.searchBox
+              className: classes.searchBox,
+              disableUnderline: true,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon
+                    color="disabled"
+                  />
+                </InputAdornment>
+              )
             }}
-            label="Search"
-            variant="standard"
+            placeholder="Search"
+            style={{ background: '#EEEEEE', marginRight: '8px' }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           {!isUtilityView && (
             <TextField
-              className={classes.searchFilter}
-              InputProps={{
-                disableUnderline: true,
-                className: classes.searchFilterText
-              }}
-              label="Search By"
-              style={{
-                marginRight: '10px',
-                marginLeft: '10px',
-                marginTop: '-12px'
-              }}
-              select
-              variant="standard"
-              value={searchBy}
-              onChange={(e) => setSearchBy(e.target.value)}
-            >
-              <MenuItem key={'All'} value={'All'}>
-                {'All'}
-              </MenuItem>
-              <MenuItem key={'Utility Company'} value={'Utility Company'}>
-                {'Utility Company'}
-              </MenuItem>
-              <MenuItem key={'Name'} value={'Name'}>
-                {'Name'}
-              </MenuItem>
-            </TextField>
+            className={classes.searchFilter}
+            InputProps={{
+              className: classes.searchFilterText
+            }}
+            label="Search By"
+            style = {{ marginRight: '8px' }}
+            select
+            value={searchBy}
+            onChange={(e) => setSearchBy(e.target.value)}
+          >
+            <MenuItem key={'All'} value={'All'}>
+              {'All'}
+            </MenuItem>
+            <MenuItem key={'Utility Company'} value={'Utility Company'}>
+              {'Utility Company'}
+            </MenuItem>
+            <MenuItem key={'Name'} value={'Name'}>
+              {'Name'}
+            </MenuItem>
+          </TextField>
           )}
           <TextField
             className={classes.searchFilter}
             InputProps={{
-              disableUnderline: true,
               className: classes.searchFilterText
             }}
-            style={{ marginTop: '-12px' }}
+            style = {{ marginRight: '8px' }}
             label="Status"
             select
-            variant="standard"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -209,6 +210,7 @@ const ApplicantTable = ({
               ),
               className: classes.dateInputText
             }}
+            style = {{ marginRight: '8px' }}
           />
           <TextField
             className={classes.dateInput}
@@ -244,29 +246,71 @@ const ApplicantTable = ({
         <Table>
           <TableHead className={classes.tableHeader}>
             <TableRow>
-              <TableCell className={classes.tableHeaderText}>Name</TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Name
+              </TableCell>
               {!isUtilityView && (
-                <TableCell className={classes.tableHeaderText}>
+                <TableCell
+                  className={classes.tableHeaderText}
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 'bold'
+                  }}>
                   Utility Company
                 </TableCell>
               )}
-              <TableCell className={classes.tableHeaderText}>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
                 Account ID
               </TableCell>
-              <TableCell className={classes.tableHeaderText}>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
                 Property Address
               </TableCell>
-              <TableCell className={classes.tableHeaderText}>Applied</TableCell>
-              <TableCell className={classes.tableHeaderText}>Status</TableCell>
-              <TableCell className={classes.tableHeaderText}>Notes</TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Applied
+              </TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Status
+              </TableCell>
+              <TableCell
+                className={classes.tableHeaderText}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}>
+                Notes
+              </TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {paginate(filteredApplicants, page, rowsPerPage).map(
-              (applicant) => {
-                return (
+            {paginate(filteredApplicants, page, rowsPerPage).map((applicant) => {
+              return (
                   <TableRow className={classes.highlightOnHover}>
                     <Link
                       href={infoSubmissionEndpoint + '/' + applicant.accountId}
@@ -361,8 +405,8 @@ const ApplicantTable = ({
                       />
                     </TableCell>
                   </TableRow>
-                )
-              }
+              )
+            }
             )}
           </TableBody>
         </Table>

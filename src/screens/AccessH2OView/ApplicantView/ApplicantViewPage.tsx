@@ -14,13 +14,18 @@ const ApplicantViewPage = ({
 }): JSX.Element => {
   return (
     <>
-      <ApplicantNavLink isUtilityView={false} />
-      <h1 className={classes.header}>Dashboard</h1>
-      <ApplicantTable
+      <ApplicantNavLink
         isUtilityView={false}
-        infoSubmissionEndpoint={urls.pages.infosubmit}
-        applicants={applicants}
       />
+      <div className={classes.root}>
+        <h1 className={classes.header1}>Dashboard</h1>
+        <ApplicantTable
+          isUtilityView={false}
+          infoSubmissionEndpoint={urls.pages.infosubmit}
+          applicants={applicants}
+        />
+        <h1 className={classes.header2}></h1>
+      </div>
     </>
   )
 }
