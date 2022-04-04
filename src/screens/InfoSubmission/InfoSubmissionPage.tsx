@@ -216,27 +216,29 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 onClick={async () => await updateInfo(false)}
                 variant="contained"
                 color = "primary"
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 1.2rem', borderRadius: '8px' }}
               >
                 Update Info
               </Button>
               </div>
                 : <div className={classes.last_item}>
+                  <Stack direction="row" spacing={2}>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
+                  onClick = {handleClick}>
+                      Cancel
+                  </Button>
                   <Button
                   type="button"
                   variant = "contained"
                   color = "primary"
-                  style={{ textTransform: 'none' }}
+                  style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
                   onClick = {(() => console.log(updateInfo(true)))}>
                       Save
                   </Button>
-                  <Button
-                  type="button"
-                  variant = "text"
-                  style={{ textTransform: 'none', marginLeft: '8px' }}
-                  onClick = {handleClick}>
-                      Cancel
-                  </Button>
+                  </Stack>
                 </div>}
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -244,9 +246,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <h1>{name}</h1>
           <div>
             <div className={classes.header}>
-              <div className={classes.headerInfoBox}>
+            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing="8rem">
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
-                <FormControl variant='outlined' sx={{ m: 1, minWidth: 120 }}>
+                <FormControl variant='outlined' sx={{ m: 1, minWidth: '3rem' }}>
                   <Select
                   className={classes.mui}
                   MenuProps={{
@@ -263,41 +266,42 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
                   onChange={async (e) => await updateStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting Utility</MenuItem>
                     <MenuItem value={ApplicantStatus.AwaitingAccessH2O}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '10rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '11rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting AccessH2O</MenuItem>
                     <MenuItem value={ApplicantStatus.Completed}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Completed</MenuItem>
                     <MenuItem value={ApplicantStatus.Approved}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Approved</MenuItem>
                     <MenuItem value={ApplicantStatus.Denied}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '4rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                         Denied</MenuItem>
                     <MenuItem value={ApplicantStatus.Terminated}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Terminated</MenuItem>
                     <MenuItem value={ApplicantStatus.Incomplete}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Incomplete</MenuItem>
                   </Select>
                 </FormControl>
-              </div>
-              <div className={classes.headerInfoBox}>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
-                <p>{accountiD}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p className={classes.headerNoMargin}>{accountiD}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
                 <p>{phone}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
-                <p className={classes.streetAddress}>{address}</p>
-              </div>
+                <p className={classes.headerNoMargin}>{address}</p>
+              </Stack>
+              </Stack>
             </div>
           </div>
         </div>
@@ -427,19 +431,19 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
           </div>
           {formEditable
-            ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
+            ? <Stack style={{ marginLeft: '12.5rem' }} direction="row" spacing={2}>
             <Button
             type="button"
             variant = "contained"
             color = "primary"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {(() => console.log(updateInfo(true)))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {handleClick}>
                 Cancel
             </Button>
