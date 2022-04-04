@@ -109,15 +109,23 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
   const updateDocument = (file: any, index: number): void => {
     const duplicate = documentQuestions.slice()
-    duplicate[index].answer = file.target.files[0]
-    const emptyDuplicate = emptyDocumentQuestions.slice()
-    if (file.target.value === null) {
-      emptyDuplicate[index] = false
-    } else {
-      emptyDuplicate[index] = true
+    console.log(file.target.files[0])
+
+    const reader = new FileReader()
+    reader.readAsDataURL(file.target.files[0])
+    reader.onload = () => {
+      const f = reader.result as Buffer
+
+      duplicate[index].answer = f
+      const emptyDuplicate = emptyDocumentQuestions.slice()
+      if (f === null) {
+        emptyDuplicate[index] = false
+      } else {
+        emptyDuplicate[index] = true
+      }
+      setDocumentQuestions(duplicate)
+      setEmptyDocumentQuestions(emptyDuplicate)
     }
-    setDocumentQuestions(duplicate)
-    setEmptyDocumentQuestions(emptyDuplicate)
   }
   const updateOther = (text: any, index: number): void => {
     const duplicate = otherQuestions.slice()
@@ -399,9 +407,9 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       }}/>
                     </Button>}
                     {formEditable && info.answer !== null && <InsertDriveFileIcon color="disabled" />}
-                    {formEditable && <p className={classes.fileFontColor}>{info.answer}</p>}
+                    {formEditable && <p className={classes.fileFontColor}>{'info.answer'}</p>}
                     {!formEditable && info.answer !== null && <InsertDriveFileIcon color="primary" />}
-                    {!formEditable && <p className={classes.displayFileColor}>{info.answer}</p>}
+                    {!formEditable && <p className={classes.displayFileColor}>{'info.answer'}</p>}
                   </div>
                 </div>
               ))}

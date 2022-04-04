@@ -24,7 +24,7 @@ const InfoSubmissionSchema = new Schema({
           title: String,
           description: String
         },
-        answer: String
+        answer: Buffer
       }
     ],
     required: false
