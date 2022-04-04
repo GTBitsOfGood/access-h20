@@ -1,7 +1,7 @@
 import { Button, Divider, Link, TextField } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from './EditForm.module.css'
 import { buttonStyles, linkStyle, dividerStyle, deleteStyle } from './EditFormMUIStyles'
 
@@ -11,57 +11,104 @@ import { otherQuestion } from 'server/models/OtherQuestion'
 import { addDocumentQuestion, addEligibilityQuestion, addOtherQuestion, editDocumentQuestion, editEligibilityQuestion, editOtherQuestion, getDocumentQuestions, getEligibilityQuestions, getOtherQuestions, removeDocumentQuestion, removeEligibilityQuestion, removeOtherQuestion } from 'src/actions/FormQuestions'
 import { Types } from 'mongoose'
 
-const EditFormPage = ({ eligibility, document, other, showEligibility, showDocument, showOther }: {eligibility: eligibilityQuestion[], document: documentQuestion[], other: otherQuestion[], showEligibility: boolean[], showDocument: boolean[], showOther: boolean[]}): JSX.Element => {
-  const [eligibilityQuestions, setEligibilityQuestions] = useState<eligibilityQuestion[]>(eligibility)
-  const [editEligibility, setEditEligibility] = useState<boolean[]>(showEligibility)
+const EditFormPage = (): JSX.Element => {
+  const [eligibilityQuestions, setEligibilityQuestions] = useState<eligibilityQuestion[]>([])
+  const [oldEligibilityQuestions, setOldEligibilityQuestions] = useState<eligibilityQuestion[]>([])
+  const [editEligibility, setEditEligibility] = useState<boolean[]>([])
   const [newEligibilityTitle, setNewEligibilityTitle] = useState('')
   const [newEligibilityQuestion, setNewEligibilityQuestion] = useState('')
   const [showNewEligibility, setShowNewEligibility] = useState(false)
 
-  const [documentQuestions, setDocumentQuestions] = useState<documentQuestion[]>(document)
-  const [editDocument, setEditDocument] = useState<boolean[]>(showDocument)
+  const [documentQuestions, setDocumentQuestions] = useState<documentQuestion[]>([])
+  const [oldDocumentQuestions, setOldDocumentQuestions] = useState<documentQuestion[]>([])
+  const [editDocument, setEditDocument] = useState<boolean[]>([])
   const [newDocumentTitle, setNewDocumentTitle] = useState('')
   const [newDocumentDescription, setNewDocumentDescription] = useState('')
   const [showNewDocument, setShowNewDocument] = useState(false)
 
-  const [otherQuestions, setOtherQuestions] = useState<otherQuestion[]>(other)
-  const [editOther, setEditOther] = useState<boolean[]>(showOther)
+  const [otherQuestions, setOtherQuestions] = useState<otherQuestion[]>([])
+  const [oldOtherQuestions, setOldOtherQuestions] = useState<otherQuestion[]>([])
+  const [editOther, setEditOther] = useState<boolean[]>([])
   const [newOtherQuestion, setNewOtherQuestion] = useState('')
   const [showNewOther, setShowNewOther] = useState(false)
 
-  const enableEditEligibility = (index: number): void => {
+  const [render, setRender] = useState(false)
+
+  useEffect(() => {
+    void getQuestions()
+    setRender(false)
+  }, [render])
+
+  const getQuestions = async (): Promise<void> => {
+    const eligibility = await getEligibilityQuestions()
+    const document = await getDocumentQuestions()
+    const other = await getOtherQuestions()
+
+    const editeligibility = []
+    const editdocument = []
+    const editother = []
+
+    for (let i = 0; i < eligibility.length; i++) {
+      editeligibility.push(true)
+    }
+    for (let i = 0; i < document.length; i++) {
+      editdocument.push(true)
+    }
+    for (let i = 0; i < other.length; i++) {
+      editother.push(true)
+    }
+    setEligibilityQuestions(eligibility)
+    setDocumentQuestions(document)
+    setOtherQuestions(other)
+    setEditEligibility(editeligibility)
+    setEditDocument(editdocument)
+    setEditOther(editother)
+  }
+
+  const enableEditEligibility = (index: number, cancel: boolean): void => {
+    if (cancel) {
+      setEligibilityQuestions(oldEligibilityQuestions)
+      setRender(true)
+    } else { setOldEligibilityQuestions(eligibilityQuestions) }
     const duplicate = editEligibility.slice()
     duplicate[index] = !duplicate[index]
     setEditEligibility(duplicate)
   }
   const updateEligibilityQuestion = (index: number, id: Types.ObjectId): void => {
-    const updateQuestion = async (): Promise<void> => {
-      await editEligibilityQuestion({
-        _id: id,
-        title: eligibilityQuestions[index].title,
-        question: eligibilityQuestions[index].question
-      })
+    if (eligibilityQuestions[index].title === '' || eligibilityQuestions[index].question === '') {
+      // insert error modal here
+    } else {
+      const updateQuestion = async (): Promise<void> => {
+        await editEligibilityQuestion({
+          _id: id,
+          title: eligibilityQuestions[index].title,
+          question: eligibilityQuestions[index].question
+        })
+      }
+      void updateQuestion()
+      enableEditEligibility(index, false)
     }
-    void updateQuestion()
-    enableEditEligibility(index)
-    setTimeout(() => { window.location.reload() }, 1500)
   }
   const addNewEligibilityQuestion = (): void => {
-    const addQuestion = async (): Promise<void> => {
-      await addEligibilityQuestion({
-        title: newEligibilityTitle,
-        question: newEligibilityQuestion
-      })
-    }
-    void addQuestion()
-    setShowNewEligibility(false)
-    setNewEligibilityTitle('')
-    setNewEligibilityQuestion('')
-    setTimeout(() => { window.location.reload() }, 1500)
+    if (newEligibilityTitle === '' || newEligibilityQuestion === '') {
+      // insert error modal here
+    } else {
+      const addQuestion = async (): Promise<void> => {
+        await addEligibilityQuestion({
+          title: newEligibilityTitle,
+          question: newEligibilityQuestion
+        })
+      }
+      void addQuestion()
+      setShowNewEligibility(false)
+      setNewEligibilityTitle('')
+      setNewEligibilityQuestion('')
+      setRender(true)
 
-    const duplicate = editEligibility.slice()
-    duplicate.push(true)
-    setEditEligibility(duplicate)
+      const duplicate = editEligibility.slice()
+      duplicate.push(true)
+      setEditEligibility(duplicate)
+    }
   }
   const handleEligibilityTitleChange = (text: any, id: Types.ObjectId, index: number): void => {
     const duplicate = eligibilityQuestions.slice()
@@ -84,7 +131,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
       await removeEligibilityQuestion(id)
     }
     void removeQuestion()
-    setTimeout(() => { window.location.reload() }, 1500)
+    setRender(true)
 
     const duplicate = editEligibility.slice()
     duplicate.splice(index, 1)
@@ -96,39 +143,50 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
     setNewEligibilityQuestion('')
   }
 
-  const enableEditDocument = (index: number): void => {
+  const enableEditDocument = (index: number, cancel: boolean): void => {
+    if (cancel) {
+      setDocumentQuestions(oldDocumentQuestions)
+      setRender(true)
+    } else { setOldDocumentQuestions(documentQuestions) }
     const duplicate = editDocument.slice()
     duplicate[index] = !duplicate[index]
     setEditDocument(duplicate)
   }
   const updateDocumentQuestion = (index: number, id: Types.ObjectId): void => {
-    const updateQuestion = async (): Promise<void> => {
-      await editDocumentQuestion({
-        _id: id,
-        title: documentQuestions[index].title,
-        description: documentQuestions[index].description
-      })
+    if (documentQuestions[index].title === '' || documentQuestions[index].description === '') {
+      // insert error modal here
+    } else {
+      const updateQuestion = async (): Promise<void> => {
+        await editDocumentQuestion({
+          _id: id,
+          title: documentQuestions[index].title,
+          description: documentQuestions[index].description
+        })
+      }
+      void updateQuestion()
+      enableEditDocument(index, false)
     }
-    void updateQuestion()
-    enableEditDocument(index)
-    setTimeout(() => { window.location.reload() }, 1500)
   }
   const addNewDocumentQuestion = (): void => {
-    const addQuestion = async (): Promise<void> => {
-      await addDocumentQuestion({
-        title: newDocumentTitle,
-        description: newDocumentDescription
-      })
-    }
-    void addQuestion()
-    setShowNewDocument(false)
-    setNewDocumentTitle('')
-    setNewDocumentDescription('')
-    setTimeout(() => { window.location.reload() }, 1500)
+    if (newDocumentTitle === '' || newDocumentDescription === '') {
+      // insert error modal here
+    } else {
+      const addQuestion = async (): Promise<void> => {
+        await addDocumentQuestion({
+          title: newDocumentTitle,
+          description: newDocumentDescription
+        })
+      }
+      void addQuestion()
+      setShowNewDocument(false)
+      setNewDocumentTitle('')
+      setNewDocumentDescription('')
+      setRender(true)
 
-    const duplicate = editDocument.slice()
-    duplicate.push(true)
-    setEditDocument(duplicate)
+      const duplicate = editDocument.slice()
+      duplicate.push(true)
+      setEditDocument(duplicate)
+    }
   }
   const handleDocumentTitleChange = (text: any, id: Types.ObjectId, index: number): void => {
     const duplicate = documentQuestions.slice()
@@ -151,7 +209,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
       await removeDocumentQuestion(id)
     }
     void removeQuestion()
-    setTimeout(() => { window.location.reload() }, 1500)
+    setRender(true)
 
     const duplicate = editDocument.slice()
     duplicate.splice(index, 1)
@@ -163,36 +221,47 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
     setNewDocumentDescription('')
   }
 
-  const enableEditOther = (index: number): void => {
+  const enableEditOther = (index: number, cancel: boolean): void => {
+    if (cancel) {
+      setOtherQuestions(oldOtherQuestions)
+      setRender(true)
+    } else { setOldOtherQuestions(otherQuestions) }
     const duplicate = editOther.slice()
     duplicate[index] = !duplicate[index]
     setEditOther(duplicate)
   }
   const updateOtherQuestion = (index: number, id: Types.ObjectId): void => {
-    const updateQuestion = async (): Promise<void> => {
-      await editOtherQuestion({
-        _id: id,
-        question: otherQuestions[index].question
-      })
+    if (otherQuestions[index].question === '') {
+      // insert error modal here
+    } else {
+      const updateQuestion = async (): Promise<void> => {
+        await editOtherQuestion({
+          _id: id,
+          question: otherQuestions[index].question
+        })
+      }
+      void updateQuestion()
+      enableEditOther(index, false)
     }
-    void updateQuestion()
-    enableEditOther(index)
-    setTimeout(() => { window.location.reload() }, 1500)
   }
   const addNewOtherQuestion = (): void => {
-    const addQuestion = async (): Promise<void> => {
-      await addOtherQuestion({
-        question: newOtherQuestion
-      })
-    }
-    void addQuestion()
-    setShowNewOther(false)
-    setNewOtherQuestion('')
-    setTimeout(() => { window.location.reload() }, 1500)
+    if (newOtherQuestion === '') {
+      // insert error modal here
+    } else {
+      const addQuestion = async (): Promise<void> => {
+        await addOtherQuestion({
+          question: newOtherQuestion
+        })
+      }
+      void addQuestion()
+      setShowNewOther(false)
+      setNewOtherQuestion('')
+      setRender(true)
 
-    const duplicate = editOther.slice()
-    duplicate.push(true)
-    setEditOther(duplicate)
+      const duplicate = editOther.slice()
+      duplicate.push(true)
+      setEditOther(duplicate)
+    }
   }
   const handleOtherQuestionChange = (text: any, id: Types.ObjectId, index: number): void => {
     const duplicate = otherQuestions.slice()
@@ -207,7 +276,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
       await removeOtherQuestion(id)
     }
     void removeQuestion()
-    setTimeout(() => { window.location.reload() }, 1500)
+    setRender(true)
 
     const duplicate = editOther.slice()
     duplicate.splice(index, 1)
@@ -228,7 +297,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
           <div className={classes.statusSection}>
           {eligibilityQuestions?.map((question, index) => (
             <div className={classes.questions}>
-              <CreateIcon className={classes.editButton} onClick={() => enableEditEligibility(index)}/>
+              <CreateIcon className={classes.editButton} onClick={() => enableEditEligibility(index, false)}/>
               {editEligibility[index]
                 ? <div>
                 <p className={classes.title}>{question.title}</p>
@@ -265,7 +334,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                     />
                   </div>
                   <Button onClick={() => updateEligibilityQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
-                  <Button onClick = {() => enableEditEligibility(index)} sx={buttonStyles} variant="text">Cancel</Button>
+                  <Button onClick = {() => enableEditEligibility(index, true)} sx={buttonStyles} variant="text">Cancel</Button>
                 </div>
               }
             </div>
@@ -313,7 +382,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
           <div className={classes.docSection}>
           {documentQuestions?.map((question, index) => (
             <div className={classes.questions}>
-              <CreateIcon className={classes.editButton} onClick={() => enableEditDocument(index)}/>
+              <CreateIcon className={classes.editButton} onClick={() => enableEditDocument(index, false)}/>
               {editDocument[index]
                 ? <div>
                 <p className={classes.title}>{question.title}</p>
@@ -350,7 +419,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                     />
                   </div>
                 <Button onClick={() => updateDocumentQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
-                <Button onClick = {() => enableEditDocument(index)} sx={buttonStyles} variant="text">Cancel</Button>
+                <Button onClick = {() => enableEditDocument(index, true)} sx={buttonStyles} variant="text">Cancel</Button>
                 </div>
               }
 
@@ -399,7 +468,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
           <div className={classes.additSection}>
           {otherQuestions?.map((question, index) => (
             <div className={classes.questions}>
-              <CreateIcon className={classes.editButton} onClick={() => enableEditOther(index)}/>
+              <CreateIcon className={classes.editButton} onClick={() => enableEditOther(index, false)}/>
               {editOther[index]
                 ? <div>
                 <p className={classes.title}>{question.question}</p>
@@ -423,7 +492,7 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
                   </div>
                 </div>
                 <Button onClick={() => updateOtherQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
-                <Button onClick = {() => enableEditOther(index)} sx={buttonStyles} variant="text">Cancel</Button>
+                <Button onClick = {() => enableEditOther(index, true)} sx={buttonStyles} variant="text">Cancel</Button>
               </div>
               }
             </div>
@@ -455,35 +524,6 @@ const EditFormPage = ({ eligibility, document, other, showEligibility, showDocum
       </div>
     </div>
   )
-}
-
-EditFormPage.getInitialProps = async () => {
-  const eligibilityQuestions = await getEligibilityQuestions()
-  const documentQuestions = await getDocumentQuestions()
-  const otherQuestions = await getOtherQuestions()
-
-  const editEligibility = []
-  const editDocument = []
-  const editOther = []
-
-  for (let i = 0; i < eligibilityQuestions.length; i++) {
-    editEligibility.push(true)
-  }
-  for (let i = 0; i < documentQuestions.length; i++) {
-    editDocument.push(true)
-  }
-  for (let i = 0; i < otherQuestions.length; i++) {
-    editOther.push(true)
-  }
-
-  return {
-    eligibility: eligibilityQuestions,
-    document: documentQuestions,
-    other: otherQuestions,
-    showEligibility: editEligibility,
-    showDocument: editDocument,
-    showOther: editOther
-  }
 }
 
 export default EditFormPage
