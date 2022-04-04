@@ -1,6 +1,15 @@
-.header {
-  margin: 48px 0px 45px 55px;
+.root {
+  background-color: #e9f2f9;
+}
+
+.header1 {
+  padding-top: 50px;
+  margin: 0px 0px 45px 55px;
   font-family: Arial, serif;
+}
+
+.header2 {
+  padding-bottom: 50px;
 }
 
 .accountModal {

@@ -39,6 +39,16 @@
   text-transform: uppercase;
 }
 
+.dashboard {
+  color: #9A9A9A;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.dashboard:hover {
+  text-decoration: underline;
+}
+
 .formElem {
   display: flex;
   flex-direction: column;
