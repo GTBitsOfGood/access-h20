@@ -218,27 +218,29 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
                 onClick={async () => await updateInfo(false)}
                 variant="contained"
                 color = "primary"
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 1.2rem', borderRadius: '8px' }}
               >
                 Update Info
               </Button>
               </div>
                     : <div className={classes.last_item}>
+                  <Stack direction="row" spacing={2}>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
+                  onClick = {handleClick}>
+                      Cancel
+                  </Button>
                   <Button
                   type="button"
                   variant = "contained"
                   color = "primary"
-                  style={{ textTransform: 'none' }}
+                  style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
                   onClick = {(() => console.log(updateInfo(true)))}>
                       Save
                   </Button>
-                  <Button
-                  type="button"
-                  variant = "text"
-                  style={{ textTransform: 'none', marginLeft: '8px' }}
-                  onClick = {handleClick}>
-                      Cancel
-                  </Button>
+                  </Stack>
                 </div>
                 : <div></div>}
             </div>
@@ -247,9 +249,10 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
           <h1>{name}</h1>
           <div>
             <div className={classes.header}>
-              <div className={classes.headerInfoBox}>
+            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing="8rem">
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
-                <FormControl variant='outlined' sx={{ m: 1, minWidth: 120 }}>
+                <FormControl variant='outlined' sx={{ m: 1, minWidth: '3rem' }}>
                   <Select
                   className={classes.mui}
                   MenuProps={{
@@ -289,19 +292,20 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
 
                   </Select>
                 </FormControl>
-              </div>
-              <div className={classes.headerInfoBox}>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
-                <p>{accountiD}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p className={classes.headerNoMargin}>{accountiD}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
                 <p>{phone}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
-                <p className={classes.streetAddress}>{address}</p>
-              </div>
+                <p className={classes.headerNoMargin}>{address}</p>
+              </Stack>
+              </Stack>
             </div>
           </div>
         </div>
@@ -431,19 +435,19 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
             </div>
           </div>
           {formEditable
-            ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
+            ? <Stack style={{ marginLeft: '12.5rem' }} direction="row" spacing={2}>
             <Button
             type="button"
             variant = "contained"
             color = "primary"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {(() => console.log(updateInfo(true)))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {handleClick}>
                 Cancel
             </Button>
