@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import NavLink from '../NavLink' // eslint-disable-line
+import Link from 'next/link'
 import routes from './routes'
 import styles from './Header.module.css'
 
@@ -9,7 +10,10 @@ const Header = ({ loggedIn, currentRoute }) => (
     {routes
       .filter((route) => (loggedIn && route.auth) || (!loggedIn && !route.auth))
       .map(({ name, link, atEnd }) => (
-        <NavLink href={link} key={name}>
+        <NavLink
+          href={link}
+          // key={name}
+        >
           <div
             className={clsx(
               atEnd ? styles.endRoute : styles.route,
@@ -19,6 +23,9 @@ const Header = ({ loggedIn, currentRoute }) => (
             {name}
           </div>
         </NavLink>
+        // <span>
+        //   <Link href={link}>{name}</Link>
+        // </span>
       ))}
   </div>
 )
