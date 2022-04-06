@@ -330,7 +330,9 @@ const ApplicantTable = ({
                           {applicant.name}
                         </TableCell>
                       </Link>
-                      <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                      {!isUtilityView && (
+                        <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
+                      )}
                       <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
                       <TableCell className={classes.cell}>
                         {applicant.propertyAddress}
