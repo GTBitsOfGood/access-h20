@@ -11,6 +11,7 @@ import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
+import Link from '@mui/material/Link'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { getClient, changeStatus } from '../../actions/Client'
@@ -21,21 +22,8 @@ import { otherQA } from 'server/models/OtherQuestion'
 import { documentQA } from 'server/models/DocumentQuestion'
 import { eligibilityQA } from 'server/models/EligibilityQuestion'
 import { Info } from 'server/models/InfoSubmission'
-
-interface Applicant {
-  phone: String
-  status: ApplicantStatus
-}
-
-interface Client {
-  accountId: String
-  status: ApplicantStatus
-}
-
-const dummyData: Applicant = {
-  phone: '(404)123-4567',
-  status: ApplicantStatus.AwaitingUtility
-}
+import { Status } from 'server/models/Client'
+import { FormErrorModal } from '../../components/FormErrorModal/FormErrorModal'
 
 const setStatusColor = (status: ApplicantStatus): string => {
   return ApplicantStatusColor[status]
@@ -51,6 +39,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('Not exist')
 
   // Notes
   const initArr: Note[] = []
@@ -60,6 +49,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   // Form Control
   const [showModal, setShowModal] = useState(false)
+  const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
 
   // Questions
@@ -87,15 +77,18 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setAccountID(applicantId)
     setAddress(applicant.propertyAddress)
     setStatus(applicant.status)
+    setPhone(applicant.phone)
     if (applicant.note != null) {
       setNotes(applicant.note)
     }
   }
   const getInfoPack = async (): Promise<void> => {
     const info = await getInfo(applicantId)
+    console.log(info)
     setEligibilityQuestions(info.eligibilityQuestions)
     setDocumentQuestions(info.documents)
     setOtherQuestions(info.otherQuestions)
+    console.log(info.documents[0].answer)
   }
 
   const getEmptyBoxes = (): void => {
@@ -118,15 +111,39 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
   const updateDocument = (file: any, index: number): void => {
     const duplicate = documentQuestions.slice()
-    duplicate[index].answer = file.target.files[0]
-    const emptyDuplicate = emptyDocumentQuestions.slice()
-    if (file.target.value === null) {
-      emptyDuplicate[index] = false
-    } else {
-      emptyDuplicate[index] = true
+    console.log(file.target.files[0])
+
+    const reader = new FileReader()
+    reader.readAsDataURL(file.target.files[0])
+    reader.onload = () => {
+      console.log(reader.result)
+      if (reader.result !== null) {
+        const f = Buffer.from((reader.result as string).split(',')[1], 'base64')
+        console.log(f.toString('base64'))
+        /*
+        const blob = new Blob([f], { type: 'application/pdf' })
+
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'document.pdf')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        */
+
+        console.log(duplicate)
+        duplicate[index].answer = f
+        const emptyDuplicate = emptyDocumentQuestions.slice()
+        if (f === null) {
+          emptyDuplicate[index] = false
+        } else {
+          emptyDuplicate[index] = true
+        }
+        setDocumentQuestions(duplicate)
+        setEmptyDocumentQuestions(emptyDuplicate)
+      } else throw new Error('File not found')
     }
-    setDocumentQuestions(duplicate)
-    setEmptyDocumentQuestions(emptyDuplicate)
   }
   const updateOther = (text: any, index: number): void => {
     const duplicate = otherQuestions.slice()
@@ -172,10 +189,11 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
     setStatus(newStatus)
-    const data: Client = {
+    const data: Status = {
       accountId: accountiD,
       status: newStatus
     }
+    console.log(data)
     await changeStatus(data)
   }
 
@@ -210,6 +228,28 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   const closeModalHandler = (): void => setShowModal(false)
 
+  const downloadDocument = (index: number): void => {
+    const pdf = (documentQuestions[index].answer as any).data
+    console.log(pdf)
+
+    const buf = Buffer.from(pdf, 'base64')
+    console.log(buf.toString('base64'))
+
+    // const byteCharacters = base64ToArrayBuffer(pdf);
+    // console.log(byteCharacters)
+
+    const blob = new Blob([buf], { type: 'application/pdf' })
+    console.log(blob)
+
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'document.pdf')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   return (
     <div className={classes.bacoground}>
       <div className={classes.mainContainer}>
@@ -224,27 +264,29 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 onClick={async () => await updateInfo(false)}
                 variant="contained"
                 color = "primary"
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 1.2rem', borderRadius: '8px' }}
               >
                 Update Info
               </Button>
               </div>
                 : <div className={classes.last_item}>
+                  <Stack direction="row" spacing={2}>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
+                  onClick = {handleClick}>
+                      Cancel
+                  </Button>
                   <Button
                   type="button"
                   variant = "contained"
                   color = "primary"
-                  style={{ textTransform: 'none' }}
+                  style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
                   onClick = {(() => console.log(updateInfo(true)))}>
                       Save
                   </Button>
-                  <Button
-                  type="button"
-                  variant = "text"
-                  style={{ textTransform: 'none', marginLeft: '8px' }}
-                  onClick = {handleClick}>
-                      Cancel
-                  </Button>
+                  </Stack>
                 </div>}
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -252,9 +294,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <h1>{name}</h1>
           <div>
             <div className={classes.header}>
-              <div className={classes.headerInfoBox}>
+            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing="8rem">
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
-                <FormControl variant='outlined' sx={{ m: 1, minWidth: 120 }}>
+                <FormControl variant='outlined' sx={{ m: 1, minWidth: '3rem' }}>
                   <Select
                   className={classes.mui}
                   MenuProps={{
@@ -271,41 +314,42 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
                   onChange={async (e) => await updateStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting Utility</MenuItem>
                     <MenuItem value={ApplicantStatus.AwaitingAccessH2O}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '10rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '11rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting AccessH2O</MenuItem>
                     <MenuItem value={ApplicantStatus.Completed}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Completed</MenuItem>
                     <MenuItem value={ApplicantStatus.Approved}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Approved</MenuItem>
                     <MenuItem value={ApplicantStatus.Denied}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '4rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                         Denied</MenuItem>
                     <MenuItem value={ApplicantStatus.Terminated}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Terminated</MenuItem>
                     <MenuItem value={ApplicantStatus.Incomplete}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Incomplete</MenuItem>
                   </Select>
                 </FormControl>
-              </div>
-              <div className={classes.headerInfoBox}>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
-                <p>{accountiD}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p className={classes.headerNoMargin}>{accountiD}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
-                <p>{dummyData.phone}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p>{phone}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
-                <p className={classes.streetAddress}>{address}</p>
-              </div>
+                <p className={classes.headerNoMargin}>{address}</p>
+              </Stack>
+              </Stack>
             </div>
           </div>
         </div>
@@ -316,7 +360,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   <div className={classes.stickyNote}>
                   <div className={notestyle.noteHeader}>
                     <p className={notestyle.sender}>{note.sender}</p>
-                    <p className={notestyle.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
+                    <p className={notestyle.date}>{new Date(note.date).getMonth() + 1}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
                   </div>
                   <p className={classes.message}>{note.message}</p>
                 </div>
@@ -386,7 +430,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.documentBody}>
               {documentQuestions?.map((info, index) => (
                 <div className={classes.documentSubmission}>
-                <FormLabel style={{ fontWeight: 'bold' }} error={info.answer === null} htmlFor="infoAns">{info.question.title}</FormLabel>
+                <FormLabel style={{ fontWeight: 'bold' }} error={(info.answer as any).data.length === 0} htmlFor="infoAns">{info.question.title}</FormLabel>
                   <p style = {{ fontWeight: 'lighter' }}>{info.question.description}</p>
                   <div className={classes.submissionStack}>
                   {formEditable && <Button
@@ -402,10 +446,12 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                         updateDocument(e, index)
                       }}/>
                     </Button>}
-                    {formEditable && info.answer !== null && <InsertDriveFileIcon color="disabled" />}
-                    {formEditable && <p className={classes.fileFontColor}>{info.answer.name}</p>}
-                    {!formEditable && info.answer !== null && <InsertDriveFileIcon color="primary" />}
-                    {!formEditable && <p className={classes.displayFileColor}>{info.answer.name}</p>}
+
+                    {(info.answer as any).data.length !== 0 &&
+                      <InsertDriveFileIcon color="primary" onClick={ () => downloadDocument(index) }/>
+                    }
+
+                    <Link disabled={(info.answer as any).data.length === 0} component="button" className={classes.fileFontColor} onClick={ () => downloadDocument(index) }>{info.question.title}</Link>
                   </div>
                 </div>
               ))}
@@ -435,19 +481,19 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             </div>
           </div>
           {formEditable
-            ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
+            ? <Stack style={{ marginLeft: '12.5rem' }} direction="row" spacing={2}>
             <Button
             type="button"
             variant = "contained"
             color = "primary"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {(() => console.log(updateInfo(true)))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {handleClick}>
                 Cancel
             </Button>
@@ -455,6 +501,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             : <div></div>
 }
       </div>
+      <FormErrorModal
+        shouldShowModal={showErrorFormModal}
+        onClose={() => setShowErrorModal(false)}
+      />
     </div>
   )
 }

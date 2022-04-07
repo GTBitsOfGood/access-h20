@@ -7,5 +7,4 @@ export interface Company {
   city: string
   state: string
   zip: string
-  notes: [string]
 }

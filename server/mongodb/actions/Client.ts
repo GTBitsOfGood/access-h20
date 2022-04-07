@@ -8,6 +8,11 @@ export async function addClient (client: Client): Promise<Client> {
   return newClient
 }
 
+export async function removeClient (accountId: Client['accountId']): Promise<void> {
+  await mongoDB()
+  await ClientSchema.findOneAndDelete({ accountId })
+}
+
 export async function getClient (accountId: Client['accountId']): Promise<Client> {
   await mongoDB()
   const client = await ClientSchema.findOne({ accountId })
@@ -20,17 +25,11 @@ export async function getAll (): Promise<Client[]> {
   return clients
 }
 
-export async function editNotes (notes: Client['notes'], accountId: Client['accountId']): Promise<void> {
-  await mongoDB()
-  const client = await ClientSchema.findOne({ accountId })
-  client.notes = notes
-  client.save()
-}
-
 export async function changeStatus (status: Status): Promise<void> {
-  const accountid = status.accountId
+  const accountId = status.accountId
   await mongoDB()
-  const client = await ClientSchema.findOne({ accountid })
+  const client = await ClientSchema.findOne({ accountId: accountId })
+  console.log(client)
   client.status = status.status
   client.save()
 }

@@ -35,7 +35,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="transparent" className={classes.root}>
+      <AppBar position="static" color="transparent" elevation={0} className={classes.root}>
         <Toolbar>
           <div className={classes.logo1} />
           <div className={classes.logo2} />
@@ -47,7 +47,13 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
             sx={{ mx: 'auto' }}
           ></IconButton>
           {!isUtilityView && (
-            <span className={classes.editForm}><Link href='/editform' underline="none">Edit Form</Link></span>
+            <span className={classes.editForm}>
+              <Link
+                href='/editform'
+                underline="none"
+                color="inherit">
+                Edit Form
+              </Link></span>
           )}
           {!isUtilityView && (
             <span
@@ -73,7 +79,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
                 color="inherit"
               >
                 <AccountCircle
-                  color="action"
+                  color="disabled"
                   className={classes.profilebutton}
                 />
               </IconButton>
