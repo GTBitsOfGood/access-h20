@@ -12,7 +12,8 @@ import {
   TextField,
   MenuItem,
   InputAdornment,
-  Menu
+  Menu,
+  TableFooter
 } from '@mui/material'
 import Link from 'next/link'
 import { Announcement, MoreVert } from '@mui/icons-material'
@@ -45,7 +46,7 @@ const paginate = (
   page: number,
   rowsPerPage: number
 ): Applicant[] => {
-  return array.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+  return rowsPerPage > 0 ? array.slice(page * rowsPerPage, (page + 1) * rowsPerPage) : array
 }
 
 const ApplicantTable = ({
@@ -62,6 +63,14 @@ const ApplicantTable = ({
   const [toDate, setToDate] = useState('')
   const [filteredApplicants, setfilteredApplicants] = useState(applicants)
   const [accountID, setAcccountID] = useState('')
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event: React.MouseEvent): void => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = (): void => {
+    setAnchorEl(null)
+  }
 
   useEffect(() => {
     const statusApplicants = applicants.filter(
@@ -309,16 +318,6 @@ const ApplicantTable = ({
           <TableBody>
             {paginate(filteredApplicants, page, rowsPerPage).map(
               (applicant) => {
-                const [anchorEl, setAnchorEl] =
-                  React.useState<Element | null>(null)
-                const open = Boolean(anchorEl)
-                const handleClick = (event: React.MouseEvent): void => {
-                  setAnchorEl(event.currentTarget)
-                }
-                const handleClose = (): void => {
-                  setAnchorEl(null)
-                }
-
                 return (
                   <TableRow className={classes.highlightOnHover} >
                       <Link
@@ -386,6 +385,17 @@ const ApplicantTable = ({
             )
           }
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              count={applicants.length}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
       <NotesModal
         shouldShowModal={showNotesModal}
@@ -393,13 +403,6 @@ const ApplicantTable = ({
         accountID={accountID}
         infoSubmissionEndpoint={infoSubmissionEndpoint}
         />
-      <TablePagination
-        count={applicants.length}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-      />
     </TableContainer>
   </div>
   )
