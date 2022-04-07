@@ -6,6 +6,17 @@ import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import { AddRemoveModal } from '../AddRemoveModal/AddRemoveModal'
 import { Select } from '@material-ui/core'
+import { Client } from 'server/models/Client'
+import { ApplicantStatus } from 'src/types/Applicant'
+import { addClient } from 'src/actions/Client'
+
+import { getEligibilityQuestions, getDocumentQuestions, getOtherQuestions } from 'src/actions/FormQuestions'
+import { addInfo } from 'src/actions/InfoSubmission'
+
+import { eligibilityQuestion, eligibilityQA } from 'server/models/EligibilityQuestion'
+import { documentQuestion, documentQA } from 'server/models/DocumentQuestion'
+import { otherQuestion, otherQA } from 'server/models/OtherQuestion'
+import { Info } from 'server/models/InfoSubmission'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -20,7 +31,6 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   const addressTextInput = React.useRef(null)
   const zipTextInput = React.useRef(null)
   const cityNameTextInput = React.useRef(null)
-  const notesTextInput = React.useRef(null)
   const stateNameTextInput = React.useRef(null)
   const phoneNumTextInput = React.useRef(null)
   /* eslint-enable */
@@ -29,7 +39,10 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
 
   const [fName, setfName] = useState('')
   const [lName, setlName] = useState('')
+  const [accountID, setAccountID] = useState('')
   /* eslint-disable */
+  const [note, setNote] = useState('')
+  const [state, setState] = useState('')
   const [uCompany, setuCompany] = useState('')
   const [myphoneNumber, setmyPhoneNumber] = useState('')
   const [propAddress, setpropAddress] = useState('')
@@ -37,23 +50,68 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   const [mycity, setmyCity] = useState('')
   /* eslint-enable */
 
-  function handleAdd (): void {
-    // firstNameTextInput.current.value = "";
-    // lastNameTextInput.current.value = "";
-    // utilCompanyNameTextInput.current.value = ""
-    // addressTextInput.current.value = ""
-    // zipTextInput.current.value = ""
-    // cityNameTextInput.current.value = ""
-    // notesTextInput.current.value = ""
-    // stateNameTextInput.current.value = ""
-    // phoneNumTextInput.current.value = ""
+  async function handleAdd (): Promise<void> {
+    const data: Client = {
+      accountId: accountID,
+      name: fName + ' ' + lName,
+      status: ApplicantStatus.AwaitingAccessH2O,
+      phoneNumber: myphoneNumber,
+      propertyAddress: propAddress,
+      utilityCompany: uCompany,
+      applied: new Date()
+    }
+
     setShowAddRemoveModal(true)
+
+    const eligibilityQuestionsPromise = getEligibilityQuestions()
+    const documentQuestionsPromise = getDocumentQuestions()
+    const otherQuestionsPromise = getOtherQuestions()
+
+    const values = await Promise.all([eligibilityQuestionsPromise, documentQuestionsPromise, otherQuestionsPromise])
+    const eligibilityQuestions = values[0]
+    const documentQuestions = values[1]
+    const otherQuestions = values[2]
+
+    const eligibilityQuestionAnswer: eligibilityQA[] = eligibilityQuestions.map((question: eligibilityQuestion) => {
+      return {
+        question: question,
+        answer: false
+      }
+    })
+
+    const documentQuestionAnswer: documentQA[] = documentQuestions.map((question: documentQuestion) => {
+      return {
+        question: question,
+        answer: Buffer.from('')
+      }
+    })
+
+    const otherQuestionAnswer: otherQA[] = otherQuestions.map((question: otherQuestion) => {
+      return {
+        question: question,
+        answer: ''
+      }
+    })
+
+    const info: Info = {
+      accountId: accountID,
+      eligibilityQuestions: eligibilityQuestionAnswer,
+      documents: documentQuestionAnswer,
+      otherQuestions: otherQuestionAnswer
+    }
+
+    console.log(data)
+    console.log(info)
+
+    await addInfo(info)
+    await addClient(data)
+    //  window.location.reload()
   }
 
   return (
     <div>
       <div>
-        <Modal open={shouldShowModal} onClose={onClose}>
+        <Modal className={classes.modalOverflow} open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
               <h3 className={classes.addcustomer}>Add Customer</h3>
@@ -94,7 +152,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     label="Account ID"
                     variant="outlined"
                     inputRef={lastNameTextInput}
-                    onChange={(e) => setuCompany(e.target.value)}
+                    onChange={(e) => setAccountID(e.target.value)}
                   />
                   <TextField
                     id="utility-company"
@@ -138,7 +196,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     variant="outlined"
                     onChange={(e) => setmyCity(e.target.value)}
                   />
-                  <Select className={classes.selector} variant="outlined" style = {{ width: 120 }} label="State">
+                  <Select onChange={(e) => setState(e.target.value as string)} className={classes.selector} variant="outlined" style = {{ width: 120 }} label="State">
                     <option value=""></option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -208,20 +266,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     <option value="WY">Wyoming</option>
                   </Select>
                 </div>
-                <div>
-                  <TextField
-                    id="notes-multiline"
-                    label="Notes (Optional)"
-                    multiline
-                    rows={4}
-                    variant="outlined"
-                    inputRef={notesTextInput}
-                    style = {{ width: 665 }}
-                  />
-                </div>
                 <div className={classes.modalfooter}>
                   <Button
-                  onClick={() => handleAdd()}
+                  onClick={(async () => await handleAdd())}
                   variant="contained"
                   style={{
                     backgroundColor: '#3F78B5',

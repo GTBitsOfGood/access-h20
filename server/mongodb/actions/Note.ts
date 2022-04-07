@@ -10,7 +10,7 @@ export async function addNote (note: Note): Promise<Note> {
 export async function getNotes (accountID: String): Promise<Note[]> {
   await mongoDB()
   const note = await NoteSchema.find({ accountID })
-  console.log(accountID)
-  console.log(note)
+  // console.log(accountID)
+  // console.log(note)
   return note
 }

@@ -11,28 +11,19 @@ import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
+import Link from '@mui/material/Link'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { getClient, changeStatus } from '../../actions/Client'
-import { update, getInfo, addInfo } from '../../actions/InfoSubmission'
+import { update, getInfo } from '../../actions/InfoSubmission'
 import { addNote, getNote } from 'src/actions/Note'
 import { Note } from 'server/models/Note'
+import { otherQA } from 'server/models/OtherQuestion'
+import { documentQA } from 'server/models/DocumentQuestion'
+import { eligibilityQA } from 'server/models/EligibilityQuestion'
 import { Info } from 'server/models/InfoSubmission'
-
-interface Applicant {
-  phone: String
-  status: ApplicantStatus
-}
-
-interface Client {
-  accountId: String
-  status: ApplicantStatus
-}
-
-const dummyData: Applicant = {
-  phone: '(404)123-4567',
-  status: ApplicantStatus.AwaitingUtility
-}
+import { Status } from 'server/models/Client'
+import { FormErrorModal } from '../../components/FormErrorModal/FormErrorModal'
 
 const setStatusColor = (status: ApplicantStatus): string => {
   return ApplicantStatusColor[status]
@@ -48,6 +39,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('Not exist')
 
   // Notes
   const initArr: Note[] = []
@@ -57,42 +49,27 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   // Form Control
   const [showModal, setShowModal] = useState(false)
+  const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [formEditable, setFormEditable] = useState(false)
-  const [createInfo, setCreateInfo] = useState(false)
 
-  // Checkbox selector
-  const [paymentAns, setPaymentAns] = useState(false)
-  const [servicesAns, setServicesAns] = useState(false)
-  const [contactAns, setContactAns] = useState(false)
-  const [waterAns, setWaterAns] = useState(false)
+  // Questions
+  const [eligibilityQuestions, setEligibilityQuestions] = useState<eligibilityQA[]>([])
+  const [documentQuestions, setDocumentQuestions] = useState<documentQA[]>([])
+  const [otherQuestions, setOtherQuestions] = useState<otherQA[]>([])
+  const [oldEligibilityQuestions, setOldEligibilityQuestions] = useState<eligibilityQA[]>([])
+  const [oldDocumentQuestions, setOldDocumentQuestions] = useState<documentQA[]>([])
+  const [oldOtherQuestions, setOldOtherQuestions] = useState<otherQA[]>([])
+  const [emptyDocumentQuestions, setEmptyDocumentQuestions] = useState<boolean[]>([])
+  const [emptyOtherQuestions, setEmptyOtherQuestions] = useState<boolean[]>([])
+  const [render, setRender] = useState(false)
 
-  const [oldPaymentAns, setOldPaymentAns] = useState(false)
-  const [oldServicesAns, setOldServicesAns] = useState(false)
-  const [oldContactAns, setOldContactAns] = useState(false)
-  const [oldWaterAns, setOldWaterAns] = useState(false)
-
-  // File
-  const [paymentFile, setPaymentFile] = useState<File | null>(null)
-  const [usageFile, setUsageFile] = useState<File | null>(null)
-
-  const [oldPaymentFile, setOldPaymentFile] = useState<File | null>(null)
-  const [oldUsageFile, setOldUsageFile] = useState<File | null>(null)
-
-  // Short answer
-  const [adjustAns, setAdjustAns] = useState('')
-  const [infoAns, setInfoAns] = useState('')
-  const [indivAns, setIndivAns] = useState('')
-
-  const [oldAdjustAns, setOldAdjustAns] = useState('')
-  const [oldInfoAns, setOldInfoAns] = useState('')
-  const [oldIndivAns, setOldIndivAns] = useState('')
-
-  const [rendered] = useState(false)
   useEffect(() => {
     void getapplicants()
-    void getInfoPake()
     void getNotes()
-  }, [rendered])
+    void getInfoPack()
+    void getEmptyBoxes()
+    setRender(false)
+  }, [oldEligibilityQuestions, oldDocumentQuestions, oldOtherQuestions, render])
 
   const getapplicants = async (): Promise<void> => {
     const applicant = await getClient(applicantId)
@@ -100,62 +77,123 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setAccountID(applicantId)
     setAddress(applicant.propertyAddress)
     setStatus(applicant.status)
+    setPhone(applicant.phone)
     if (applicant.note != null) {
       setNotes(applicant.note)
     }
   }
-
-  const getInfoPake = async (): Promise<void> => {
+  const getInfoPack = async (): Promise<void> => {
     const info = await getInfo(applicantId)
-    if (info === null) {
-      setCreateInfo(true)
-      return
-    }
-    setPaymentAns(info.paymentAns)
-    setServicesAns(info.servicesAns)
-    setContactAns(info.contactAns)
-    setWaterAns(info.waterAns)
-    setAdjustAns(info.adjustAns)
-    setInfoAns(info.infoAns)
-    setIndivAns(info.indivAns)
+    console.log(info)
+    setEligibilityQuestions(info.eligibilityQuestions)
+    setDocumentQuestions(info.documents)
+    setOtherQuestions(info.otherQuestions)
+    console.log(info.documents[0].answer)
   }
 
-  const updateInfo = async (): Promise<void> => {
-    setOldPaymentAns(paymentAns)
-    setOldServicesAns(servicesAns)
-    setOldContactAns(contactAns)
-    setOldWaterAns(waterAns)
-    setOldPaymentFile(paymentFile)
-    setOldUsageFile(usageFile)
-    setOldAdjustAns(adjustAns)
-    setOldInfoAns(infoAns)
-    setOldIndivAns(indivAns)
-    setFormEditable(false)
-
-    const data: Info = {
-      accountId: accountiD,
-      paymentAns: paymentAns,
-      servicesAns: servicesAns,
-      contactAns: contactAns,
-      waterAns: waterAns,
-      adjustAns: adjustAns,
-      infoAns: infoAns,
-      indivAns: indivAns
-
+  const getEmptyBoxes = (): void => {
+    const document = []
+    const other = []
+    for (let i = 0; i < otherQuestions.length; i++) {
+      if (otherQuestions[i].answer === '') { other.push(false) } else { other.push(true) }
     }
-    if (createInfo) {
-      await addInfo(data)
-      return
+    for (let i = 0; i < documentQuestions.length; i++) {
+      if (documentQuestions[i].answer === null) { document.push(false) } else { document.push(true) }
     }
-    await update(data)
+    setEmptyDocumentQuestions(document)
+    setEmptyOtherQuestions(other)
+  }
+
+  const updateEligibility = (check: any, index: number): void => {
+    const duplicate = eligibilityQuestions.slice()
+    duplicate[index].answer = check.target.checked
+    setEligibilityQuestions(duplicate)
+  }
+  const updateDocument = (file: any, index: number): void => {
+    const duplicate = documentQuestions.slice()
+    console.log(file.target.files[0])
+
+    const reader = new FileReader()
+    reader.readAsDataURL(file.target.files[0])
+    reader.onload = () => {
+      console.log(reader.result)
+      if (reader.result !== null) {
+        const f = Buffer.from((reader.result as string).split(',')[1], 'base64')
+        console.log(f.toString('base64'))
+        /*
+        const blob = new Blob([f], { type: 'application/pdf' })
+
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'document.pdf')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        */
+
+        console.log(duplicate)
+        duplicate[index].answer = f
+        const emptyDuplicate = emptyDocumentQuestions.slice()
+        if (f === null) {
+          emptyDuplicate[index] = false
+        } else {
+          emptyDuplicate[index] = true
+        }
+        setDocumentQuestions(duplicate)
+        setEmptyDocumentQuestions(emptyDuplicate)
+      } else throw new Error('File not found')
+    }
+  }
+  const updateOther = (text: any, index: number): void => {
+    const duplicate = otherQuestions.slice()
+    duplicate[index].answer = text.target.value
+    const emptyDuplicate = emptyOtherQuestions.slice()
+    if (text.target.value === '') {
+      emptyDuplicate[index] = false
+    } else {
+      emptyDuplicate[index] = true
+    }
+    setOtherQuestions(duplicate)
+    setEmptyOtherQuestions(emptyDuplicate)
+  }
+  const updateInfo = async (updateDatabase: boolean): Promise<void> => {
+    let document = true
+    let other = true
+    for (let i = 0; i < emptyOtherQuestions.length; i++) {
+      if (!emptyOtherQuestions[i]) { other = false }
+    }
+    for (let i = 0; i < emptyDocumentQuestions.length; i++) {
+      if (!emptyDocumentQuestions[i]) { document = false }
+    }
+    if (!document || !other) {
+      // add error modal here
+      console.log('Answer all questions')
+    } else {
+      setFormEditable(!formEditable)
+      setOldEligibilityQuestions(eligibilityQuestions)
+      setOldDocumentQuestions(documentQuestions)
+      setOldOtherQuestions(otherQuestions)
+      if (updateDatabase) {
+        const data: Info = {
+          accountId: accountiD,
+          eligibilityQuestions: eligibilityQuestions,
+          documents: documentQuestions,
+          otherQuestions: otherQuestions
+        }
+        await update(data)
+        setRender(true)
+      }
+    }
   }
 
   const updateStatus = async (newStatus: ApplicantStatus): Promise<void> => {
     setStatus(newStatus)
-    const data: Client = {
+    const data: Status = {
       accountId: accountiD,
       status: newStatus
     }
+    console.log(data)
     await changeStatus(data)
   }
 
@@ -178,15 +216,9 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   function handleClick (): void {
-    setPaymentAns(oldPaymentAns)
-    setServicesAns(oldServicesAns)
-    setContactAns(oldContactAns)
-    setWaterAns(oldWaterAns)
-    setPaymentFile(oldPaymentFile)
-    setUsageFile(oldUsageFile)
-    setAdjustAns(oldAdjustAns)
-    setInfoAns(oldInfoAns)
-    setIndivAns(oldIndivAns)
+    setEligibilityQuestions(oldEligibilityQuestions)
+    setDocumentQuestions(oldDocumentQuestions)
+    setOtherQuestions(oldOtherQuestions)
     setFormEditable(!formEditable)
   }
 
@@ -195,6 +227,28 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   const closeModalHandler = (): void => setShowModal(false)
+
+  const downloadDocument = (index: number): void => {
+    const pdf = (documentQuestions[index].answer as any).data
+    console.log(pdf)
+
+    const buf = Buffer.from(pdf, 'base64')
+    console.log(buf.toString('base64'))
+
+    // const byteCharacters = base64ToArrayBuffer(pdf);
+    // console.log(byteCharacters)
+
+    const blob = new Blob([buf], { type: 'application/pdf' })
+    console.log(blob)
+
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'document.pdf')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   return (
     <div className={classes.bacoground}>
@@ -207,31 +261,32 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 ? <div className={classes.last_item}>
                 <Button
                 startIcon={<Edit />}
-                onClick={() => setFormEditable(!formEditable)}
+                onClick={async () => await updateInfo(false)}
                 variant="contained"
                 color = "primary"
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 1.2rem', borderRadius: '8px' }}
               >
                 Update Info
               </Button>
               </div>
                 : <div className={classes.last_item}>
+                  <Stack direction="row" spacing={2}>
+                  <Button
+                  type="button"
+                  variant = "text"
+                  style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
+                  onClick = {handleClick}>
+                      Cancel
+                  </Button>
                   <Button
                   type="button"
                   variant = "contained"
                   color = "primary"
-                  disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
-                  style={{ textTransform: 'none' }}
-                  onClick = {(() => console.log(updateInfo()))}>
+                  style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
+                  onClick = {(() => console.log(updateInfo(true)))}>
                       Save
                   </Button>
-                  <Button
-                  type="button"
-                  variant = "text"
-                  style={{ textTransform: 'none', marginLeft: '8px' }}
-                  onClick = {handleClick}>
-                      Cancel
-                  </Button>
+                  </Stack>
                 </div>}
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
@@ -239,9 +294,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <h1>{name}</h1>
           <div>
             <div className={classes.header}>
-              <div className={classes.headerInfoBox}>
+            <Stack direction="row" justifyContent="center" alignItems="flex-start" spacing="8rem">
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Status</h4>
-                <FormControl variant='outlined' sx={{ m: 1, minWidth: 120 }}>
+                <FormControl variant='outlined' sx={{ m: 1, minWidth: '3rem' }}>
                   <Select
                   className={classes.mui}
                   MenuProps={{
@@ -258,41 +314,42 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
                   onChange={async (e) => await updateStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting Utility</MenuItem>
                     <MenuItem value={ApplicantStatus.AwaitingAccessH2O}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '10rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '11rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting AccessH2O</MenuItem>
                     <MenuItem value={ApplicantStatus.Completed}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Completed</MenuItem>
                     <MenuItem value={ApplicantStatus.Approved}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Approved</MenuItem>
                     <MenuItem value={ApplicantStatus.Denied}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '4rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                         Denied</MenuItem>
                     <MenuItem value={ApplicantStatus.Terminated}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Terminated</MenuItem>
                     <MenuItem value={ApplicantStatus.Incomplete}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Incomplete</MenuItem>
                   </Select>
                 </FormControl>
-              </div>
-              <div className={classes.headerInfoBox}>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Account ID</h4>
-                <p>{accountiD}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p className={classes.headerNoMargin}>{accountiD}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Phone Number</h4>
-                <p>{dummyData.phone}</p>
-              </div>
-              <div className={classes.headerInfoBox}>
+                <p>{phone}</p>
+              </Stack>
+              <Stack direction="column" spacing={2}>
                 <h4 className={classes.headerNoMargin}>Address</h4>
-                <p className={classes.streetAddress}>{address}</p>
-              </div>
+                <p className={classes.headerNoMargin}>{address}</p>
+              </Stack>
+              </Stack>
             </div>
           </div>
         </div>
@@ -303,7 +360,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   <div className={classes.stickyNote}>
                   <div className={notestyle.noteHeader}>
                     <p className={notestyle.sender}>{note.sender}</p>
-                    <p className={notestyle.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
+                    <p className={notestyle.date}>{new Date(note.date).getMonth() + 1}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
                   </div>
                   <p className={classes.message}>{note.message}</p>
                 </div>
@@ -349,188 +406,94 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <div className={classes.scetionContainer}>
             <h3 className={classes.eligibilityHeader}>Eligibility</h3>
             <div className={classes.eligibilityBody}>
-              <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox
-                                icon={<RadioButtonUncheckedIcon />}
-                                checkedIcon={<CheckCircleIcon />}
-                                checked={paymentAns}
-                                onChange={() => setPaymentAns(!paymentAns)}
-                                disabled={!formEditable}/>}
-                  {!formEditable && paymentAns && <CheckCircleIcon color="success" />}
-                  {!formEditable && !paymentAns && <CancelIcon color="error" />}
-                <div className={classes.eligibilityText}>
-                  <h4 className={classes.headerNoMargin}>Payments</h4>
-                  <p style = {{ fontWeight: 'lighter' }}>Has the client made a minimum of 3 payments over the last 12 months?</p>
-                </div>
-              </div>
-              <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox
-                                icon={<RadioButtonUncheckedIcon />}
-                                checkedIcon={<CheckCircleIcon />}
-                                checked={servicesAns}
-                                onChange={() => setServicesAns(!servicesAns)}
-                                disabled={!formEditable}
-                                />}
-                  {!formEditable && servicesAns && <CheckCircleIcon color="success" />}
-                  {!formEditable && !servicesAns && <CancelIcon color="error" />}
-                <div className={classes.eligibilityText}>
-                  <h4 className={classes.headerNoMargin}>Minimum Services</h4>
-                  <p style = {{ fontWeight: 'lighter' }}>Does the customer have a minimum of 12 months of service?</p>
-                </div>
-              </div>
-              <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox
-                                icon={<RadioButtonUncheckedIcon />}
-                                checkedIcon={<CheckCircleIcon />}
-                                checked={contactAns}
-                                onChange={() => setContactAns(!contactAns)}
-                                disabled={!formEditable}/>}
-                  {!formEditable && contactAns && <CheckCircleIcon color="success" />}
-                  {!formEditable && !contactAns && <CancelIcon color="error" />}
-                <div className={classes.eligibilityText}>
-                  <h4 className={classes.headerNoMargin}>Customer Contact</h4>
-                  <p style = {{ fontWeight: 'lighter' }}>Has the customer been in contact with your utility company?</p>
-                </div>
-              </div>
-              <div className={classes.eligibilityCheckbox}>
-              {formEditable && <Checkbox
-                                icon={<RadioButtonUncheckedIcon />}
-                                checkedIcon={<CheckCircleIcon />}
-                                checked={waterAns}
-                                onChange={() => setWaterAns(!waterAns)}
-                                disabled={!formEditable}/>}
-                  {!formEditable && waterAns && <CheckCircleIcon color="success" />}
-                  {!formEditable && !waterAns && <CancelIcon color="error" />}
-                <div className={classes.eligibilityText}>
-                  <h4 className={classes.headerNoMargin}>Water Meter</h4>
-                  <p style = {{ fontWeight: 'lighter' }}>Does the property with dedicated water meter?</p>
-                </div>
-              </div>
+              {eligibilityQuestions.map((info, index) => (
+                  <div className={classes.eligibilityCheckbox}>
+                  {formEditable && <Checkbox
+                                    icon={<RadioButtonUncheckedIcon />}
+                                    checkedIcon={<CheckCircleIcon />}
+                                    checked={info.answer}
+                                    onChange={(check) => updateEligibility(check, index)}
+                                    disabled={!formEditable}/>}
+                      {!formEditable && info.answer && <CheckCircleIcon color="success" />}
+                      {!formEditable && !info.answer && <CancelIcon color="error" />}
+                    <div className={classes.eligibilityText}>
+                      <h4 className={classes.headerNoMargin}>{info.question.title}</h4>
+                      <p style = {{ fontWeight: 'lighter' }}>{info.question.question}</p>
+                    </div>
+                  </div>
+              ))}
             </div>
           </div>
 
           <div className={classes.scetionContainer}>
             <h3 className={classes.documentHeader}>Documents</h3>
             <div className={classes.documentBody}>
-              <div className={classes.documentSubmission}>
-              <FormLabel style={{ fontWeight: 'bold' }} error={paymentFile === null} htmlFor="infoAns">Payment History</FormLabel>
-                <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's payment history over the last 12 months.</p>
-                <div className={classes.submissionStack}>
-                {formEditable && <Button
-                    variant="contained"
-                    component="label"
-                    disabled={!formEditable}
-                    style = {{ width: '15%', textTransform: 'none', marginRight: '0.5rem', height: '2rem' }}>
-                    Upload
-                    <input id="paymentFile" type="file" hidden onChange = {(e) => {
-                      if (e.target.files === null || e.target.files.length < 1) {
-                        alert('Please upload a valid file.')
-                        return
-                      }
+              {documentQuestions?.map((info, index) => (
+                <div className={classes.documentSubmission}>
+                <FormLabel style={{ fontWeight: 'bold' }} error={(info.answer as any).data.length === 0} htmlFor="infoAns">{info.question.title}</FormLabel>
+                  <p style = {{ fontWeight: 'lighter' }}>{info.question.description}</p>
+                  <div className={classes.submissionStack}>
+                  {formEditable && <Button
+                      variant="contained"
+                      component="label"
+                      disabled={!formEditable}
+                      style = {{ width: '15%', textTransform: 'none', marginRight: '0.5rem', height: '2rem' }}>
+                      Upload
+                      <input id="info.answer" type="file" hidden onChange = {(e) => {
+                        if (e.target.files === null || e.target.files.length < 1) {
+                          alert('Please upload a valid file.')
+                        }
+                        updateDocument(e, index)
+                      }}/>
+                    </Button>}
 
-                      setPaymentFile(e.target.files[0])
-                    }}/>
-                  </Button>}
-                  {formEditable && paymentFile !== null && <InsertDriveFileIcon color="disabled" />}
-                  {formEditable && <p className={classes.fileFontColor}>{paymentFile?.name}</p>}
-                  {!formEditable && paymentFile !== null && <InsertDriveFileIcon color="primary" />}
-                  {!formEditable && <p className={classes.displayFileColor}>{paymentFile?.name}</p>}
+                    {(info.answer as any).data.length !== 0 &&
+                      <InsertDriveFileIcon color="primary" onClick={ () => downloadDocument(index) }/>
+                    }
+
+                    <Link disabled={(info.answer as any).data.length === 0} component="button" className={classes.fileFontColor} onClick={ () => downloadDocument(index) }>{info.question.title}</Link>
+                  </div>
                 </div>
-              </div>
-
-              <div className={classes.documentSubmission}>
-              <FormLabel style={{ fontWeight: 'bold' }} error={usageFile === null} htmlFor="infoAns">Payment History</FormLabel>
-                <p style = {{ fontWeight: 'lighter' }}>Please upload the customer's usage history over the last 12 months.</p>
-                <div className={classes.submissionStack}>
-                {formEditable && <Button
-                    id="usageFile"
-                    variant="contained"
-                    disabled={!formEditable}
-                    component="label"
-                    style = {{ width: '15%', textTransform: 'none', marginRight: '0.5rem', height: '2rem' }}>
-                    Upload
-                    <input id="paymentFile" type="file" hidden onChange = {(e) => {
-                      if (e.target.files === null || e.target.files.length < 1) {
-                        alert('Please upload a valid file.')
-                        return
-                      }
-
-                      setUsageFile(e.target.files[0])
-                    }}/>
-                  </Button>}
-                    {formEditable && usageFile !== null && <InsertDriveFileIcon color="disabled" />}
-                    {formEditable && <p className={classes.fileFontColor}>{usageFile?.name}</p>}
-                    {!formEditable && usageFile !== null && <InsertDriveFileIcon color="primary" />}
-                    {!formEditable && <p className={classes.displayFileColor}>{usageFile?.name}</p>}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
           <div className={classes.additionalContainer}>
             <h3 className={classes.additionalHeader}>Additional</h3>
             <div className={classes.additionalBody}>
+              {otherQuestions?.map((info, index) => (
               <div className={classes.inputContainer}>
-              <FormLabel style={{ fontWeight: 'bold' }} error={adjustAns === ''} htmlFor="adjustAns">Are there any pending adjustments?</FormLabel>
-                {formEditable && <TextField
-                  id="adjustAns"
-                  value={adjustAns}
-                  required
-                  error={adjustAns === ''}
-                  minRows="5"
-                  multiline
-                  variant="outlined"
-                  onChange= {(e) => setAdjustAns(e.target.value)}
-                  disabled={!formEditable}
-                  />}
-                  {!formEditable && <p className={classes.additionalfontStyle}>{adjustAns}</p>}
-              </div>
-              <div className={classes.inputContainer}>
-              <FormLabel style={{ fontWeight: 'bold' }} error={indivAns === ''} htmlFor="indivAns">What (if any) other individuals are involved (spouse, landlord, dependent)?</FormLabel>
-                {formEditable && <TextField
-                    id="indivAns"
-                    value={indivAns}
+                <FormLabel style={{ fontWeight: 'bold' }} htmlFor="adjustAns">{info.question.question}</FormLabel>
+                  {formEditable && <TextField
+                    id="adjustAns"
+                    value={info.answer}
                     required
-                    error={indivAns === ''}
+                    error={info.answer === ''}
                     minRows="5"
                     multiline
                     variant="outlined"
-                    onChange={(e) => setIndivAns(e.target.value)}
-                    disabled={!formEditable}/>}
-                    {!formEditable && <p className={classes.additionalfontStyle}>{indivAns}</p>}
-              </div>
-              <div className={classes.inputContainer}>
-                <FormLabel style={{ fontWeight: 'bold' }} error={infoAns === ''} htmlFor="infoAns">Is there any additional information we should know about the account?</FormLabel>
-                  {formEditable && <TextField
-                      id="infoAns"
-                      value={infoAns}
-                      required
-                      error={infoAns === ''}
-                      minRows="5"
-                      multiline
-                      variant="outlined"
-                      onChange= {(e) => setInfoAns(e.target.value)}
-                      disabled={!formEditable}/>}
-                      {!formEditable && <p className={classes.additionalfontStyle}>{infoAns}</p>}
-                      {(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '') && formEditable && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* Please fill all fields before updating customer info</FormLabel>}
-              </div>
+                    onChange= {(text) => updateOther(text, index)}
+                    disabled={!formEditable}
+                    />}
+                    {!formEditable && <p className={classes.additionalfontStyle}>{info.answer}</p>}
+                </div>
+              ))}
             </div>
           </div>
           {formEditable
-            ? <Stack style={{ marginLeft: '11.5rem' }} direction="row" spacing={2}>
+            ? <Stack style={{ marginLeft: '12.5rem' }} direction="row" spacing={2}>
             <Button
             type="button"
-            disabled={(paymentFile === null || usageFile === null || infoAns === '' || indivAns === '' || adjustAns === '')}
             variant = "contained"
             color = "primary"
-            style={{ textTransform: 'none' }}
-            onClick = {(() => console.log(updateInfo()))}>
+            style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
+            onClick = {(() => console.log(updateInfo(true)))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {handleClick}>
                 Cancel
             </Button>
@@ -538,6 +501,10 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             : <div></div>
 }
       </div>
+      <FormErrorModal
+        shouldShowModal={showErrorFormModal}
+        onClose={() => setShowErrorModal(false)}
+      />
     </div>
   )
 }

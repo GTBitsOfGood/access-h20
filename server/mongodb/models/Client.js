@@ -1,8 +1,17 @@
 import mongoose, { Schema } from 'mongoose'
-import { ClientStatus } from '../../models/ClientStatus'
-import { EligibilityStatus } from '../../models/EligibilityStatus'
+import { ApplicantStatus } from 'src/types/Applicant'
+import { ObjectId } from 'mongodb'
 
 const ClientSchema = new Schema({
+  accountId: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  utilityCompanyId: {
+    type: ObjectId,
+    required: false
+  },
   name: {
     type: String,
     required: true
@@ -11,14 +20,9 @@ const ClientSchema = new Schema({
     type: String,
     required: true
   },
-  accountId: {
-    type: String,
-    required: true,
-    unique: true
-  },
   status: {
     type: String,
-    enum: ClientStatus,
+    enum: ApplicantStatus,
     required: true
   },
   propertyAddress: {
@@ -29,22 +33,10 @@ const ClientSchema = new Schema({
     type: Date,
     required: true
   },
-  notes: {
-    type: [String],
-    required: false
-  },
-  eligibilityStatuses: {
-    type: EligibilityStatus,
-    required: false
-  },
-  documents: {
-    type: [String],
-    required: false
-  },
-  otherQuestions: {
-    type: [String],
+  phone: {
+    type: String,
     required: false
   }
 })
 
-export default mongoose.models?.Client ?? mongoose.model('Client', ClientSchema)
+export default mongoose.models.Client ?? mongoose.model('Client', ClientSchema)
