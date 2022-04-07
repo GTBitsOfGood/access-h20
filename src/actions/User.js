@@ -37,7 +37,11 @@ export const update = (updatedUser) =>
   })
     .then((response) => response.json())
     .then((json) => {
-      if (json == null) { throw new Error('Could not connect to API!') } else if (!json.success) { throw new Error(json.message) }
+      if (json == null) {
+        throw new Error('Could not connect to API!')
+      } else if (!json.success) {
+        throw new Error(json.message)
+      }
       return json.payload
     })
 
@@ -90,6 +94,33 @@ export const getCurrentUser = (cookies) => {
   }
 
   return fetch(urls.baseUrl + urls.api.user.getCurrent, {
+    method: 'GET',
+    mode: 'same-origin',
+    credentials: 'include',
+    ...conditionals
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json == null) {
+        throw new Error('Could not connect to API!')
+      } else if (!json.success) {
+        throw new Error(json.message)
+      }
+
+      return json.payload
+    })
+}
+
+export const getUtilityApplicants = (cookies) => {
+  const conditionals = {}
+
+  if (cookies != null) {
+    conditionals.headers = {
+      cookie: cookies
+    }
+  }
+
+  return fetch(urls.baseUrl + urls.pages.utilityapplicants, {
     method: 'GET',
     mode: 'same-origin',
     credentials: 'include',

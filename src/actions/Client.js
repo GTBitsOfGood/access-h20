@@ -41,6 +41,21 @@ export const addClient = async (client) =>
       return json.payload
     })
 
+export const getUtility = async () =>
+  fetch(urls.baseUrl + urls.pages.utilityapplicants, {
+    method: 'GET'
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json == null) {
+        throw new Error('Could not connect to API')
+      }
+      if (!json.success) {
+        throw new Error(json.message)
+      }
+      return json.payload
+    })
+
 export const getAll = async () =>
   fetch(urls.baseUrl + urls.api.client.getAll, {
     method: 'GET'
