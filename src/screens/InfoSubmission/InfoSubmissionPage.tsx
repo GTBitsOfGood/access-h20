@@ -11,6 +11,7 @@ import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
+import Link from '@mui/material/Link'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { getClient, changeStatus } from '../../actions/Client'
@@ -87,6 +88,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setEligibilityQuestions(info.eligibilityQuestions)
     setDocumentQuestions(info.documents)
     setOtherQuestions(info.otherQuestions)
+    console.log(info.documents[0].answer)
   }
 
   const getEmptyBoxes = (): void => {
@@ -109,15 +111,39 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
   const updateDocument = (file: any, index: number): void => {
     const duplicate = documentQuestions.slice()
-    duplicate[index].answer = file.target.files[0]
-    const emptyDuplicate = emptyDocumentQuestions.slice()
-    if (file.target.value === null) {
-      emptyDuplicate[index] = false
-    } else {
-      emptyDuplicate[index] = true
+    console.log(file.target.files[0])
+
+    const reader = new FileReader()
+    reader.readAsDataURL(file.target.files[0])
+    reader.onload = () => {
+      console.log(reader.result)
+      if (reader.result !== null) {
+        const f = Buffer.from((reader.result as string).split(',')[1], 'base64')
+        console.log(f.toString('base64'))
+        /*
+        const blob = new Blob([f], { type: 'application/pdf' })
+
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'document.pdf')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        */
+
+        console.log(duplicate)
+        duplicate[index].answer = f
+        const emptyDuplicate = emptyDocumentQuestions.slice()
+        if (f === null) {
+          emptyDuplicate[index] = false
+        } else {
+          emptyDuplicate[index] = true
+        }
+        setDocumentQuestions(duplicate)
+        setEmptyDocumentQuestions(emptyDuplicate)
+      } else throw new Error('File not found')
     }
-    setDocumentQuestions(duplicate)
-    setEmptyDocumentQuestions(emptyDuplicate)
   }
   const updateOther = (text: any, index: number): void => {
     const duplicate = otherQuestions.slice()
@@ -201,6 +227,28 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   }
 
   const closeModalHandler = (): void => setShowModal(false)
+
+  const downloadDocument = (index: number): void => {
+    const pdf = (documentQuestions[index].answer as any).data
+    console.log(pdf)
+
+    const buf = Buffer.from(pdf, 'base64')
+    console.log(buf.toString('base64'))
+
+    // const byteCharacters = base64ToArrayBuffer(pdf);
+    // console.log(byteCharacters)
+
+    const blob = new Blob([buf], { type: 'application/pdf' })
+    console.log(blob)
+
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'document.pdf')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   return (
     <div className={classes.bacoground}>
@@ -382,7 +430,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.documentBody}>
               {documentQuestions?.map((info, index) => (
                 <div className={classes.documentSubmission}>
-                <FormLabel style={{ fontWeight: 'bold' }} error={info.answer === null} htmlFor="infoAns">{info.question.title}</FormLabel>
+                <FormLabel style={{ fontWeight: 'bold' }} error={(info.answer as any).data.length === 0} htmlFor="infoAns">{info.question.title}</FormLabel>
                   <p style = {{ fontWeight: 'lighter' }}>{info.question.description}</p>
                   <div className={classes.submissionStack}>
                   {formEditable && <Button
@@ -398,10 +446,12 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                         updateDocument(e, index)
                       }}/>
                     </Button>}
-                    {formEditable && info.answer !== null && <InsertDriveFileIcon color="disabled" />}
-                    {formEditable && <p className={classes.fileFontColor}>{info.answer}</p>}
-                    {!formEditable && info.answer !== null && <InsertDriveFileIcon color="primary" />}
-                    {!formEditable && <p className={classes.displayFileColor}>{info.answer}</p>}
+
+                    {(info.answer as any).data.length !== 0 &&
+                      <InsertDriveFileIcon color="primary" onClick={ () => downloadDocument(index) }/>
+                    }
+
+                    <Link disabled={(info.answer as any).data.length === 0} component="button" className={classes.fileFontColor} onClick={ () => downloadDocument(index) }>{info.question.title}</Link>
                   </div>
                 </div>
               ))}
