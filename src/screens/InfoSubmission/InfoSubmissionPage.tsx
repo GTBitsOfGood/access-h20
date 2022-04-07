@@ -11,6 +11,7 @@ import { Edit } from '@mui/icons-material'
 import Stack from '@mui/material/Stack'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
+import Link from '@mui/material/Link'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { getClient, changeStatus } from '../../actions/Client'
@@ -429,7 +430,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
             <div className={classes.documentBody}>
               {documentQuestions?.map((info, index) => (
                 <div className={classes.documentSubmission}>
-                <FormLabel style={{ fontWeight: 'bold' }} error={info.answer === null} htmlFor="infoAns">{info.question.title}</FormLabel>
+                <FormLabel style={{ fontWeight: 'bold' }} error={(info.answer as any).data.length === 0} htmlFor="infoAns">{info.question.title}</FormLabel>
                   <p style = {{ fontWeight: 'lighter' }}>{info.question.description}</p>
                   <div className={classes.submissionStack}>
                   {formEditable && <Button
@@ -445,10 +446,12 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                         updateDocument(e, index)
                       }}/>
                     </Button>}
-                    {formEditable && info.answer !== null && <InsertDriveFileIcon color="disabled" />}
-                    {formEditable && <p className={classes.fileFontColor}>{'info.answer'}</p>}
-                    {!formEditable && info.answer !== null && <InsertDriveFileIcon color="primary" onClick={ () => downloadDocument(index) }/>}
-                    {!formEditable && <p className={classes.displayFileColor}>{'info.answer'}</p>}
+
+                    {(info.answer as any).data.length !== 0 &&
+                      <InsertDriveFileIcon color="primary" onClick={ () => downloadDocument(index) }/>
+                    }
+
+                    <Link disabled={(info.answer as any).data.length === 0} component="button" className={classes.fileFontColor} onClick={ () => downloadDocument(index) }>{info.question.title}</Link>
                   </div>
                 </div>
               ))}
