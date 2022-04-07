@@ -215,7 +215,8 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                   style={{
                     backgroundColor: '#3F78B5',
                     color: '#FFFFFF',
-                    borderRadius: '8px'
+                    borderRadius: '8px',
+                    fontFamily: "Arial"
                   }}>Add Utility Partner</Button>
                   <Button variant="text" onClick={() => onClose()}>Cancel</Button>
                 </Stack>
