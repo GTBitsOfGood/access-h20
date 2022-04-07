@@ -78,7 +78,6 @@ const ApplicantTable = ({
     )
     let dateApplicants = statusApplicants
     if (fromDate !== '' && toDate !== '') {
-      console.log('wassup')
       dateApplicants = dateApplicants.filter((applicant) => {
         const applicantDate = new Date(applicant.applied)
         return (
@@ -106,6 +105,10 @@ const ApplicantTable = ({
           applicant.utilityCompany.toLowerCase().includes(caseInsensitiveSearch)
         )
       }
+    } else {
+      searchedApplicants = searchedApplicants.filter((applicant) =>
+        applicant.name.toLowerCase().includes(caseInsensitiveSearch)
+      )
     }
 
     setfilteredApplicants(searchedApplicants)
