@@ -14,7 +14,7 @@ export const FormErrorModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   <div>
     <Modal open={shouldShowModal} onClose={onClose}>
       <div className={classes.modalwrapper}>
-          <DoNotDisturbAltIcon color='error' sx={{ fontSize: 50 }} />
+          <DoNotDisturbAltIcon color='error' sx={{ fontSize: 100 }} />
           <h2>Please fill out all required sections.</h2>
           <Button
               onClick={onClose}
