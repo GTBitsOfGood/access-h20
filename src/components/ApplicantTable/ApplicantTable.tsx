@@ -415,7 +415,12 @@ const ApplicantTable = ({
           }
         </TableBody>
       </Table>
-      <NotesModal shouldShowModal={showNotesModal} onClose={() => setShowNotesModal(false)} accountID={accountID} />
+      <NotesModal
+        shouldShowModal={showNotesModal}
+        onClose={() => setShowNotesModal(false)}
+        accountID={accountID}
+        infoSubmissionEndpoint={infoSubmissionEndpoint}
+        />
       <TablePagination
         count={applicants.length}
         rowsPerPage={rowsPerPage}

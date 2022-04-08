@@ -7,7 +7,7 @@ interface PropTypes {
 
 const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   return (
-    <InfoSubmissionView applicantId={applicantId} isUtilityView={false} />
+    <InfoSubmissionView applicantId={applicantId} isUtilityView={true} />
   )
 }
 

@@ -72,10 +72,10 @@ const ProfilePage = ({ isUtilityView }: PropTypes): JSX.Element => {
           onClick={async () => await Router.replace(urls.pages.index)}
         >
           {!isUtilityView && (
-            <a className={classes.dashboard} href="/accessh20applicants"><b>Back to Dashboard</b></a>
+            <a className={classes.dashboard} href="/accessh2o/applicants"><b>Back to Dashboard</b></a>
           )}
           {isUtilityView && (
-            <a className={classes.dashboard} href="/utilityapplicants"><b>Back to Dashboard</b></a>
+            <a className={classes.dashboard} href="/utility/applicants"><b>Back to Dashboard</b></a>
           )}
         </Typography>
         <Typography variant="h3">
