@@ -29,7 +29,7 @@ export const signUp = (email, password) =>
       return json.payload
     })
 
-export const update = (updatedUser) =>
+export const updateUser = (updatedUser) =>
   fetch(urls.baseUrl + urls.api.user.update, {
     method: 'put',
     mode: 'same-origin',
@@ -105,15 +105,18 @@ export const getCurrentUser = (cookies) => {
     mode: 'same-origin',
     credentials: 'include',
     ...conditionals
-  })
-    .then((response) => response.json())
-    .then((json) => {
+  }).then((response) => {
+    if (response.status === 401) {
+      return null
+    }
+    return response.json().then((json) => {
       if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (!json.success) {
+        throw new Error('Could not connect to API')
+      }
+      if (!json.success) {
         throw new Error(json.message)
       }
-
       return json.payload
     })
+  })
 }

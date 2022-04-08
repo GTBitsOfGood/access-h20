@@ -1,25 +1,22 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { update } from "server/mongodb/actions/User";
+import { NextApiRequest, NextApiResponse } from 'next'
+import { update } from 'server/mongodb/actions/User'
 
 // @route   POST api/user/update
 // @desc    Update User Request
 // @access  Public
-const handler = (
-  req: NextApiRequest,
-  res: NextApiResponse
-) =>
+const handler = (req: NextApiRequest, res: NextApiResponse) =>
   update(req.body)
     .then((updatedUser) =>
       res.status(200).json({
         success: true,
-        payload: updatedUser,
+        payload: updatedUser
       })
     )
     .catch((error) =>
       res.status(400).json({
         success: false,
-        message: error.message,
+        message: error.message
       })
-    );
+    )
 
-export default handler;
+export default handler

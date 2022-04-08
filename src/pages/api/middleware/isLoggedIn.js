@@ -1,11 +1,11 @@
-import urls from '../../../../utils/urls'
+import consts from '../../../../utils/consts'
 
 export const isLoggedIn = (handler) => {
   return async (req, res) => {
     if (req.cookies?.token === undefined) {
       return res.status(401).json({
         success: false,
-        message: urls.api.user.adminOnly
+        message: consts.token.DOESNT_EXIST
       })
     }
 

@@ -10,13 +10,17 @@ export async function addCompany (company: Company): Promise<Company> {
   return newCompany
 }
 
-export async function getCompany (accountId: Company['accountId']): Promise<Company> {
+export async function getCompany (
+  accountId: Company['accountId']
+): Promise<Company> {
   await mongoDB()
   const company = await CompanySchema.findOne({ accountId: accountId })
   return company
 }
 
-export async function update (companyAttributes: Company): Promise<Company> {
+export async function updateCompany (
+  companyAttributes: Company
+): Promise<Company> {
   const accountId = companyAttributes.accountId
   const attributes = companyAttributes
 
@@ -32,6 +36,10 @@ export async function update (companyAttributes: Company): Promise<Company> {
   const company = await CompanySchema.findOne({ accountId: accountId })
   if (company === undefined) throw new Error(errors.user.INVALID_ID)
 
-  const updatedCompany = await CompanySchema.findOneAndUpdate({ accountId: accountId }, { $set: attributes }, { new: true, runValidators: true, omitUndefined: true })
+  const updatedCompany = await CompanySchema.findOneAndUpdate(
+    { accountId: accountId },
+    { $set: attributes },
+    { new: true, runValidators: true, omitUndefined: true }
+  )
   return updatedCompany
 }
