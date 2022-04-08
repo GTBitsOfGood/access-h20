@@ -55,7 +55,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
       accountId: accountID,
       name: fName + ' ' + lName,
       status: ApplicantStatus.AwaitingAccessH2O,
-      phoneNumber: myphoneNumber,
+      phone: myphoneNumber,
       propertyAddress: propAddress,
       utilityCompany: uCompany,
       applied: new Date()
@@ -105,7 +105,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
 
     await addInfo(info)
     await addClient(data)
-    //  window.location.reload()
+    window.location.reload()
   }
 
   return (

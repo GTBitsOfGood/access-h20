@@ -1,24 +1,16 @@
 // import * as React from 'react'
 import classes from './UtilityPartnerModal.module.css'
-import { Button, Modal, TextField, FormControl } from '@material-ui/core'
+import { Button, Modal, TextField, FormControl, FormLabel } from '@material-ui/core'
 import { useState } from 'react'
 // import { getPartner } from 'server/mongodb/actions/Partner'
 // import { Partner } from "server/models/Partner"
 import Stack from '@mui/material/Stack'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import { signUp } from 'src/actions/User'
 
 interface PropTypes {
   shouldShowModal: boolean
   onClose: () => void
-}
-
-interface Partner {
-  companyName: string
-  email: string
-  phone: string
-  password: string
-  confirmpassword: string
-  notes: string
 }
 
 export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
@@ -27,20 +19,13 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
   const [companyN, setCompanyN] = useState('')
   const [newemail, setEmail] = useState('')
   const [newphone, setPhone] = useState('')
-  const [newnotes] = useState('')
   const [newpassword, setPassword] = useState('')
   const [newconfirmpassword, setConfirmPassword] = useState('')
 
-  const addPartner = (): void => {
+  const addPartner = async (): Promise<void> => {
     // TODO: implement backend submissions
-    const data: Partner = { // eslint-disable-line
-      companyName: companyN,
-      email: newemail,
-      phone: newphone,
-      password: newpassword,
-      confirmpassword: newconfirmpassword,
-      notes: newnotes
-    }
+    setPhone(newphone)
+    await signUp(newemail, newpassword)
     setShowAdd(false)
   }
 
@@ -53,14 +38,14 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
         {showAdd
           ? <div className={classes.modalWrapper}>
         <div className={classes.modalHeader}>
-          <h1 style={{fontFamily: "Arial"}}> Add Utility Partner</h1>
+          <h1 style={{ fontFamily: 'Arial' }}> Add Utility Partner</h1>
           <span onClick={onClose} className={classes.closeButton}>&times;</span>
         </div>
         <div className={classes.modalContent}>
 
           <FormControl>
             <div className={classes.inputContainer}>
-              <label htmlFor="company" style={{fontFamily: "Arial"}}>Company Name</label>
+              <label htmlFor="company" style={{ fontFamily: 'Arial' }}>Company Name</label>
               <TextField
                 required
                 variant="outlined"
@@ -70,7 +55,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
             </div>
             <div className={classes.rowContainer}>
               <div className={classes.inputContainer}>
-                <label htmlFor="email" style={{fontFamily: "Arial"}}>Email Address</label>
+                <label htmlFor="email" style={{ fontFamily: 'Arial' }}>Email Address</label>
                 <TextField
                   required
                   variant="outlined"
@@ -79,7 +64,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 />
               </div>
               <div className={classes.inputContainer}>
-                <label htmlFor="phone" style={{fontFamily: "Arial"}}>Phone Number</label>
+                <label htmlFor="phone" style={{ fontFamily: 'Arial' }}>Phone Number</label>
                 <TextField
                   required
                   variant="outlined"
@@ -90,7 +75,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
             </div>
             <div className={classes.rowContainer}>
               <div className={classes.inputContainer}>
-                <label htmlFor="password" style={{fontFamily: "Arial"}}>Password</label>
+                <label htmlFor="password" style={{ fontFamily: 'Arial' }}>Password</label>
                 <TextField
                   required
                   variant="outlined"
@@ -99,7 +84,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 />
               </div>
               <div className={classes.inputContainer}>
-                <label htmlFor="confirmpassword" style={{fontFamily: "Arial"}}>Confirm Password</label>
+                <label htmlFor="confirmpassword" style={{ fontFamily: 'Arial' }}>Confirm Password</label>
                 <TextField
                   required
                   variant="outlined"
@@ -108,6 +93,8 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 />
               </div>
             </div>
+            {(newpassword.length < 8) && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* The password you entered must contains at lease 8 characters</FormLabel>}
+            {(newpassword !== newconfirmpassword) && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* The password you entered do not match, please check your input again</FormLabel>}
                 <Stack
                   className={classes.formSubmitContainer}
                   direction="row-reverse"

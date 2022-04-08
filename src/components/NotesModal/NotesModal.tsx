@@ -94,7 +94,7 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID, infoSubmission
                 : <button onClick = {() => setShowAdd(true)} className={classes.plusNote}>+ Add Note</button>
               }
               <div className={classes.customer}>
-                <Link underline="none" href={infoSubmissionEndpoint + '/' + accountID} className={classes.customerButton} style={{ color: "white" }}>View Customer Info</Link>
+                <Link color="white" underline="none" href={infoSubmissionEndpoint + '/' + accountID} className={classes.customerButton}>View Customer Info</Link>
               </div>
             </div>
           </div>

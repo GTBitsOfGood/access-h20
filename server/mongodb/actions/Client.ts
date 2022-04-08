@@ -4,7 +4,9 @@ import mongoDB from '../index'
 
 export async function addClient (client: Client): Promise<Client> {
   await mongoDB()
+  console.log(client)
   const newClient = await ClientSchema.create(client)
+  console.log(newClient)
   return newClient
 }
 
