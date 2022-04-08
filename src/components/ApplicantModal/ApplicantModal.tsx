@@ -82,7 +82,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
     const documentQuestionAnswer: documentQA[] = documentQuestions.map((question: documentQuestion) => {
       return {
         question: question,
-        answer: ''
+        answer: Buffer.from('')
       }
     })
 

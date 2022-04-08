@@ -1,6 +1,7 @@
 import React from 'react'
-import Link from 'next/link'
-import isString from 'lodash/isString'
+// import Link from 'next/link'
+import { Link } from '@mui/material'
+// import isString from 'lodash/isString'
 import isObject from 'lodash/isPlainObject'
 
 interface PropTypes {
@@ -19,7 +20,13 @@ interface PropTypes {
  * @param props.className - A classname that will be applied to the <a> tag if the child is a string
  * @param props.rest - The component can be passed any other prop from Next's Link component
  */
-const NavLink = ({ href, hrefParts = {}, children, className = undefined, ...rest }: PropTypes): JSX.Element => {
+const NavLink = ({
+  href,
+  hrefParts = {},
+  children,
+  className = undefined,
+  ...rest
+}: PropTypes): JSX.Element => {
   const optionalProps: any = {}
 
   if (hrefParts != null && isObject(hrefParts)) {
@@ -35,11 +42,12 @@ const NavLink = ({ href, hrefParts = {}, children, className = undefined, ...res
   return (
     <Link
       href={href}
-      passHref={children != null && !isString(children)}
-      {...optionalProps}
-      {...rest}
+      // passHref={children != null && !isString(children)}
+      // {...optionalProps}
+      // {...rest}
     >
-      {isString(children) ? <a className={className}>{children}</a> : children}
+      {/* {isString(children) ? <a className={className}>{children}</a> : children} */}
+      {children}
     </Link>
   )
 }
