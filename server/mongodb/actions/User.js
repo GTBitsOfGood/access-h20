@@ -27,6 +27,34 @@ export async function login({ email, password }) {
   return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions)
 }
 
+// uncomment to create admin login
+// export async function signUp({ email, password }) {
+//   if (!email || !password) throw new Error(errors.user.MISSING_INFO)
+
+//   const validEmail = validator.validate(email)
+//   if (!validEmail) throw new Error(errors.user.INVALID_EMAIL)
+//   if (password.length < 8) throw new Error(errors.user.INVALID_PASSWORD)
+
+//   await mongoDB()
+
+//   let user = await User.findOne({ email })
+//   if (user) throw new Error(errors.user.UNAVAILABLE_EMAIL)
+
+//   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
+
+//   user = await User.create({
+//     email,
+//     password: hashedPassword,
+//     isUtilityCompany: false
+//   })
+
+//   if (!user) throw new Error(errors.user.INVALID_ATTRIBUTES)
+
+//   const jwtPayload = { id: user._id, email: user.email }
+//   const jwtOptions = { expiresIn: TOKEN_DURATION }
+//   return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions)
+// }
+
 export async function signUp({ email, password, utilityCompanyId }) {
   if (!email || !password) throw new Error(errors.user.MISSING_INFO)
 

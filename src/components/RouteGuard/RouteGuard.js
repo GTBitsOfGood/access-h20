@@ -13,9 +13,10 @@ function RouteGuard ({ children, cookies }) {
 
   console.log('cookies: ' + cookies + ', path: ' + router.asPath)
   const [authorized, setAuthorized] = useState(false)
+  // authCheck(router.asPath, cookies)
 
   useEffect(() => {
-    authCheck(router.asPath, cookies)
+    authCheck(Router.asPath, cookies)
 
     const hideContent = () => setAuthorized(false)
     router.events.on('routeChangeStart', hideContent)
@@ -34,12 +35,12 @@ function RouteGuard ({ children, cookies }) {
     // console.log('returnUrl param:', router.asPath)
 
     if (cks === null && !publicPaths.includes(path)) {
+      console.log('Hello world 2')
       setAuthorized(false)
       router.replace({
         pathname: urls.pages.login,
         query: { returnUrl: router.pathname }
       })
-      console.log('Hello world 2')
     } else {
       setAuthorized(true)
     }
