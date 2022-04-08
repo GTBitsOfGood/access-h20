@@ -53,7 +53,11 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
           ></IconButton>
           {!isUtilityView && (
             <span className={classes.editForm}>
-              <Link href="/editform" underline="none" color="inherit">
+              <Link
+                href="/accessh2oView/editform"
+                underline="none"
+                color="inherit"
+              >
                 Edit Form
               </Link>
             </span>

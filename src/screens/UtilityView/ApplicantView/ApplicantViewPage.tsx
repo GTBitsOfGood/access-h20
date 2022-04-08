@@ -4,6 +4,7 @@ import classes from './ApplicantView.module.css'
 import urls from '../../../../utils/urls'
 import ApplicantNavLink from '../../../components/ApplicantNavLink'
 import { getAll } from '../../../actions/Client'
+import { NextPageContext } from 'next'
 import { Applicant } from 'src/types/Applicant'
 
 const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Element => {
@@ -16,7 +17,7 @@ const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Ele
         <h1 className={classes.header1}>Dashboard</h1>
         <ApplicantTable
           isUtilityView={true}
-          infoSubmissionEndpoint={urls.pages.infosubmit}
+          infoSubmissionEndpoint={urls.pages.utilityView.infosubmit}
           applicants={applicants}
         />
         <h1 className={classes.header2}></h1>
@@ -25,8 +26,10 @@ const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Ele
   )
 }
 
-ApplicantViewPage.getInitialProps = async () => {
-  const applicants = await getAll()
+ApplicantViewPage.getInitialProps = async ({ req }: NextPageContext) => {
+  const applicants =
+    req != null ? await getAll(req.headers?.cookie) : await getAll()
+  // console.log('ApplicantViewPage, applicants: ', applicants)
   return { applicants: applicants }
 }
 

@@ -1,4 +1,4 @@
-import InfoSubmissionPage from '../../../screens/InfoSubmission'
+import InfoSubmissionPage from '../../../../screens/UtilityView/InfoSubmission'
 import { useRouter } from 'next/router'
 
 const ApplicantInfoSubmissionPage = () => {

@@ -31,9 +31,10 @@ const setStatusColor = (status: ApplicantStatus): string => {
 
 interface PropTypes {
   applicantId: string
+  isUtilityView: boolean
 }
 
-const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
+const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Element => {
   // Status
   const [accountiD, setAccountID] = useState(applicantId)
   const [status, setStatus] = useState(ApplicantStatus.AwaitingUtility)
@@ -73,6 +74,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
 
   const getapplicants = async (): Promise<void> => {
     const applicant = await getClient(applicantId)
+    console.log(applicant)
     setName(applicant.name)
     setAccountID(applicantId)
     setAddress(applicant.propertyAddress)
@@ -88,7 +90,6 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
     setEligibilityQuestions(info.eligibilityQuestions)
     setDocumentQuestions(info.documents)
     setOtherQuestions(info.otherQuestions)
-    console.log(info.documents[0].answer)
   }
 
   const getEmptyBoxes = (): void => {
@@ -257,11 +258,12 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
           <div className='accountModal'>
             <div className={classes.topContainer}>
               <a className={classes.back} onClick={handleBackToDash}>&lt;&nbsp;&nbsp;&nbsp;&nbsp;Back to Dashboard</a>
-              {!formEditable
-                ? <div className={classes.last_item}>
+              {isUtilityView
+                ? !formEditable
+                    ? <div className={classes.last_item}>
                 <Button
                 startIcon={<Edit />}
-                onClick={async () => await updateInfo(false)}
+                onClick={() => setFormEditable(!formEditable)}
                 variant="contained"
                 color = "primary"
                 style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 1.2rem', borderRadius: '8px' }}
@@ -269,7 +271,7 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                 Update Info
               </Button>
               </div>
-                : <div className={classes.last_item}>
+                    : <div className={classes.last_item}>
                   <Stack direction="row" spacing={2}>
                   <Button
                   type="button"
@@ -287,7 +289,8 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                       Save
                   </Button>
                   </Stack>
-                </div>}
+                </div>
+                : <div></div>}
             </div>
             <EditInfoSubmissionModal shouldShowModal={showModal} onClose={closeModalHandler}/>
           </div>
@@ -314,26 +317,27 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
                   style = {{ borderStyle: 'hidden', backgroundColor: setStatusColor(status), width: '13rem', textAlign: 'center', borderRadius: '8px', height: '2rem' }}
                   onChange={async (e) => await updateStatus(e.target.value as ApplicantStatus)}>
                     <MenuItem value={ApplicantStatus.AwaitingUtility}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), width: '8rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingUtility), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting Utility</MenuItem>
                     <MenuItem value={ApplicantStatus.AwaitingAccessH2O}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), width: '11rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.AwaitingAccessH2O), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Awaiting AccessH2O</MenuItem>
-                    <MenuItem value={ApplicantStatus.Completed}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    <MenuItem value={ApplicantStatus.Completed} disabled={isUtilityView}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Completed), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Completed</MenuItem>
-                    <MenuItem value={ApplicantStatus.Approved}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), width: '6rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    <MenuItem value={ApplicantStatus.Approved} disabled={isUtilityView}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Approved), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Approved</MenuItem>
-                    <MenuItem value={ApplicantStatus.Denied}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), width: '5rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    <MenuItem value={ApplicantStatus.Denied} disabled={isUtilityView}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Denied), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                         Denied</MenuItem>
-                    <MenuItem value={ApplicantStatus.Terminated}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    <MenuItem value={ApplicantStatus.Terminated} disabled={isUtilityView}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Terminated</MenuItem>
-                    <MenuItem value={ApplicantStatus.Incomplete}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), width: '7rem', textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
+                    <MenuItem value={ApplicantStatus.Incomplete} disabled={isUtilityView}
+                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Incomplete</MenuItem>
+
                   </Select>
                 </FormControl>
               </Stack>
@@ -509,4 +513,4 @@ const InfoSubmissionPage = ({ applicantId }: PropTypes): JSX.Element => {
   )
 }
 
-export default InfoSubmissionPage
+export default InfoSubmissionView

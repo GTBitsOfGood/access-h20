@@ -87,7 +87,7 @@ const ProfilePage = ({
 
   return (
     <div>
-      <ApplicantNavLink isUtilityView={true} />
+      <ApplicantNavLink isUtilityView={isUtilityView} />
 
       <div className={classes.profileContent}>
         <Typography
@@ -97,12 +97,15 @@ const ProfilePage = ({
           onClick={async () => await Router.replace(urls.pages.index)}
         >
           {!isUtilityView && (
-            <a className={classes.dashboard} href="/accessh20applicants">
+            <a
+              className={classes.dashboard}
+              href="/accessh2oView/accessh20applicants"
+            >
               <b>Back to Dashboard</b>
             </a>
           )}
           {isUtilityView && (
-            <a className={classes.dashboard} href="/utilityapplicants">
+            <a className={classes.dashboard} href="/utility/applicants">
               <b>Back to Dashboard</b>
             </a>
           )}
