@@ -53,14 +53,14 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
         {showAdd
           ? <div className={classes.modalWrapper}>
         <div className={classes.modalHeader}>
-          <h1>Add Utility Partner</h1>
+          <h1 style={{fontFamily: "Arial"}}> Add Utility Partner</h1>
           <span onClick={onClose} className={classes.closeButton}>&times;</span>
         </div>
         <div className={classes.modalContent}>
 
           <FormControl>
             <div className={classes.inputContainer}>
-              <label htmlFor="company">Company Name</label>
+              <label htmlFor="company" style={{fontFamily: "Arial"}}>Company Name</label>
               <TextField
                 required
                 variant="outlined"
@@ -70,7 +70,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
             </div>
             <div className={classes.rowContainer}>
               <div className={classes.inputContainer}>
-                <label htmlFor="email">Email Address</label>
+                <label htmlFor="email" style={{fontFamily: "Arial"}}>Email Address</label>
                 <TextField
                   required
                   variant="outlined"
@@ -79,7 +79,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 />
               </div>
               <div className={classes.inputContainer}>
-                <label htmlFor="phone">Phone Number</label>
+                <label htmlFor="phone" style={{fontFamily: "Arial"}}>Phone Number</label>
                 <TextField
                   required
                   variant="outlined"
@@ -90,7 +90,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
             </div>
             <div className={classes.rowContainer}>
               <div className={classes.inputContainer}>
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password" style={{fontFamily: "Arial"}}>Password</label>
                 <TextField
                   required
                   variant="outlined"
@@ -99,7 +99,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 />
               </div>
               <div className={classes.inputContainer}>
-                <label htmlFor="confirmpassword">Confirm Password</label>
+                <label htmlFor="confirmpassword" style={{fontFamily: "Arial"}}>Confirm Password</label>
                 <TextField
                   required
                   variant="outlined"
