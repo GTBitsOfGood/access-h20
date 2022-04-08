@@ -334,9 +334,6 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
                     <MenuItem value={ApplicantStatus.Terminated} disabled={isUtilityView}
                     style = {{ backgroundColor: setStatusColor(ApplicantStatus.Terminated), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
                       Terminated</MenuItem>
-                    <MenuItem value={ApplicantStatus.Incomplete} disabled={isUtilityView}
-                    style = {{ backgroundColor: setStatusColor(ApplicantStatus.Incomplete), textAlign: 'left', borderRadius: '8px', display: 'flex', margin: '7px' }}>
-                      Incomplete</MenuItem>
 
                   </Select>
                 </FormControl>

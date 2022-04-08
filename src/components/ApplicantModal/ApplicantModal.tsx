@@ -17,6 +17,7 @@ import { eligibilityQuestion, eligibilityQA } from 'server/models/EligibilityQue
 import { documentQuestion, documentQA } from 'server/models/DocumentQuestion'
 import { otherQuestion, otherQA } from 'server/models/OtherQuestion'
 import { Info } from 'server/models/InfoSubmission'
+import FormErrorModal from '../FormErrorModal'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -27,6 +28,7 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   /* eslint-disable */
   const firstNameTextInput= React.useRef(null)
   const lastNameTextInput = React.useRef(null)
+  const accountIDTextInput = React.useRef(null)
   const utilCompanyNameTextInput = React.useRef(null)
   const addressTextInput = React.useRef(null)
   const zipTextInput = React.useRef(null)
@@ -36,6 +38,8 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   /* eslint-enable */
 
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
+  const [showErrorFormModal, setShowErrorModal] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const [fName, setfName] = useState('')
   const [lName, setlName] = useState('')
@@ -61,51 +65,57 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
       applied: new Date()
     }
 
-    setShowAddRemoveModal(true)
+    setIsSubmitted(true)
 
-    const eligibilityQuestionsPromise = getEligibilityQuestions()
-    const documentQuestionsPromise = getDocumentQuestions()
-    const otherQuestionsPromise = getOtherQuestions()
+    if (fName !== '' && lName !== '' && accountID !== '' && uCompany !== '' && myphoneNumber !== '' && propAddress !== '' && myzip !== '') {
+      const eligibilityQuestionsPromise = getEligibilityQuestions()
+      const documentQuestionsPromise = getDocumentQuestions()
+      const otherQuestionsPromise = getOtherQuestions()
 
-    const values = await Promise.all([eligibilityQuestionsPromise, documentQuestionsPromise, otherQuestionsPromise])
-    const eligibilityQuestions = values[0]
-    const documentQuestions = values[1]
-    const otherQuestions = values[2]
+      const values = await Promise.all([eligibilityQuestionsPromise, documentQuestionsPromise, otherQuestionsPromise])
+      const eligibilityQuestions = values[0]
+      const documentQuestions = values[1]
+      const otherQuestions = values[2]
 
-    const eligibilityQuestionAnswer: eligibilityQA[] = eligibilityQuestions.map((question: eligibilityQuestion) => {
-      return {
-        question: question,
-        answer: false
+      const eligibilityQuestionAnswer: eligibilityQA[] = eligibilityQuestions.map((question: eligibilityQuestion) => {
+        return {
+          question: question,
+          answer: false
+        }
+      })
+
+      const documentQuestionAnswer: documentQA[] = documentQuestions.map((question: documentQuestion) => {
+        return {
+          question: question,
+          answer: Buffer.from('')
+        }
+      })
+
+      const otherQuestionAnswer: otherQA[] = otherQuestions.map((question: otherQuestion) => {
+        return {
+          question: question,
+          answer: ''
+        }
+      })
+
+      const info: Info = {
+        accountId: accountID,
+        eligibilityQuestions: eligibilityQuestionAnswer,
+        documents: documentQuestionAnswer,
+        otherQuestions: otherQuestionAnswer
       }
-    })
 
-    const documentQuestionAnswer: documentQA[] = documentQuestions.map((question: documentQuestion) => {
-      return {
-        question: question,
-        answer: Buffer.from('')
-      }
-    })
+      console.log(data)
+      console.log(info)
 
-    const otherQuestionAnswer: otherQA[] = otherQuestions.map((question: otherQuestion) => {
-      return {
-        question: question,
-        answer: ''
-      }
-    })
+      await addInfo(info)
+      await addClient(data)
 
-    const info: Info = {
-      accountId: accountID,
-      eligibilityQuestions: eligibilityQuestionAnswer,
-      documents: documentQuestionAnswer,
-      otherQuestions: otherQuestionAnswer
+      setShowAddRemoveModal(true)
+    } else {
+      setShowErrorModal(true)
     }
-
-    console.log(data)
-    console.log(info)
-
-    await addInfo(info)
-    await addClient(data)
-    window.location.reload()
+    //  window.location.reload()
   }
 
   return (
@@ -135,6 +145,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="first_name"
                     label="First Name"
                     variant="outlined"
+                    required={true}
+                    error={fName === '' && isSubmitted}
+                    helperText={fName === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={firstNameTextInput}
                     onChange={(e) => setfName(e.target.value)}
                   />
@@ -142,6 +155,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="last-name"
                     label="Last Name"
                     variant="outlined"
+                    required={true}
+                    error={lName === '' && isSubmitted}
+                    helperText={lName === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={lastNameTextInput}
                     onChange={(e) => setlName(e.target.value)}
                   />
@@ -151,13 +167,19 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="account-id"
                     label="Account ID"
                     variant="outlined"
-                    inputRef={lastNameTextInput}
+                    required={true}
+                    error={accountID === '' && isSubmitted}
+                    helperText={accountID === '' && isSubmitted ? 'This field is required.' : ''}
+                    inputRef={accountIDTextInput}
                     onChange={(e) => setAccountID(e.target.value)}
                   />
                   <TextField
                     id="utility-company"
                     label="Utility Company"
                     variant="outlined"
+                    required={true}
+                    error={uCompany === '' && isSubmitted}
+                    helperText={uCompany === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={utilCompanyNameTextInput}
                     onChange={(e) => setuCompany(e.target.value)}
                   />
@@ -168,6 +190,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     label="Phone Number"
                     inputRef={phoneNumTextInput}
                     variant="outlined"
+                    required={true}
+                    error={myphoneNumber === '' && isSubmitted}
+                    helperText={myphoneNumber === '' && isSubmitted ? 'This field is required.' : ''}
                     style = {{ width: 200 }}
                     onChange={(e) => setmyPhoneNumber(e.target.value)}
                   />
@@ -176,6 +201,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     label="Property Address"
                     variant="outlined"
                     inputRef={addressTextInput}
+                    required={true}
+                    error={propAddress === '' && isSubmitted}
+                    helperText={propAddress === '' && isSubmitted ? 'This field is required.' : ''}
                     style = {{ width: 450 }}
                     onChange={(e) => setpropAddress(e.target.value)}
                   />
@@ -185,6 +213,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="zip-code"
                     label="Zip/Postal Code"
                     variant="outlined"
+                    required={true}
+                    error={myzip === '' && isSubmitted}
+                    helperText={myzip === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={zipTextInput}
                     style = {{ width: 200 }}
                     onChange={(e) => setmyZip(e.target.value)}
@@ -192,6 +223,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                   <TextField
                     id="city"
                     label="City"
+                    required={true}
+                    error={mycity === '' && isSubmitted}
+                    helperText={mycity === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={cityNameTextInput}
                     variant="outlined"
                     onChange={(e) => setmyCity(e.target.value)}
@@ -286,6 +320,10 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
               modalAction={'added'}
               shouldShowModal={showAddRemoveModal}
               onClose={() => setShowAddRemoveModal(false)}
+            />
+            <FormErrorModal
+              shouldShowModal={showErrorFormModal}
+              onClose={() => setShowErrorModal(false)}
             />
           </div>
         </Modal>
