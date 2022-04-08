@@ -130,6 +130,7 @@ const ApplicantTable = ({
   const removeApplicant = async (accountId: string): Promise<void> => {
     console.log(accountId)
     await removeClient(accountId)
+    window.location.reload()
   }
 
   const handleChangePage = (event: any, page: number): void => {

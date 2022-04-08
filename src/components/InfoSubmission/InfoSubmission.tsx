@@ -74,6 +74,7 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
 
   const getapplicants = async (): Promise<void> => {
     const applicant = await getClient(applicantId)
+    console.log(applicant)
     setName(applicant.name)
     setAccountID(applicantId)
     setAddress(applicant.propertyAddress)
