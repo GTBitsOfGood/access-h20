@@ -15,7 +15,7 @@ const LoginPage = (): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(true)
-  const [isRegistering, setIsReg] = useState(false)
+  const [isRegistering] = useState(false)
 
   const handleClickShowPassword = (): void => setShowPassword(!showPassword)
   const handleMouseDownPassword = (): void => setShowPassword(!showPassword)
