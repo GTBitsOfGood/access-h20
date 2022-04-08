@@ -89,7 +89,6 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
     setEligibilityQuestions(info.eligibilityQuestions)
     setDocumentQuestions(info.documents)
     setOtherQuestions(info.otherQuestions)
-    console.log(info.documents[0].answer)
   }
 
   const getEmptyBoxes = (): void => {
