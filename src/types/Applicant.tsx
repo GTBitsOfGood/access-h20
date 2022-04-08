@@ -13,7 +13,7 @@ export const ApplicantStatusColor: { [key in ApplicantStatus]: string } = {
   [ApplicantStatus.AwaitingUtility]: '#F2E3BD',
   [ApplicantStatus.Completed]: '#D4BDF2',
   [ApplicantStatus.Denied]: '#F2BDBD',
-  [ApplicantStatus.Terminated]: '#C5C7CA',
+  [ApplicantStatus.Terminated]: '#C5C7CA'
 }
 
 export interface Applicant {

@@ -15,7 +15,7 @@ const LoginPage = (): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(true)
-  const [isRegistering, setIsReg] = useState(false)
+  const [isRegistering] = useState(false)
 
   const handleClickShowPassword = (): void => setShowPassword(!showPassword)
   const handleMouseDownPassword = (): void => setShowPassword(!showPassword)
@@ -91,23 +91,6 @@ const LoginPage = (): JSX.Element => {
         <button className={classes.bttn} type="submit">
           {isRegistering ? 'Register' : 'Login'}
         </button>
-        {isRegistering
-          ? (
-          <p className={classes.switchText}>
-            Already have an account?
-            <a className={classes.buttonText} onClick={() => setIsReg(false)}>
-              Login now
-            </a>
-          </p>
-            )
-          : (
-          <p className={classes.switchText}>
-            {"Don't have an account?"}
-            <a className={classes.buttonText} onClick={() => setIsReg(true)}>
-              Register now
-            </a>
-          </p>
-            )}
       </form>
     </div>
   )

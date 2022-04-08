@@ -6,7 +6,7 @@ export interface Client {
   status: ApplicantStatus
   propertyAddress: string
   applied: Date
-  phoneNumber: string
+  phone: string
 }
 
 export interface Status {

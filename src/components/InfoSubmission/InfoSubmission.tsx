@@ -74,6 +74,7 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
 
   const getapplicants = async (): Promise<void> => {
     const applicant = await getClient(applicantId)
+    console.log(applicant)
     setName(applicant.name)
     setAccountID(applicantId)
     setAddress(applicant.propertyAddress)
@@ -89,7 +90,6 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
     setEligibilityQuestions(info.eligibilityQuestions)
     setDocumentQuestions(info.documents)
     setOtherQuestions(info.otherQuestions)
-    console.log(info.documents[0].answer)
   }
 
   const getEmptyBoxes = (): void => {
@@ -263,7 +263,7 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
                     ? <div className={classes.last_item}>
                 <Button
                 startIcon={<Edit />}
-                onClick={async () => await updateInfo(false)}
+                onClick={() => setFormEditable(!formEditable)}
                 variant="contained"
                 color = "primary"
                 style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 1.2rem', borderRadius: '8px' }}
