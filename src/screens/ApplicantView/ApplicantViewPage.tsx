@@ -3,7 +3,7 @@ import ApplicantTable from '../../components/ApplicantTable'
 import classes from './ApplicantView.module.css'
 import urls from '../../../utils/urls'
 import ApplicantNavLink from '../../components/ApplicantNavLink'
-import { getAll } from '../../actions/Client'
+import { getUtilityCompany } from '../../actions/Client'
 import { Applicant } from 'src/types/Applicant'
 
 const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Element => {
@@ -24,7 +24,7 @@ const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Ele
 
 ApplicantViewPage.getInitialProps = async () => {
   // TODO: change to get only the applicants for the particular utility company
-  const applicants = await getAll()
+  const applicants = await getUtilityCompany()
   return { applicants: applicants }
 }
 

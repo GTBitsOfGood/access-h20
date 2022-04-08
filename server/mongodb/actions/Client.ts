@@ -52,3 +52,9 @@ export async function removeDocument (document: File, accountId: Client['account
   }
   client.save()
 }
+
+export async function getUtilityApplicants (utilityCompany: Client['utilityCompany']): Promise<void> {
+  await mongoDB()
+  const clients = await ClientSchema.findOne({ utilityCompany })
+  return clients
+}

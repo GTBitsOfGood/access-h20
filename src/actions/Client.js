@@ -86,3 +86,18 @@ export const getClient = async (accountId) =>
       }
       return json.payload
     })
+
+export const getUtilityCompany = async () =>
+  fetch(urls.baseUrl + urls.api.company.getCompany, {
+    method: 'GET'
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json == null) {
+        throw new Error('Could not connect to API')
+      }
+      if (!json.success) {
+        throw new Error(json.message)
+      }
+      return json.payload
+    })
