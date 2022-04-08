@@ -276,7 +276,7 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
                   <Button
                   type="button"
                   variant = "text"
-                  style={{ textTransform: 'none', padding: '0.3rem 2rem', borderRadius: '8px' }}
+                  style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
                   onClick = {handleClick}>
                       Cancel
                   </Button>
@@ -284,7 +284,7 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
                   type="button"
                   variant = "contained"
                   color = "primary"
-                  style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', borderRadius: '8px' }}
+                  style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
                   onClick = {(() => console.log(updateInfo(true)))}>
                       Save
                   </Button>
@@ -490,14 +490,14 @@ const InfoSubmissionView = ({ applicantId, isUtilityView }: PropTypes): JSX.Elem
             type="button"
             variant = "contained"
             color = "primary"
-            style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', borderRadius: '8px' }}
+            style={{ textTransform: 'none', background: '#3f78b5', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {(() => console.log(updateInfo(true)))}>
                 Save
             </Button>
             <Button
             type="button"
             variant = "text"
-            style={{ textTransform: 'none', padding: '0.3rem 2rem', borderRadius: '8px' }}
+            style={{ textTransform: 'none', padding: '0.3rem 2rem', fontWeight: '400', borderRadius: '8px' }}
             onClick = {handleClick}>
                 Cancel
             </Button>

@@ -19,12 +19,12 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
   const [companyN, setCompanyN] = useState('')
   const [newemail, setEmail] = useState('')
   const [newphone, setPhone] = useState('')
-  const [newnotes] = useState('')
   const [newpassword, setPassword] = useState('')
   const [newconfirmpassword, setConfirmPassword] = useState('')
 
   const addPartner = async (): Promise<void> => {
     // TODO: implement backend submissions
+    setPhone(newphone)
     await signUp(newemail, newpassword)
     setShowAdd(false)
   }
@@ -93,8 +93,8 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
                 />
               </div>
             </div>
-            {(newpassword.length != 8) && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* The password you entered must contains at lease 8 characters</FormLabel>}
-            {(newpassword != newconfirmpassword) && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* The password you entered do not match, please check your input again</FormLabel>}
+            {(newpassword.length < 8) && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* The password you entered must contains at lease 8 characters</FormLabel>}
+            {(newpassword !== newconfirmpassword) && <FormLabel style={{ fontWeight: 'bold', marginTop: '2rem' }} error>* The password you entered do not match, please check your input again</FormLabel>}
                 <Stack
                   className={classes.formSubmitContainer}
                   direction="row-reverse"
