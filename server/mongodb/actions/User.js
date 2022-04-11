@@ -28,6 +28,7 @@ export async function login({ email, password }) {
 }
 
 // uncomment to create admin login
+
 // export async function signUp({ email, password }) {
 //   if (!email || !password) throw new Error(errors.user.MISSING_INFO)
 
@@ -109,6 +110,10 @@ export async function signUp({ email, password, utilityCompanyId }) {
 
 export async function update({ id, ...attributes }) {
   if (!id) throw new Error(errors.user.MISSING_INFO)
+
+  if (attributes.password) {
+    attributes.password = await bcrypt.hash(attributes.password, SALT_ROUNDS)
+  }
 
   await mongoDB()
   const user = await User.findOne({ _id: id })

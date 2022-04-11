@@ -40,7 +40,7 @@ export const getCompany = async (accountId) =>
       return json.payload
     })
 
-export const update = async (updatedCompany) =>
+export const updateCompany = async (updatedCompany) =>
   fetch(urls.baseUrl + urls.api.company.update, {
     method: 'POST',
     mode: 'same-origin',

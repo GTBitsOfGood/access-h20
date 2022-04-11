@@ -35,7 +35,12 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="transparent" elevation={0} className={classes.root}>
+      <AppBar
+        position="static"
+        color="transparent"
+        elevation={0}
+        className={classes.root}
+      >
         <Toolbar>
           <div className={classes.logo1} />
           <div className={classes.logo2} />
@@ -49,11 +54,13 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
           {!isUtilityView && (
             <span className={classes.editForm}>
               <Link
-                href='/accessh2oView/editform'
+                href="/accessh2oView/editform"
                 underline="none"
-                color="inherit">
+                color="inherit"
+              >
                 Edit Form
-              </Link></span>
+              </Link>
+            </span>
           )}
           {!isUtilityView && (
             <span
@@ -100,7 +107,8 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
               >
                 <MenuItem
                   component="a"
-                  href={urls.pages.profile + '/' + isUtilityView.toString()}
+                  // href={urls.pages.profile + '/' + isUtilityView.toString()}
+                  href={urls.pages.profile}
                 >
                   {' '}
                   Profile
