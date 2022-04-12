@@ -25,7 +25,7 @@ export const UtilityPartnerModal = ({ shouldShowModal, onClose }: PropTypes): JS
   const addPartner = async (): Promise<void> => {
     // TODO: implement backend submissions
     setPhone(newphone)
-    await signUp(newemail, newpassword)
+    await signUp(newemail, newpassword, companyN)
     setShowAdd(false)
   }
 

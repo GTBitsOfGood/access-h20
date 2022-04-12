@@ -56,7 +56,7 @@ export async function login({ email, password }) {
 //   return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions)
 // }
 
-export async function signUp({ email, password, utilityCompanyId }) {
+export async function signUp({ email, password, utilityCompanyName }) {
   if (!email || !password) throw new Error(errors.user.MISSING_INFO)
 
   const validEmail = validator.validate(email)
@@ -64,9 +64,9 @@ export async function signUp({ email, password, utilityCompanyId }) {
   if (password.length < 8) throw new Error(errors.user.INVALID_PASSWORD)
 
   await mongoDB()
-  let utilityCompany = CompanySchema.findById(utilityCompanyId)
+  // let utilityCompany = await CompanySchema.findById(utilityCompanyId)
 
-  if (!utilityCompany) throw new Error(errors.company.UNAVAILABLE_COMPANY)
+  // if (!utilityCompany) throw new Error(errors.company.UNAVAILABLE_COMPANY)
 
   let user = await User.findOne({ email })
   if (user) throw new Error(errors.user.UNAVAILABLE_EMAIL)
@@ -91,17 +91,28 @@ export async function signUp({ email, password, utilityCompanyId }) {
   user = await User.create({
     email,
     password: hashedPassword,
-    isUtilityCompany: false
+    isUtilityCompany: true
   })
 
   if (!user) throw new Error(errors.user.INVALID_ATTRIBUTES)
 
-  utilityCompany = await CompanySchema.updateOne(
-    { _id: utilityCompanyId },
-    { accountId: user._id }
-  )
+  let utilityCompany = await CompanySchema.create({
+    accountId: user._id,
+    name: utilityCompanyName,
+    email: email,
+    number: '1234',
+    address: '1234',
+    city: '12345',
+    state: '12345',
+    zip: '12346'
+  })
 
   if (!utilityCompany) throw new Error(errors.company.INVALID_ATTRIBUTES)
+
+  await User.updateOne(
+    { _id: user._id },
+    { utilityCompany: utilityCompany._id }
+  )
 
   const jwtPayload = { id: user._id, email: user.email }
   const jwtOptions = { expiresIn: TOKEN_DURATION }

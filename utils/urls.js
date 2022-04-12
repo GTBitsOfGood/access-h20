@@ -49,7 +49,8 @@ export default {
       getAll: '/api/client/get-all',
       addClient: '/api/client/add',
       changeStatus: '/api/client/change-status',
-      removeClient: '/api/client/remove'
+      removeClient: '/api/client/remove',
+      getUtilityApplicants: '/api/client/get-utilityapplicants'
     },
     notes: {
       testfunctiontwo: '/api/notes/exampletwo',

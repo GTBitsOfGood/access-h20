@@ -4,7 +4,7 @@ import urls from '../../utils/urls'
 
 // const authContext = useAuth()
 
-export const signUp = (email, password) =>
+export const signUp = (email, password, utilityCompanyName) =>
   fetch(urls.baseUrl + urls.api.user.signUp, {
     method: 'post',
     mode: 'same-origin',
@@ -14,7 +14,8 @@ export const signUp = (email, password) =>
     },
     body: JSON.stringify({
       email,
-      password
+      password,
+      utilityCompanyName
     })
   })
     .then((response) => response.json())
@@ -46,7 +47,6 @@ export const updateUser = (updatedUser) =>
       } else if (!json.success) {
         throw new Error(json.message)
       }
-
       return json.payload
     })
 

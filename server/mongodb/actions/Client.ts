@@ -1,5 +1,6 @@
 import ClientSchema from '../models/Client'
 import { Client, Status } from '../../models/Client'
+import CompanySchema from '../models/Company'
 import mongoDB from '../index'
 
 export async function addClient (client: Client): Promise<Client> {
@@ -52,4 +53,13 @@ export async function removeDocument (document: File, accountId: Client['account
     docs.splice(index, 1)
   }
   client.save()
+}
+
+export async function getUtilityApplicants (utilityCompany: Client['utilityCompany']): Promise<Client[]> {
+  await mongoDB()
+
+  const utility = await CompanySchema.findOne({ accountId: utilityCompany })
+  const clients = await ClientSchema.find({ utilityCompany: utility.name })
+
+  return clients
 }
