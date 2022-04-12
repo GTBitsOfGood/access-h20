@@ -11,6 +11,8 @@ import { UtilityPartnerModal } from 'src/components/UtilityPartnerModal/UtilityP
 import { useState } from 'react'
 import urls from '../../../utils/urls'
 import { Link } from '@mui/material'
+import { logout } from 'src/actions/User'
+import Router from 'next/router'
 
 interface PropTypes {
   isUtilityView: boolean
@@ -31,6 +33,14 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
 
   const handleClose = (): void => {
     setAnchorEl(null)
+  }
+
+  const handleLogout = (): void => {
+    logout()
+      .then(async () => {
+        return await Router.replace(urls.pages.login)
+      })
+      .catch(() => window.alert('An error occurred while trying to logout!'))
   }
 
   return (
@@ -113,7 +123,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
                   {' '}
                   Profile
                 </MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
           )}

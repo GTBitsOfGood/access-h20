@@ -14,7 +14,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons'
 const LoginPage = (): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
   const [isRegistering] = useState(false)
 
   const handleClickShowPassword = (): void => setShowPassword(!showPassword)

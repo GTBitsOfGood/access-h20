@@ -105,7 +105,7 @@ const ProfilePage = ({
             </a>
           )}
           {isUtilityView && (
-            <a className={classes.dashboard} href="/utility/applicants">
+            <a className={classes.dashboard} href="/utilityView/utilityapplicants">
               <b>Back to Dashboard</b>
             </a>
           )}
