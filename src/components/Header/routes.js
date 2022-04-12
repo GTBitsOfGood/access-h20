@@ -9,13 +9,13 @@ const routes = [
   },
   {
     name: 'AccessH20 View',
-    link: urls.pages.accessh20applicants,
+    link: urls.pages.accessh2oView.applicants,
     auth: false,
     atEnd: false
   },
   {
     name: 'Utility View',
-    link: urls.pages.utilityapplicants,
+    link: urls.pages.utilityView.applicants,
     auth: false,
     atEnd: false
   },

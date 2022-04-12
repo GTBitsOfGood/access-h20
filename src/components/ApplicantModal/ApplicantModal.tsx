@@ -6,6 +6,18 @@ import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import { AddRemoveModal } from '../AddRemoveModal/AddRemoveModal'
 import { Select } from '@material-ui/core'
+import { Client } from 'server/models/Client'
+import { ApplicantStatus } from 'src/types/Applicant'
+import { addClient } from 'src/actions/Client'
+
+import { getEligibilityQuestions, getDocumentQuestions, getOtherQuestions } from 'src/actions/FormQuestions'
+import { addInfo } from 'src/actions/InfoSubmission'
+
+import { eligibilityQuestion, eligibilityQA } from 'server/models/EligibilityQuestion'
+import { documentQuestion, documentQA } from 'server/models/DocumentQuestion'
+import { otherQuestion, otherQA } from 'server/models/OtherQuestion'
+import { Info } from 'server/models/InfoSubmission'
+import FormErrorModal from '../FormErrorModal'
 
 interface PropTypes {
   shouldShowModal: boolean
@@ -16,20 +28,25 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   /* eslint-disable */
   const firstNameTextInput= React.useRef(null)
   const lastNameTextInput = React.useRef(null)
+  const accountIDTextInput = React.useRef(null)
   const utilCompanyNameTextInput = React.useRef(null)
   const addressTextInput = React.useRef(null)
   const zipTextInput = React.useRef(null)
   const cityNameTextInput = React.useRef(null)
-  const notesTextInput = React.useRef(null)
   const stateNameTextInput = React.useRef(null)
   const phoneNumTextInput = React.useRef(null)
   /* eslint-enable */
 
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
+  const [showErrorFormModal, setShowErrorModal] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const [fName, setfName] = useState('')
   const [lName, setlName] = useState('')
+  const [accountID, setAccountID] = useState('')
   /* eslint-disable */
+  const [note, setNote] = useState('')
+  const [state, setState] = useState('')
   const [uCompany, setuCompany] = useState('')
   const [myphoneNumber, setmyPhoneNumber] = useState('')
   const [propAddress, setpropAddress] = useState('')
@@ -37,23 +54,74 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
   const [mycity, setmyCity] = useState('')
   /* eslint-enable */
 
-  function handleAdd (): void {
-    // firstNameTextInput.current.value = "";
-    // lastNameTextInput.current.value = "";
-    // utilCompanyNameTextInput.current.value = ""
-    // addressTextInput.current.value = ""
-    // zipTextInput.current.value = ""
-    // cityNameTextInput.current.value = ""
-    // notesTextInput.current.value = ""
-    // stateNameTextInput.current.value = ""
-    // phoneNumTextInput.current.value = ""
-    setShowAddRemoveModal(true)
+  async function handleAdd (): Promise<void> {
+    const data: Client = {
+      accountId: accountID,
+      name: fName + ' ' + lName,
+      status: ApplicantStatus.AwaitingAccessH2O,
+      phone: myphoneNumber,
+      propertyAddress: propAddress,
+      utilityCompany: uCompany,
+      applied: new Date()
+    }
+
+    setIsSubmitted(true)
+
+    if (fName !== '' && lName !== '' && accountID !== '' && uCompany !== '' && myphoneNumber !== '' && propAddress !== '' && myzip !== '') {
+      const eligibilityQuestionsPromise = getEligibilityQuestions()
+      const documentQuestionsPromise = getDocumentQuestions()
+      const otherQuestionsPromise = getOtherQuestions()
+
+      const values = await Promise.all([eligibilityQuestionsPromise, documentQuestionsPromise, otherQuestionsPromise])
+      const eligibilityQuestions = values[0]
+      const documentQuestions = values[1]
+      const otherQuestions = values[2]
+
+      const eligibilityQuestionAnswer: eligibilityQA[] = eligibilityQuestions.map((question: eligibilityQuestion) => {
+        return {
+          question: question,
+          answer: false
+        }
+      })
+
+      const documentQuestionAnswer: documentQA[] = documentQuestions.map((question: documentQuestion) => {
+        return {
+          question: question,
+          answer: Buffer.from('')
+        }
+      })
+
+      const otherQuestionAnswer: otherQA[] = otherQuestions.map((question: otherQuestion) => {
+        return {
+          question: question,
+          answer: ''
+        }
+      })
+
+      const info: Info = {
+        accountId: accountID,
+        eligibilityQuestions: eligibilityQuestionAnswer,
+        documents: documentQuestionAnswer,
+        otherQuestions: otherQuestionAnswer
+      }
+
+      console.log(data)
+      console.log(info)
+
+      await addInfo(info)
+      await addClient(data)
+
+      setShowAddRemoveModal(true)
+    } else {
+      setShowErrorModal(true)
+    }
+    //  window.location.reload()
   }
 
   return (
     <div>
       <div>
-        <Modal open={shouldShowModal} onClose={onClose}>
+        <Modal className={classes.modalOverflow} open={shouldShowModal} onClose={onClose}>
           <div className={classes.modalwrapper}>
             <div className={classes.modalheader}>
               <h3 className={classes.addcustomer}>Add Customer</h3>
@@ -77,6 +145,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="first_name"
                     label="First Name"
                     variant="outlined"
+                    required={true}
+                    error={fName === '' && isSubmitted}
+                    helperText={fName === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={firstNameTextInput}
                     onChange={(e) => setfName(e.target.value)}
                   />
@@ -84,6 +155,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="last-name"
                     label="Last Name"
                     variant="outlined"
+                    required={true}
+                    error={lName === '' && isSubmitted}
+                    helperText={lName === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={lastNameTextInput}
                     onChange={(e) => setlName(e.target.value)}
                   />
@@ -93,13 +167,19 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="account-id"
                     label="Account ID"
                     variant="outlined"
-                    inputRef={lastNameTextInput}
-                    onChange={(e) => setuCompany(e.target.value)}
+                    required={true}
+                    error={accountID === '' && isSubmitted}
+                    helperText={accountID === '' && isSubmitted ? 'This field is required.' : ''}
+                    inputRef={accountIDTextInput}
+                    onChange={(e) => setAccountID(e.target.value)}
                   />
                   <TextField
                     id="utility-company"
                     label="Utility Company"
                     variant="outlined"
+                    required={true}
+                    error={uCompany === '' && isSubmitted}
+                    helperText={uCompany === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={utilCompanyNameTextInput}
                     onChange={(e) => setuCompany(e.target.value)}
                   />
@@ -110,6 +190,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     label="Phone Number"
                     inputRef={phoneNumTextInput}
                     variant="outlined"
+                    required={true}
+                    error={myphoneNumber === '' && isSubmitted}
+                    helperText={myphoneNumber === '' && isSubmitted ? 'This field is required.' : ''}
                     style = {{ width: 200 }}
                     onChange={(e) => setmyPhoneNumber(e.target.value)}
                   />
@@ -118,6 +201,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     label="Property Address"
                     variant="outlined"
                     inputRef={addressTextInput}
+                    required={true}
+                    error={propAddress === '' && isSubmitted}
+                    helperText={propAddress === '' && isSubmitted ? 'This field is required.' : ''}
                     style = {{ width: 450 }}
                     onChange={(e) => setpropAddress(e.target.value)}
                   />
@@ -127,6 +213,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     id="zip-code"
                     label="Zip/Postal Code"
                     variant="outlined"
+                    required={true}
+                    error={myzip === '' && isSubmitted}
+                    helperText={myzip === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={zipTextInput}
                     style = {{ width: 200 }}
                     onChange={(e) => setmyZip(e.target.value)}
@@ -134,11 +223,14 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                   <TextField
                     id="city"
                     label="City"
+                    required={true}
+                    error={mycity === '' && isSubmitted}
+                    helperText={mycity === '' && isSubmitted ? 'This field is required.' : ''}
                     inputRef={cityNameTextInput}
                     variant="outlined"
                     onChange={(e) => setmyCity(e.target.value)}
                   />
-                  <Select className={classes.selector} variant="outlined" style = {{ width: 120 }} label="State">
+                  <Select onChange={(e) => setState(e.target.value as string)} className={classes.selector} variant="outlined" style = {{ width: 120 }} label="State">
                     <option value=""></option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -208,20 +300,9 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
                     <option value="WY">Wyoming</option>
                   </Select>
                 </div>
-                <div>
-                  <TextField
-                    id="notes-multiline"
-                    label="Notes (Optional)"
-                    multiline
-                    rows={4}
-                    variant="outlined"
-                    inputRef={notesTextInput}
-                    style = {{ width: 665 }}
-                  />
-                </div>
                 <div className={classes.modalfooter}>
                   <Button
-                  onClick={() => handleAdd()}
+                  onClick={(async () => await handleAdd())}
                   variant="contained"
                   style={{
                     backgroundColor: '#3F78B5',
@@ -239,6 +320,10 @@ export const ApplicantModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Ele
               modalAction={'added'}
               shouldShowModal={showAddRemoveModal}
               onClose={() => setShowAddRemoveModal(false)}
+            />
+            <FormErrorModal
+              shouldShowModal={showErrorFormModal}
+              onClose={() => setShowErrorModal(false)}
             />
           </div>
         </Modal>

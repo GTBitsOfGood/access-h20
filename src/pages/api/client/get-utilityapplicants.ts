@@ -1,7 +1,7 @@
 import { getUtilityApplicants } from "server/mongodb/actions/Client";
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => getUtilityApplicants(req.body.utilityCompany as string).then((clients) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => getUtilityApplicants(req.body as string).then((clients) => {
     // console.log('src/pages/api/get-all: ' + JSON.stringify(clients))
     res.status(200)
     res.send({

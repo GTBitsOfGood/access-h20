@@ -15,15 +15,19 @@ export default {
   dbUrl: process.env.MONGO_DB ?? 'mongodb://localhost:27017',
   pages: {
     index: '/',
-    applicants: '/applicants',
-    utilityapplicants: '/utilityapplicants',
-    accessh20applicants: '/accessh20applicants',
-    infosubmit: '/infosubmit',
-    editform: '/editform',
     profile: '/profile',
     login: '/login',
     app: {
       home: '/app'
+    },
+    accessh2oView: {
+      applicants: '/accessh2oView/accessh20applicants',
+      infosubmit: '/accessh2oView/infosubmit',
+      editform: '/accessh2oView/editform'
+    },
+    utilityView: {
+      applicants: '/utilityView/utilityapplicants',
+      infosubmit: '/utilityView/infosubmit'
     }
   },
   api: {
@@ -44,7 +48,9 @@ export default {
       getClient: '/api/client/get-client',
       getAll: '/api/client/get-all',
       addClient: '/api/client/add',
-      changeStatus: '/api/client/change-status'
+      changeStatus: '/api/client/change-status',
+      removeClient: '/api/client/remove',
+      getUtilityApplicants: '/api/client/get-utilityapplicants'
     },
     notes: {
       testfunctiontwo: '/api/notes/exampletwo',

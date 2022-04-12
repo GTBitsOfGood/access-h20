@@ -6,7 +6,6 @@ import TextField from '@material-ui/core/TextField'
 import { Divider, Link } from '@mui/material'
 import Modal from '@mui/material/Modal'
 import { useState, useEffect } from 'react'
-import urls from 'utils/urls'
 import { Note } from 'server/models/Note'
 import { addNote, getNote } from 'src/actions/Note'
 
@@ -14,11 +13,13 @@ interface PropTypes {
   shouldShowModal: boolean
   onClose: () => void
   accountID: string
+  infoSubmissionEndpoint: string
+
 }
 
 const starterNote: Note[] = []
 
-export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): JSX.Element => {
+export const NotesModal = ({ shouldShowModal, onClose, accountID, infoSubmissionEndpoint }: PropTypes): JSX.Element => {
   const [notes, setNotes] = useState(starterNote)
   const [newNote, setNewNote] = useState('')
   const [showAdd, setShowAdd] = useState(false)
@@ -67,7 +68,7 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
                 <div>
                   <div className={classes.noteHeader}>
                     <p className={classes.sender}>{note.sender}</p>
-                    <p className={classes.date}>{new Date(note.date).getMonth()}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
+                    <p className={classes.date}>{new Date(note.date).getMonth() + 1}/{new Date(note.date).getDate()}/{new Date(note.date).getFullYear()}</p>
                   </div>
                   <p className={classes.message}>{note.message}</p>
                   <Divider />
@@ -92,9 +93,8 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID }: PropTypes): 
                 </div>
                 : <button onClick = {() => setShowAdd(true)} className={classes.plusNote}>+ Add Note</button>
               }
-              {/* TODO: Once table & infoSubmit are linked to backend, change link to match correct customer info */}
               <div className={classes.customer}>
-                <Link href={urls.pages.infosubmit + '/' + accountID} className={classes.customerButton}>View Customer Info</Link>
+                <Link color="white" underline="none" href={infoSubmissionEndpoint + '/' + accountID} className={classes.customerButton}>View Customer Info</Link>
               </div>
             </div>
           </div>
