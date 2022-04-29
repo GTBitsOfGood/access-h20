@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/strict-boolean-expressions */
 
 import React, { useState } from 'react'
-import Router, { useRouter } from 'next/router'
-import { login } from '../../actions/User'
+import Router from 'next/router'
+import { login, getCurrentUser } from '../../actions/User'
 import urls from '../../../utils/urls'
 import classes from './LoginPage.module.css'
 import TextField from '@material-ui/core/TextField'
@@ -11,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton'
 import { OutlinedInput } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 
-import { getCurrentUser } from '../../actions/User'
 import { NextPageContext } from 'next'
 
 const LoginPage = (): JSX.Element => {
@@ -38,13 +37,11 @@ const LoginPage = (): JSX.Element => {
           async (json) => {
             const user = await getCurrentUser(json)
 
-            if (Router.query.returnUrl) {
+            if (Router.query.returnUrl !== null) {
               await Router.push(Router.query.returnUrl as string)
-            }
-            else if (!user.isUtilityCompany) {
+            } else if (!user.isUtilityCompany) {
               await Router.push(urls.pages.accessh2oView.applicants)
-            }
-            else {
+            } else {
               await Router.push(urls.pages.utilityView.applicants)
             }
           }
@@ -109,7 +106,6 @@ const LoginPage = (): JSX.Element => {
   )
 }
 
-
 LoginPage.getInitialProps = async (ctx: NextPageContext) => {
   const req = ctx.req
   const user =
@@ -117,20 +113,19 @@ LoginPage.getInitialProps = async (ctx: NextPageContext) => {
       ? await getCurrentUser(req.headers?.cookie)
       : await getCurrentUser(null)
 
-  if (user && ctx.res) {
+  if (user && (ctx.res != null)) {
     if (!user.isUtilityCompany) {
       ctx.res.writeHead(302, {
         Location: urls.pages.accessh2oView.applicants,
-        'Content-Type': 'text/html; charset=utf-8',
-      });
-      ctx.res.end();
+        'Content-Type': 'text/html; charset=utf-8'
+      })
+      ctx.res.end()
       // Router.push(urls.pages.accessh2oView.applicants)
-    }
-    else {
+    } else {
       ctx.res.writeHead(302, {
         Location: urls.pages.utilityView.applicants,
-        'Content-Type': 'text/html; charset=utf-8',
-      });
+        'Content-Type': 'text/html; charset=utf-8'
+      })
       ctx.res.end()
       // Router.push(urls.pages.utilityView.applicants)
     }
