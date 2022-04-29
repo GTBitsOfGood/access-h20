@@ -34,7 +34,7 @@ const LoginPage = (): JSX.Element => {
     return (
       login(email, password)
         .then(
-          async (json) => {
+          async () => {
             /*
             console.log(json)
 
