@@ -35,7 +35,8 @@ const LoginPage = (): JSX.Element => {
       login(email, password)
         .then(
           async (json) => {
-            const user = await getCurrentUser(json)
+            /*
+            console.log(json)
 
             if (Router.query.returnUrl !== null) {
               await Router.push(Router.query.returnUrl as string)
@@ -43,7 +44,8 @@ const LoginPage = (): JSX.Element => {
               await Router.push(urls.pages.accessh2oView.applicants)
             } else {
               await Router.push(urls.pages.utilityView.applicants)
-            }
+            } */
+            Router.reload()
           }
         )
         .catch((error) => window.alert(error.message))
