@@ -1,35 +1,35 @@
-import urls from "../../../utils/urls";
+import urls from '../../../utils/urls'
 
 const routes = [
   {
-    name: "Home",
+    name: 'Home',
     link: urls.pages.index,
     auth: false,
-    atEnd: false,
+    atEnd: false
   },
   {
-    name: "Applicant View",
-    link: urls.pages.applicants,
+    name: 'AccessH20 View',
+    link: urls.pages.accessh2oView.applicants,
     auth: false,
-    atEnd: false,
+    atEnd: false
   },
   {
-    name: "Info Submission",
-    link: urls.pages.infosubmit,
+    name: 'Utility View',
+    link: urls.pages.utilityView.applicants,
     auth: false,
-    atEnd: false,
+    atEnd: false
   },
   {
-    name: "Login",
+    name: 'Login',
     link: urls.pages.login,
     auth: false,
-    atEnd: true,
+    atEnd: true
   },
   {
-    name: "App Home",
+    name: 'App Home',
     link: urls.pages.app.home,
-    auth: true,
-  },
-];
+    auth: true
+  }
+]
 
-export default routes;
+export default routes

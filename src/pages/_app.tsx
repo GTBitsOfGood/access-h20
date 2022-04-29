@@ -1,12 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import App from "next/app";
-import Head from "next/head";
-import Router from "next/router";
-import { getCurrentUser } from "../actions/User";
-import urls from "../../utils/urls";
+import React from 'react'
+import App, { AppContext } from 'next/app'
+import Head from 'next/head'
+import Router from 'next/router'
+import { getCurrentUser } from '../actions/User'
+import urls from '../../utils/urls'
+import RouteGuard from 'src/components/RouteGuard/RouteGuard'
+import { CookieProvider } from 'src/contexts/CookieContext'
 
-const MyApp = ({ Component, pageProps, currentUser }) => (
+const MyApp = ({
+  Component,
+  pageProps,
+  // currentUser = null
+  cookies = null
+}: PropTypes): JSX.Element => (
   <>
     <Head>
       <title>AccessH2O</title>
@@ -14,63 +20,73 @@ const MyApp = ({ Component, pageProps, currentUser }) => (
     <div>
       {/* <Header loggedIn={currentUser != null} currentRoute={router.asPath} /> */}
       <div>
-        <Component {...pageProps} currentUser={currentUser} />
+        <CookieProvider>
+          <RouteGuard cookies={cookies}>
+            {/* <Component {...pageProps} currentUser={currentUser} /> */}
+            <Component {...pageProps} />
+          </RouteGuard>
+        </CookieProvider>
       </div>
     </div>
   </>
-);
+)
 
-MyApp.getInitialProps = async (appContext) => {
-  const { res } = appContext.ctx;
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  const { res } = appContext.ctx
 
-  const appProps = await App.getInitialProps(appContext);
+  const appProps = await App.getInitialProps(appContext)
 
-  const cookies = appContext.ctx.req ? appContext.ctx.req.headers.cookie : null;
+  const cookies =
+    appContext.ctx.req != null ? appContext.ctx.req.headers.cookie : null
 
-  const route = appContext.ctx.asPath;
+  const route = appContext.ctx.asPath
 
-  return getCurrentUser(cookies)
-    .then((user) => {
-      if (route === "/login") {
-        if (res) {
-          res.writeHead(301, { Location: urls.pages.app.home });
-          res.end();
-        } else {
-          return Router.replace(urls.pages.app.home);
-        }
-      }
+  return {
+    ...appProps,
+    cookies: cookies
+  }
 
-      return {
-        ...appProps,
-        currentUser: user,
-      };
-    })
-    .catch(() => {
-      if (route.startsWith("/test")) {
-        if (res) {
-          res.writeHead(301, { Location: urls.pages.index });
-          res.end();
-        } else {
-          return Router.replace(urls.pages.index);
-        }
-      }
+  // return await getCurrentUser(cookies)
+  //   // @ts-ignore
+  //   .then((user) => {
+  //     // console.log('cookies: ' + cookies)
+  //     // if (route === '/login') {
+  //     //   if (res != null) {
+  //     //     res.writeHead(301, { Location: urls.pages.app.home })
+  //     //     res.end()
+  //     //   } else {
+  //     //     return Router.replace(urls.pages.login)
+  //     //   }
+  //     // }
+  //     return {
+  //       ...appProps,
+  //       currentUser: user
+  //     }
+  //   })
+  //   // @ts-ignore
+  //   .catch(() => {
+  //     if (route?.startsWith('/test')) {
+  //       if (res != null) {
+  //         res.writeHead(301, { Location: urls.pages.index })
+  //         res.end()
+  //       } else {
+  //         return Router.replace(urls.pages.index)
+  //       }
+  //     }
 
-      return appProps;
-    });
-};
+  //     return appProps
+  //   })
+}
 
-MyApp.propTypes = {
-  Component: PropTypes.any.isRequired,
-  pageProps: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
-  currentUser: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-  }),
-};
+interface PropTypes {
+  Component: any
+  pageProps: object
+  router: object
+  // currentUser: {
+  //   id: string
+  //   email: string
+  // } | null
+  cookies: string | null
+}
 
-MyApp.defaultProps = {
-  currentUser: null,
-};
-
-export default MyApp;
+export default MyApp

@@ -1,8 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import isString from "lodash/isString";
-import isObject from "lodash/isPlainObject";
+import React from 'react'
+// import Link from 'next/link'
+import { Link } from '@mui/material'
+// import isString from 'lodash/isString'
+import isObject from 'lodash/isPlainObject'
+
+interface PropTypes {
+  href: string
+  hrefParts?: { [key: string]: any }
+  children: Node
+  className?: string | undefined
+}
 
 /**
  * Component for routing to different pages
@@ -13,41 +20,36 @@ import isObject from "lodash/isPlainObject";
  * @param props.className - A classname that will be applied to the <a> tag if the child is a string
  * @param props.rest - The component can be passed any other prop from Next's Link component
  */
-const NavLink = ({ href, hrefParts, children, className, ...rest }) => {
-  const optionalProps = {};
+const NavLink = ({
+  href,
+  hrefParts = {},
+  children,
+  className = undefined,
+  ...rest
+}: PropTypes): JSX.Element => {
+  const optionalProps: any = {}
 
   if (hrefParts != null && isObject(hrefParts)) {
-    let as = href;
+    let as = href
 
     Object.keys(hrefParts).forEach((key) => {
-      as = as.replace(`[${key}]`, hrefParts[key]);
-    });
+      as = as.replace(`[${key}]`, hrefParts[key])
+    })
 
-    optionalProps.as = as;
+    optionalProps.as = as
   }
 
   return (
     <Link
       href={href}
-      passHref={children != null && !isString(children)}
-      {...optionalProps}
-      {...rest}
+      // passHref={children != null && !isString(children)}
+      // {...optionalProps}
+      // {...rest}
     >
-      {isString(children) ? <a className={className}>{children}</a> : children}
+      {/* {isString(children) ? <a className={className}>{children}</a> : children} */}
+      {children}
     </Link>
-  );
-};
+  )
+}
 
-NavLink.propTypes = {
-  href: PropTypes.string.isRequired,
-  hrefParts: PropTypes.object,
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-};
-
-NavLink.defaultProps = {
-  hrefParts: {},
-  className: null,
-};
-
-export default NavLink;
+export default NavLink
