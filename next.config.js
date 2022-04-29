@@ -12,14 +12,5 @@ module.exports = withImages({
       MONGO_DB: process.env.MONGO_DB,
       JWT_SECRET: process.env.JWT_SECRET
     }
-  },
-  async redirects () {
-    return [
-      {
-        source: '/',
-        destination: '/login',
-        permanent: true
-      }
-    ]
   }
 })
