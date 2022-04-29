@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-floating-promises */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Router from 'next/router'
 import { login, getCurrentUser } from '../../actions/User'
 import urls from '../../../utils/urls'
@@ -10,17 +10,32 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
 import { OutlinedInput } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-
-import { NextPageContext } from 'next'
+import { CookieContext } from '../../contexts/CookieContext'
 
 const LoginPage = (): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isRegistering] = useState(false)
+  const cookieContext = useContext(CookieContext)
 
   const handleClickShowPassword = (): void => setShowPassword(!showPassword)
   const handleMouseDownPassword = (): void => setShowPassword(!showPassword)
+
+  const redirect = (): void => {
+    getCurrentUser(cookieContext.cookie).then((user) => {
+      if (user) {
+        if (!user.isUtilityCompany) {
+          Router.push(urls.pages.accessh2oView.applicants)
+        } else {
+          Router.push(urls.pages.utilityView.applicants)
+        }
+      }
+    })
+  }
+
+  useEffect(() => {
+    redirect()
+  }, [])
 
   const handleSubmit = (event: { preventDefault: () => void }): any => {
     event.preventDefault()
@@ -35,17 +50,7 @@ const LoginPage = (): JSX.Element => {
       login(email, password)
         .then(
           async () => {
-            /*
-            console.log(json)
-
-            if (Router.query.returnUrl !== null) {
-              await Router.push(Router.query.returnUrl as string)
-            } else if (!user.isUtilityCompany) {
-              await Router.push(urls.pages.accessh2oView.applicants)
-            } else {
-              await Router.push(urls.pages.utilityView.applicants)
-            } */
-            Router.reload()
+            redirect()
           }
         )
         .catch((error) => window.alert(error.message))
@@ -58,9 +63,7 @@ const LoginPage = (): JSX.Element => {
       <form className={classes.form} onSubmit={handleSubmit}>
         <h2 className={classes.welcomeText}>Welcome!</h2>
         <h3 className={classes.infoText}>
-          {isRegistering
-            ? 'Register a new account and use our app today!'
-            : 'Login to an existing account.'}
+            Login to an existing account.
         </h3>
         <div className={classes.inputContainer}>
           <label htmlFor="email" className={classes.inputLabel}>
@@ -101,39 +104,11 @@ const LoginPage = (): JSX.Element => {
           />
         </div>
         <button className={classes.bttn} type="submit">
-          {isRegistering ? 'Register' : 'Login'}
+          Login
         </button>
       </form>
     </div>
   )
-}
-
-LoginPage.getInitialProps = async (ctx: NextPageContext) => {
-  const req = ctx.req
-  const user =
-    req != null
-      ? await getCurrentUser(req.headers?.cookie)
-      : await getCurrentUser(null)
-
-  if (user && (ctx.res != null)) {
-    if (!user.isUtilityCompany) {
-      ctx.res.writeHead(302, {
-        Location: urls.pages.accessh2oView.applicants,
-        'Content-Type': 'text/html; charset=utf-8'
-      })
-      ctx.res.end()
-      // Router.push(urls.pages.accessh2oView.applicants)
-    } else {
-      ctx.res.writeHead(302, {
-        Location: urls.pages.utilityView.applicants,
-        'Content-Type': 'text/html; charset=utf-8'
-      })
-      ctx.res.end()
-      // Router.push(urls.pages.utilityView.applicants)
-    }
-  }
-
-  return { }
 }
 
 export default LoginPage
