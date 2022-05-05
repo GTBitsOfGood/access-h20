@@ -26,11 +26,9 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID, infoSubmission
 
   // TODO utilize mongodb action getNotes()
   useEffect(() => {
-    const getNotes = async (): Promise<void> => {
-      const data = await getNote(accountID)
-      setNotes(starterNote.concat(data))
-    }
-    void getNotes()
+    getNote(accountID).then((notes) => {
+      setNotes(starterNote.concat(notes))
+    })
   }, [shouldShowModal])
 
   const handleTextChange = (e: any): void => {

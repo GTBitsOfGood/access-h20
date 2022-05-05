@@ -22,15 +22,17 @@ const LoginPage = (): JSX.Element => {
   const handleMouseDownPassword = (): void => setShowPassword(!showPassword)
 
   const redirect = (): void => {
-    getCurrentUser(cookieContext.cookie).then((user) => {
-      if (user) {
-        if (!user.isUtilityCompany) {
-          Router.push(urls.pages.accessh2oView.applicants)
-        } else {
-          Router.push(urls.pages.utilityView.applicants)
+    if (cookieContext.cookie) {
+      getCurrentUser(cookieContext.cookie).then((user) => {
+        if (user) {
+          if (!user.isUtilityCompany) {
+            Router.push(urls.pages.accessh2oView.applicants)
+          } else {
+            Router.push(urls.pages.utilityView.applicants)
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   useEffect(() => {
@@ -48,11 +50,7 @@ const LoginPage = (): JSX.Element => {
 
     return (
       login(email, password)
-        .then(
-          async () => {
-            redirect()
-          }
-        )
+        .then(() => window.location.reload())
         .catch((error) => window.alert(error.message))
     )
   }
