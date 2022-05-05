@@ -37,9 +37,7 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
 
   const handleLogout = (): void => {
     logout()
-      .then(async () => {
-        return await Router.replace(urls.pages.login)
-      })
+      .then(async () => await Router.replace(urls.pages.login))
       .catch(() => window.alert('An error occurred while trying to logout!'))
   }
 
