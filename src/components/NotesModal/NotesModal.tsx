@@ -28,6 +28,8 @@ export const NotesModal = ({ shouldShowModal, onClose, accountID, infoSubmission
   useEffect(() => {
     getNote(accountID).then((notes) => {
       setNotes(starterNote.concat(notes))
+    }).catch((error) => {
+      console.log(error)
     })
   }, [shouldShowModal])
 
