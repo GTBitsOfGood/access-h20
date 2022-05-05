@@ -24,11 +24,13 @@ const LoginPage = (): JSX.Element => {
   const redirect = (): void => {
     if (cookieContext.cookie) {
       getCurrentUser(cookieContext.cookie).then((user) => {
+        // console.log("USER")
+        // console.log(user)
         if (user) {
           if (!user.isUtilityCompany) {
-            Router.push(urls.pages.accessh2oView.applicants)
+            Router.replace(urls.pages.accessh2oView.applicants)
           } else {
-            Router.push(urls.pages.utilityView.applicants)
+            Router.replace(urls.pages.utilityView.applicants)
           }
         }
       })
@@ -50,7 +52,7 @@ const LoginPage = (): JSX.Element => {
 
     return (
       login(email, password)
-        .then(() => window.location.reload())
+        .then(() => redirect())
         .catch((error) => window.alert(error.message))
     )
   }
