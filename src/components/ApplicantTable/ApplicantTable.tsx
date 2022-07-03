@@ -28,10 +28,11 @@ import { NotesModal } from '../NotesModal/NotesModal'
 import { removeClient } from '../../actions/Client'
 import SearchIcon from '@mui/icons-material/Search'
 
+import urls from '../../../utils/urls'
+
 interface PropTypes {
   isUtilityView: boolean
   infoSubmissionEndpoint: string
-  applicants: Applicant[]
 }
 
 /**
@@ -51,8 +52,7 @@ const paginate = (
 
 const ApplicantTable = ({
   isUtilityView,
-  infoSubmissionEndpoint,
-  applicants
+  infoSubmissionEndpoint
 }: PropTypes): JSX.Element => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -61,7 +61,7 @@ const ApplicantTable = ({
   const [searchBy, setSearchBy] = useState('All')
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
-  const [filteredApplicants, setfilteredApplicants] = useState(applicants)
+  const [filteredApplicants, setfilteredApplicants] = useState<Applicant[]>([])
   const [accountID, setAcccountID] = useState('')
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null)
   const open = Boolean(anchorEl)
@@ -71,6 +71,44 @@ const ApplicantTable = ({
   const handleClose = (): void => {
     setAnchorEl(null)
   }
+
+  const [applicants, setApplicants] = useState<Applicant[]>([])
+
+  useEffect(() => {
+    if (!isUtilityView) {
+      fetch(urls.baseUrl + urls.api.client.getAll)
+        .then(async (res) => await res.json())
+        .then((retrievedApplicants) => {
+          retrievedApplicants = retrievedApplicants.payload as Applicant[]
+
+          console.log(retrievedApplicants)
+          setApplicants(retrievedApplicants)
+          setfilteredApplicants(retrievedApplicants)
+        })
+        .catch((error) => alert(error))
+    } else {
+      fetch(urls.baseUrl + urls.api.user.getCurrent)
+        .then(async (res) => await res.json())
+        .then((user) => {
+          user = user.payload
+          console.log(user)
+          fetch(urls.baseUrl + urls.api.client.getUtilityApplicants, {
+            method: 'post',
+            body: user.id
+          })
+            .then(async (res) => await res.json())
+            .then((retrievedApplicants) => {
+              retrievedApplicants = retrievedApplicants.payload as Applicant[]
+
+              console.log(retrievedApplicants)
+              setApplicants(retrievedApplicants)
+              setfilteredApplicants(retrievedApplicants)
+            })
+            .catch((error) => alert(error))
+        })
+        .catch((error) => alert(error))
+    }
+  }, [])
 
   useEffect(() => {
     const statusApplicants = applicants.filter(
@@ -420,7 +458,7 @@ const ApplicantTable = ({
         <TableFooter>
           <TableRow>
             <TablePagination
-              count={applicants.length}
+              count={filteredApplicants.length}
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               page={page}
