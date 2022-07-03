@@ -4,8 +4,6 @@ import classes from './ApplicantView.module.css'
 import urls from '../../../../utils/urls'
 import ApplicantNavLink from '../../../components/ApplicantNavLink'
 import { Applicant } from 'src/types/Applicant'
-import { getAll } from '../../../actions/Client'
-import { NextPageContext } from 'next'
 
 const ApplicantViewPage = ({
   applicants
@@ -22,19 +20,11 @@ const ApplicantViewPage = ({
         <ApplicantTable
           isUtilityView={false}
           infoSubmissionEndpoint={urls.pages.accessh2oView.infosubmit}
-          applicants={applicants}
         />
         <h1 className={classes.header2}></h1>
       </div>
     </>
   )
-}
-
-ApplicantViewPage.getInitialProps = async ({ req }: NextPageContext) => {
-  const applicants =
-    req != null ? await getAll(req.headers?.cookie) : await getAll()
-  // console.log('ApplicantViewPage, applicants: ', applicants)
-  return { applicants: applicants }
 }
 
 export default ApplicantViewPage
