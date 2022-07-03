@@ -19,7 +19,6 @@ const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Ele
         <ApplicantTable
           isUtilityView={true}
           infoSubmissionEndpoint={urls.pages.utilityView.infosubmit}
-          applicants={applicants}
         />
         <h1 className={classes.header2}></h1>
       </div>
