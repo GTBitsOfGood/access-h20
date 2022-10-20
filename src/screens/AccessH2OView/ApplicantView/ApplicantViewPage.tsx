@@ -14,9 +14,7 @@ const ApplicantViewPage = ({
 }): JSX.Element => {
   return (
     <>
-      <ApplicantNavLink
-        isUtilityView={false}
-      />
+      <ApplicantNavLink isUtilityView={false} />
       <div className={classes.root}>
         <h1 className={classes.header1}>Dashboard</h1>
         <ApplicantTable

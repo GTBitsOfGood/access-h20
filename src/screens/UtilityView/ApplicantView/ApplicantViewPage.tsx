@@ -8,12 +8,14 @@ import { Applicant } from 'src/types/Applicant'
 import { getCurrentUser } from 'src/actions/User'
 import { getUtilityApplicants } from 'src/actions/Client'
 
-const ApplicantViewPage = ({ applicants }: { applicants: Applicant[] }): JSX.Element => {
+const ApplicantViewPage = ({
+  applicants
+}: {
+  applicants: Applicant[]
+}): JSX.Element => {
   return (
     <>
-      <ApplicantNavLink
-        isUtilityView={true}
-      />
+      <ApplicantNavLink isUtilityView={true} />
       <div className={classes.root}>
         <h1 className={classes.header1}>Dashboard</h1>
         <ApplicantTable

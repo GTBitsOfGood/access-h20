@@ -47,6 +47,7 @@ const LoginPage = (): JSX.Element => {
       })
       .catch((error) => window.alert(error.message))
   }
+  console.log(urls)
 
   return (
     <div className={classes.root}>
