@@ -53,7 +53,7 @@ const LoginPage = (): JSX.Element => {
     <div className={classes.root}>
       <div className={classes.logo} />
       <form className={classes.form} onSubmit={handleSubmit}>
-        <h2 className={classes.welcomeText}>Welcome!!</h2>
+        <h2 className={classes.welcomeText}>Welcome!</h2>
         <h3 className={classes.infoText}>
           {isRegistering
             ? 'Register a new account and use our app today!'
