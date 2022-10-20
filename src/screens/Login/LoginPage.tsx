@@ -31,11 +31,9 @@ const LoginPage = (): JSX.Element => {
     //     .catch((error) => window.alert(error.message))
     // }
 
-    return (
-      login(email, password)
-        .then(
-          async () => {
-            /*
+    return login(email, password)
+      .then(async () => {
+        /*
             console.log(json)
 
             if (Router.query.returnUrl !== null) {
@@ -45,18 +43,16 @@ const LoginPage = (): JSX.Element => {
             } else {
               await Router.push(urls.pages.utilityView.applicants)
             } */
-            Router.reload()
-          }
-        )
-        .catch((error) => window.alert(error.message))
-    )
+        Router.reload()
+      })
+      .catch((error) => window.alert(error.message))
   }
 
   return (
     <div className={classes.root}>
       <div className={classes.logo} />
       <form className={classes.form} onSubmit={handleSubmit}>
-        <h2 className={classes.welcomeText}>Welcome!</h2>
+        <h2 className={classes.welcomeText}>Welcome!!</h2>
         <h3 className={classes.infoText}>
           {isRegistering
             ? 'Register a new account and use our app today!'
@@ -115,7 +111,7 @@ LoginPage.getInitialProps = async (ctx: NextPageContext) => {
       ? await getCurrentUser(req.headers?.cookie)
       : await getCurrentUser(null)
 
-  if (user && (ctx.res != null)) {
+  if (user && ctx.res != null) {
     if (!user.isUtilityCompany) {
       ctx.res.writeHead(302, {
         Location: urls.pages.accessh2oView.applicants,
@@ -133,7 +129,7 @@ LoginPage.getInitialProps = async (ctx: NextPageContext) => {
     }
   }
 
-  return { }
+  return {}
 }
 
 export default LoginPage
