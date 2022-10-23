@@ -128,8 +128,6 @@ LoginPage.getInitialProps = async (ctx: NextPageContext) => {
       // Router.push(urls.pages.utilityView.applicants)
     }
   }
-  console.log('login redirects')
-  console.log(user !== null && ctx.res !== null)
 
   return {}
 }
