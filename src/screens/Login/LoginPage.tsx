@@ -47,10 +47,10 @@ const LoginPage = (): JSX.Element => {
       })
       .catch((error) => window.alert(error.message))
   }
+  console.log(process.env.VERCEL_ENV)
   console.log(process.env.PROD_URL)
   console.log(process.env.VERCEL_URL)
   console.log(process.env.NEXT_PUBLIC_VERCEL_URL)
-  console.log(urls)
 
   return (
     <div className={classes.root}>
