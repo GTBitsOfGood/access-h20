@@ -49,8 +49,6 @@ const LoginPage = (): JSX.Element => {
   }
   console.log(process.env.VERCEL_ENV)
   console.log(process.env.PROD_URL)
-  console.log(process.env.VERCEL_URL)
-  console.log(process.env.NEXT_PUBLIC_VERCEL_URL)
 
   return (
     <div className={classes.root}>
