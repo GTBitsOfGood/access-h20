@@ -1,4 +1,7 @@
 function getBaseURL () {
+  if (process.env.PROD_URL) {
+    return `https://${process.env.PROD_URL}`
+  }
   // if backend
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`
@@ -11,7 +14,7 @@ function getBaseURL () {
 }
 
 export default {
-  baseUrl: process.env.PROD_URL && getBaseURL(),
+  baseUrl: getBaseURL(),
   dbUrl: process.env.MONGO_DB ?? 'mongodb://localhost:27017',
   pages: {
     index: '/',
