@@ -11,7 +11,7 @@ function getBaseURL () {
 }
 
 export default {
-  baseUrl: `${process.env.PROD_URL}` && getBaseURL(),
+  baseUrl: process.env.PROD_URL && getBaseURL(),
   dbUrl: process.env.MONGO_DB ?? 'mongodb://localhost:27017',
   pages: {
     index: '/',
