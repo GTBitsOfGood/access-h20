@@ -47,7 +47,6 @@ const LoginPage = (): JSX.Element => {
       })
       .catch((error) => window.alert(error.message))
   }
-  console.log(process.env.NEXT_PUBLIC_PROD_URL)
 
   return (
     <div className={classes.root}>
