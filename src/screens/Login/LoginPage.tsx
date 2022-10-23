@@ -47,9 +47,6 @@ const LoginPage = (): JSX.Element => {
       })
       .catch((error) => window.alert(error.message))
   }
-  console.log(process.env.NEXT_PUBLIC_VERCEL_ENV)
-  console.log(process.env.NEXT_PUBLIC_PROD_URL)
-  console.log(process.env.NEXT_PUGBLIC_VERCE_URL)
 
   return (
     <div className={classes.root}>
