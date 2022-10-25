@@ -33,7 +33,6 @@ const MyApp = ({
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const { res } = appContext.ctx
-  console.log("NOOOO");
 
   const appProps = await App.getInitialProps(appContext)
 
@@ -45,7 +44,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   return {
     ...appProps,
     cookies: cookies
-  }
+  } 
 }
 
 interface PropTypes {
