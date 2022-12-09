@@ -5,9 +5,7 @@ import mongoDB from '../index'
 
 export async function addClient (client: Client): Promise<Client> {
   await mongoDB()
-  console.log(client)
   const newClient = await ClientSchema.create(client)
-  console.log(newClient)
   return newClient
 }
 
@@ -32,7 +30,6 @@ export async function changeStatus (status: Status): Promise<void> {
   const accountId = status.accountId
   await mongoDB()
   const client = await ClientSchema.findOne({ accountId: accountId })
-  console.log(client)
   client.status = status.status
   client.save()
 }

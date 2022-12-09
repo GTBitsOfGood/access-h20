@@ -46,7 +46,9 @@ const paginate = (
   page: number,
   rowsPerPage: number
 ): Applicant[] => {
-  return rowsPerPage > 0 ? array.slice(page * rowsPerPage, (page + 1) * rowsPerPage) : array
+  return rowsPerPage > 0
+    ? array.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+    : array
 }
 
 const ApplicantTable = ({
@@ -116,7 +118,6 @@ const ApplicantTable = ({
 
   function editNote (accountId: string): void {
     setAcccountID(accountId)
-    console.log(accountID)
     setShowNotesModal(true)
   }
 
@@ -128,7 +129,6 @@ const ApplicantTable = ({
   }
 
   const removeApplicant = async (accountId: string): Promise<void> => {
-    console.log(accountId)
     await removeClient(accountId)
     window.location.reload()
   }
@@ -138,14 +138,21 @@ const ApplicantTable = ({
   }
 
   const handleChangeRowsPerPage = (event: any): void => {
-    console.log(event)
     setRowsPerPage(parseInt(event.target.value))
     setPage(0)
   }
 
   return (
     <div className={classes.root}>
-      <div className={classes.header} style={{ borderRight: 1, borderBottom: 1, borderLeft: 1, borderColor: '#CBCBCB' }}>
+      <div
+        className={classes.header}
+        style={{
+          borderRight: 1,
+          borderBottom: 1,
+          borderLeft: 1,
+          borderColor: '#CBCBCB'
+        }}
+      >
         <div className={classes.searchBar}>
           <TextField
             className={classes.searchBox}
@@ -154,9 +161,7 @@ const ApplicantTable = ({
               disableUnderline: true,
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon
-                    color="disabled"
-                  />
+                  <SearchIcon color="disabled" />
                 </InputAdornment>
               )
             }}
@@ -168,33 +173,33 @@ const ApplicantTable = ({
 
           {!isUtilityView && (
             <TextField
-            className={classes.searchFilter}
-            InputProps={{
-              className: classes.searchFilterText
-            }}
-            label="Search By"
-            style = {{ marginRight: '8px' }}
-            select
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <MenuItem key={'All'} value={'All'}>
-              {'All'}
-            </MenuItem>
-            <MenuItem key={'Utility Company'} value={'Utility Company'}>
-              {'Utility Company'}
-            </MenuItem>
-            <MenuItem key={'Name'} value={'Name'}>
-              {'Name'}
-            </MenuItem>
-          </TextField>
+              className={classes.searchFilter}
+              InputProps={{
+                className: classes.searchFilterText
+              }}
+              label="Search By"
+              style={{ marginRight: '8px' }}
+              select
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+            >
+              <MenuItem key={'All'} value={'All'}>
+                {'All'}
+              </MenuItem>
+              <MenuItem key={'Utility Company'} value={'Utility Company'}>
+                {'Utility Company'}
+              </MenuItem>
+              <MenuItem key={'Name'} value={'Name'}>
+                {'Name'}
+              </MenuItem>
+            </TextField>
           )}
           <TextField
             className={classes.searchFilter}
             InputProps={{
               className: classes.searchFilterText
             }}
-            style = {{ marginRight: '8px' }}
+            style={{ marginRight: '8px' }}
             label="Status"
             select
             value={statusFilter}
@@ -221,7 +226,7 @@ const ApplicantTable = ({
               ),
               className: classes.dateInputText
             }}
-            style = {{ marginRight: '8px' }}
+            style={{ marginRight: '8px' }}
           />
           <TextField
             className={classes.dateInput}
@@ -262,7 +267,8 @@ const ApplicantTable = ({
                 sx={{
                   fontSize: '16px',
                   fontWeight: 'bold'
-                }}>
+                }}
+              >
                 Name
               </TableCell>
               {!isUtilityView && (
@@ -271,7 +277,8 @@ const ApplicantTable = ({
                   sx={{
                     fontSize: '16px',
                     fontWeight: 'bold'
-                  }}>
+                  }}
+                >
                   Utility Company
                 </TableCell>
               )}
@@ -280,7 +287,8 @@ const ApplicantTable = ({
                 sx={{
                   fontSize: '16px',
                   fontWeight: 'bold'
-                }}>
+                }}
+              >
                 Account ID
               </TableCell>
               <TableCell
@@ -288,7 +296,8 @@ const ApplicantTable = ({
                 sx={{
                   fontSize: '16px',
                   fontWeight: 'bold'
-                }}>
+                }}
+              >
                 Property Address
               </TableCell>
               <TableCell
@@ -296,7 +305,8 @@ const ApplicantTable = ({
                 sx={{
                   fontSize: '16px',
                   fontWeight: 'bold'
-                }}>
+                }}
+              >
                 Applied
               </TableCell>
               <TableCell
@@ -304,7 +314,8 @@ const ApplicantTable = ({
                 sx={{
                   fontSize: '16px',
                   fontWeight: 'bold'
-                }}>
+                }}
+              >
                 Status
               </TableCell>
               <TableCell
@@ -312,7 +323,8 @@ const ApplicantTable = ({
                 sx={{
                   fontSize: '16px',
                   fontWeight: 'bold'
-                }}>
+                }}
+              >
                 Notes
               </TableCell>
               <TableCell />
@@ -323,58 +335,61 @@ const ApplicantTable = ({
             {paginate(filteredApplicants, page, rowsPerPage).map(
               (applicant) => {
                 return (
-                  <TableRow className={classes.highlightOnHover} >
+                  <TableRow className={classes.highlightOnHover}>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.name}
+                      </TableCell>
+                    </Link>
+                    {!isUtilityView && (
                       <Link
                         href={
                           infoSubmissionEndpoint + '/' + applicant.accountId
                         }
                       >
                         <TableCell className={classes.cell}>
-                          {applicant.name}
+                          {applicant.utilityCompany}
                         </TableCell>
                       </Link>
-                      {!isUtilityView && (
-                        <Link
-                        href={
-                            infoSubmissionEndpoint + '/' + applicant.accountId
-                          }
+                    )}
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.accountId}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {applicant.propertyAddress}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        {new Date(applicant.applied).toDateString()}
+                      </TableCell>
+                    </Link>
+                    <Link
+                      href={infoSubmissionEndpoint + '/' + applicant.accountId}
+                    >
+                      <TableCell className={classes.cell}>
+                        <span
+                          className={classes.status}
+                          style={{
+                            backgroundColor: statusColor(applicant.status)
+                          }}
                         >
-                          <TableCell className={classes.cell}>{applicant.utilityCompany}</TableCell>
-                        </Link>
-                      )}
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>{applicant.accountId}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>{applicant.propertyAddress}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>{new Date(applicant.applied).toDateString()}</TableCell>
-                      </Link>
-                      <Link
-                        href={
-                          infoSubmissionEndpoint + '/' + applicant.accountId
-                        }
-                      >
-                        <TableCell className={classes.cell}>
-                          <span className={classes.status} style={{ backgroundColor: statusColor(applicant.status) }}>
-                            {applicant.status}
-                          </span>
-                        </TableCell>
-                      </Link>
-                      <TableCell align="center">
+                          {applicant.status}
+                        </span>
+                      </TableCell>
+                    </Link>
+                    <TableCell align="center">
                       <Tooltip title={'View notes'}>
                         <IconButton
                           onClick={() => editNote(applicant.accountId)}
@@ -407,36 +422,41 @@ const ApplicantTable = ({
                           Add Notes
                         </MenuItem>
                         <div className={classes.deleteButton}>
-                          <MenuItem onClick={() => console.log(removeApplicant(applicant.accountId))}>Delete</MenuItem>
+                          <MenuItem
+                            onClick={() =>
+                              console.log(removeApplicant(applicant.accountId))
+                            }
+                          >
+                            Delete
+                          </MenuItem>
                         </div>
                       </Menu>
                     </TableCell>
                   </TableRow>
                 )
               }
-            )
-          }
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              count={applicants.length}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-      <NotesModal
-        shouldShowModal={showNotesModal}
-        onClose={() => setShowNotesModal(false)}
-        accountID={accountID}
-        infoSubmissionEndpoint={infoSubmissionEndpoint}
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                count={applicants.length}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+        <NotesModal
+          shouldShowModal={showNotesModal}
+          onClose={() => setShowNotesModal(false)}
+          accountID={accountID}
+          infoSubmissionEndpoint={infoSubmissionEndpoint}
         />
-    </TableContainer>
-  </div>
+      </TableContainer>
+    </div>
   )
 }
 
