@@ -7,15 +7,13 @@ function RouteGuard ({ children, cookies }) {
   const router = useRouter()
   const cookieContext = useContext(CookieContext)
 
+  console.log(
+    'cookies: ' + cookies ? 'notnull' : 'null' + ', path: ' + router.asPath
+  )
+  const [authorized, setAuthorized] = useState(false)
+
   useEffect(() => {
     cookieContext.updateCookie(cookies)
-  }, [])
-
-  console.log('cookies: ' + cookies + ', path: ' + router.asPath)
-  const [authorized, setAuthorized] = useState(false)
-  // authCheck(router.asPath, cookies)
-
-  useEffect(() => {
     authCheck(Router.asPath, cookies)
 
     const hideContent = () => setAuthorized(false)
@@ -31,11 +29,6 @@ function RouteGuard ({ children, cookies }) {
   function authCheck (url, cks) {
     const publicPaths = [urls.pages.login, urls.pages.index, urls.pages.profile]
     const path = url.split('?')[0]
-
-    // console.log('returnUrl param:', router.asPath);
-    console.log(cks === null && !publicPaths.includes(path))
-
-    console.log(urls.baseUrl, urls.pages.login)
 
     if (cks === null && !publicPaths.includes(path)) {
       console.log('Hello world 2')
