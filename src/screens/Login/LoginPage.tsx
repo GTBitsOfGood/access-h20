@@ -110,6 +110,7 @@ LoginPage.getInitialProps = async (ctx: NextPageContext) => {
     req != null
       ? await getCurrentUser(req.headers?.cookie)
       : await getCurrentUser(null)
+  console.log("loginpage getinitialprops");
 
   if (user && ctx.res != null) {
     if (!user.isUtilityCompany) {
