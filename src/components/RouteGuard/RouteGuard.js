@@ -32,9 +32,10 @@ function RouteGuard ({ children, cookies }) {
     const publicPaths = [urls.pages.login, urls.pages.index, urls.pages.profile]
     const path = url.split('?')[0]
 
-    // console.log('returnUrl param:', router.asPath)
-    console.log(cks === null && !publicPaths.includes(path));
-    console.log(urls.baseUrl, urls.pages.login);
+    // console.log('returnUrl param:', router.asPath);
+    console.log(cks === null && !publicPaths.includes(path))
+
+    console.log(urls.baseUrl, urls.pages.login)
 
     if (cks === null && !publicPaths.includes(path)) {
       console.log('Hello world 2')
