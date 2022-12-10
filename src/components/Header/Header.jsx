@@ -27,6 +27,7 @@ const Header = ({ loggedIn, currentRoute }) => (
         //   <Link href={link}>{name}</Link>
         // </span>
       ))}
+    <h1>Index Page</h1>
   </div>
 )
 
