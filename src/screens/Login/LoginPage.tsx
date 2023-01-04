@@ -10,6 +10,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
 import { OutlinedInput } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
+import urls from 'utils/urls'
 
 import { NextPageContext } from 'next'
 
@@ -105,30 +106,29 @@ const LoginPage = (): JSX.Element => {
 }
 
 LoginPage.getInitialProps = async (ctx: NextPageContext) => {
-  console.log('login getinitialprops')
   const req = ctx.req
   const user =
     req != null
       ? await getCurrentUser(req.headers?.cookie)
       : await getCurrentUser(null)
 
-  // if (user && ctx.res != null) {
-  //   if (!user.isUtilityCompany) {
-  //     ctx.res.writeHead(302, {
-  //       Location: urls.pages.accessh2oView.applicants,
-  //       'Content-Type': 'text/html; charset=utf-8'
-  //     })
-  //     ctx.res.end()
-  //     // Router.push(urls.pages.accessh2oView.applicants)
-  //   } else {
-  //     ctx.res.writeHead(302, {
-  //       Location: urls.pages.utilityView.applicants,
-  //       'Content-Type': 'text/html; charset=utf-8'
-  //     })
-  //     ctx.res.end()
-  //     // Router.push(urls.pages.utilityView.applicants)
-  //   }
-  // }
+  if (user && ctx.res != null) {
+    if (!user.isUtilityCompany) {
+      ctx.res.writeHead(302, {
+        Location: urls.pages.accessh2oView.applicants,
+        'Content-Type': 'text/html; charset=utf-8'
+      })
+      ctx.res.end()
+      // Router.push(urls.pages.accessh2oView.applicants)
+    } else {
+      ctx.res.writeHead(302, {
+        Location: urls.pages.utilityView.applicants,
+        'Content-Type': 'text/html; charset=utf-8'
+      })
+      ctx.res.end()
+      // Router.push(urls.pages.utilityView.applicants)
+    }
+  }
   console.log('login redirects')
   console.log(user !== null && ctx.res !== null)
 

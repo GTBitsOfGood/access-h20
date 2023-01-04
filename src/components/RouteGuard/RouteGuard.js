@@ -6,10 +6,6 @@ import urls from '../../../utils/urls'
 function RouteGuard ({ children, cookies }) {
   const router = useRouter()
   const cookieContext = useContext(CookieContext)
-
-  console.log(
-    'cookies: ' + cookies ? 'notnull' : 'null' + ', path: ' + router.asPath
-  )
   const [authorized, setAuthorized] = useState(false)
 
   useEffect(() => {
@@ -31,7 +27,6 @@ function RouteGuard ({ children, cookies }) {
     const path = url.split('?')[0]
 
     if (cks === null && !publicPaths.includes(path)) {
-      console.log('Hello world 2')
       setAuthorized(false)
       router.replace({
         pathname: urls.pages.login,
