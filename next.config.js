@@ -13,7 +13,7 @@ module.exports = withImages({
       JWT_SECRET: process.env.JWT_SECRET
     }
   },
-  async redirects () {
+  async redirects() {
     return [
       {
         source: '/',
