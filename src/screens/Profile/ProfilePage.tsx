@@ -87,16 +87,14 @@ const ProfilePage = ({
 
   const validateRecipientEmail = (value : string): void => {
     setCompany({ ...company, email: value })
-    let current = value.split(',').filter((e) => e && e.trim());
     let regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]+$/i;
-    setValidateEmail(regex.test(current));
+    setValidateEmail(regex.test(value));
   }
 
   const validateRecipientPhone = (value : string): void => {
     setCompany({ ...company, number: value })
-    let current = value.split(',').filter((e) => e && e.trim());
     let regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
-    setValidatePhones(regex.test(current));
+    setValidatePhones(regex.test(value));
   }
 
   return (
@@ -274,7 +272,7 @@ const ProfilePage = ({
                         error={!validatePhone && isSubmitted}
                         helperText={
                           !validatePhone && isSubmitted
-                            ? 'This field is required.'
+                            ? 'The phone number you entered is not valid.'
                             : ''
                         }
                         onChange={(e) =>
