@@ -50,6 +50,7 @@ const ProfilePage = ({
   const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [validateEmail, setValidateEmail] = useState(true)
+  const [validatePhone, setValidatePhones] = useState(true)
 
   const handleUpdate = async (): Promise<void> => {
     setIsSubmitted(true)
@@ -63,7 +64,8 @@ const ProfilePage = ({
         company.number !== '' &&
         company.state !== '' &&
         company.zip !== '' &&
-        validateEmail
+        validateEmail &&
+        validatePhone
       ) {
         setShowAddRemoveModal(true)
         const updatedCompany = await updateCompany(company)
@@ -85,9 +87,16 @@ const ProfilePage = ({
 
   const validateRecipientEmail = (value : string): void => {
     setCompany({ ...company, email: value })
-    let currentEmails = value.split(',').filter((e) => e && e.trim());
+    let current = value.split(',').filter((e) => e && e.trim());
     let regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]+$/i;
-    setValidateEmail(regex.test(currentEmails));
+    setValidateEmail(regex.test(current));
+  }
+
+  const validateRecipientPhone = (value : string): void => {
+    setCompany({ ...company, number: value })
+    let current = value.split(',').filter((e) => e && e.trim());
+    let regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+    setValidatePhones(regex.test(current));
   }
 
   return (
@@ -129,6 +138,7 @@ const ProfilePage = ({
             )}
             {isUtilityView && (
               <Typography variant="h4">
+                {console.log(company.name)}
                 <b>{company.name}</b>
                 <span className={classes.profileGrayText}>Utility Partner</span>
               </Typography>
@@ -261,14 +271,14 @@ const ProfilePage = ({
                         placeholder="(404) 381-1045"
                         required={true}
                         value={company.number}
-                        error={company.number === '' && isSubmitted}
+                        error={!validatePhone && isSubmitted}
                         helperText={
-                          company.number === '' && isSubmitted
+                          !validatePhone && isSubmitted
                             ? 'This field is required.'
                             : ''
                         }
                         onChange={(e) =>
-                          setCompany({ ...company, number: e.target.value })
+                          validateRecipientPhone(e.target.value)
                         }
                       />
                     </div>
