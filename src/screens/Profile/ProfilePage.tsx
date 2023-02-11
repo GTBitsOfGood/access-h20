@@ -32,16 +32,16 @@ const ProfilePage = ({
   propsCompany,
   isUtilityView
 }: PropTypes): JSX.Element => {
-  const [company, setCompany] = useState({
-    name: 'a',
-    email: 'a',
-    number: 'a',
-    address: 'a',
-    city: 'a',
-    state: 'a',
-    zip: 'a'
-  })
-  // const [company, setCompany] = useState(propsCompany)
+  // const [company, setCompany] = useState({
+  //   name: 'a',
+  //   email: 'a',
+  //   number: 'a',
+  //   address: 'a',
+  //   city: 'a',
+  //   state: 'a',
+  //   zip: 'a'
+  // })
+  const [company, setCompany] = useState(propsCompany)
 
   const [admin, setAdmin] = useState({ password: '', confirmPassword: '' })
   const cookieContext = useContext(CookieContext)
@@ -129,7 +129,6 @@ const ProfilePage = ({
             )}
             {isUtilityView && (
               <Typography variant="h4">
-                {console.log(company.name)}
                 <b>{company.name}</b>
                 <span className={classes.profileGrayText}>Utility Partner</span>
               </Typography>
