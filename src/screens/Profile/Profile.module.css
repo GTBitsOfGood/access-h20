@@ -23,12 +23,13 @@
 }
 
 .profileForm {
-  width: 650px;
+  width: 35rem;
   margin: auto;
   background: white;
   border: 1px solid #9a9a9a;
   box-sizing: border-box;
   border-radius: 8px;
+  padding-left: 1rem;
 }
 
 .profileGrayText {
@@ -110,4 +111,8 @@
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
   border-radius: 4px;
+  margin-top: 1rem;
+  width: 5rem;
+  margin-left: 26.7rem;
+  margin-bottom: 1rem;
 }
