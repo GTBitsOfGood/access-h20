@@ -52,10 +52,10 @@ const ProfilePage = ({
   const [validateEmail, setValidateEmail] = useState(true)
   const [validatePhone, setValidatePhones] = useState(true)
 
-  //Handles update information to the server when update button is clicked
+  // Handles update information to the server when update button is clicked
   const handleUpdate = async (): Promise<void> => {
     setIsSubmitted(true)
-    //check if the information send is valid for utility view
+    // check if the information send is valid for utility view
     if (isUtilityView) {
       if (
         company.name !== '' &&
@@ -68,17 +68,17 @@ const ProfilePage = ({
         validateEmail &&
         validatePhone
       ) {
-        //if valid update the server
+        // if valid update the server
         setShowAddRemoveModal(true)
         const updatedCompany = await updateCompany(company)
         console.log(JSON.stringify(updatedCompany))
         setCompany(updatedCompany)
       } else {
-        //if not, display error
+        // if not, display error
         setShowErrorModal(true)
       }
     } else {
-      //customer view check
+      // customer view check
       if (admin.password !== '' && admin.confirmPassword === admin.password) {
         setShowAddRemoveModal(true)
         const user = await getCurrentUser(cookieContext.cookie)
@@ -89,21 +89,21 @@ const ProfilePage = ({
     }
   }
 
-  //check validation of email input through regular expression
-  const validateRecipientEmail = (value : string): void => {
+  // check validation of email input through regular expression
+  const validateRecipientEmail = (value: string): void => {
     setCompany({ ...company, email: value })
-    let regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]+$/i;
-    setValidateEmail(regex.test(value));
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]+$/i
+    setValidateEmail(regex.test(value))
   }
 
-  //check validation of phone number input through regular expression
-  const validateRecipientPhone = (value : string): void => {
+  // check validation of phone number input through regular expression
+  const validateRecipientPhone = (value: string): void => {
     setCompany({ ...company, number: value })
-    let regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
-    setValidatePhones(regex.test(value));
+    const regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/
+    setValidatePhones(regex.test(value))
   }
 
-  //Actual page rendered here
+  // Actual page rendered here
   return (
     <div>
       <ApplicantNavLink isUtilityView={isUtilityView} />
