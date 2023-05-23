@@ -17,5 +17,5 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     )
 }
 
-// export default handler
-export default isLoggedIn(adminOnly(handler))
+export default handler
+// export default isLoggedIn(adminOnly(handler))
