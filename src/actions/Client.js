@@ -67,8 +67,8 @@ export const getAll = async (cookies) => {
 
   return fetch(urls.baseUrl + urls.api.client.getAll, {
     method: 'GET',
-    mode: 'same-origin',
-    credentials: 'include',
+    // mode: 'same-origin',
+    // credentials: 'include',
     ...conditionals
   }).then((response) => {
     if (response.status === 401) {

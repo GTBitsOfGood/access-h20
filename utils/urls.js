@@ -13,7 +13,7 @@ function getBaseURL () {
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   }
-  return 'http://localhost:3000'
+  return 'http://localhost:8888'
 }
 
 export default {
