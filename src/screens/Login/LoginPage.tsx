@@ -3,13 +3,14 @@
 import React, { useState } from 'react'
 import Router from 'next/router'
 import { login, getCurrentUser } from '../../actions/User'
-import urls from '../../../utils/urls'
+// import urls from '../../../utils/urls'
 import classes from './LoginPage.module.css'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
 import { OutlinedInput } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
+import urls from 'utils/urls'
 
 import { NextPageContext } from 'next'
 
@@ -31,11 +32,9 @@ const LoginPage = (): JSX.Element => {
     //     .catch((error) => window.alert(error.message))
     // }
 
-    return (
-      login(email, password)
-        .then(
-          async () => {
-            /*
+    return login(email, password)
+      .then(async () => {
+        /*
             console.log(json)
 
             if (Router.query.returnUrl !== null) {
@@ -45,11 +44,9 @@ const LoginPage = (): JSX.Element => {
             } else {
               await Router.push(urls.pages.utilityView.applicants)
             } */
-            Router.reload()
-          }
-        )
-        .catch((error) => window.alert(error.message))
-    )
+        Router.reload()
+      })
+      .catch((error) => window.alert(error.message))
   }
 
   return (
@@ -115,7 +112,7 @@ LoginPage.getInitialProps = async (ctx: NextPageContext) => {
       ? await getCurrentUser(req.headers?.cookie)
       : await getCurrentUser(null)
 
-  if (user && (ctx.res != null)) {
+  if (user && ctx.res != null) {
     if (!user.isUtilityCompany) {
       ctx.res.writeHead(302, {
         Location: urls.pages.accessh2oView.applicants,
@@ -132,8 +129,10 @@ LoginPage.getInitialProps = async (ctx: NextPageContext) => {
       // Router.push(urls.pages.utilityView.applicants)
     }
   }
+  console.log('login redirects')
+  console.log(user !== null && ctx.res !== null)
 
-  return { }
+  return {}
 }
 
 export default LoginPage

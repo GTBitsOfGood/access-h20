@@ -44,48 +44,13 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   return {
     ...appProps,
     cookies: cookies
-  }
-
-  // return await getCurrentUser(cookies)
-  //   // @ts-ignore
-  //   .then((user) => {
-  //     // console.log('cookies: ' + cookies)
-  //     // if (route === '/login') {
-  //     //   if (res != null) {
-  //     //     res.writeHead(301, { Location: urls.pages.app.home })
-  //     //     res.end()
-  //     //   } else {
-  //     //     return Router.replace(urls.pages.login)
-  //     //   }
-  //     // }
-  //     return {
-  //       ...appProps,
-  //       currentUser: user
-  //     }
-  //   })
-  //   // @ts-ignore
-  //   .catch(() => {
-  //     if (route?.startsWith('/test')) {
-  //       if (res != null) {
-  //         res.writeHead(301, { Location: urls.pages.index })
-  //         res.end()
-  //       } else {
-  //         return Router.replace(urls.pages.index)
-  //       }
-  //     }
-
-  //     return appProps
-  //   })
+  } 
 }
 
 interface PropTypes {
   Component: any
   pageProps: object
   router: object
-  // currentUser: {
-  //   id: string
-  //   email: string
-  // } | null
   cookies: string | null
 }
 
