@@ -1,4 +1,10 @@
 function getBaseURL () {
+  if (process.env.PROD_URL) {
+    return `https://${process.env.PROD_URL}`
+  }
+  if (process.env.NEXT_PUBLIC_PROD_URL) {
+    return `https://${process.env.NEXT_PUBLIC_PROD_URL}`
+  }
   // if backend
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`
