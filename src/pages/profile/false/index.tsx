@@ -1,3 +1,3 @@
-import Profile from '../../../screens/Profile'
+import Profile from 'src/screens/Profile'
 
 export default Profile

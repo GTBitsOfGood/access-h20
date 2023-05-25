@@ -1,15 +1,17 @@
-import { changeStatus } from "../../../../server/mongodb/actions/Client";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next/types'
+import { addClient, changeStatus } from 'server/mongodb/actions/Client'
+import APIWrapper from 'server/utils/APIWrapper'
+import { Role } from 'src/utils/types'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => changeStatus(req.body).then((client) => {
-    res.status(200)
-    res.send({
-        success: true,
-        payload: client
-    })
-    return res
-}).catch((error) => 
-    res.status(400).json({ success: false, message: error.message})
-)
-
-export default handler;
+export default APIWrapper({
+  PATCH: {
+    config: {
+      requireToken: true,
+      roles: [Role.UTILITY_COMPANY, Role.NONPROFIT_ADMIN]
+    },
+    handler: async (req: NextApiRequest, res: NextApiResponse) => {
+      const client = await changeStatus(req.body)
+      return client
+    }
+  }
+})

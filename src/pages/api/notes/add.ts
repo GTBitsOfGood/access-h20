@@ -1,15 +1,17 @@
-import { addNote } from "../../../../server/mongodb/actions/Note";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next/types'
+import { addNote } from 'server/mongodb/actions/Note'
+import APIWrapper from 'server/utils/APIWrapper'
+import { Role } from 'src/utils/types'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => addNote(req.body).then((note) => {
-    res.status(200)
-    res.send({
-        success: true,
-        payload: note
-    })
-    return res
-}).catch((error) => 
-    res.status(400).json({ success: false, message: error.message})
-)
-
-export default handler;
+export default APIWrapper({
+  POST: {
+    config: {
+      requireToken: true,
+      roles: [Role.UTILITY_COMPANY, Role.NONPROFIT_ADMIN]
+    },
+    handler: async (req: NextApiRequest, res: NextApiResponse) => {
+      const company = await addNote(req.body)
+      return company
+    }
+  }
+})

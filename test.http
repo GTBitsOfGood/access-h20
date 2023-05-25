@@ -1,7 +1,0 @@
-POST http://localhost:3000/api/user/sign-up HTTP/1.1
-content-type: application/json
-
-{
-    "email": "test3@gmail.com",
-    "password": "testuser"
-}

@@ -1,25 +1,21 @@
-import { NextApiResponse, NextApiRequest } from 'next'
-import { login } from '../../../../server/mongodb/actions/User'
-import { createCookie } from '../../../../utils/tokens'
+import { setCookie } from 'cookies-next'
+import { NextApiRequest, NextApiResponse } from 'next/types'
+import { login } from 'server/mongodb/actions/User'
+import APIWrapper from 'server/utils/APIWrapper'
+import { getLoginRefreshToken } from 'server/utils/Authentication'
 
-// @route   POST api/user/login
-// @desc    Login Request
-// @access  Public
-const handler = (req: NextApiRequest, res: NextApiResponse) =>
-  login(req.body)
-    .then((token) => {
-      res.setHeader('Set-Cookie', createCookie(token, 604800))
-
-      return res.status(200).json({
-        success: true,
-        payload: token
+export default APIWrapper({
+  POST: {
+    config: {},
+    handler: async (req: NextApiRequest, res: NextApiResponse) => {
+      const accessToken = await login(req.body)
+      const refreshToken = await getLoginRefreshToken(req.body)
+      setCookie('refreshtoken', refreshToken, {
+        httpOnly: true,
+        req: req,
+        res: res
       })
-    })
-    .catch((error) =>
-      res.status(400).json({
-        success: false,
-        message: error.message
-      })
-    )
-
-export default handler
+      return accessToken
+    }
+  }
+})

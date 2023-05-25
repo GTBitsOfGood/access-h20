@@ -1,9 +1,10 @@
 import { ObjectId } from 'mongodb'
 import mongoose, { Schema } from 'mongoose'
+import { Company } from 'src/utils/types'
 
-const CompanySchema = new Schema({
+const CompanySchema = new Schema<Company>({
   accountId: {
-    type: ObjectId,
+    type: String,
     required: false,
     unique: true
   },
@@ -37,5 +38,7 @@ const CompanySchema = new Schema({
   }
 })
 
-export default mongoose.models.Company ??
-  mongoose.model('Company', CompanySchema)
+const CompanyModel =
+  (mongoose.models.Company as mongoose.Model<Company>) ||
+  mongoose.model<Company>('Company', CompanySchema)
+export default CompanyModel

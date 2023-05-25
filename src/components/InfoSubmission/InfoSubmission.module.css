@@ -1,107 +1,108 @@
 .sectionContainer {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .sectionTitleContainer {
-  width: 20%;
-  margin-right: 20px;
+    width: 20%;
+    margin-right: 20px;
 }
+
 .sectionRightFiller {
-  width: 20%;
+    width: 20%;
 }
 
 .sectionContentContainer {
-  width: 60%;
+    width: 60%;
 }
 
 /* .sectionEligibilityContainer {
-    width: 60%;
-    height: 450px;
-} */
+      width: 60%;
+      height: 450px;
+  } */
 
 .eligibility {
-  display: flex;
-  align-items: flex-start;
+    display: flex;
+    align-items: flex-start;
 }
 
 .eligibility p {
-  margin-top: 0;
-  margin-left: 10px;
+    margin-top: 0;
+    margin-left: 10px;
 }
 
 .stickyNote {
-  border-radius: 10px;
-  height: 30px;
-  padding: 18.5px 14px;
-  background-color: #f3f3f3;
-  margin-bottom: 20px;
+    border-radius: 10px;
+    height: 30px;
+    padding: 18.5px 14px;
+    background-color: #f3f3f3;
+    margin-bottom: 20px;
 }
 
 .eligibilityStack {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  left: 315px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 315px;
 }
 
 .documentStack {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  left: 315px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 315px;
 }
 
 .sectionDocumentsContainer {
-  width: 60%;
-  height: 160px;
+    width: 60%;
+    height: 160px;
 }
 
 .infoSubmissionBackground {
-  padding: 25px;
-  border: 75px solid #cfebfd;
+    padding: 25px;
+    border: 75px solid #cfebfd;
 }
 
 .infoSubmissionContent {
-  margin: 75px;
+    margin: 75px;
 }
 
 .customerInfo {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .customerComponentList {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .customerComponent {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin-right: 20px;
 }
 
 .dropdown {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
 }
 
 .goBack {
-  color: #9a9a9a;
-  font-size: 20px;
-  text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    text-decoration: none;
 }
 
 .goBack:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .select {
-  width: 80%;
+    width: 80%;
 }

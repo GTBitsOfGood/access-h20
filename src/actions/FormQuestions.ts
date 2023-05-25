@@ -1,295 +1,147 @@
-import fetch from 'isomorphic-unfetch'
-import { eligibilityQuestion } from 'server/models/EligibilityQuestion'
-import { documentQuestion } from 'server/models/DocumentQuestion'
-import { otherQuestion } from 'server/models/OtherQuestion'
-import urls from 'utils/urls'
 import { Types } from 'mongoose'
+import { internalRequest } from 'src/utils/request'
+import {
+  DocumentQuestion,
+  EligibilityQuestion,
+  HttpMethod,
+  OtherQuestion
+} from 'src/utils/types'
+import urls from 'src/utils/urls'
 
-export const addEligibilityQuestion = async (question: eligibilityQuestion): Promise<eligibilityQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.addEligibilityQuestion, {
-    method: 'POST',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      title: question.title,
-      question: question.question
-    })
-  })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+const getEligibilityQuestionsUrl =
+  urls.baseUrl + urls.api.formQuestions.getEligibilityQuestions
+const getDocumentQuestionsUrl =
+  urls.baseUrl + urls.api.formQuestions.getDocumentQuestions
+const getOtherQuestionsUrl =
+  urls.baseUrl + urls.api.formQuestions.getOtherQuestions
+const addEligibilityQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.addEligibilityQuestion
+const addDocumentQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.addDocumentQuestion
+const addOtherQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.addOtherQuestion
+const editEligibilityQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.editEligibilityQuestion
+const editDocumentQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.editDocumentQuestion
+const editOtherQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.editOtherQuestion
+const removeEligibilityQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.removeEligibilityQuestion
+const removeDocumentQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.removeDocumentQuestion
+const removeOtherQuestionUrl =
+  urls.baseUrl + urls.api.formQuestions.removeOtherQuestion
 
-export const addDocumentQuestion = async (question: documentQuestion): Promise<documentQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.addDocumentQuestion, {
-    method: 'POST',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      title: question.title,
-      description: question.description
-    })
+export const getEligibilityQuestions = async () => {
+  return internalRequest<EligibilityQuestion[]>({
+    url: getEligibilityQuestionsUrl,
+    method: HttpMethod.GET,
+    authRequired: true
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const addOtherQuestion = async (question: otherQuestion): Promise<otherQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.addOtherQuestion, {
-    method: 'POST',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      question: question.question
-    })
+export const getDocumentQuestions = async () => {
+  return internalRequest<DocumentQuestion[]>({
+    url: getDocumentQuestionsUrl,
+    method: HttpMethod.GET,
+    authRequired: true
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const getEligibilityQuestions = async (): Promise<eligibilityQuestion[]> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.getEligibilityQuestions, {
-    method: 'GET',
-    mode: 'same-origin',
-    credentials: 'include'
+export const getOtherQuestions = async () => {
+  return internalRequest<OtherQuestion[]>({
+    url: getOtherQuestionsUrl,
+    method: HttpMethod.GET,
+    authRequired: true
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const getDocumentQuestions = async (): Promise<documentQuestion[]> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.getDocumentQuestions, {
-    method: 'GET',
-    mode: 'same-origin',
-    credentials: 'include'
+export const addEligibilityQuestion = async (question: EligibilityQuestion) => {
+  return internalRequest<EligibilityQuestion>({
+    url: addEligibilityQuestionUrl,
+    method: HttpMethod.POST,
+    authRequired: true,
+    body: question as unknown as { [key: string]: unknown }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const getOtherQuestions = async (): Promise<otherQuestion[]> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.getOtherQuestions, {
-    method: 'POST',
-    mode: 'same-origin',
-    credentials: 'include'
+export const addDocumentQuestion = async (question: DocumentQuestion) => {
+  return internalRequest<DocumentQuestion>({
+    url: addDocumentQuestionUrl,
+    method: HttpMethod.POST,
+    authRequired: true,
+    body: question as unknown as { [key: string]: unknown }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const editEligibilityQuestion = async (question: eligibilityQuestion): Promise<eligibilityQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.editEligibilityQuestion, {
-    method: 'PUT',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      _id: question._id,
-      title: question.title,
-      question: question.question
-    })
+export const addOtherQuestion = async (question: OtherQuestion) => {
+  return internalRequest<OtherQuestion>({
+    url: addOtherQuestionUrl,
+    method: HttpMethod.POST,
+    authRequired: true,
+    body: question as unknown as { [key: string]: unknown }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const editDocumentQuestion = async (question: documentQuestion): Promise<documentQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.editDocumentQuestion, {
-    method: 'PUT',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      _id: question._id,
-      title: question.title,
-      description: question.description
-    })
+export const editEligibilityQuestion = async (
+  question: EligibilityQuestion
+) => {
+  return internalRequest<EligibilityQuestion>({
+    url: editEligibilityQuestionUrl,
+    method: HttpMethod.PATCH,
+    authRequired: true,
+    body: question as unknown as { [key: string]: unknown }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const editOtherQuestion = async (question: otherQuestion): Promise<otherQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.editOtherQuestion, {
-    method: 'PUT',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      _id: question._id,
-      question: question.question
-    })
+export const editDocumentQuestion = async (question: DocumentQuestion) => {
+  return internalRequest<DocumentQuestion>({
+    url: editDocumentQuestionUrl,
+    method: HttpMethod.PATCH,
+    authRequired: true,
+    body: question as unknown as { [key: string]: unknown }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const removeEligibilityQuestion = async (questionId: Types.ObjectId): Promise<eligibilityQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.removeEligibilityQuestion, {
-    method: 'DELETE',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      _id: questionId
-    })
+export const editOtherQuestion = async (question: OtherQuestion) => {
+  return internalRequest<OtherQuestion>({
+    url: editOtherQuestionUrl,
+    method: HttpMethod.PATCH,
+    authRequired: true,
+    body: question as unknown as { [key: string]: unknown }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const removeDocumentQuestion = async (questionId: Types.ObjectId): Promise<documentQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.removeDocumentQuestion, {
-    method: 'DELETE',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      _id: questionId
-    })
+export const removeEligibilityQuestion = async (id: Types.ObjectId) => {
+  return internalRequest<EligibilityQuestion>({
+    url: removeEligibilityQuestionUrl,
+    method: HttpMethod.DELETE,
+    authRequired: true,
+    body: {
+      id
+    }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
 
-export const removeOtherQuestion = async (questionId: Types.ObjectId): Promise<otherQuestion> =>
-  await fetch(urls.baseUrl + urls.api.formQuestions.removeOtherQuestion, {
-    method: 'DELETE',
-    mode: 'same-origin',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      _id: questionId
-    })
+export const removeDocumentQuestion = async (id: Types.ObjectId) => {
+  return internalRequest<DocumentQuestion>({
+    url: removeDocumentQuestionUrl,
+    method: HttpMethod.DELETE,
+    authRequired: true,
+    body: {
+      id
+    }
   })
-    .then(async (response) => await response.json())
-    .then((json) => {
-      if (json == null) {
-        throw new Error('Could not connect to API!')
-      } else if (json.success === false) {
-        throw new Error(json.message)
-      }
-      if (json.payload === undefined) {
-        return ''
-      }
-      return json.payload
-    })
+}
+
+export const removeOtherQuestion = async (id: Types.ObjectId) => {
+  return internalRequest<OtherQuestion>({
+    url: removeOtherQuestionUrl,
+    method: HttpMethod.DELETE,
+    authRequired: true,
+    body: {
+      id
+    }
+  })
+}

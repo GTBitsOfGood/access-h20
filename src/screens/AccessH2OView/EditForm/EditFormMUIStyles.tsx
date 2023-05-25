@@ -14,7 +14,6 @@ export const buttonStyles = {
     backgroundColor: '#3F78B5',
     color: 'white'
   }
-
 }
 
 export const linkStyle = {
