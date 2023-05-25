@@ -1,16 +1,15 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { editOtherQuestion } from "server/mongodb/actions/FormQuestion";
+import APIWrapper from 'server/utils/APIWrapper'
+import { editOtherQuestion } from 'server/mongodb/actions/FormQuestion'
+import { NextApiRequest, NextApiResponse } from 'next/types'
 
-
-const handler = (req: NextApiRequest, res: NextApiResponse) => editOtherQuestion(req.body).then((question) => {
-    res.status(200)
-    res.send({
-        success: true,
-        payload: question
-    })
-    return res
-}).catch((error) => 
-    res.status(400).json({ success: false, message: error.message})
-)
-
-export default handler
+export default APIWrapper({
+  PATCH: {
+    config: {
+      requireToken: false
+    },
+    handler: async (req: NextApiRequest, res: NextApiResponse) => {
+      const question = await editOtherQuestion(req.body)
+      return question
+    }
+  }
+})

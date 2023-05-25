@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable */
 
-import React, { useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from './Profile.module.css'
 import Router from 'next/router'
-import { getCompany, updateCompany } from '../../actions/Company'
-import { updateUser, getCurrentUser } from '../../actions/User'
-import urls from 'utils/urls'
+import { getCompany, updateCompany } from 'src/actions/Company'
+import { updateUser, getCurrentUser } from 'src/actions/User'
+import urls from 'src/utils/urls'
 import ApplicantNavLink from 'src/components/ApplicantNavLink'
 import { AddRemoveModal } from '../../components/AddRemoveModal/AddRemoveModal'
 import { FormErrorModal } from '../../components/FormErrorModal/FormErrorModal'
-import { CookieContext } from '../../contexts/CookieContext'
 
 import {
   FormControl,
@@ -18,6 +17,7 @@ import {
   Typography
 } from '@material-ui/core'
 import { NextPageContext } from 'next'
+import { Company, Role, User } from 'src/utils/types'
 
 /*
 const ProfilePage = ({ json }): JSX.Element => {
@@ -28,10 +28,7 @@ interface PropTypes {
   isUtilityView: boolean
 }
 
-const ProfilePage = ({
-  propsCompany,
-  isUtilityView
-}: PropTypes): JSX.Element => {
+const ProfilePage = (): JSX.Element => {
   // const [company, setCompany] = useState({
   //   name: 'a',
   //   email: 'a',
@@ -41,16 +38,31 @@ const ProfilePage = ({
   //   state: 'a',
   //   zip: 'a'
   // })
-  const [company, setCompany] = useState(propsCompany)
 
   const [admin, setAdmin] = useState({ password: '', confirmPassword: '' })
-  const cookieContext = useContext(CookieContext)
 
   const [showAddRemoveModal, setShowAddRemoveModal] = useState(false)
   const [showErrorFormModal, setShowErrorModal] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [validateEmail, setValidateEmail] = useState(true)
   const [validatePhone, setValidatePhones] = useState(true)
+  const [company, setCompany] = useState<Company | null>(null)
+  const [isUtilityView, setIsUtilityView] = useState<boolean>(false)
+
+  useEffect(() => {
+    async function getProfileInfo() {
+      const user = await getCurrentUser()
+      if (user !== null && user.roles.includes(Role.UTILITY_COMPANY)) {
+        const company: Company | null = await getCompany(user._id.toString())
+        setCompany(company as Company)
+      }
+      setIsUtilityView(
+        user != null ? user.roles.includes(Role.UTILITY_COMPANY) : false
+      )
+    }
+
+    getProfileInfo().then().catch()
+  }, [])
 
   // Handles update information to the server when update button is clicked
   const handleUpdate = async (): Promise<void> => {
@@ -58,19 +70,19 @@ const ProfilePage = ({
     // check if the information send is valid for utility view
     if (isUtilityView) {
       if (
-        company.name !== '' &&
-        company.address !== '' &&
-        company.city !== '' &&
-        company.email !== '' &&
-        company.number !== '' &&
-        company.state !== '' &&
-        company.zip !== '' &&
+        (company as Company).name !== '' &&
+        (company as Company).address !== '' &&
+        (company as Company).city !== '' &&
+        (company as Company).email !== '' &&
+        (company as Company).number !== '' &&
+        (company as Company).state !== '' &&
+        (company as Company).zip !== '' &&
         validateEmail &&
         validatePhone
       ) {
         // if valid update the server
         setShowAddRemoveModal(true)
-        const updatedCompany = await updateCompany(company)
+        const updatedCompany = await updateCompany(company as Company)
         console.log(JSON.stringify(updatedCompany))
         setCompany(updatedCompany)
       } else {
@@ -81,8 +93,8 @@ const ProfilePage = ({
       // customer view check
       if (admin.password !== '' && admin.confirmPassword === admin.password) {
         setShowAddRemoveModal(true)
-        const user = await getCurrentUser(cookieContext.cookie)
-        await updateUser({ id: user.id, password: admin.password })
+        const user = await getCurrentUser()
+        await updateUser({ _id: (user as User)._id, password: admin.password })
       } else {
         setShowErrorModal(true)
       }
@@ -91,14 +103,14 @@ const ProfilePage = ({
 
   // check validation of email input through regular expression
   const validateRecipientEmail = (value: string): void => {
-    setCompany({ ...company, email: value })
+    setCompany({ ...(company as Company), email: value })
     const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]+$/i
     setValidateEmail(regex.test(value))
   }
 
   // check validation of phone number input through regular expression
   const validateRecipientPhone = (value: string): void => {
-    setCompany({ ...company, number: value })
+    setCompany({ ...(company as Company), number: value })
     const regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/
     setValidatePhones(regex.test(value))
   }
@@ -124,7 +136,10 @@ const ProfilePage = ({
             </a>
           )}
           {isUtilityView && (
-            <a className={classes.dashboard} href="/utilityView/utilityapplicants">
+            <a
+              className={classes.dashboard}
+              href="/utilityView/utilityapplicants"
+            >
               <b>Back to Dashboard</b>
             </a>
           )}
@@ -143,8 +158,7 @@ const ProfilePage = ({
             )}
             {isUtilityView && (
               <Typography variant="h4">
-                {console.log(company.name)}
-                <b>{company.name}</b>
+                <b>{(company as Company).name}</b>
                 <span className={classes.profileGrayText}>Utility Partner</span>
               </Typography>
             )}
@@ -221,15 +235,18 @@ const ProfilePage = ({
                       variant="outlined"
                       placeholder="AccessH2O"
                       required={true}
-                      value={company.name}
-                      error={company.name === '' && isSubmitted}
+                      value={(company as Company).name}
+                      error={(company as Company).name === '' && isSubmitted}
                       helperText={
-                        company.name === '' && isSubmitted
+                        (company as Company).name === '' && isSubmitted
                           ? 'This field is required.'
                           : ''
                       }
                       onChange={(e) =>
-                        setCompany({ ...company, name: e.target.value })
+                        setCompany({
+                          ...(company as Company),
+                          name: e.target.value
+                        })
                       }
                     />
                   </div>
@@ -249,16 +266,14 @@ const ProfilePage = ({
                         variant="outlined"
                         placeholder="info@accessh2o.org"
                         required={true}
-                        value={company.email}
+                        value={(company as Company).email}
                         error={!validateEmail && isSubmitted}
                         helperText={
                           !validateEmail && isSubmitted
                             ? 'The Email address you entered is not reconizable.'
                             : ''
                         }
-                        onChange={(e) =>
-                          validateRecipientEmail(e.target.value)
-                        }
+                        onChange={(e) => validateRecipientEmail(e.target.value)}
                       />
                     </div>
                   </div>
@@ -275,16 +290,14 @@ const ProfilePage = ({
                         variant="outlined"
                         placeholder="(404) 381-1045"
                         required={true}
-                        value={company.number}
+                        value={(company as Company).number}
                         error={!validatePhone && isSubmitted}
                         helperText={
                           !validatePhone && isSubmitted
                             ? 'The phone number you entered is not valid.'
                             : ''
                         }
-                        onChange={(e) =>
-                          validateRecipientPhone(e.target.value)
-                        }
+                        onChange={(e) => validateRecipientPhone(e.target.value)}
                       />
                     </div>
                   </div>
@@ -303,15 +316,18 @@ const ProfilePage = ({
                       variant="outlined"
                       placeholder="885 Woodstock Rd. #430-312"
                       required={true}
-                      value={company.address}
-                      error={company.address === '' && isSubmitted}
+                      value={(company as Company).address}
+                      error={(company as Company).address === '' && isSubmitted}
                       helperText={
-                        company.address === '' && isSubmitted
+                        (company as Company).address === '' && isSubmitted
                           ? 'This field is required.'
                           : ''
                       }
                       onChange={(e) =>
-                        setCompany({ ...company, address: e.target.value })
+                        setCompany({
+                          ...(company as Company),
+                          address: e.target.value
+                        })
                       }
                     />
                   </div>
@@ -330,15 +346,18 @@ const ProfilePage = ({
                         variant="outlined"
                         placeholder="Roswell"
                         required={true}
-                        value={company.city}
-                        error={company.city === '' && isSubmitted}
+                        value={(company as Company).city}
+                        error={(company as Company).city === '' && isSubmitted}
                         helperText={
-                          company.city === '' && isSubmitted
+                          (company as Company).city === '' && isSubmitted
                             ? 'This field is required.'
                             : ''
                         }
                         onChange={(e) =>
-                          setCompany({ ...company, city: e.target.value })
+                          setCompany({
+                            ...(company as Company),
+                            city: e.target.value
+                          })
                         }
                       />
                     </div>
@@ -355,15 +374,18 @@ const ProfilePage = ({
                         id="state-input"
                         variant="outlined"
                         placeholder="Georgia"
-                        value={company.state}
-                        error={company.state === '' && isSubmitted}
+                        value={(company as Company).state}
+                        error={(company as Company).state === '' && isSubmitted}
                         helperText={
-                          company.state === '' && isSubmitted
+                          (company as Company).state === '' && isSubmitted
                             ? 'This field is required.'
                             : ''
                         }
                         onChange={(e) =>
-                          setCompany({ ...company, state: e.target.value })
+                          setCompany({
+                            ...(company as Company),
+                            state: e.target.value
+                          })
                         }
                       />
                     </div>
@@ -377,15 +399,18 @@ const ProfilePage = ({
                         id="zip-input"
                         variant="outlined"
                         placeholder="30075"
-                        error={company.zip === '' && isSubmitted}
+                        error={(company as Company).zip === '' && isSubmitted}
                         helperText={
-                          company.zip === '' && isSubmitted
+                          (company as Company).zip === '' && isSubmitted
                             ? 'This field is required.'
                             : ''
                         }
-                        value={company.zip}
+                        value={(company as Company).zip}
                         onChange={(e) =>
-                          setCompany({ ...company, zip: e.target.value })
+                          setCompany({
+                            ...(company as Company),
+                            zip: e.target.value
+                          })
                         }
                       />
                     </div>
@@ -393,9 +418,9 @@ const ProfilePage = ({
                 </div>
               </div>
             )}
-              <button className={classes.button} onClick={handleUpdate}>
-                Update
-              </button>
+            <button className={classes.button} onClick={handleUpdate}>
+              Update
+            </button>
           </FormControl>
           <AddRemoveModal
             name={'Your profile'}
@@ -412,24 +437,6 @@ const ProfilePage = ({
       </div>
     </div>
   )
-}
-
-ProfilePage.getInitialProps = async ({ req }: NextPageContext) => {
-  const user =
-    req != null
-      ? await getCurrentUser(req.headers?.cookie)
-      : await getCurrentUser(null)
-
-  let company = null
-
-  if (user !== null && user.isUtilityCompany === true) {
-    company = await getCompany(user.id)
-  }
-
-  return {
-    propsCompany: company,
-    isUtilityView: user != null ? user.isUtilityCompany : false
-  }
 }
 
 export default ProfilePage

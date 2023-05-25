@@ -1,18 +1,15 @@
-/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable  */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Router from 'next/router'
-import { login, getCurrentUser } from '../../actions/User'
-// import urls from '../../../utils/urls'
+import { login, getCurrentUser } from 'src/actions/User'
 import classes from './LoginPage.module.css'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
 import { OutlinedInput } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-import urls from 'utils/urls'
-
-import { NextPageContext } from 'next'
+import urls from 'src/utils/urls'
 
 const LoginPage = (): JSX.Element => {
   const [email, setEmail] = useState('')
@@ -23,30 +20,25 @@ const LoginPage = (): JSX.Element => {
   const handleClickShowPassword = (): void => setShowPassword(!showPassword)
   const handleMouseDownPassword = (): void => setShowPassword(!showPassword)
 
+  useEffect(() => {
+    async function getInitialInfo() {
+      const user = await getCurrentUser()
+      if (user) {
+        Router.push(urls.pages.accessh2oView.applicants)
+      }
+    }
+
+    getInitialInfo().then().catch()
+  }, [])
+
   const handleSubmit = (event: { preventDefault: () => void }): any => {
     event.preventDefault()
-
-    // if (isRegistering) {
-    //   return await signUp(email, password)
-    //     .then(async () => await Router.replace(urls.pages.index))
-    //     .catch((error) => window.alert(error.message))
-    // }
-
     return login(email, password)
-      .then(async () => {
-        /*
-            console.log(json)
-
-            if (Router.query.returnUrl !== null) {
-              await Router.push(Router.query.returnUrl as string)
-            } else if (!user.isUtilityCompany) {
-              await Router.push(urls.pages.accessh2oView.applicants)
-            } else {
-              await Router.push(urls.pages.utilityView.applicants)
-            } */
-        Router.reload()
+      .then((result) => {
+        localStorage.setItem('accessToken', result)
+        Router.push(urls.pages.accessh2oView.applicants)
       })
-      .catch((error) => window.alert(error.message))
+      .catch((error: { message: string }) => window.alert(error.message))
   }
 
   return (
@@ -103,36 +95,6 @@ const LoginPage = (): JSX.Element => {
       </form>
     </div>
   )
-}
-
-LoginPage.getInitialProps = async (ctx: NextPageContext) => {
-  const req = ctx.req
-  const user =
-    req != null
-      ? await getCurrentUser(req.headers?.cookie)
-      : await getCurrentUser(null)
-
-  if (user && ctx.res != null) {
-    if (!user.isUtilityCompany) {
-      ctx.res.writeHead(302, {
-        Location: urls.pages.accessh2oView.applicants,
-        'Content-Type': 'text/html; charset=utf-8'
-      })
-      ctx.res.end()
-      // Router.push(urls.pages.accessh2oView.applicants)
-    } else {
-      ctx.res.writeHead(302, {
-        Location: urls.pages.utilityView.applicants,
-        'Content-Type': 'text/html; charset=utf-8'
-      })
-      ctx.res.end()
-      // Router.push(urls.pages.utilityView.applicants)
-    }
-  }
-  console.log('login redirects')
-  console.log(user !== null && ctx.res !== null)
-
-  return {}
 }
 
 export default LoginPage

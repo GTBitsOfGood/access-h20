@@ -16,20 +16,16 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "baseUrl": ".",
+    "jsx": "preserve",
     "incremental": true
   },
+  "include": [
+    "types/*",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "exclude": [
     "node_modules"
-  ],
-  "include": [
-    "next-env.d.ts",
-    ".eslintrc.js",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.json"
   ]
 }

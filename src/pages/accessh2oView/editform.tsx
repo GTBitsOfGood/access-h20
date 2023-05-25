@@ -1,3 +1,3 @@
-import EditFormPage from '../../screens/AccessH2OView/EditForm'
+import EditFormPage from 'src/screens/AccessH2OView/EditForm'
 
 export default EditFormPage

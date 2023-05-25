@@ -1,15 +1,17 @@
-import { addInfo } from "../../../../server/mongodb/actions/InfoSubmission";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next/types'
+import { addInfo } from 'server/mongodb/actions/InfoSubmission'
+import APIWrapper from 'server/utils/APIWrapper'
+import { Role } from 'src/utils/types'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => addInfo(req.body).then((info) => {
-    res.status(200)
-    res.send({
-        success: true,
-        payload: info
-    })
-    return res
-}).catch((error) => 
-    res.status(400).json({ success: false, message: error.message})
-)
-
-export default handler;
+export default APIWrapper({
+  POST: {
+    config: {
+      requireToken: true,
+      roles: [Role.UTILITY_COMPANY, Role.NONPROFIT_ADMIN]
+    },
+    handler: async (req: NextApiRequest, res: NextApiResponse) => {
+      const info = await addInfo(req.body)
+      return info
+    }
+  }
+})

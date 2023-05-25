@@ -9,26 +9,29 @@ interface PropTypes {
   onClose: () => void
 }
 
-export const FormErrorModal = ({ shouldShowModal, onClose }: PropTypes): JSX.Element => {
+export const FormErrorModal = ({
+  shouldShowModal,
+  onClose
+}: PropTypes): JSX.Element => {
   return (
-  <div>
-    <Modal open={shouldShowModal} onClose={onClose}>
-      <div className={classes.modalwrapper}>
-          <DoNotDisturbAltIcon color='error' sx={{ fontSize: 100 }} />
+    <div>
+      <Modal open={shouldShowModal} onClose={onClose}>
+        <div className={classes.modalwrapper}>
+          <DoNotDisturbAltIcon color="error" sx={{ fontSize: 100 }} />
           <h2>Please fill out all required sections.</h2>
           <Button
-              onClick={onClose}
-              variant="contained"
-              style={{
-                backgroundColor: '#3F78B5',
-                color: '#FFFFFF',
-                borderRadius: '8px'
-              }}
-              >
-              Continue
+            onClick={onClose}
+            variant="contained"
+            style={{
+              backgroundColor: '#3F78B5',
+              color: '#FFFFFF',
+              borderRadius: '8px'
+            }}
+          >
+            Continue
           </Button>
-      </div>
-    </Modal>
-  </div>
+        </div>
+      </Modal>
+    </div>
   )
 }

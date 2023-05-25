@@ -1,3 +1,3 @@
-import LoginPage from '../screens/Login'
+import LoginPage from 'src/screens/Login/LoginPage'
 
 export default LoginPage

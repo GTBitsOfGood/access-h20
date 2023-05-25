@@ -1,15 +1,17 @@
-import { addCompany } from "../../../../server/mongodb/actions/Company";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next/types'
+import { addCompany } from 'server/mongodb/actions/Company'
+import APIWrapper from 'server/utils/APIWrapper'
+import { Role } from 'src/utils/types'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => addCompany(req.body).then((company) => {
-    res.status(200)
-    res.send({
-        success: true,
-        payload: company
-    })
-    return res
-}).catch((error) => 
-    res.status(400).json({ success: false, message: error.message})
-)
-
-export default handler;
+export default APIWrapper({
+  POST: {
+    config: {
+      requireToken: true,
+      roles: [Role.UTILITY_COMPANY, Role.NONPROFIT_ADMIN]
+    },
+    handler: async (req: NextApiRequest, res: NextApiResponse) => {
+      const company = await addCompany(req.body)
+      return company
+    }
+  }
+})

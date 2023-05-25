@@ -1,15 +1,17 @@
-import { getInfo } from "../../../../server/mongodb/actions/InfoSubmission";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next/types'
+import { getInfo } from 'server/mongodb/actions/InfoSubmission'
+import APIWrapper from 'server/utils/APIWrapper'
+import { Role } from 'src/utils/types'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => getInfo(req.query.accountId as string).then((company) => {
-    res.status(200)
-    res.send({
-        success: true,
-        payload: company
-    })
-    return res
-}).catch((error) => 
-    res.status(400).json({success: false, message: error.message})
-)
-
-export default handler;
+export default APIWrapper({
+  GET: {
+    config: {
+      requireToken: true,
+      roles: [Role.UTILITY_COMPANY, Role.NONPROFIT_ADMIN]
+    },
+    handler: async (req: NextApiRequest, res: NextApiResponse) => {
+      const company = await getInfo(req.query.accountId as string)
+      return company
+    }
+  }
+})

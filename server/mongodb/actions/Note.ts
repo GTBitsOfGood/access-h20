@@ -1,16 +1,14 @@
-import NoteSchema from '../models/Note'
-import { Note } from '../../models/Note'
-import mongoDB from '../index'
+import dbConnect from 'server/utils/dbConnect'
+import NoteModel from 'server/mongodb/models/Note'
+import { Note } from 'src/utils/types'
 
-export async function addNote (note: Note): Promise<Note> {
-  await mongoDB()
-  return await NoteSchema.create(note)
+export async function addNote(note: Note): Promise<Note> {
+  await dbConnect()
+  return await NoteModel.create(note)
 }
 
-export async function getNotes (accountID: String): Promise<Note[]> {
-  await mongoDB()
-  const note = await NoteSchema.find({ accountID })
-  // console.log(accountID)
-  // console.log(note)
+export async function getNotes(accountID: string): Promise<Note[]> {
+  await dbConnect()
+  const note = await NoteModel.find({ accountID })
   return note
 }

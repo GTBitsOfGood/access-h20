@@ -9,9 +9,8 @@ import Menu from '@mui/material/Menu'
 import classes from './ApplicantNavLink.module.css'
 import { UtilityPartnerModal } from 'src/components/UtilityPartnerModal/UtilityPartnerModal'
 import { useState } from 'react'
-import urls from '../../../utils/urls'
+import urls from 'src/utils/urls'
 import { Link } from '@mui/material'
-import { logout } from 'src/actions/User'
 import Router from 'next/router'
 
 interface PropTypes {
@@ -23,10 +22,6 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [showUtilityPartnerModal, setShowUtilityPartnerModal] = useState(false)
 
-  // const handleChange = (event) => {
-  //   setAuth(event.target.checked)
-  // }
-
   const handleMenu = (event: any): void => {
     setAnchorEl(event.currentTarget)
   }
@@ -35,12 +30,9 @@ const ApplicantNavLink = ({ isUtilityView }: PropTypes): JSX.Element => {
     setAnchorEl(null)
   }
 
-  const handleLogout = (): void => {
-    logout()
-      .then(async () => {
-        return await Router.replace(urls.pages.login)
-      })
-      .catch(() => window.alert('An error occurred while trying to logout!'))
+  const handleLogout = async (): Promise<void> => {
+    localStorage.removeItem('accessToken')
+    await Router.replace(urls.pages.login)
   }
 
   return (
