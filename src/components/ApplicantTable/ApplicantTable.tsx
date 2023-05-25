@@ -303,6 +303,15 @@ const ApplicantTable = ({
                         )
                         )}
                     </TableBody>
+                    <TableRow>
+                        <TablePagination
+                            count={applicants.length}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                        />
+                    </TableRow>
                 </Table>
                 <NotesModal
                     shouldShowModal={showNotesModal}
