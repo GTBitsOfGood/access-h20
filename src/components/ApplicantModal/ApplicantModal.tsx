@@ -64,6 +64,11 @@ export const ApplicantModal = ({
   const [mycity, setmyCity] = useState('')
   /* eslint-enable */
 
+  const closeHandler = () => {
+    setShowAddRemoveModal(false)
+    window.location.reload()
+  }
+
   async function handleAdd(): Promise<void> {
     const data: Client = {
       accountId: accountID,
@@ -384,7 +389,7 @@ export const ApplicantModal = ({
               isSuccessful={true}
               modalAction={'added'}
               shouldShowModal={showAddRemoveModal}
-              onClose={() => setShowAddRemoveModal(false)}
+              onClose={closeHandler}
             />
             <FormErrorModal
               shouldShowModal={showErrorFormModal}

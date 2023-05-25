@@ -264,19 +264,30 @@ const ApplicantTable = ({
                 <Table>
                     <TableHead>
                         <TableCell><span className={classes.tableHeaderText}>Name</span></TableCell>
-                        <TableCell><span className={classes.tableHeaderText}>Utility Company</span></TableCell>
+                        {!isUtilityView && <TableCell><span className={classes.tableHeaderText}>Utility Company</span></TableCell>}
                         <TableCell><span className={classes.tableHeaderText}>Account ID</span></TableCell>
                         <TableCell><span className={classes.tableHeaderText}>Property Address</span></TableCell>
                         <TableCell><span className={classes.tableHeaderText}>Applied</span></TableCell>
                         <TableCell><span className={classes.tableHeaderText}>Status</span></TableCell>
                         <TableCell><span className={classes.tableHeaderText}>Notes</span></TableCell>
+                        <TableCell />
                     </TableHead>
                     <TableBody>
                         {paginate(filteredApplicants, page, rowsPerPage).map((applicant, index) => (
                             <TableRow
                                 key={page}>
-                                <TableCell>{applicant.name}</TableCell>
-                                <TableCell>{applicant.utilityCompany}</TableCell>
+                                <TableCell>
+                                    <Link
+                                        href={
+                                            infoSubmissionEndpoint + '/' + applicant.accountId
+                                        }>
+                                        {applicant.name}
+                                    </Link>
+                                </TableCell>
+                                {!isUtilityView &&
+                                    <TableCell>
+                                        {applicant.utilityCompany}
+                                    </TableCell>}
                                 <TableCell>{applicant.accountId}</TableCell>
                                 <TableCell>{applicant.propertyAddress}</TableCell>
                                 <TableCell>{(new Date(applicant.applied)).toDateString()}</TableCell>
@@ -299,6 +310,34 @@ const ApplicantTable = ({
                                         </IconButton>
                                     </Tooltip>
                                 </TableCell>
+                                <TableCell>
+                                    <IconButton
+                                        id="basic-button"
+                                        aria-controls="basic-menu"
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={handleClick}
+                                    >
+                                        <MoreVert />
+                                    </IconButton>
+                                    <Menu
+                                        id="basic-menu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button'
+                                        }}
+                                    >
+                                        <MenuItem onClick={() => Router.push(infoSubmissionEndpoint + '/' + applicant.accountId)}>View</MenuItem>
+                                        <MenuItem onClick={() => editNote(applicant.accountId)}>
+                                            Add Notes
+                                        </MenuItem>
+                                        <div className={classes.deleteButton}>
+                                            <MenuItem onClick={() => console.log(removeApplicant(applicant.accountId))}>Delete</MenuItem>
+                                        </div>
+                                    </Menu>
+                                </TableCell>
                             </TableRow>
                         )
                         )}
@@ -312,6 +351,7 @@ const ApplicantTable = ({
                             onPageChange={handleChangePage}
                         />
                     </TableRow>
+
                 </Table>
                 <NotesModal
                     shouldShowModal={showNotesModal}
