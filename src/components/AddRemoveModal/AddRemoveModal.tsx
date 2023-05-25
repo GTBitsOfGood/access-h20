@@ -13,31 +13,39 @@ interface PropTypes {
   onClose: () => void
 }
 
-export const AddRemoveModal = ({ name, isSuccessful, modalAction, shouldShowModal, onClose }: PropTypes): JSX.Element => {
+export const AddRemoveModal = ({
+  name,
+  isSuccessful,
+  modalAction,
+  shouldShowModal,
+  onClose
+}: PropTypes): JSX.Element => {
   return (
-  <div>
-    <Modal open={shouldShowModal} onClose={onClose}>
-      <div className={classes.modalwrapper}>
+    <div>
+      <Modal open={shouldShowModal} onClose={onClose}>
+        <div className={classes.modalwrapper}>
           {!isSuccessful && (
-            <DeleteForeverOutlinedIcon color='error' sx={{ fontSize: 50 }} />
+            <DeleteForeverOutlinedIcon color="error" sx={{ fontSize: 50 }} />
           )}
           {isSuccessful && (
-            <CheckCircleOutlineIcon color='primary' sx={{ fontSize: 50 }}/>
+            <CheckCircleOutlineIcon color="primary" sx={{ fontSize: 50 }} />
           )}
-          <h2>{name} has been successfully {modalAction}!</h2>
+          <h2>
+            {name} has been successfully {modalAction}!
+          </h2>
           <Button
-              onClick={onClose}
-              variant="contained"
-              style={{
-                backgroundColor: '#3F78B5',
-                color: '#FFFFFF',
-                borderRadius: '8px'
-              }}
-              >
-              Continue
+            onClick={onClose}
+            variant="contained"
+            style={{
+              backgroundColor: '#3F78B5',
+              color: '#FFFFFF',
+              borderRadius: '8px'
+            }}
+          >
+            Continue
           </Button>
-      </div>
-    </Modal>
-  </div>
+        </div>
+      </Modal>
+    </div>
   )
 }

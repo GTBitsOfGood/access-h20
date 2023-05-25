@@ -1,45 +1,44 @@
-import CompanySchema from '../models/Company'
-import { Company } from '../../models/Company'
-import errors from '../../../utils/consts'
-import mongoDB from '../index'
-import validator from 'email-validator'
+import CompanyModel from 'server/mongodb/models/Company'
+import dbConnect from 'server/utils/dbConnect'
+import * as EmailValidator from 'email-validator'
+import { Company, Errors } from 'src/utils/types'
 
-export async function addCompany (company: Company): Promise<Company> {
-  await mongoDB()
-  const newCompany = await CompanySchema.create(company)
+export async function addCompany(company: Company): Promise<Company> {
+  await dbConnect()
+  const newCompany = await CompanyModel.create(company)
   return newCompany
 }
 
-export async function getCompany (
+export async function getCompany(
   accountId: Company['accountId']
 ): Promise<Company> {
-  await mongoDB()
-  const company = await CompanySchema.findOne({ accountId: accountId })
-  return company
+  await dbConnect()
+  const company = await CompanyModel.findOne({ accountId: accountId })
+  return company as Company
 }
 
-export async function updateCompany (
+export async function updateCompany(
   companyAttributes: Company
 ): Promise<Company> {
   const accountId = companyAttributes.accountId
   const attributes = companyAttributes
 
-  if (accountId === '') throw new Error(errors.user.MISSING_INFO)
+  if (accountId === '') throw new Error(Errors.user.MISSING_INFO)
 
-  await mongoDB()
+  await dbConnect()
 
   if (attributes.email !== '') {
-    const validEmail = validator.validate(attributes.email)
-    if (!validEmail) throw new Error(errors.user.INVALID_EMAIL)
+    const validEmail = EmailValidator.validate(attributes.email)
+    if (!validEmail) throw new Error(Errors.user.INVALID_EMAIL)
   }
 
-  const company = await CompanySchema.findOne({ accountId: accountId })
-  if (company === undefined) throw new Error(errors.user.INVALID_ID)
+  const company = await CompanyModel.findOne({ accountId: accountId })
+  if (company === undefined) throw new Error(Errors.user.INVALID_ID)
 
-  const updatedCompany = await CompanySchema.findOneAndUpdate(
+  const updatedCompany = await CompanyModel.findOneAndUpdate(
     { accountId: accountId },
     { $set: attributes },
     { new: true, runValidators: true, omitUndefined: true }
   )
-  return updatedCompany
+  return updatedCompany as Company
 }

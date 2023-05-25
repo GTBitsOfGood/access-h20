@@ -3,31 +3,61 @@ import CreateIcon from '@mui/icons-material/Create'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import React, { useEffect, useState } from 'react'
 import classes from './EditForm.module.css'
-import { buttonStyles, linkStyle, dividerStyle, deleteStyle } from './EditFormMUIStyles'
+import {
+  buttonStyles,
+  linkStyle,
+  dividerStyle,
+  deleteStyle
+} from './EditFormMUIStyles'
 
-import { eligibilityQuestion } from 'server/models/EligibilityQuestion'
-import { documentQuestion } from 'server/models/DocumentQuestion'
-import { otherQuestion } from 'server/models/OtherQuestion'
-import { addDocumentQuestion, addEligibilityQuestion, addOtherQuestion, editDocumentQuestion, editEligibilityQuestion, editOtherQuestion, getDocumentQuestions, getEligibilityQuestions, getOtherQuestions, removeDocumentQuestion, removeEligibilityQuestion, removeOtherQuestion } from 'src/actions/FormQuestions'
+import {
+  EligibilityQuestion,
+  DocumentQuestion,
+  OtherQuestion
+} from 'src/utils/types'
+import {
+  addDocumentQuestion,
+  addEligibilityQuestion,
+  addOtherQuestion,
+  editDocumentQuestion,
+  editEligibilityQuestion,
+  editOtherQuestion,
+  getDocumentQuestions,
+  getEligibilityQuestions,
+  getOtherQuestions,
+  removeDocumentQuestion,
+  removeEligibilityQuestion,
+  removeOtherQuestion
+} from 'src/actions/FormQuestions'
 import { Types } from 'mongoose'
 
 const EditFormPage = (): JSX.Element => {
-  const [eligibilityQuestions, setEligibilityQuestions] = useState<eligibilityQuestion[]>([])
-  const [oldEligibilityQuestions, setOldEligibilityQuestions] = useState<eligibilityQuestion[]>([])
+  const [eligibilityQuestions, setEligibilityQuestions] = useState<
+    EligibilityQuestion[]
+  >([])
+  const [oldEligibilityQuestions, setOldEligibilityQuestions] = useState<
+    EligibilityQuestion[]
+  >([])
   const [editEligibility, setEditEligibility] = useState<boolean[]>([])
   const [newEligibilityTitle, setNewEligibilityTitle] = useState('')
   const [newEligibilityQuestion, setNewEligibilityQuestion] = useState('')
   const [showNewEligibility, setShowNewEligibility] = useState(false)
 
-  const [documentQuestions, setDocumentQuestions] = useState<documentQuestion[]>([])
-  const [oldDocumentQuestions, setOldDocumentQuestions] = useState<documentQuestion[]>([])
+  const [documentQuestions, setDocumentQuestions] = useState<
+    DocumentQuestion[]
+  >([])
+  const [oldDocumentQuestions, setOldDocumentQuestions] = useState<
+    DocumentQuestion[]
+  >([])
   const [editDocument, setEditDocument] = useState<boolean[]>([])
   const [newDocumentTitle, setNewDocumentTitle] = useState('')
   const [newDocumentDescription, setNewDocumentDescription] = useState('')
   const [showNewDocument, setShowNewDocument] = useState(false)
 
-  const [otherQuestions, setOtherQuestions] = useState<otherQuestion[]>([])
-  const [oldOtherQuestions, setOldOtherQuestions] = useState<otherQuestion[]>([])
+  const [otherQuestions, setOtherQuestions] = useState<OtherQuestion[]>([])
+  const [oldOtherQuestions, setOldOtherQuestions] = useState<OtherQuestion[]>(
+    []
+  )
   const [editOther, setEditOther] = useState<boolean[]>([])
   const [newOtherQuestion, setNewOtherQuestion] = useState('')
   const [showNewOther, setShowNewOther] = useState(false)
@@ -69,13 +99,21 @@ const EditFormPage = (): JSX.Element => {
     if (cancel) {
       setEligibilityQuestions(oldEligibilityQuestions)
       setRender(true)
-    } else { setOldEligibilityQuestions(eligibilityQuestions) }
+    } else {
+      setOldEligibilityQuestions(eligibilityQuestions)
+    }
     const duplicate = editEligibility.slice()
     duplicate[index] = !duplicate[index]
     setEditEligibility(duplicate)
   }
-  const updateEligibilityQuestion = (index: number, id: Types.ObjectId): void => {
-    if (eligibilityQuestions[index].title === '' || eligibilityQuestions[index].question === '') {
+  const updateEligibilityQuestion = (
+    index: number,
+    id: Types.ObjectId
+  ): void => {
+    if (
+      eligibilityQuestions[index].title === '' ||
+      eligibilityQuestions[index].question === ''
+    ) {
       // insert error modal here
     } else {
       const updateQuestion = async (): Promise<void> => {
@@ -110,7 +148,11 @@ const EditFormPage = (): JSX.Element => {
       setEditEligibility(duplicate)
     }
   }
-  const handleEligibilityTitleChange = (text: any, id: Types.ObjectId, index: number): void => {
+  const handleEligibilityTitleChange = (
+    text: any,
+    id: Types.ObjectId,
+    index: number
+  ): void => {
     const duplicate = eligibilityQuestions.slice()
     duplicate[index].title = text.target.value
     setEligibilityQuestions(duplicate)
@@ -118,7 +160,11 @@ const EditFormPage = (): JSX.Element => {
   const handleNewEligibilityTitleChange = (text: any): void => {
     setNewEligibilityTitle(text.target.value)
   }
-  const handleEligibilityQuestionChange = (text: any, id: Types.ObjectId, index: number): void => {
+  const handleEligibilityQuestionChange = (
+    text: any,
+    id: Types.ObjectId,
+    index: number
+  ): void => {
     const duplicate = eligibilityQuestions.slice()
     duplicate[index].question = text.target.value
     setEligibilityQuestions(duplicate)
@@ -126,7 +172,10 @@ const EditFormPage = (): JSX.Element => {
   const handleNewEligibilityQuestionChange = (text: any): void => {
     setNewEligibilityQuestion(text.target.value)
   }
-  const deleteEligibilityQuestion = (id: Types.ObjectId, index: number): void => {
+  const deleteEligibilityQuestion = (
+    id: Types.ObjectId,
+    index: number
+  ): void => {
     const removeQuestion = async (): Promise<void> => {
       await removeEligibilityQuestion(id)
     }
@@ -147,13 +196,18 @@ const EditFormPage = (): JSX.Element => {
     if (cancel) {
       setDocumentQuestions(oldDocumentQuestions)
       setRender(true)
-    } else { setOldDocumentQuestions(documentQuestions) }
+    } else {
+      setOldDocumentQuestions(documentQuestions)
+    }
     const duplicate = editDocument.slice()
     duplicate[index] = !duplicate[index]
     setEditDocument(duplicate)
   }
   const updateDocumentQuestion = (index: number, id: Types.ObjectId): void => {
-    if (documentQuestions[index].title === '' || documentQuestions[index].description === '') {
+    if (
+      documentQuestions[index].title === '' ||
+      documentQuestions[index].description === ''
+    ) {
       // insert error modal here
     } else {
       const updateQuestion = async (): Promise<void> => {
@@ -188,7 +242,11 @@ const EditFormPage = (): JSX.Element => {
       setEditDocument(duplicate)
     }
   }
-  const handleDocumentTitleChange = (text: any, id: Types.ObjectId, index: number): void => {
+  const handleDocumentTitleChange = (
+    text: any,
+    id: Types.ObjectId,
+    index: number
+  ): void => {
     const duplicate = documentQuestions.slice()
     duplicate[index].title = text.target.value
     setDocumentQuestions(duplicate)
@@ -196,7 +254,11 @@ const EditFormPage = (): JSX.Element => {
   const handleNewDocumentTitleChange = (text: any): void => {
     setNewDocumentTitle(text.target.value)
   }
-  const handleDocumentDescriptionChange = (text: any, id: Types.ObjectId, index: number): void => {
+  const handleDocumentDescriptionChange = (
+    text: any,
+    id: Types.ObjectId,
+    index: number
+  ): void => {
     const duplicate = documentQuestions.slice()
     duplicate[index].description = text.target.value
     setDocumentQuestions(duplicate)
@@ -225,7 +287,9 @@ const EditFormPage = (): JSX.Element => {
     if (cancel) {
       setOtherQuestions(oldOtherQuestions)
       setRender(true)
-    } else { setOldOtherQuestions(otherQuestions) }
+    } else {
+      setOldOtherQuestions(otherQuestions)
+    }
     const duplicate = editOther.slice()
     duplicate[index] = !duplicate[index]
     setEditOther(duplicate)
@@ -263,7 +327,11 @@ const EditFormPage = (): JSX.Element => {
       setEditOther(duplicate)
     }
   }
-  const handleOtherQuestionChange = (text: any, id: Types.ObjectId, index: number): void => {
+  const handleOtherQuestionChange = (
+    text: any,
+    id: Types.ObjectId,
+    index: number
+  ): void => {
     const duplicate = otherQuestions.slice()
     duplicate[index].question = text.target.value
     setOtherQuestions(duplicate)
@@ -290,235 +358,420 @@ const EditFormPage = (): JSX.Element => {
   return (
     <div className={classes.background}>
       <div className={classes.body}>
-        <Link href="javascript:history.back()" underline="none" style={linkStyle}>{'<'} Back to Dashboard</Link>
+        <Link
+          href="javascript:history.back()"
+          underline="none"
+          style={linkStyle}
+        >
+          {'<'} Back to Dashboard
+        </Link>
         <h1 className={classes.pageTitle}>Edit Form</h1>
         <div className={classes.questionType}>
           <h3 className={classes.sectionTitle}>Eligibility</h3>
           <div className={classes.statusSection}>
-          {eligibilityQuestions?.map((question, index) => (
-            <div className={classes.questions}>
-              <CreateIcon className={classes.editButton} onClick={() => enableEditEligibility(index, false)}/>
-              {editEligibility[index]
-                ? <div>
-                <p className={classes.title}>{question.title}</p>
-                <p className={classes.description}>{question.question}</p>
-              </div>
-                : <div>
-                  <div className={classes.editQuestions}>
-                    <div className={classes.delete}>
+            {eligibilityQuestions?.map((question, index) => (
+              <div className={classes.questions} key={index}>
+                <CreateIcon
+                  className={classes.editButton}
+                  onClick={() => enableEditEligibility(index, false)}
+                />
+                {editEligibility[index] ? (
+                  <div>
+                    <p className={classes.title}>{question.title}</p>
+                    <p className={classes.description}>{question.question}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className={classes.editQuestions}>
+                      <div className={classes.delete}>
+                        <TextField
+                          InputProps={{
+                            classes: {
+                              root: classes.inputRoot
+                            }
+                          }}
+                          value={question.title}
+                          onChange={(title) =>
+                            handleEligibilityTitleChange(
+                              title,
+                              question._id as Types.ObjectId,
+                              index
+                            )
+                          }
+                          fullWidth
+                          multiline
+                          size="small"
+                        />
+                        <DeleteForeverIcon
+                          sx={deleteStyle}
+                          onClick={() =>
+                            deleteEligibilityQuestion(
+                              question._id as Types.ObjectId,
+                              index
+                            )
+                          }
+                        />
+                      </div>
                       <TextField
                         InputProps={{
                           classes: {
                             root: classes.inputRoot
                           }
                         }}
-                        value={question.title}
-                        onChange={(title) => handleEligibilityTitleChange(title, question._id as Types.ObjectId, index)}
+                        value={question.question}
+                        onChange={(text) =>
+                          handleEligibilityQuestionChange(
+                            text,
+                            question._id as Types.ObjectId,
+                            index
+                          )
+                        }
                         fullWidth
                         multiline
-                        size='small'
+                        size="small"
                       />
-                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteEligibilityQuestion(question._id as Types.ObjectId, index)}/>
                     </div>
-                    <TextField
-                      InputProps={{
-                        classes: {
-                          root: classes.inputRoot
-                        }
-                      }}
-                      value={question.question}
-                      onChange={(text) => handleEligibilityQuestionChange(text, question._id as Types.ObjectId, index)}
-                      fullWidth
-                      multiline
-                      size='small'
-                    />
+                    <Button
+                      onClick={() =>
+                        updateEligibilityQuestion(
+                          index,
+                          question._id as Types.ObjectId
+                        )
+                      }
+                      sx={buttonStyles}
+                      variant="contained"
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      onClick={() => enableEditEligibility(index, true)}
+                      sx={buttonStyles}
+                      variant="text"
+                    >
+                      Cancel
+                    </Button>
                   </div>
-                  <Button onClick={() => updateEligibilityQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
-                  <Button onClick = {() => enableEditEligibility(index, true)} sx={buttonStyles} variant="text">Cancel</Button>
-                </div>
-              }
-            </div>
-          ))}
-          { showNewEligibility
-            ? <div className={classes.editQuestionsContainer}>
-              <div>
-                <TextField
-                  InputProps={{
-                    classes: {
-                      root: classes.inputRoot
-                    }
-                  }}
-                  value={newEligibilityTitle}
-                  onChange={(text) => handleNewEligibilityTitleChange(text)}
-                  multiline
-                  fullWidth
-                  label="Question Title"
-                  size='small'
-                />
-                <TextField
-                  InputProps={{
-                    classes: {
-                      root: classes.inputRoot
-                    }
-                  }}
-                  value={newEligibilityQuestion}
-                  onChange={(text) => handleNewEligibilityQuestionChange(text)}
-                  multiline
-                  fullWidth
-                  label="Add brief description of required question"
-                  size='small'
-                />
+                )}
               </div>
-              <Button onClick={addNewEligibilityQuestion} sx={buttonStyles} variant="contained">Save</Button>
-              <Button onClick = {enableShowNewEligibility} sx={buttonStyles} variant="text">Cancel</Button>
-            </div>
-            : <Button onClick = {() => setShowNewEligibility(true)} sx={buttonStyles} variant="outlined">+ Add Requirement</Button>
-          }
+            ))}
+            {showNewEligibility ? (
+              <div className={classes.editQuestionsContainer}>
+                <div>
+                  <TextField
+                    InputProps={{
+                      classes: {
+                        root: classes.inputRoot
+                      }
+                    }}
+                    value={newEligibilityTitle}
+                    onChange={(text) => handleNewEligibilityTitleChange(text)}
+                    multiline
+                    fullWidth
+                    label="Question Title"
+                    size="small"
+                  />
+                  <TextField
+                    InputProps={{
+                      classes: {
+                        root: classes.inputRoot
+                      }
+                    }}
+                    value={newEligibilityQuestion}
+                    onChange={(text) =>
+                      handleNewEligibilityQuestionChange(text)
+                    }
+                    multiline
+                    fullWidth
+                    label="Add brief description of required question"
+                    size="small"
+                  />
+                </div>
+                <Button
+                  onClick={addNewEligibilityQuestion}
+                  sx={buttonStyles}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+                <Button
+                  onClick={enableShowNewEligibility}
+                  sx={buttonStyles}
+                  variant="text"
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={() => setShowNewEligibility(true)}
+                sx={buttonStyles}
+                variant="outlined"
+              >
+                + Add Requirement
+              </Button>
+            )}
           </div>
         </div>
         <Divider style={dividerStyle} />
         <div className={classes.questionType}>
           <h3 className={classes.sectionTitle}>Documents</h3>
           <div className={classes.docSection}>
-          {documentQuestions?.map((question, index) => (
-            <div className={classes.questions}>
-              <CreateIcon className={classes.editButton} onClick={() => enableEditDocument(index, false)}/>
-              {editDocument[index]
-                ? <div>
-                <p className={classes.title}>{question.title}</p>
-                <p className={classes.description}>{question.description}</p>
-              </div>
-                : <div>
-                  <div className={classes.editQuestions}>
-                    <div className={classes.delete}>
+            {documentQuestions?.map((question, index) => (
+              <div className={classes.questions} key={index}>
+                <CreateIcon
+                  className={classes.editButton}
+                  onClick={() => enableEditDocument(index, false)}
+                />
+                {editDocument[index] ? (
+                  <div>
+                    <p className={classes.title}>{question.title}</p>
+                    <p className={classes.description}>
+                      {question.description}
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className={classes.editQuestions}>
+                      <div className={classes.delete}>
+                        <TextField
+                          InputProps={{
+                            classes: {
+                              root: classes.inputRoot
+                            }
+                          }}
+                          value={question.title}
+                          onChange={(title) =>
+                            handleDocumentTitleChange(
+                              title,
+                              question._id as Types.ObjectId,
+                              index
+                            )
+                          }
+                          multiline
+                          fullWidth
+                          size="small"
+                        />
+                        <DeleteForeverIcon
+                          sx={deleteStyle}
+                          onClick={() =>
+                            deleteDocumentQuestion(
+                              question._id as Types.ObjectId,
+                              index
+                            )
+                          }
+                        />
+                      </div>
                       <TextField
                         InputProps={{
                           classes: {
                             root: classes.inputRoot
                           }
                         }}
-                        value={question.title}
-                        onChange={(title) => handleDocumentTitleChange(title, question._id as Types.ObjectId, index)}
+                        value={question.description}
+                        onChange={(description) =>
+                          handleDocumentDescriptionChange(
+                            description,
+                            question._id as Types.ObjectId,
+                            index
+                          )
+                        }
                         multiline
                         fullWidth
-                        size='small'
+                        size="small"
                       />
-                      <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteDocumentQuestion(question._id as Types.ObjectId, index)}/>
                     </div>
-                    <TextField
-                      InputProps={{
-                        classes: {
-                          root: classes.inputRoot
-                        }
-                      }}
-                      value={question.description}
-                      onChange={(description) => handleDocumentDescriptionChange(description, question._id as Types.ObjectId, index)}
-                      multiline
-                      fullWidth
-                      size='small'
-                    />
+                    <Button
+                      onClick={() =>
+                        updateDocumentQuestion(
+                          index,
+                          question._id as Types.ObjectId
+                        )
+                      }
+                      sx={buttonStyles}
+                      variant="contained"
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      onClick={() => enableEditDocument(index, true)}
+                      sx={buttonStyles}
+                      variant="text"
+                    >
+                      Cancel
+                    </Button>
                   </div>
-                <Button onClick={() => updateDocumentQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
-                <Button onClick = {() => enableEditDocument(index, true)} sx={buttonStyles} variant="text">Cancel</Button>
-                </div>
-              }
-
-            </div>
-          ))}
-          { showNewDocument
-            ? <div className={classes.editQuestionsContainer}>
-              <div>
-                <TextField
-                  InputProps={{
-                    classes: {
-                      root: classes.inputRoot
-                    }
-                  }}
-                  value={newDocumentTitle}
-                  onChange={(text) => handleNewDocumentTitleChange(text)}
-                  multiline
-                  fullWidth
-                  label="Document Title"
-                  size='small'
-                />
-                <TextField
-                  InputProps={{
-                    classes: {
-                      root: classes.inputRoot
-                    }
-                  }}
-                  value={newDocumentDescription}
-                  onChange={(text) => handleNewDocumentDescriptionChange(text)}
-                  multiline
-                  fullWidth
-                  label="Add brief description of required document"
-                  size='small'
-                />
+                )}
               </div>
-              <Button onClick={addNewDocumentQuestion} sx={buttonStyles} variant="contained">Save</Button>
-              <Button onClick = {enableShowNewDocument} sx={buttonStyles} variant="text">Cancel</Button>
-            </div>
-            : <Button onClick = {() => setShowNewDocument(true)} sx={buttonStyles} variant="outlined">+ Add Document Requirement</Button>
-          }
+            ))}
+            {showNewDocument ? (
+              <div className={classes.editQuestionsContainer}>
+                <div>
+                  <TextField
+                    InputProps={{
+                      classes: {
+                        root: classes.inputRoot
+                      }
+                    }}
+                    value={newDocumentTitle}
+                    onChange={(text) => handleNewDocumentTitleChange(text)}
+                    multiline
+                    fullWidth
+                    label="Document Title"
+                    size="small"
+                  />
+                  <TextField
+                    InputProps={{
+                      classes: {
+                        root: classes.inputRoot
+                      }
+                    }}
+                    value={newDocumentDescription}
+                    onChange={(text) =>
+                      handleNewDocumentDescriptionChange(text)
+                    }
+                    multiline
+                    fullWidth
+                    label="Add brief description of required document"
+                    size="small"
+                  />
+                </div>
+                <Button
+                  onClick={addNewDocumentQuestion}
+                  sx={buttonStyles}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+                <Button
+                  onClick={enableShowNewDocument}
+                  sx={buttonStyles}
+                  variant="text"
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={() => setShowNewDocument(true)}
+                sx={buttonStyles}
+                variant="outlined"
+              >
+                + Add Document Requirement
+              </Button>
+            )}
           </div>
         </div>
         <Divider style={dividerStyle} />
         <div className={classes.questionType}>
           <h3 className={classes.sectionTitle}>Additional</h3>
           <div className={classes.additSection}>
-          {otherQuestions?.map((question, index) => (
-            <div className={classes.questions}>
-              <CreateIcon className={classes.editButton} onClick={() => enableEditOther(index, false)}/>
-              {editOther[index]
-                ? <div>
-                <p className={classes.title}>{question.question}</p>
-              </div>
-                : <div>
-                <div className={classes.editQuestions}>
-                  <div className={classes.delete}>
-                    <TextField
-                      InputProps={{
-                        classes: {
-                          root: classes.inputRoot
-                        }
-                      }}
-                      value={question.question}
-                      onChange={(text) => handleOtherQuestionChange(text, question._id as Types.ObjectId, index)}
-                      multiline
-                      fullWidth
-                      size='small'
-                    />
-                    <DeleteForeverIcon sx={deleteStyle} onClick={() => deleteOtherQuestion(question._id as Types.ObjectId, index)}/>
-                  </div>
-                </div>
-                <Button onClick={() => updateOtherQuestion(index, question._id as Types.ObjectId)} sx={buttonStyles} variant="contained">Save</Button>
-                <Button onClick = {() => enableEditOther(index, true)} sx={buttonStyles} variant="text">Cancel</Button>
-              </div>
-              }
-            </div>
-          ))}
-          { showNewOther
-            ? <div className={classes.editQuestionsContainer}>
-              <div>
-                <TextField
-                  InputProps={{
-                    classes: {
-                      root: classes.inputRoot
-                    }
-                  }}
-                  value={newOtherQuestion}
-                  onChange={(text) => handleNewOtherQuestionChange(text)}
-                  multiline
-                  fullWidth
-                  label="Add brief description of required question"
-                  size='small'
+            {otherQuestions?.map((question, index) => (
+              <div className={classes.questions} key={index}>
+                <CreateIcon
+                  className={classes.editButton}
+                  onClick={() => enableEditOther(index, false)}
                 />
+                {editOther[index] ? (
+                  <div>
+                    <p className={classes.title}>{question.question}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className={classes.editQuestions}>
+                      <div className={classes.delete}>
+                        <TextField
+                          InputProps={{
+                            classes: {
+                              root: classes.inputRoot
+                            }
+                          }}
+                          value={question.question}
+                          onChange={(text) =>
+                            handleOtherQuestionChange(
+                              text,
+                              question._id as Types.ObjectId,
+                              index
+                            )
+                          }
+                          multiline
+                          fullWidth
+                          size="small"
+                        />
+                        <DeleteForeverIcon
+                          sx={deleteStyle}
+                          onClick={() =>
+                            deleteOtherQuestion(
+                              question._id as Types.ObjectId,
+                              index
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() =>
+                        updateOtherQuestion(
+                          index,
+                          question._id as Types.ObjectId
+                        )
+                      }
+                      sx={buttonStyles}
+                      variant="contained"
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      onClick={() => enableEditOther(index, true)}
+                      sx={buttonStyles}
+                      variant="text"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                )}
               </div>
-              <Button onClick={addNewOtherQuestion} sx={buttonStyles} variant="contained">Save</Button>
-              <Button onClick = {enableShowNewOther} sx={buttonStyles} variant="text">Cancel</Button>
-            </div>
-            : <Button onClick = {() => setShowNewOther(true)} sx={buttonStyles} variant="outlined">+ Add Question</Button>
-          }
+            ))}
+            {showNewOther ? (
+              <div className={classes.editQuestionsContainer}>
+                <div>
+                  <TextField
+                    InputProps={{
+                      classes: {
+                        root: classes.inputRoot
+                      }
+                    }}
+                    value={newOtherQuestion}
+                    onChange={(text) => handleNewOtherQuestionChange(text)}
+                    multiline
+                    fullWidth
+                    label="Add brief description of required question"
+                    size="small"
+                  />
+                </div>
+                <Button
+                  onClick={addNewOtherQuestion}
+                  sx={buttonStyles}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+                <Button
+                  onClick={enableShowNewOther}
+                  sx={buttonStyles}
+                  variant="text"
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={() => setShowNewOther(true)}
+                sx={buttonStyles}
+                variant="outlined"
+              >
+                + Add Question
+              </Button>
+            )}
           </div>
         </div>
       </div>
