@@ -32,36 +32,35 @@ export async function login({
   return getAccessToken(user._doc)
 }
 
+const SALT_ROUNDS = 10
+
 // uncomment to create admin login
 
-// export async function signUp({ email, password }) {
-//   if (!email || !password) throw new Error(errors.user.MISSING_INFO)
+// export async function signUp({ email, password }: { email: string, password: string }) {
+//   if (!email || !password) throw new Error(Errors.user.MISSING_INFO)
 
 //   const validEmail = EmailValidator.validate(email)
-//   if (!validEmail) throw new Error(errors.user.INVALID_EMAIL)
-//   if (password.length < 8) throw new Error(errors.user.INVALID_PASSWORD)
+//   if (!validEmail) throw new Error(Errors.user.INVALID_EMAIL)
+//   if (password.length < 8) throw new Error(Errors.user.INVALID_PASSWORD)
 
-//   await mongoDB()
+//   await dbConnect()
 
-//   let user = await User.findOne({ email })
-//   if (user) throw new Error(errors.user.UNAVAILABLE_EMAIL)
+//   let user = await UserModel.findOne({ email })
+//   if (user) throw new Error(Errors.user.UNAVAILABLE_EMAIL)
 
 //   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
 
-//   user = await User.create({
+//   user = await UserModel.create({
 //     email,
 //     password: hashedPassword,
 //     roles: [Role.NONPROFIT_ADMIN]
 //   })
 
-//   if (!user) throw new Error(errors.user.INVALID_ATTRIBUTES)
+//   if (!user) throw new Error(Errors.user.INVALID_ATTRIBUTES)
 
-//   const jwtPayload = { id: user._id, email: user.email }
-//   const jwtOptions = { expiresIn: TOKEN_DURATION }
-//   return jwt.sign(jwtPayload, JWT_SECRET, jwtOptions)
+//   return getAccessToken(user._doc)
 // }
 
-const SALT_ROUNDS = 10
 export async function signUp({
   email,
   password,
@@ -126,7 +125,7 @@ export async function update({
   if (!id) throw new Error(Errors.user.MISSING_INFO)
 
   if ((attributes as unknown as PartialUser).password) {
-    ;(attributes as unknown as PartialUser).password = await bcrypt.hash(
+    ; (attributes as unknown as PartialUser).password = await bcrypt.hash(
       (attributes as unknown as PartialUser).password,
       SALT_ROUNDS
     )

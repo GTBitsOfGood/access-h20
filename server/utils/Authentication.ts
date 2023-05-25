@@ -26,9 +26,7 @@ export const comparePassword = async (
 }
 
 export const getAccessToken = (data: Partial<User> | User): string => {
-  return jwt.sign(data, process.env.JWT_SECRET as string, {
-    expiresIn: '1m'
-  })
+  return jwt.sign(data, process.env.JWT_SECRET as string)
 }
 
 export const getLoginRefreshToken = async (data: Partial<User> | User) => {
