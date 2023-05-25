@@ -30,6 +30,7 @@ import {
   removeOtherQuestion
 } from 'src/actions/FormQuestions'
 import { Types } from 'mongoose'
+import urls from 'src/utils/urls'
 
 const EditFormPage = (): JSX.Element => {
   const [eligibilityQuestions, setEligibilityQuestions] = useState<
@@ -359,7 +360,7 @@ const EditFormPage = (): JSX.Element => {
     <div className={classes.background}>
       <div className={classes.body}>
         <Link
-          href="javascript:history.back()"
+          href={urls.pages.accessh2oView.applicants}
           underline="none"
           style={linkStyle}
         >

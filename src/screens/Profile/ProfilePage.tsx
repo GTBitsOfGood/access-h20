@@ -130,7 +130,7 @@ const ProfilePage = (): JSX.Element => {
           {!isUtilityView && (
             <a
               className={classes.dashboard}
-              href="/accessh2oView/accessh20applicants"
+              href={urls.pages.accessh2oView.applicants}
             >
               <b>Back to Dashboard</b>
             </a>
@@ -138,7 +138,7 @@ const ProfilePage = (): JSX.Element => {
           {isUtilityView && (
             <a
               className={classes.dashboard}
-              href="/utilityView/utilityapplicants"
+              href={urls.pages.utilityView.applicants}
             >
               <b>Back to Dashboard</b>
             </a>
