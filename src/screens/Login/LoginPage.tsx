@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import { OutlinedInput } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import urls from 'src/utils/urls'
+import NetlifyLogo from "src/assets/images/netlify-dark.png";
 
 const LoginPage = (): JSX.Element => {
   const [email, setEmail] = useState('')
@@ -92,6 +93,7 @@ const LoginPage = (): JSX.Element => {
         <button className={classes.bttn} type="submit">
           {isRegistering ? 'Register' : 'Login'}
         </button>
+        {process.env.NEXT_PUBLIC_NETLIFY_DEPLOYMENT && <a className={classes.netlifyLogo} href="https://www.netlify.com/" />}
       </form>
     </div>
   )
