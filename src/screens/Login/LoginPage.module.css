@@ -73,6 +73,13 @@
     padding-top: 400px;
 }
 
+.netlifyLogo {
+    background: url('../../assets/images/netlify-dark.png');
+    height: 50px;
+    width: 110px;
+    align-self: flex-end;
+}
+
 .centerText {
     text-align: center;
 }
