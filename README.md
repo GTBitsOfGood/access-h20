@@ -2,6 +2,28 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### Docker
+1. Install [Docker](https://docs.docker.com/engine/install/)
+2. Obtain the Bitwarden password from your EM. Inject it as an envvar `BW_PASSWORD` into the container by adding
+   the following section to the `docker-compose.yml` file:
+   ```yaml
+    services:
+      app:
+        ...
+        environment:
+          - BW_PASSWORD=<password>
+        ...
+   ```
+   This only needs to be done on your first run. After that, you should delete the variable from your Docker compose file
+   to avoid pushing it to Github.
+3. Start the application with Docker Compose: `docker compose up`
+
+If you make any changes to the packages, you may need to rebuild the images. To do this, append `--build` to the
+above `docker compose up` command.
+
+The Dockerized application will have live-reloading of changes made on the host machine.
+
+### Without Docker
 First, run the development server:
 
 ```bash
