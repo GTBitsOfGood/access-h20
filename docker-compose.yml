@@ -2,6 +2,8 @@ services:
   app:
     build:
       dockerfile: ./Dockerfile.dev
+    env_file:
+      - bitwarden.env
     volumes:
       - ./:/app
       - /app/node_modules
